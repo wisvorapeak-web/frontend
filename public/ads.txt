@@ -1,0 +1,3 @@
+# Ads.txt - Verification of authorized sellers
+# Update this with your actual ad network details once available
+# google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
