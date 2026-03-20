@@ -42,7 +42,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     const fetchStats = async () => {
       try {
         const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/stats`, {
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('wisvora_token')}` }
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('ascendix_token')}` }
         });
         if (res.ok) {
           const data = await res.json();

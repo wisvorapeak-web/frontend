@@ -87,8 +87,8 @@ export default function ProgramPage() {
 
   return (
     <PageLayout 
-      title="Scientific Program" 
-      subtitle="A multi-track itinerary featuring technical sessions, innovation workshops, and elite networking opportunities."
+      title="Event Schedule" 
+      subtitle="See our full schedule for the 3rd world food and agriculture summit."
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 py-12">
         {loading ? (
@@ -181,7 +181,7 @@ export default function ProgramPage() {
             </Tabs>
         ) : (
             <div className="py-20 text-center">
-                <h3 className="text-2xl font-black text-slate-300">Schedule is being finalized...</h3>
+                <h3 className="text-2xl font-black text-slate-300">We are still finishing the schedule...</h3>
             </div>
         )}
 
@@ -191,12 +191,12 @@ export default function ProgramPage() {
            <div className="bg-indigo-600/20 p-6 rounded-[2rem] border border-white/5 mb-2 group">
               <Monitor className="w-10 h-10 text-indigo-400 group-hover:scale-110 transition-transform" />
            </div>
-           <h2 className="text-3xl lg:text-4xl font-black font-outfit uppercase tracking-tight">Full Event Handbook</h2>
+           <h2 className="text-3xl lg:text-4xl font-black font-outfit uppercase tracking-tight">Download Schedule</h2>
            <p className="text-slate-400 text-lg font-medium max-w-xl">
-              Get the complete minute-by-minute itinerary, workshop details, and floor plans in a single document.
+              Get the full schedule with all the details and floor plans in one PDF document.
            </p>
            <button className="px-12 py-5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 font-black uppercase tracking-widest text-[10px] active:scale-95 transition-all shadow-xl shadow-indigo-600/20 group inline-flex items-center gap-3">
-              Download Full Program (PDF) <Clock className="w-3.5 h-3.5 opacity-50" />
+              Download PDF <Clock className="w-3.5 h-3.5 opacity-50" />
            </button>
         </section>
       </div>

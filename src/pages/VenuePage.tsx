@@ -10,8 +10,8 @@ export default function VenuePage() {
 
   return (
     <PageLayout 
-      title="Host City & Venue" 
-      subtitle="The summit will be in New Delhi, India, at a top-tier convention center."
+      title="Venue & Travel" 
+      subtitle="The event will be held in New Delhi, India, at a top-tier center."
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-16 space-y-24">
         {/* Intro */}
@@ -39,9 +39,9 @@ export default function VenuePage() {
            
            <div className="rounded-3xl overflow-hidden border-8 border-white shadow-2xl transition-all duration-1000 group">
               <img 
-                 src="https://images.unsplash.com/photo-1574169208538-4f45163a14e6?auto=format&fit=crop&q=80" 
+                 src="/venue-agrotech.png" 
                  alt="New Delhi" 
-                 className="w-full h-[350px] object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
+                 className="w-full h-[350px] object-cover group-hover:scale-110 transition-all duration-1000"
               />
            </div>
         </section>
@@ -63,20 +63,19 @@ export default function VenuePage() {
         <section className="bg-navy p-12 lg:p-16 rounded-[2.5rem] text-center space-y-8">
            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full">
               <Plane className="w-3 h-3 text-blue" />
-              <span className="text-[9px] font-black text-white uppercase tracking-widest">Delegation Aid</span>
+               <span className="text-[9px] font-black text-white uppercase tracking-widest">Travel Help</span>
            </div>
-           <h2 className="text-3xl lg:text-4xl font-black text-white uppercase tracking-tight leading-none">Travel & <span className="text-blue">Visa</span> Assistance</h2>
-           <p className="text-white/40 text-[13px] font-bold uppercase tracking-wide leading-relaxed max-w-2xl mx-auto">
-              Our logistics department provides formalized invitation documentation and 
-              exclusive negotiated rates at elite partner venues for all registered international delegates.
-           </p>
+            <h2 className="text-3xl lg:text-4xl font-black text-white uppercase tracking-tight leading-none">Travel & <span className="text-blue">Visa</span></h2>
+            <p className="text-white/40 text-[13px] font-bold uppercase tracking-wide leading-relaxed max-w-2xl mx-auto">
+               Our team will help you with travel and visa letters. We also have special rates at nearby hotels for our guests.
+            </p>
            <div className="flex flex-wrap justify-center gap-6">
-              <button className="h-16 px-10 bg-blue text-white text-[10px] font-black uppercase tracking-widest rounded-2xl hover:bg-white hover:text-navy transition-all">
-                 Request Invitation
-              </button>
-              <button className="h-16 px-10 border border-white/10 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl hover:bg-white/5 transition-all">
-                 Partner Hotels
-              </button>
+               <button className="h-16 px-10 bg-blue text-white text-[10px] font-black uppercase tracking-widest rounded-2xl hover:bg-white hover:text-navy transition-all">
+                  Get Visa Letter
+               </button>
+               <button className="h-16 px-10 border border-white/10 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl hover:bg-white/5 transition-all">
+                  Where to Stay
+               </button>
            </div>
         </section>
       </div>

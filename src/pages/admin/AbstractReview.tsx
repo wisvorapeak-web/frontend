@@ -32,7 +32,7 @@ export default function AbstractReview() {
   const fetchAbstracts = async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/abstracts`, {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('wisvora_token')}` }
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('ascendix_token')}` }
       });
       if (res.ok) {
         setAbstracts(await res.json());

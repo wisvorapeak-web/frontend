@@ -46,7 +46,7 @@ export default function UserManagement() {
   const fetchUsers = async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/users`, {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('wisvora_token')}` }
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('ascendix_token')}` }
       });
       if (res.ok) {
         setUsers(await res.json());

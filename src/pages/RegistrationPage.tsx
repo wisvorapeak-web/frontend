@@ -11,25 +11,25 @@ import { Link } from 'react-router-dom';
 const pricing = [
   { 
     title: 'Professional', 
-    price: '$650', 
-    type: 'Primary Ticket', 
-    features: ['Technical Sessions', 'Exhibition Access', 'Scientific Handbook', 'Gala Dinner'],
+    price: '₹18,000', 
+    type: 'Business/Worker', 
+    features: ['Technical Sessions', 'Exhibition Access', 'Event Guide', 'Gala Dinner'],
     icon: Building2,
     color: 'bg-indigo-600 text-white shadow-indigo-600/20'
   },
   { 
     title: 'Academic', 
-    price: '$450', 
-    type: 'Faculty Ticket', 
-    features: ['Technical Sessions', 'Poster Presentation', 'Abstract Archive', 'Lunch & Coffee'],
+    price: '₹12,000', 
+    type: 'Teacher/Researcher', 
+    features: ['Technical Sessions', 'Poster Presentation', 'Talk Summaries', 'Lunch & Coffee'],
     icon: GraduationCap,
     color: 'bg-white text-slate-900 border-slate-100 shadow-slate-100/50'
   },
   { 
     title: 'Student', 
-    price: '$250', 
+    price: '₹6,000', 
     type: 'PhD & Masters', 
-    features: ['Knowledge Tracks', 'Student Forum', 'Certificate', 'Lunch Voucher'],
+    features: ['Learning Sessions', 'Student Forum', 'Certificate', 'Lunch Voucher'],
     icon: Users,
     color: 'bg-white text-slate-900 border-slate-100 shadow-slate-100/50'
   },
@@ -38,8 +38,8 @@ const pricing = [
 export default function RegistrationPage() {
   return (
     <PageLayout 
-      title="Access Pass" 
-      subtitle="Securing your position at the forefront of material science convergence."
+      title="Tickets" 
+      subtitle="Get your tickets for the 2026 conference."
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-16 space-y-24">
         {/* Registration Tiers */}

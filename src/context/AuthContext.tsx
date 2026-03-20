@@ -25,12 +25,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     // Check local storage for persisted user session
-    const storedUser = localStorage.getItem('wisvora_user');
+    const storedUser = localStorage.getItem('ascendix_user');
     if (storedUser) {
       try {
         setUser(JSON.parse(storedUser));
       } catch (err) {
-        localStorage.removeItem('wisvora_user');
+        localStorage.removeItem('ascendix_user');
       }
     }
     setIsLoading(false);
@@ -38,15 +38,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = (userData: User, token: string) => {
     setUser(userData);
-    localStorage.setItem('wisvora_user', JSON.stringify(userData));
-    localStorage.setItem('wisvora_token', token);
+    localStorage.setItem('ascendix_user', JSON.stringify(userData));
+    localStorage.setItem('ascendix_token', token);
     // Note: Cookie is also set by backend for HTTP-only security
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('wisvora_user');
-    localStorage.removeItem('wisvora_token');
+    localStorage.removeItem('ascendix_user');
+    localStorage.removeItem('ascendix_token');
     // Backend logout should clear the cookie
     fetch(`${import.meta.env.VITE_API_URL}/api/auth/logout`, { method: 'POST' });
   };

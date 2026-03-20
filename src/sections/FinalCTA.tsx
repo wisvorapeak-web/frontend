@@ -59,8 +59,8 @@ const AbstractForm = () => {
         <Label htmlFor="abstract">Abstract Content</Label>
         <Textarea id="abstract" placeholder="Enter your abstract (max 300 words)" rows={4} required />
       </div>
-      <Button type="submit" className="w-full bg-blue hover:bg-blue-600">
-        Submit Abstract
+      <Button type="submit" className="w-full bg-blue hover:bg-navy text-white text-[10px] font-black uppercase tracking-widest h-12 rounded-xl transition-all">
+        Submit Your Talk
       </Button>
     </form>
   );
@@ -130,8 +130,10 @@ export default function FinalCTA() {
 
   return (
     <section ref={sectionRef} className="relative py-32 bg-navy overflow-hidden">
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue blur-[120px] rounded-full translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute inset-0">
+        <img src="/cta-agrotech.png" className="w-full h-full object-cover opacity-20" alt="CTA BG" />
+        <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/80 to-transparent" />
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue blur-[120px] rounded-full translate-x-1/2 -translate-y-1/2 opacity-20" />
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center space-y-12">
@@ -173,8 +175,8 @@ export default function FinalCTA() {
         </div>
 
         <div className={`pt-12 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-8 transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
-           {['MIT', 'STANFORD', 'CAMBRIDGE', 'ETH ZURICH'].map((inst, i) => (
-             <span key={i} className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">{inst}</span>
+           {['IARI', 'CIMMYT', 'FAO', 'ICAR'].map((inst, i) => (
+             <span key={i} className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em]">{inst}</span>
            ))}
         </div>
       </div>

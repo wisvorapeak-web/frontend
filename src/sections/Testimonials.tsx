@@ -8,7 +8,7 @@ const testimonials = [
     institution: 'University of Barcelona',
     country: 'Spain',
     image: '/speaker-2.jpg',
-    quote: 'The 2024 summit was an incredible experience. The quality of presentations and the networking opportunities exceeded my expectations. I made connections that led to two collaborative research projects.',
+    quote: 'The 2024 summit was a great experience. I met many new people and found helpful ways to work together on my research.',
     rating: 5,
     year: '2024',
   },
@@ -18,7 +18,7 @@ const testimonials = [
     institution: 'National University of Singapore',
     country: 'Singapore',
     image: '/speaker-3.jpg',
-    quote: 'This conference has become a must-attend event in our field. The organizers bring together the best minds in agrotech, food science, and animal welfare, creating an environment where innovation thrives.',
+    quote: 'This is a must-attend event for anyone in farming. The team brings together the best experts in food and animal science.',
     rating: 5,
     year: '2024',
   },
@@ -28,7 +28,7 @@ const testimonials = [
     institution: 'BASF',
     country: 'Germany',
     image: '/speaker-4.jpg',
-    quote: 'As an industry researcher, I found the balance between academic and industrial perspectives perfect. The expo showcased cutting-edge technologies that we are now evaluating for implementation.',
+    quote: 'I loved the mix of science and business ideas. The new technology on display was very impressive.',
     rating: 5,
     year: '2023',
   },
@@ -38,7 +38,7 @@ const testimonials = [
     institution: 'Cairo University',
     country: 'Egypt',
     image: '/speaker-5.jpg',
-    quote: 'The student program was exceptional. I received invaluable feedback on my research and met potential collaborators from around the world. The student discount made it accessible.',
+    quote: 'The student program helped me get great feedback on my work. The discount made it very easy to join.',
     rating: 5,
     year: '2023',
   },
@@ -69,9 +69,9 @@ export default function Testimonials() {
             <span className="w-1.5 h-1.5 rounded-full bg-blue" />
             <span className="text-[10px] font-black text-blue uppercase tracking-widest">Feedback</span>
           </div>
-          <h2 className="text-4xl lg:text-5xl font-black text-navy uppercase tracking-tight">Global Reputation</h2>
+          <h2 className="text-4xl lg:text-5xl font-black text-navy uppercase tracking-tight">What People Say</h2>
           <p className="text-slate-500 text-base font-medium max-w-2xl mx-auto">
-            Trusted by world-renowned scientists and industry leaders from across the globe.
+            Trusted by scientists and business leaders from all over the world.
           </p>
         </div>
 
@@ -114,9 +114,9 @@ export default function Testimonials() {
 
         <div className={`mt-20 pt-12 border-t border-slate-50 grid grid-cols-3 gap-8 transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
           {[
-            { value: '95%', label: 'Metric Satisfaction' },
-            { value: '88%', label: 'Return Engagement' },
-            { value: '4.9/5', label: 'Average Endorsement' },
+            { value: '95%', label: 'Happy Visitors' },
+            { value: '88%', label: 'Coming Back' },
+            { value: '4.9/5', label: 'Star Rating' },
           ].map((s, i) => (
             <div key={i} className="text-center">
               <p className="text-2xl font-black text-navy uppercase tracking-tight">{s.value}</p>

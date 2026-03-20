@@ -140,9 +140,9 @@ export default function Registration() {
             <span className="text-[10px] font-black text-blue uppercase tracking-widest">Registration</span>
           </div>
 
-          <h2 className="text-4xl lg:text-5xl font-black text-navy uppercase tracking-tight">Access Passes</h2>
+          <h2 className="text-4xl lg:text-5xl font-black text-navy uppercase tracking-tight">Tickets</h2>
           <p className="text-slate-500 text-base font-medium max-w-2xl mx-auto">
-            Choose your conference pass based on your professional requirements.
+            Choose your ticket for the 2026 conference.
           </p>
         </div>
 
@@ -151,7 +151,7 @@ export default function Registration() {
             <div key={index} className={`relative group transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: `${index * 100}ms` }}>
               <div className={`h-full bg-white p-10 rounded-2xl border ${plan.highlighted ? 'border-blue shadow-2xl shadow-blue/5 ring-4 ring-blue/5' : 'border-slate-100 hover:border-slate-200'} transition-all flex flex-col`}>
                 {plan.highlighted && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-blue text-white text-[9px] font-black uppercase tracking-widest rounded-full">Standard Choice</div>
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-blue text-white text-[9px] font-black uppercase tracking-widest rounded-full">Most Popular</div>
                 )}
                 
                 <div className="text-center mb-8">
@@ -182,11 +182,11 @@ export default function Registration() {
                 <Dialog>
                     <DialogTrigger asChild>
                         <Button className={`w-full h-12 rounded-xl text-[10px] font-black uppercase tracking-widest ${plan.highlighted ? 'bg-blue hover:bg-black' : 'bg-navy hover:bg-black'} text-white transition-all`}>
-                            Reserve Spot
+                            Get Tickets
                         </Button>
                     </DialogTrigger>
                     <DialogContent className="max-w-lg">
-                        <DialogHeader><DialogTitle className="text-xl font-black uppercase tracking-tight text-navy">Registration Form</DialogTitle></DialogHeader>
+                        <DialogHeader><DialogTitle className="text-xl font-black uppercase tracking-tight text-navy">Your Details</DialogTitle></DialogHeader>
                         <RegistrationForm />
                     </DialogContent>
                 </Dialog>
@@ -199,7 +199,7 @@ export default function Registration() {
           <div className="inline-flex items-center gap-4 px-6 py-4 bg-slate-50 rounded-2xl border border-slate-100">
             <GraduationCap className="w-6 h-6 text-blue" />
             <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
-              Student Discount: <span className="text-navy">50% Reduction</span> available on all tiers with valid ID.
+              Student Discount: <span className="text-navy">Students save 50%</span> on all tickets with a valid ID.
             </p>
           </div>
         </div>

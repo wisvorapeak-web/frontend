@@ -37,14 +37,14 @@ export default function About() {
           {/* Image Side */}
           <div className={`relative transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
             <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-gray-100">
-              <img src="/about-bg.jpg" alt="Innovation" className="w-full h-[500px] object-cover" />
+              <img src="/about-agrotech.png" alt="Innovation" className="w-full h-[500px] object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-navy/40 to-transparent" />
               
               <div className="absolute bottom-8 left-8 p-6 bg-white/95 backdrop-blur shadow-xl rounded-2xl border border-white/20">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-xl bg-blue flex items-center justify-center text-white font-black text-xl">3</div>
                   <div>
-                    <p className="text-navy font-black text-sm uppercase tracking-tight">Days of Scientific</p>
+                    <p className="text-navy font-black text-sm uppercase tracking-tight">Days of Learning</p>
                     <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">Innovation & Expo</p>
                   </div>
                 </div>
@@ -56,7 +56,7 @@ export default function About() {
           <div className={`space-y-8 transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue/5 border border-blue/10">
               <span className="w-1.5 h-1.5 rounded-full bg-blue" />
-              <span className="text-[10px] font-black text-blue uppercase tracking-widest">About Conference</span>
+              <span className="text-[10px] font-black text-blue uppercase tracking-widest">Who We Are</span>
             </div>
 
             <h2 className="text-4xl lg:text-5xl font-black text-navy leading-tight">
@@ -83,7 +83,7 @@ export default function About() {
             </div>
 
             <Button className="bg-navy hover:bg-black text-white px-8 h-12 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-navy/10">
-              Explore Conference Details
+              Learn More
             </Button>
           </div>
         </div>

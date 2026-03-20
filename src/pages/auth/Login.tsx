@@ -42,7 +42,7 @@ export default function Login() {
 
       if (response.ok) {
         login(data.user, data.token);
-        toast.success('Access granted to Wisvora Core.');
+        toast.success('You have successfully logged in.');
         navigate('/dashboard');
       } else {
         toast.error(data.error || 'Identity verification failed.');
@@ -60,16 +60,16 @@ export default function Login() {
       <div className="flex-1 flex items-center justify-center p-8 lg:p-12">
         <div className="w-full max-w-[440px] space-y-8 animate-in fade-in slide-in-from-left-4 duration-700">
           <div className="space-y-2">
-            <h1 className="text-3xl font-black text-white tracking-tight uppercase">Access Console</h1>
+            <h1 className="text-3xl font-black text-white tracking-tight uppercase">Portal Login</h1>
             <p className="text-[11px] font-black text-slate-500 uppercase tracking-widest leading-relaxed">
-              Log in to the Wisvora scientific ecosystem to manage your research transmissions and professional board data.
+              Log in to manage your account, abstracts, and event registrations.
             </p>
           </div>
 
           <div className="bg-[#0f172a]/50 backdrop-blur-3xl border border-white/5 rounded-2xl p-8 lg:p-10 shadow-2xl">
             <form onSubmit={handleLogin} className="space-y-6">
               <div className="space-y-2">
-                <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Email Protocol</Label>
+                <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Email Address</Label>
                 <Input 
                   name="email"
                   type="email" 
@@ -81,8 +81,8 @@ export default function Login() {
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between ml-1">
-                  <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Password Key</Label>
-                  <Link to="/forgot-password" title="Recover account" className="text-[9px] font-black text-blue hover:text-white uppercase tracking-widest transition-colors">Emergency?</Link>
+                  <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Password</Label>
+                  <Link to="/forgot-password" title="Recover account" className="text-[9px] font-black text-blue hover:text-white uppercase tracking-widest transition-colors">Forgot Password?</Link>
                 </div>
                 <div className="relative group">
                   <Input 
@@ -103,7 +103,7 @@ export default function Login() {
               </div>
 
               <Button type="submit" className="w-full h-12 rounded-xl bg-blue hover:bg-white hover:text-navy text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-xl shadow-blue/5 active:scale-[0.98] transition-all" disabled={isLoading}>
-                {isLoading ? <Loader2 className="w-4 h-4 animate-spin text-white" /> : <>Execute Access <ArrowRight className="w-4 h-4 ml-2" /></>}
+                {isLoading ? <Loader2 className="w-4 h-4 animate-spin text-white" /> : <>Log In <ArrowRight className="w-4 h-4 ml-2" /></>}
               </Button>
             </form>
 
@@ -116,11 +116,11 @@ export default function Login() {
           </div>
 
           <p className="text-center text-[10px] font-black uppercase tracking-widest text-slate-500">
-            System new? <Link to="/register" title="Create Account" className="text-blue hover:text-white transition-colors">Initialize Identity</Link>
+            First time? <Link to="/register" title="Create Account" className="text-blue hover:text-white transition-colors">Create Account</Link>
           </p>
 
           <Link to="/" className="flex items-center justify-center gap-2 text-slate-700 hover:text-white text-[10px] font-black uppercase tracking-widest transition-colors group">
-            <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Exit to Surface
+            <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Go back Home
           </Link>
         </div>
       </div>
@@ -134,9 +134,9 @@ export default function Login() {
            </div>
            
            <div className="space-y-4">
-              <h2 className="text-4xl font-black text-white uppercase tracking-tighter leading-none">Wisvora <span className="text-blue">Core</span></h2>
+              <h2 className="text-4xl font-black text-white uppercase tracking-tighter leading-none">Ascendix <span className="text-blue">Summits</span></h2>
               <p className="text-xs font-black text-white/30 uppercase tracking-[0.2em] leading-relaxed">
-                The high-performance scientific engine for materials research and global board management.
+                The leading platform for world food, agriculture, and animal science summits.
               </p>
            </div>
 

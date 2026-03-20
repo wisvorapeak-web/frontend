@@ -50,7 +50,7 @@ export default function SiteSettings() {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('wisvora_token')}`
+          'Authorization': `Bearer ${localStorage.getItem('ascendix_token')}`
         },
         body: JSON.stringify(settings)
       });

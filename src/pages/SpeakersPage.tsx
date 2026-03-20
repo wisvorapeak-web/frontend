@@ -43,8 +43,8 @@ export default function SpeakersPage() {
 
   return (
     <PageLayout 
-      title="Elite Scientific Speakers" 
-      subtitle="Gathering together the brightest minds in polymer science to challenge established paradigms."
+      title="Our Speakers" 
+      subtitle="Meet the experts who are changing the future of farming and food technology."
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 py-12 space-y-12">
         <Tabs defaultValue="plenary" className="w-full">
@@ -94,7 +94,7 @@ export default function SpeakersPage() {
                               <cat.icon className="w-10 h-10" />
                            </div>
                            <h3 className="text-xl font-bold font-outfit text-slate-400">Speakers to be announced soon</h3>
-                           <p className="text-slate-400 text-sm font-medium">Final selection for this category is currently being finalized by the Scientific Committee.</p>
+                           <p className="text-slate-400 text-sm font-medium">Our team is currently finalizing the speaker list for this category.</p>
                         </div>
                     )}
                  </div>

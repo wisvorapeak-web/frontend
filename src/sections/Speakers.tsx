@@ -39,9 +39,9 @@ export default function Speakers() {
           <div className="space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue/5 border border-blue/10 rounded-full">
               <span className="w-1.5 h-1.5 rounded-full bg-blue" />
-              <span className="text-[9px] font-black text-blue uppercase tracking-widest">Speaker Protocol</span>
+              <span className="text-[10px] font-black text-blue uppercase tracking-widest">The Experts</span>
             </div>
-            <h2 className="text-4xl lg:text-5xl font-black text-navy uppercase tracking-tighter leading-none">Scientific <span className="text-blue">Board</span></h2>
+            <h2 className="text-4xl lg:text-5xl font-black text-navy uppercase tracking-tighter leading-none">Our <span className="text-blue">Speakers</span></h2>
           </div>
         </div>
 
@@ -70,7 +70,7 @@ export default function Speakers() {
             ))
           ) : (
             <div className="w-full py-24 text-center">
-               <p className="text-[10px] font-black text-slate-200 uppercase tracking-[0.3em]">Scientific roster initializing</p>
+               <p className="text-[10px] font-black text-slate-200 uppercase tracking-[0.3em]">We are announcing our speakers soon...</p>
             </div>
           )}
         </div>

@@ -3,36 +3,36 @@ import { Clock, Calendar, AlertCircle, FileCheck, CheckCircle2, Award } from 'lu
 
 const milestones = [
   { 
-    title: 'Abstract Submission Opening', 
-    date: 'Oct 15, 2025', 
+    title: 'Submissions Start', 
+    date: 'Dec 15, 2025', 
     status: 'Opened',
     icon: FileCheck,
     color: 'bg-emerald-50 text-emerald-600 border-emerald-100'
   },
   { 
-    title: 'Abstract Submission Deadline', 
-    date: 'Dec 05, 2025', 
+    title: 'Submission Deadline', 
+    date: 'Feb 05, 2026', 
     status: 'Final Call',
     icon: Clock,
     color: 'bg-rose-50 text-rose-600 border-rose-100'
   },
   { 
-    title: 'Notification of Acceptance', 
-    date: 'Dec 20, 2025', 
+    title: 'Review Results', 
+    date: 'Feb 20, 2026', 
     status: 'Upcoming',
     icon: AlertCircle,
     color: 'bg-indigo-50 text-indigo-600 border-indigo-100'
   },
   { 
     title: 'Early Bird Registration', 
-    date: 'Jan 05, 2026', 
+    date: 'Mar 05, 2026', 
     status: 'Limited Time',
     icon: Award,
     color: 'bg-amber-50 text-amber-600 border-amber-100'
   },
   { 
-    title: 'Conference Commencement', 
-    date: 'Jan 12, 2026', 
+    title: 'Event Starts', 
+    date: 'June 24, 2026', 
     status: 'Final Phase',
     icon: Calendar,
     color: 'bg-slate-50 text-slate-800 border-slate-200'
@@ -42,8 +42,8 @@ const milestones = [
 export default function DatesPage() {
   return (
     <PageLayout 
-      title="Strategic Milestones" 
-      subtitle="Mark your academic calendar for the critical scientific and logistical deadlines of Polymers 2026."
+      title="Key Dates" 
+      subtitle="Keep track of the important deadlines for Ascendix 2026."
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 py-12 space-y-12">
         <section className="bg-white rounded-[2.5rem] shadow-2xl shadow-slate-200/50 border border-slate-50 p-10 lg:p-12 relative overflow-hidden">

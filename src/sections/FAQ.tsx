@@ -8,7 +8,7 @@ const faqs = [
   },
   {
     question: 'What are the presentation formats?',
-    answer: 'We offer three presentation formats: Oral presentations (15 minutes + 5 minutes Q&A), Poster sessions (standard A0 size), and Lightning talks (5 minutes). The scientific committee will assign the format based on your abstract quality and topic relevance.',
+    answer: 'We offer three formats: Talks (15 mins), Posters, and Short Talks (5 mins). The event team will choose the format based on your work and topic.',
   },
   {
     question: 'Do you provide visa support letters?',
@@ -32,7 +32,7 @@ const faqs = [
   },
   {
     question: 'How can I become a sponsor or exhibitor?',
-    answer: 'We offer various sponsorship packages ranging from bronze to platinum levels. Exhibitor booths are available in the conference expo area. Please contact our sponsorship team at sponsors@ascendix2026.org for the prospectus.',
+    answer: 'We have different ways to partner with us. Please contact our team at sponsors@ascendix2026.org for the guide.',
   },
 ];
 
@@ -55,9 +55,9 @@ export default function FAQ() {
             <span className="w-1.5 h-1.5 rounded-full bg-blue" />
             <span className="text-[10px] font-black text-blue uppercase tracking-widest">Inquiries</span>
           </div>
-          <h2 className="text-4xl lg:text-5xl font-black text-navy uppercase tracking-tight">Common Queries</h2>
+          <h2 className="text-4xl lg:text-5xl font-black text-navy uppercase tracking-tight">Questions?</h2>
           <p className="text-slate-500 text-base font-medium max-w-2xl mx-auto">
-            Everything you need to know about the summit logistics and participation.
+            Find answers to the most common questions about our event.
           </p>
         </div>
 
@@ -81,7 +81,7 @@ export default function FAQ() {
         <div className={`mt-16 text-center transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">Still have questions?</p>
            <a href="#contact" className="inline-flex items-center gap-2 px-8 py-4 bg-navy text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-black transition-all">
-             Contact Logistics Team
+             Send us an Email
            </a>
         </div>
       </div>

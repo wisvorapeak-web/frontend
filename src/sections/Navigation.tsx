@@ -42,13 +42,13 @@ const navLinks = [
     ]
   },
   { 
-    label: 'Conference', 
+    label: 'The Event', 
     href: '/speakers',
     subItems: [
         { label: 'Our Speakers', href: '/speakers', icon: Mic2 },
         { label: 'Event Schedule', href: '/program', icon: Monitor },
-        { label: 'Meeting Sessions', href: '/sessions', icon: Zap },
-        { label: 'Submit Abstract', href: '/abstract-submission', icon: FileText },
+        { label: 'Talk Areas', href: '/sessions', icon: Zap },
+        { label: 'Submit Your Talk', href: '/abstract-submission', icon: FileText },
     ]
   },
   { 
@@ -95,7 +95,7 @@ const AbstractForm = () => {
 
       if (!response.ok) throw new Error('Submission failed');
 
-      toast.success('Your abstract has been submitted for review.');
+      toast.success('Your talk details have been sent for review.');
       setFormData({
         firstName: '', lastName: '', email: '', institution: '', topic: '', title: '', abstract: ''
       });
@@ -161,7 +161,7 @@ const AbstractForm = () => {
       </div>
 
       <div className="space-y-2">
-        <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Research Title</Label>
+        <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Title of Your Talk</Label>
         <Input 
           className="h-10 bg-slate-50 border-transparent rounded-lg text-[10px] font-black uppercase tracking-widest focus:bg-white focus:border-blue transition-all"
           placeholder="ENTER RESEARCH TITLE" 
@@ -172,7 +172,7 @@ const AbstractForm = () => {
       </div>
 
       <div className="space-y-2">
-        <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Brief Summary</Label>
+        <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Short Description</Label>
         <Textarea 
           className="bg-slate-50 border-transparent rounded-xl text-[10px] font-black uppercase tracking-widest focus:bg-white focus:border-blue transition-all min-h-[120px]"
           placeholder="TELL US ABOUT YOUR WORK..." 
@@ -183,7 +183,7 @@ const AbstractForm = () => {
       </div>
 
       <Button type="submit" className="w-full h-12 bg-blue text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-navy transition-all" disabled={isSubmitting}>
-        {isSubmitting ? 'SENDING...' : 'SUBMIT ABSTRACT'}
+        {isSubmitting ? 'SENDING...' : 'SUBMIT YOUR TALK'}
       </Button>
     </form>
   );
@@ -282,12 +282,12 @@ export default function Navigation() {
                     `}
                   >
                     <FileText className="w-4 h-4 mr-2" />
-                    Submit Abstract
+                    Submit Your Talk
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
                   <DialogHeader>
-                    <DialogTitle className="text-2xl font-bold text-navy">Submit Your Abstract</DialogTitle>
+                    <DialogTitle className="text-2xl font-bold text-navy">Submit Your Talk</DialogTitle>
                   </DialogHeader>
                   <AbstractForm />
                 </DialogContent>
@@ -390,7 +390,7 @@ export default function Navigation() {
                 </DialogTrigger>
                 <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
                   <DialogHeader>
-                    <DialogTitle className="text-2xl font-bold text-navy">Submit Your Abstract</DialogTitle>
+                    <DialogTitle className="text-2xl font-bold text-navy">Submit Your Talk</DialogTitle>
                   </DialogHeader>
                   <AbstractForm />
                 </DialogContent>

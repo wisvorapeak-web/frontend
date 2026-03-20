@@ -11,39 +11,39 @@ import {
 
 const sessions = [
   { 
-    title: 'Advanced Polymer Chemistry', 
+    title: 'Crop Science & Genetics', 
     id: 'T1', 
-    desc: 'Synthesis methodologies and novel reaction kinetics in macromolecular engineering.',
+    desc: 'New ways to improve crop yield and resist diseases through genetic research.',
     icon: FlaskConical 
   },
   { 
-    title: 'Biopolymers & Healthcare', 
+    title: 'Food Safety & Quality', 
     id: 'T2', 
-    desc: 'Medical-grade silicones, biocompatible scaffolds, and pharmaceutical polymer systems.',
+    desc: 'Ensuring food is safe, healthy, and high-quality for everyone.',
     icon: ShieldCheck 
   },
   { 
-    title: 'Sustainable & Green Polymers', 
+    title: 'Sustainable Farming', 
     id: 'T3', 
-    desc: 'Biodegradable materials, circular economy approaches, and bio-based resin development.',
+    desc: 'Using eco-friendly methods and soil health to grow food for the future.',
     icon: Leaf 
   },
   { 
-    title: 'Nanocomposites & Interfaces', 
+    title: 'Animal Health & Nutrition', 
     id: 'T4', 
-    desc: 'Carbon nanotube integration, graphene-reinforced matrices, and interfacial bonding study.',
+    desc: 'Better care, medical treatment, and feeding for livestock and poultry.',
     icon: Microscope 
   },
   { 
-    title: '3D Printing & Fabrication', 
+    title: 'Agri-IoT & Automation', 
     id: 'T5', 
-    desc: 'Additive manufacturing of polymers with gradient properties for industrial applications.',
+    desc: 'Using smart sensors, drones, and robots to manage farms more efficiently.',
     icon: Settings 
   },
   { 
-    title: 'Aerospace & Automotive Applications', 
+    title: 'Bio-resource Engineering', 
     id: 'T6', 
-    desc: 'High-performance composites for structural endurance in extreme thermal environments.',
+    desc: 'Designing systems to use natural resources like water and biomass efficiently.',
     icon: Rocket 
   },
 ];
@@ -51,8 +51,8 @@ const sessions = [
 export default function SessionsPage() {
   return (
     <PageLayout 
-      title="Scientific Sessions" 
-      subtitle="Diverse technical tracks spanning the full spectrum of polymer science and materials engineering."
+      title="Meeting Sessions" 
+      subtitle="Learn about the different areas we will cover, from farming technology to animal care."
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 py-20 space-y-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -86,14 +86,14 @@ export default function SessionsPage() {
         <section className="bg-slate-950 p-12 lg:p-20 rounded-[4rem] text-white flex flex-col md:flex-row items-center gap-10 relative overflow-hidden">
            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_5%_5%,rgba(99,102,241,0.05),transparent)] pointer-events-none" />
            <div className="flex-1 space-y-6 relative z-10 text-center md:text-left">
-              <h2 className="text-3xl font-black font-outfit uppercase tracking-tight">Multi-Disciplinary Impact</h2>
+              <h2 className="text-3xl font-black font-outfit uppercase tracking-tight">Making a Real Impact</h2>
               <p className="text-slate-400 text-lg font-medium leading-relaxed">
-                 Our sessions bring together physicists, chemists, and mechanical engineers to address the global sustainability crisis. 
-                 By focusing on hybrid materials, we aim to redefine what is possible in polymer science.
+                 Our sessions bring together farmers, scientists, and engineers to solve food challenges. 
+                 By focusing on new technology, we aim to build a more sustainable world for everyone.
               </p>
            </div>
            <div className="grid grid-cols-2 gap-4 w-full md:w-auto relative z-10">
-              {['Smart Materials', 'Recycling', 'AI Research', 'Conductive Polymers'].map((tag, i) => (
+              {['Smart Farming', 'Food Safety', 'AI in Agri', 'Animal Health'].map((tag, i) => (
                 <div key={i} className="px-6 py-4 bg-white/5 rounded-2xl border border-white/5 text-center font-bold text-xs uppercase tracking-widest hover:bg-white/10 transition-colors whitespace-nowrap">
                    {tag}
                 </div>

@@ -34,7 +34,7 @@ export default function Registrations() {
   const fetchRegistrations = async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/registrations`, {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('wisvora_token')}` }
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('ascendix_token')}` }
       });
       if (res.ok) {
         setRegistrations(await res.json());

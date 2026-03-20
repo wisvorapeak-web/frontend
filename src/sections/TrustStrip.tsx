@@ -9,12 +9,12 @@ const metrics = [
 ];
 
 const collaborators = [
-  { name: 'MIT', icon: BookOpen },
-  { name: 'Stanford', icon: FlaskConical },
-  { name: 'Cambridge', icon: Award },
-  { name: 'ETH Zurich', icon: Globe },
-  { name: 'Imperial College', icon: Users },
-  { name: 'TU Munich', icon: Mic2 },
+  { name: 'IARI India', icon: BookOpen },
+  { name: 'CIMMYT', icon: FlaskConical },
+  { name: 'Food & Agriculture Org', icon: Award },
+  { name: 'ICAR India', icon: Globe },
+  { name: 'World Food Program', icon: Users },
+  { name: 'IRRI Global', icon: Mic2 },
 ];
 
 // Animated Counter Component
@@ -88,7 +88,7 @@ export default function TrustStrip() {
         </div>
 
         <div className="mt-12 flex items-center gap-8">
-            <div className="flex-shrink-0 text-[10px] font-black text-blue uppercase tracking-[0.2em] opacity-40">Scientific Partners</div>
+            <div className="flex-shrink-0 text-[10px] font-black text-blue uppercase tracking-[0.2em] opacity-40">Collaborating Partners</div>
             <div className="flex-grow h-px bg-slate-100" />
         </div>
 
