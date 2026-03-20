@@ -8,6 +8,7 @@ import {
   Brain,
   ArrowUpRight
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const topics = [
   {
@@ -64,10 +65,10 @@ export default function Topics() {
         <div className="text-center mb-16 space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue/5 border border-blue/10">
             <span className="w-1.5 h-1.5 rounded-full bg-blue" />
-            <span className="text-[10px] font-black text-blue uppercase tracking-widest">Event Topics</span>
+            <span className="text-xs font-bold text-blue">Event Topics</span>
           </div>
 
-          <h2 className="text-4xl lg:text-5xl font-black text-navy uppercase tracking-tight">What we will talk about</h2>
+          <h2 className="text-4xl lg:text-5xl font-bold text-navy">What we will talk about</h2>
           <p className="text-slate-500 text-base font-medium max-w-2xl mx-auto">
             Join us as we explore the most important parts of modern farming and food science.
           </p>
@@ -75,7 +76,7 @@ export default function Topics() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {topics.map((topic, index) => (
-            <div key={index} 
+            <Link key={index} to="/sessions" 
               className={`group bg-white p-8 rounded-2xl border border-slate-100 hover:border-blue/20 hover:shadow-2xl hover:shadow-navy/5 transition-all duration-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
@@ -83,24 +84,24 @@ export default function Topics() {
                 <topic.icon className="w-7 h-7" />
               </div>
               
-              <h3 className="text-lg font-black text-navy uppercase tracking-tight mb-3 group-hover:text-blue transition-colors">
+              <h3 className="text-lg font-bold text-navy mb-3 group-hover:text-blue transition-colors">
                 {topic.title}
               </h3>
               
-              <p className="text-slate-500 text-xs font-bold uppercase tracking-widest leading-relaxed opacity-60">
+              <p className="text-slate-500 text-sm font-medium leading-relaxed opacity-60">
                 {topic.description}
               </p>
               
-              <div className="mt-6 flex items-center gap-2 text-blue text-[10px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all">
+              <div className="mt-6 flex items-center gap-2 text-blue text-xs font-bold opacity-0 group-hover:opacity-100 transition-all">
                 Learn More <ArrowUpRight className="w-3 h-3" />
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
         <div className="text-center mt-16 pb-8">
-          <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">
-            Interested in presenting? <a href="#contact" className="text-blue hover:underline">Submit your proposal</a>
+          <p className="text-slate-400 text-sm font-medium">
+            Interested in presenting? <Link to="/abstract-submission" className="text-blue hover:underline font-bold">Send your plan</Link>
           </p>
         </div>
       </div>

@@ -1,125 +1,81 @@
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Check, Sparkles, Zap, Crown } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { toast } from 'sonner';
+import { 
+  Users, 
+  GraduationCap, 
+  Mic2, 
+  FileText,
+  Check
+} from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const plans = [
   {
-    name: 'Early Bird',
-    price: '₹15,000',
-    originalPrice: '₹18,000',
-    period: 'Until May 31',
-    description: 'Best value for early registrants',
-    icon: Sparkles,
+    name: 'Speaker Registration',
+    earlyPrice: '$749',
+    standardPrice: '$849',
+    description: 'Present your research to the world',
+    icon: Mic2,
     features: [
-      'Full conference access',
-      'All keynote sessions',
-      'Conference materials',
-      'Lunch & refreshments',
-      'Networking events',
-      'Certificate of attendance',
-    ],
-    highlighted: false,
-    color: 'border-gray-200',
-    badgeColor: 'bg-gray-100 text-gray-600',
-  },
-  {
-    name: 'Standard',
-    price: '₹20,000',
-    originalPrice: null,
-    period: 'June 1-10',
-    description: 'Regular conference registration',
-    icon: Zap,
-    features: [
-      'Full conference access',
-      'All keynote sessions',
-      'Conference materials',
-      'Lunch & refreshments',
-      'Networking events',
-      'Certificate of attendance',
-      'Priority seating',
+      'Speaker Certificate',
+      'Conference Program Inclusion',
+      'E-Abstract Book Publication',
+      'Research Paper Publication',
+      'Complimentary Meals',
+      'Full Session Access',
     ],
     highlighted: true,
-    color: 'border-blue',
-    badgeColor: 'bg-blue text-white',
+    slug: 'speaker'
   },
   {
-    name: 'On-site',
-    price: '₹25,000',
-    originalPrice: null,
-    period: 'June 24-26',
-    description: 'Last-minute registration',
-    icon: Crown,
+    name: 'Delegate Registration',
+    earlyPrice: '$899',
+    standardPrice: '$999',
+    description: 'Network with industry leaders',
+    icon: Users,
     features: [
-      'Full conference access',
-      'All keynote sessions',
-      'Conference materials',
-      'Lunch & refreshments',
-      'Networking events',
-      'Certificate of attendance',
-      'Express check-in',
+      'Conference Program Inclusion',
+      'E-Abstract Book Publication',
+      'Research Paper Publication',
+      'Complimentary Meals',
+      'Full Session Access',
     ],
     highlighted: false,
-    color: 'border-gray-200',
-    badgeColor: 'bg-gray-100 text-gray-600',
+    slug: 'delegate'
+  },
+  {
+    name: 'Poster Registration',
+    earlyPrice: '$449',
+    standardPrice: '$549',
+    description: 'Visual research presentation',
+    icon: FileText,
+    features: [
+      'Conference Program Inclusion',
+      'E-Abstract Book Publication',
+      'Complimentary Meals',
+      'Full Session Access',
+    ],
+    highlighted: false,
+    slug: 'poster'
+  },
+  {
+    name: 'Student Registration',
+    earlyPrice: '$399',
+    standardPrice: '$599',
+    description: 'Join as a young researcher',
+    icon: GraduationCap,
+    features: [
+      'E-Abstract Book Publication',
+      'Complimentary Meals',
+      'Full Session Access',
+      'Student Certificate',
+    ],
+    highlighted: false,
+    slug: 'student'
   },
 ];
 
-// Registration Form Component
-const RegistrationForm = () => {
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast.success('Registration initiated! Please check your email for payment instructions.');
-  };
 
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="regFirstName">First Name</Label>
-          <Input id="regFirstName" placeholder="John" required />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="regLastName">Last Name</Label>
-          <Input id="regLastName" placeholder="Doe" required />
-        </div>
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="regEmail">Email</Label>
-        <Input id="regEmail" type="email" placeholder="john.doe@email.com" required />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="regInstitution">Institution/Company</Label>
-        <Input id="regInstitution" placeholder="Your organization" required />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="country">Country</Label>
-        <Input id="country" placeholder="Your country" required />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="ticketType">Registration Type</Label>
-        <Select>
-          <SelectTrigger>
-            <SelectValue placeholder="Select registration type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="early">Early Bird (₹15,000)</SelectItem>
-            <SelectItem value="standard">Standard (₹20,000)</SelectItem>
-            <SelectItem value="student">Student (₹8,000)</SelectItem>
-            <SelectItem value="onsite">On-site (₹25,000)</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      <Button type="submit" className="w-full bg-navy hover:bg-navy-700">
-        Complete Registration
-      </Button>
-    </form>
-  );
-};
 
 export default function Registration() {
   const [isVisible, setIsVisible] = useState(false);
@@ -137,10 +93,13 @@ export default function Registration() {
         <div className="text-center mb-16 space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue/5 border border-blue/10">
             <span className="w-1.5 h-1.5 rounded-full bg-blue" />
-            <span className="text-[10px] font-black text-blue uppercase tracking-widest">Registration</span>
+            <span className="text-xs font-bold text-blue">Registration</span>
           </div>
 
-          <h2 className="text-4xl lg:text-5xl font-black text-navy uppercase tracking-tight">Tickets</h2>
+          <h2 className="text-4xl lg:text-5xl font-bold text-navy">Registration</h2>
+          <p className="text-slate-500 text-sm font-medium max-w-2xl mx-auto leading-loose opacity-60">
+            Secure your spot at the most influential global summit for AgroTech & Animal Science. Early registration is encouraged to avail the restricted early-bird rates.
+          </p>
           <p className="text-slate-500 text-base font-medium max-w-2xl mx-auto">
             Choose your ticket for the 2026 conference.
           </p>
@@ -151,61 +110,69 @@ export default function Registration() {
             <div key={index} className={`relative group transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: `${index * 100}ms` }}>
               <div className={`h-full bg-white p-10 rounded-2xl border ${plan.highlighted ? 'border-blue shadow-2xl shadow-blue/5 ring-4 ring-blue/5' : 'border-slate-100 hover:border-slate-200'} transition-all flex flex-col`}>
                 {plan.highlighted && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-blue text-white text-[9px] font-black uppercase tracking-widest rounded-full">Most Popular</div>
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-blue text-white text-xs font-bold rounded-full">Most Popular</div>
                 )}
                 
                 <div className="text-center mb-8">
                     <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl mb-4 ${plan.highlighted ? 'bg-blue text-white' : 'bg-slate-50 text-slate-400'}`}>
                         <plan.icon className="w-6 h-6" />
                     </div>
-                    <h3 className="text-xl font-black text-navy uppercase tracking-tight mb-2">{plan.name}</h3>
-                    <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">{plan.description}</p>
+                    <h3 className="text-xl font-bold text-navy mb-2">{plan.name}</h3>
+                    <p className="text-slate-400 text-xs font-semibold">{plan.description}</p>
                 </div>
 
                 <div className="text-center mb-8">
-                    <div className="flex items-baseline justify-center gap-2">
-                        <span className="text-3xl font-black text-navy">{plan.price}</span>
-                        {plan.originalPrice && <span className="text-sm text-slate-300 line-through font-bold">{plan.originalPrice}</span>}
+                    <div className="flex flex-col items-center justify-center gap-1">
+                        <div className="flex items-baseline gap-2">
+                          <span className="text-3xl font-bold text-navy">{plan.earlyPrice}</span>
+                          <span className="text-xs font-semibold text-blue">Early Bird</span>
+                        </div>
+                        <div className="flex items-baseline gap-2 opacity-40">
+                          <span className="text-lg font-bold text-navy">{plan.standardPrice}</span>
+                          <span className="text-xs font-semibold text-navy">Standard</span>
+                        </div>
                     </div>
-                    <p className="text-blue text-[9px] font-black uppercase tracking-widest mt-1 opacity-60">{plan.period}</p>
                 </div>
 
                 <ul className="space-y-4 mb-10 flex-grow">
                   {plan.features.map((f, i) => (
-                    <li key={i} className="flex gap-3 text-[11px] font-bold text-slate-500 uppercase tracking-wide">
+                    <li key={i} className="flex gap-3 text-xs font-medium text-slate-500">
                       <Check className={`w-4 h-4 flex-shrink-0 ${plan.highlighted ? 'text-blue' : 'text-slate-300'}`} />
                       {f}
                     </li>
                   ))}
                 </ul>
 
-                <Dialog>
-                    <DialogTrigger asChild>
-                        <Button className={`w-full h-12 rounded-xl text-[10px] font-black uppercase tracking-widest ${plan.highlighted ? 'bg-blue hover:bg-black' : 'bg-navy hover:bg-black'} text-white transition-all`}>
-                            Get Tickets
-                        </Button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-lg">
-                        <DialogHeader><DialogTitle className="text-xl font-black uppercase tracking-tight text-navy">Your Details</DialogTitle></DialogHeader>
-                        <RegistrationForm />
-                    </DialogContent>
-                </Dialog>
+                <Link to={`/pay/registration/${plan.slug}`}>
+                    <Button className={`w-full h-12 rounded-xl text-sm font-bold ${plan.highlighted ? 'bg-blue hover:bg-black' : 'bg-navy hover:bg-black'} text-white transition-all`}>
+                        Register Now
+                    </Button>
+                </Link>
               </div>
             </div>
           ))}
         </div>
 
-        <div className={`mt-16 text-center transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
-          <div className="inline-flex items-center gap-4 px-6 py-4 bg-slate-50 rounded-2xl border border-slate-100">
-            <GraduationCap className="w-6 h-6 text-blue" />
-            <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
-              Student Discount: <span className="text-navy">Students save 50%</span> on all tickets with a valid ID.
-            </p>
+          <div className="inline-flex flex-col md:flex-row items-center gap-8 px-10 py-8 bg-slate-50 rounded-[3rem] border border-slate-100 max-w-4xl mx-auto">
+            <div className="flex items-center gap-4">
+               <Users className="w-8 h-8 text-blue" />
+               <div className="text-left">
+                  <p className="text-sm font-bold text-navy">Group Participation Benefits</p>
+                  <p className="text-xs font-semibold text-slate-400 leading-relaxed">Register 5+ delegates to receive exclusive group incentives and dedicated session access.</p>
+               </div>
+            </div>
+            <div className="h-px md:h-8 w-full md:w-px bg-slate-200" />
+            <div className="flex items-center gap-4">
+               <GraduationCap className="w-8 h-8 text-blue" />
+               <div className="text-left">
+                  <p className="text-sm font-bold text-navy">Student Support</p>
+                  <p className="text-xs font-semibold text-slate-400 leading-relaxed">Students receive specialized mentorship and discounted access to all workshops.</p>
+               </div>
+            </div>
           </div>
-        </div>
       </div>
     </section>
   );
 }
 
-import { GraduationCap } from 'lucide-react';
+// End of file

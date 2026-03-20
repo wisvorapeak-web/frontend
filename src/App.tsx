@@ -15,6 +15,10 @@ import SponsorshipPage from './pages/SponsorshipPage';
 import SessionsPage from './pages/SessionsPage';
 import AbstractSubmissionPage from './pages/AbstractSubmissionPage';
 import BrochurePage from './pages/BrochurePage';
+import ChairsPage from './pages/ChairsPage';
+import WorkshopsPage from './pages/WorkshopsPage';
+import JournalsPage from './pages/JournalsPage';
+import PaymentPage from './pages/PaymentPage';
 
 // Dashboard Pages
 import Overview from './pages/dashboard/Overview';
@@ -40,6 +44,8 @@ import SiteSettings from './pages/admin/SiteSettings';
 import AdminRegistrations from './pages/admin/Registrations';
 import AdminEvents from './pages/admin/Events';
 import { AuthProvider } from './context/AuthContext';
+import TawkChat from './components/TawkChat';
+import FloatingWidgets from './components/FloatingWidgets';
 
 function App() {
   return (
@@ -47,6 +53,8 @@ function App() {
       <Router>
       <ScrollToTop />
       <Toaster position="top-center" richColors />
+      <TawkChat /> {/* Tawk.to live chat global integration */}
+      <FloatingWidgets /> {/* Floating contact & chat widgets */}
       <Routes>
         {/* Main Website Routes */}
         <Route path="/" element={<Home />} />
@@ -63,6 +71,10 @@ function App() {
         <Route path="/venue" element={<VenuePage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/registration" element={<RegistrationPage />} />
+        <Route path="/chairs" element={<ChairsPage />} />
+        <Route path="/workshops" element={<WorkshopsPage />} />
+        <Route path="/journals" element={<JournalsPage />} />
+        <Route path="/pay/:type/:slug" element={<PaymentPage />} />
         
         {/* Auth Routes */}
         <Route path="/login" element={<Login />} />

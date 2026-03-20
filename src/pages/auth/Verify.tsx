@@ -1,7 +1,6 @@
 import { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
-  ShieldCheck, 
   ChevronLeft,
   Loader2,
   CheckCircle2,
@@ -44,9 +43,9 @@ export default function Verify() {
       <div className="flex-1 flex items-center justify-center p-8 lg:p-12">
         <div className="w-full max-w-[480px] space-y-8 animate-in fade-in slide-in-from-left-4 duration-700">
           <div className="space-y-2">
-            <h1 className="text-3xl font-black text-white tracking-tight uppercase">Verify Protocol</h1>
-            <p className="text-[11px] font-black text-slate-500 uppercase tracking-widest leading-relaxed">
-              Enter the 6-digit confirmation code dispatched to your academic email protocol to activate your scientific profile.
+            <h1 className="text-3xl font-bold text-white">Verify Account</h1>
+            <p className="text-xs font-bold text-slate-500 leading-relaxed">
+              Enter the 6-digit code we sent to your email to activate your account.
             </p>
           </div>
 
@@ -63,7 +62,7 @@ export default function Verify() {
                       value={digit}
                       onChange={(e) => handleChange(index, e.target.value)}
                       onKeyDown={(e) => handleKeyDown(index, e)}
-                      className="w-10 h-14 bg-white/5 border-none focus:ring-4 focus:ring-blue/10 rounded-xl text-center text-xl font-black text-white focus:outline-none transition-all uppercase"
+                      className="w-10 h-14 bg-white/5 border-none focus:ring-4 focus:ring-blue/10 rounded-xl text-center text-xl font-bold text-white focus:outline-none transition-all"
                       required
                     />
                   ))}
@@ -73,15 +72,15 @@ export default function Verify() {
                   <Button 
                       type="submit" 
                       disabled={isLoading}
-                      className="w-full h-11 rounded-xl bg-blue hover:bg-white hover:text-navy text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-xl shadow-blue/5 active:scale-[0.98] transition-all disabled:opacity-50"
+                      className="w-full h-11 rounded-xl bg-blue hover:bg-white hover:text-navy text-white text-xs font-bold shadow-xl shadow-blue/5 active:scale-[0.98] transition-all disabled:opacity-50"
                   >
-                      {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Complete Activation <CheckCircle2 className="w-4 h-4 ml-2" /></>}
+                      {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Verify Code <CheckCircle2 className="w-4 h-4 ml-2" /></>}
                   </Button>
 
                   <div className="flex items-center justify-center pt-2 gap-4">
-                      <p className="text-[9px] text-slate-500 font-black uppercase tracking-widest">No code received?</p>
-                      <button type="button" className="text-[9px] font-black text-blue hover:text-white uppercase tracking-widest flex items-center gap-1.5 transition-colors">
-                          <RefreshCcw className="w-3 h-3" /> Retry Transmission
+                      <p className="text-xs font-bold text-slate-500">No code received?</p>
+                      <button type="button" className="text-xs font-bold text-blue hover:text-white flex items-center gap-1.5 transition-colors">
+                          <RefreshCcw className="w-3 h-3" /> Resend Code
                       </button>
                   </div>
                 </div>
@@ -91,12 +90,12 @@ export default function Verify() {
                  <div className="w-16 h-16 rounded-2xl bg-emerald-500 flex items-center justify-center text-navy shadow-2xl shadow-emerald-500/20">
                     <CheckCircle2 className="w-8 h-8" />
                  </div>
-                 <div className="space-y-2">
-                    <h3 className="text-xl font-black text-white uppercase tracking-tight">Access Granted</h3>
-                    <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-relaxed">
-                       Identity protocol confirmed. Securely redirecting to the scientific console...
+                  <div className="space-y-2">
+                     <h3 className="text-xl font-bold text-white">Access Granted</h3>
+                    <p className="text-xs font-bold text-slate-500 leading-relaxed">
+                       Account verified. Redirecting to your dashboard...
                     </p>
-                 </div>
+                  </div>
                  <div className="w-12 h-1 bg-white/5 rounded-full overflow-hidden">
                     <div className="h-full bg-emerald-500 animate-[progress_2s_ease-in-out_infinite]" style={{ width: '40%' }}></div>
                  </div>
@@ -104,7 +103,7 @@ export default function Verify() {
             )}
           </div>
 
-          <Link to="/login" className="flex items-center justify-center gap-2 text-slate-700 hover:text-white text-[10px] font-black uppercase tracking-widest transition-colors group">
+          <Link to="/login" className="flex items-center justify-center gap-2 text-slate-700 hover:text-white text-xs font-bold transition-colors group">
             <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Access
           </Link>
         </div>
@@ -114,29 +113,28 @@ export default function Verify() {
       <div className="hidden lg:flex flex-1 bg-navy items-center justify-center relative overflow-hidden">
         <div className="absolute inset-0 bg-blue/10 blur-[100px] -translate-y-1/2 translate-x-1/2 rounded-full" />
         <div className="max-w-md text-center space-y-10 relative z-10 px-8">
-           <div className="w-16 h-16 rounded-2xl bg-blue mx-auto flex items-center justify-center shadow-2xl shadow-blue/20">
-              <ShieldCheck className="text-white w-9 h-9" />
-           </div>
+           <Link to="/" className="inline-block hover:scale-105 active:scale-95 transition-all mb-10">
+              <img src="/logo.png" alt="Ascendix Summits" className="h-16 w-auto object-contain brightness-0 invert" />
+           </Link>
            
            <div className="space-y-4">
-              <h2 className="text-4xl font-black text-white uppercase tracking-tighter leading-none">Wisvora <span className="text-blue">Core</span></h2>
-              <p className="text-xs font-black text-white/30 uppercase tracking-[0.2em] leading-relaxed">
-                The high-performance scientific engine for materials research and global board management.
+              <p className="text-xs font-bold text-white/30 leading-relaxed">
+                The leading platform for world food, agriculture, and animal science summits.
               </p>
            </div>
 
            <div className="grid grid-cols-3 gap-8 pt-8 border-t border-white/5">
               <div className="space-y-1">
-                 <p className="text-[14px] font-black text-white tracking-widest">99.9%</p>
-                 <p className="text-[8px] font-black text-blue uppercase tracking-widest">Uptime</p>
+                 <p className="text-sm font-bold text-white">99.9%</p>
+                 <p className="text-[10px] font-bold text-blue">Uptime</p>
               </div>
               <div className="space-y-1 border-x border-white/5">
-                 <p className="text-[14px] font-black text-white tracking-widest">&lt;1s</p>
-                 <p className="text-[8px] font-black text-blue uppercase tracking-widest">Latency</p>
+                 <p className="text-sm font-bold text-white">&lt;1s</p>
+                 <p className="text-[10px] font-bold text-blue">Latency</p>
               </div>
               <div className="space-y-1">
-                 <p className="text-[14px] font-black text-white tracking-widest">1K+</p>
-                 <p className="text-[8px] font-black text-blue uppercase tracking-widest">Nodes</p>
+                 <p className="text-sm font-bold text-white">1K+</p>
+                 <p className="text-[10px] font-bold text-blue">Members</p>
               </div>
            </div>
         </div>

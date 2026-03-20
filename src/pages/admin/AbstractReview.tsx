@@ -44,7 +44,7 @@ export default function AbstractReview() {
     }
   };
 
-  if (loading) return <AdminLayout><div className="text-[10px] font-black uppercase tracking-widest text-slate-400 p-12">Evaluating Manifest...</div></AdminLayout>;
+  if (loading) return <AdminLayout><div className="text-xs font-bold text-slate-400 p-12">Loading papers...</div></AdminLayout>;
 
   return (
     <AdminLayout>
@@ -52,13 +52,13 @@ export default function AbstractReview() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <h1 className="text-3xl font-black text-slate-900 mb-2 font-outfit">Review Portal</h1>
-            <p className="text-slate-500 font-medium">Evaluate scientific submissions and manage peer review cycles.</p>
+            <h1 className="text-3xl font-bold text-slate-900 mb-2 font-outfit">Review Portal</h1>
+            <p className="text-slate-500 font-medium">Review submitted research and manage the review process.</p>
           </div>
           <div className="flex items-center gap-3">
              <div className="bg-slate-100 p-1 rounded-xl flex gap-1 h-11">
-                <Button className="rounded-lg h-full bg-white text-indigo-600 shadow-sm border-none font-bold text-xs px-6 uppercase tracking-widest">Pending</Button>
-                <Button variant="ghost" className="rounded-lg h-full text-slate-500 font-bold text-xs px-6 uppercase tracking-widest">Reviewed</Button>
+                <Button className="rounded-lg h-full bg-white text-indigo-600 shadow-sm border-none font-bold text-xs px-6">Pending</Button>
+                <Button variant="ghost" className="rounded-lg h-full text-slate-500 font-bold text-xs px-6">Reviewed</Button>
              </div>
           </div>
         </div>
@@ -81,8 +81,8 @@ export default function AbstractReview() {
            </div>
            <div className="bg-indigo-600 p-4 rounded-3xl shadow-xl shadow-indigo-600/20 text-white flex items-center justify-between px-8">
               <div>
-                 <p className="text-[10px] font-black uppercase tracking-widest text-indigo-200">Pending Review</p>
-                 <h2 className="text-2xl font-black font-outfit">{abstracts.filter(a => a.status === 'Pending').length} Papers</h2>
+                 <p className="text-xs font-bold text-indigo-200">Pending Review</p>
+                 <h2 className="text-2xl font-bold font-outfit">{abstracts.filter(a => a.status === 'Pending').length} Papers</h2>
               </div>
               <FileText className="w-7 h-7 text-indigo-400 opacity-50" />
            </div>
@@ -99,13 +99,13 @@ export default function AbstractReview() {
                             <FileCheck className="w-6 h-6 text-slate-400 group-hover:text-indigo-500 transition-colors" />
                          </div>
                          <div>
-                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-tight">{abs.id}</p>
-                            <h3 className="line-clamp-1 font-black text-slate-900 font-outfit text-lg transition-colors leading-tight">
+                            <p className="text-xs font-bold text-slate-400 leading-tight">{abs.id}</p>
+                            <h3 className="line-clamp-1 font-bold text-slate-900 font-outfit text-lg transition-colors leading-tight">
                                 {abs.title}
                             </h3>
                          </div>
                       </div>
-                      <div className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${
+                      <div className={`px-3 py-1 rounded-full text-[10px] font-bold ${
                           abs.status === 'Pending' ? 'bg-amber-50 text-amber-500' :
                           abs.status === 'In Review' ? 'bg-indigo-50 text-indigo-500' :
                           'bg-blue-50 text-blue-500'
@@ -138,7 +138,7 @@ export default function AbstractReview() {
                                 className="rounded-xl border-slate-100 font-bold h-10 px-4 text-slate-600 hover:bg-slate-50"
                                 onClick={() => setSelectedAbs(abs)}
                               >
-                                Review Paper
+                                 Review Research
                               </Button>
                             </DialogTrigger>
                             <DialogContent className="max-w-3xl rounded-[2.5rem] p-0 overflow-hidden border-none shadow-2xl bg-white">
@@ -147,15 +147,15 @@ export default function AbstractReview() {
                                     <div className="p-10 border-b border-slate-50 bg-slate-50/20">
                                        <div className="flex justify-between items-start mb-6">
                                           <div>
-                                             <p className="text-[10px] font-black text-indigo-500 uppercase tracking-widest mb-1">{selectedAbs.id}</p>
-                                              <h2 className="text-2xl font-black text-slate-900 font-outfit uppercase leading-tight mb-4">{selectedAbs.title}</h2>
+                                             <p className="text-xs font-bold text-indigo-500 mb-1">{selectedAbs.id}</p>
+                                              <h2 className="text-2xl font-bold text-slate-900 font-outfit leading-tight mb-4">{selectedAbs.title}</h2>
                                              <div className="flex items-center gap-4">
                                                 <div className="flex items-center gap-2">
                                                    <Avatar className="w-6 h-6"><AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${selectedAbs.name}`} /></Avatar>
                                                    <span className="text-xs font-bold text-slate-600">{selectedAbs.name}</span>
                                                 </div>
                                                 <span className="text-slate-200">|</span>
-                                                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">{selectedAbs.topic}</span>
+                                                <span className="text-xs font-bold text-slate-400">{selectedAbs.topic}</span>
                                              </div>
                                           </div>
                                           <Button variant="ghost" size="icon" className="w-10 h-10 rounded-xl text-slate-300 hover:text-slate-900 hover:bg-white shadow-sm border border-slate-100">
@@ -167,15 +167,15 @@ export default function AbstractReview() {
                                     <div className="p-10 grid grid-cols-1 lg:grid-cols-3 gap-10">
                                        <div className="lg:col-span-2 space-y-8">
                                           <div className="p-6 bg-slate-50 rounded-[2rem]">
-                                             <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Abstract Summary</h4>
+                                             <h4 className="text-xs font-bold text-slate-400 mb-4">Abstract Summary</h4>
                                               <p className="text-sm text-slate-600 leading-relaxed font-outfit font-medium">
                                                 {selectedAbs.abstract_text}
                                              </p>
                                           </div>
                                           <div className="space-y-4">
-                                             <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 pl-2">Reviewer Feedback</h4>
+                                             <h4 className="text-xs font-bold text-slate-400 mb-2 pl-2">Feedback</h4>
                                              <textarea 
-                                                placeholder="Enter internal committee notes..."
+                                                placeholder="Enter notes for the committee..."
                                                 className="w-full h-32 p-6 bg-slate-50/50 border-2 border-slate-100/50 rounded- [2rem] focus:border-indigo-500/10 focus:ring-0 outline-none text-sm font-medium text-slate-600 resize-none font-outfit"
                                              />
                                           </div>
@@ -183,21 +183,21 @@ export default function AbstractReview() {
 
                                        <div className="space-y-6">
                                           <div className="p-6 bg-indigo-900 rounded- [2rem] text-white">
-                                             <h4 className="text-[10px] font-black text-white/50 uppercase tracking-widest mb-4">Scientific Score</h4>
+                                             <h4 className="text-xs font-bold text-white/50 mb-4">Research Score</h4>
                                              <div className="flex items-baseline gap-2 mb-2">
-                                                <span className="text-4xl font-black">{selectedAbs.score || 'N/A'}</span>
+                                                <span className="text-4xl font-bold">{selectedAbs.score || 'N/A'}</span>
                                                 <span className="text-white/40 font-bold">/ 10</span>
                                              </div>
-                                             <p className="text-[10px] font-bold text-indigo-300">BASED ON PEER METRICS</p>
+                                             <p className="text-xs font-bold text-indigo-300">Based on Reviewer Scores</p>
                                           </div>
                                           
-                                          <Button className="w-full bg-emerald-500 hover:bg-emerald-600 h-14 rounded-2xl font-black uppercase text-xs tracking-widest shadow-lg shadow-emerald-500/20 active:scale-95 transition-all">
+                                          <Button className="w-full bg-emerald-500 hover:bg-emerald-600 h-14 rounded-2xl font-bold text-xs shadow-lg shadow-emerald-500/20 active:scale-95 transition-all">
                                              Approve Submission
                                           </Button>
-                                          <Button variant="outline" className="w-full border-slate-200 h-14 rounded-2xl font-black uppercase text-xs tracking-widest text-slate-600 hover:bg-slate-50">
+                                          <Button variant="outline" className="w-full border-slate-200 h-14 rounded-2xl font-bold text-xs text-slate-600 hover:bg-slate-50">
                                              Request Revision
                                           </Button>
-                                          <Button variant="ghost" className="w-full h-12 text-rose-500 hover:text-rose-600 hover:bg-rose-50 rounded-2xl font-black uppercase text-xs tracking-widest transition-all">
+                                          <Button variant="ghost" className="w-full h-12 text-rose-500 hover:text-rose-600 hover:bg-rose-50 rounded-2xl font-bold text-xs transition-all">
                                              Reject Paper
                                           </Button>
                                        </div>
@@ -215,7 +215,7 @@ export default function AbstractReview() {
                             <MessageSquare className="w-4 h-4" />
                          </Button>
                       </div>
-                      <div className="flex items-center gap-1.5 text-slate-300 font-bold uppercase text-[9px] tracking-widest">
+                      <div className="flex items-center gap-1.5 text-slate-300 font-bold text-xs">
                          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                          Reviewed by 2
                       </div>
@@ -237,7 +237,7 @@ export default function AbstractReview() {
                  <p className="text-slate-400 text-xs font-medium">Send approval notifications to 4 accepted researchers.</p>
               </div>
            </div>
-           <Button className="rounded-2xl bg-indigo-500 hover:bg-indigo-600 h-14 px-10 font-black uppercase text-xs tracking-widest active:scale-95 transition-all shadow-xl shadow-indigo-500/20 relative z-10">
+           <Button className="rounded-2xl bg-indigo-500 hover:bg-indigo-600 h-14 px-10 font-bold text-xs active:scale-95 transition-all shadow-xl shadow-indigo-500/20 relative z-10">
               Send Notifications
            </Button>
         </div>

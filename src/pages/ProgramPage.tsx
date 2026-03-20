@@ -107,10 +107,10 @@ export default function ProgramPage() {
                         <TabsTrigger 
                             key={day.day} 
                             value={day.day} 
-                            className="data-[state=active]:bg-white data-[state=active]:text-indigo-600 data-[state=active]:shadow-xl shadow-indigo-100/50 rounded-xl font-black text-[9px] px-8 py-3 gap-3 uppercase tracking-widest transition-all h-full"
+                            className="data-[state=active]:bg-white data-[state=active]:text-indigo-600 data-[state=active]:shadow-xl shadow-indigo-100/50 rounded-xl font-bold text-xs px-8 py-3 gap-3 transition-all h-full"
                         >
                             <div className="flex flex-col items-center leading-none">
-                                <span className="text-[9px] text-slate-400 group-active:text-indigo-400 mb-1">{day.date}</span>
+                                <span className="text-xs text-slate-400 group-active:text-indigo-400 mb-1">{day.date}</span>
                                 <span>{day.day}</span>
                             </div>
                         </TabsTrigger>
@@ -134,9 +134,9 @@ export default function ProgramPage() {
                                     <div className="flex flex-col gap-2 min-w-[180px]">
                                         <div className="flex items-center gap-3 text-slate-400 font-bold mb-1">
                                             <Clock className="w-4 h-4" />
-                                            <span className="text-[10px] uppercase tracking-widest leading-none">TIME SLOT</span>
+                                            <span className="text-xs">Time Slot</span>
                                         </div>
-                                        <h4 className="text-sm font-black text-slate-900 uppercase font-outfit tracking-tight">{session.start_time} - {session.end_time}</h4>
+                                        <h4 className="text-sm font-bold text-slate-900 font-outfit">{session.start_time} - {session.end_time}</h4>
                                     </div>
 
                                     {/* Content Area */}
@@ -145,9 +145,9 @@ export default function ProgramPage() {
                                             <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${colorClass}`}>
                                                 <Icon className="w-5 h-5" />
                                             </div>
-                                            <span className="text-[10px] font-black uppercase text-indigo-500 tracking-[0.2em]">{session.session_type}</span>
+                                            <span className="text-xs font-bold text-indigo-500">{session.session_type}</span>
                                         </div>
-                                        <h3 className="text-xl lg:text-2xl font-black text-slate-900 font-outfit leading-tight group-hover:text-indigo-600 transition-colors">
+                                        <h3 className="text-xl lg:text-2xl font-bold text-slate-900 font-outfit leading-tight group-hover:text-indigo-600 transition-colors">
                                             {session.title}
                                         </h3>
                                         
@@ -181,7 +181,7 @@ export default function ProgramPage() {
             </Tabs>
         ) : (
             <div className="py-20 text-center">
-                <h3 className="text-2xl font-black text-slate-300">We are still finishing the schedule...</h3>
+                <h3 className="text-2xl font-bold text-slate-300">We are still finishing the schedule...</h3>
             </div>
         )}
 
@@ -191,11 +191,11 @@ export default function ProgramPage() {
            <div className="bg-indigo-600/20 p-6 rounded-[2rem] border border-white/5 mb-2 group">
               <Monitor className="w-10 h-10 text-indigo-400 group-hover:scale-110 transition-transform" />
            </div>
-           <h2 className="text-3xl lg:text-4xl font-black font-outfit uppercase tracking-tight">Download Schedule</h2>
+           <h2 className="text-3xl lg:text-4xl font-bold font-outfit">Download Schedule</h2>
            <p className="text-slate-400 text-lg font-medium max-w-xl">
               Get the full schedule with all the details and floor plans in one PDF document.
            </p>
-           <button className="px-12 py-5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 font-black uppercase tracking-widest text-[10px] active:scale-95 transition-all shadow-xl shadow-indigo-600/20 group inline-flex items-center gap-3">
+           <button className="px-12 py-5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 font-bold text-sm active:scale-95 transition-all shadow-xl shadow-indigo-600/20 group inline-flex items-center gap-3">
               Download PDF <Clock className="w-3.5 h-3.5 opacity-50" />
            </button>
         </section>

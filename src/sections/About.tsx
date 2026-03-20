@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Network, Lightbulb, Handshake } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const benefits = [
   {
@@ -44,8 +45,8 @@ export default function About() {
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-xl bg-blue flex items-center justify-center text-white font-black text-xl">3</div>
                   <div>
-                    <p className="text-navy font-black text-sm uppercase tracking-tight">Days of Learning</p>
-                    <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">Innovation & Expo</p>
+                    <p className="text-navy font-bold text-sm">Days of Learning</p>
+                    <p className="text-slate-500 text-xs font-semibold">Innovation & Expo</p>
                   </div>
                 </div>
               </div>
@@ -56,10 +57,10 @@ export default function About() {
           <div className={`space-y-8 transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue/5 border border-blue/10">
               <span className="w-1.5 h-1.5 rounded-full bg-blue" />
-              <span className="text-[10px] font-black text-blue uppercase tracking-widest">Who We Are</span>
+              <span className="text-xs font-bold text-blue">Who We Are</span>
             </div>
 
-            <h2 className="text-4xl lg:text-5xl font-black text-navy leading-tight">
+            <h2 className="text-4xl lg:text-5xl font-bold text-navy leading-tight">
               Growing the Future <br />
               <span className="text-blue">Agro-Science</span>
             </h2>
@@ -75,16 +76,18 @@ export default function About() {
                     <b.icon className="w-6 h-6 text-blue" />
                   </div>
                   <div>
-                    <h3 className="font-black text-navy text-sm uppercase tracking-tight mb-1">{b.title}</h3>
-                    <p className="text-slate-500 text-xs font-bold uppercase tracking-widest leading-relaxed opacity-60">{b.description}</p>
+                    <h3 className="font-bold text-navy text-sm mb-1">{b.title}</h3>
+                    <p className="text-slate-500 text-xs font-medium leading-relaxed opacity-60">{b.description}</p>
                   </div>
                 </div>
               ))}
             </div>
 
-            <Button className="bg-navy hover:bg-black text-white px-8 h-12 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-navy/10">
-              Learn More
-            </Button>
+            <Link to="/about">
+              <Button className="bg-navy hover:bg-black text-white px-8 h-12 rounded-xl text-sm font-bold shadow-xl shadow-navy/10">
+                Learn More
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

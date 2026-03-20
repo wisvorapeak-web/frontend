@@ -1,5 +1,5 @@
 import { useState, useEffect, type ReactNode } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { 
   BarChart3, 
   Users, 
@@ -11,8 +11,7 @@ import {
   LogOut, 
   Bell, 
   Search,
-  Menu,
-  ShieldCheck
+  Menu
 } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '../../components/ui/avatar';
@@ -82,19 +81,16 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       >
         <div className="h-full flex flex-col p-6 overflow-y-auto">
           {/* Identity */}
-          <div className="flex items-center gap-4 mb-12 px-2">
-            <div className="w-8 h-8 rounded-lg bg-blue flex items-center justify-center">
-              <ShieldCheck className="text-white w-4 h-4" />
-            </div>
+          <Link to="/" className="flex items-center gap-4 mb-12 px-2 group hover:scale-105 active:scale-95 transition-all">
+            <img src="/logo.png" alt="Ascendix Summits" className="h-8 w-auto object-contain brightness-0 invert" />
             <div>
-              <p className="text-white font-black text-xs uppercase tracking-widest">Ascendix Summits</p>
-              <p className="text-[9px] text-white/30 uppercase tracking-[0.2em] font-black">Admin Panel</p>
+              <p className="text-[10px] text-white/30 font-bold">Admin Panel</p>
             </div>
-          </div>
+          </Link>
 
           {/* Navigation */}
           <nav className="flex-1 space-y-1">
-            <p className="text-[8px] font-black text-white/20 uppercase tracking-[0.3em] mb-4 ml-2">Protocol</p>
+            <p className="text-xs font-bold text-white/20 mb-4 ml-2">Navigation</p>
             {adminNavItems.map((item) => (
               <NavLink
                 key={item.path}
@@ -110,7 +106,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 {({ isActive }) => (
                   <>
                     <item.icon className={`w-4 h-4 transition-colors ${isActive ? 'text-blue' : 'group-hover:text-blue'}`} />
-                    <span className="font-black text-[10px] uppercase tracking-widest">{item.label}</span>
+                    <span className="font-bold text-xs">{item.label}</span>
                   </>
                 )}
               </NavLink>
@@ -120,10 +116,10 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           {/* Sign Out */}
           <button 
             onClick={handleLogout}
-            className="flex items-center gap-3 px-3 py-4 rounded-xl text-white/20 hover:text-red-400 hover:bg-red-400/5 transition-all mt-6 font-black text-[10px] uppercase tracking-widest"
+            className="flex items-center gap-3 px-3 py-4 rounded-xl text-white/20 hover:text-red-400 hover:bg-red-400/5 transition-all mt-6 font-bold text-xs"
           >
             <LogOut className="w-4 h-4" />
-            Log Out
+            Log out
           </button>
         </div>
       </aside>
@@ -146,8 +142,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-300" />
               <input 
                 type="text" 
-                placeholder="DATABASE SEARCH..." 
-                className="pl-10 pr-6 py-2 bg-slate-50 border-transparent focus:bg-white focus:border-blue transition-all rounded-lg text-[9px] font-black uppercase tracking-widest w-80"
+                placeholder="Search..." 
+                className="pl-10 pr-6 py-2 bg-slate-50 border-transparent focus:bg-white focus:border-blue transition-all rounded-lg text-xs font-bold w-80"
               />
             </div>
           </div>
@@ -155,13 +151,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           <div className="flex items-center gap-6">
             <div className="hidden xl:flex items-center gap-6">
               <div className="text-right">
-                <p className="text-[8px] font-black text-slate-300 uppercase tracking-widest leading-none">Global Index</p>
-                <p className="text-[10px] font-black text-navy uppercase tracking-widest mt-1">{(stats.totalRegistrations / 1000).toFixed(1)}K</p>
+                <p className="text-[10px] font-bold text-slate-300 leading-none">Global Registrations</p>
+                <p className="text-xs font-bold text-navy mt-1">{(stats.totalRegistrations / 1000).toFixed(1)}K</p>
               </div>
               <div className="w-px h-6 bg-slate-100" />
               <div className="text-right">
-                <p className="text-[8px] font-black text-slate-300 uppercase tracking-widest leading-none">Revenue</p>
-                <p className="text-[10px] font-black text-blue uppercase tracking-widest mt-1">{stats.totalRevenue}</p>
+                <p className="text-[10px] font-bold text-slate-300 leading-none">Revenue</p>
+                <p className="text-xs font-bold text-blue mt-1">{stats.totalRevenue}</p>
               </div>
             </div>
 
@@ -172,8 +168,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             
             <div className="flex items-center gap-3 pl-6 border-l border-slate-100">
               <div className="text-right hidden sm:block">
-                <p className="text-[10px] font-black text-navy uppercase tracking-widest leading-none">{user?.full_name || 'Controller'}</p>
-                <p className="text-[8px] text-slate-300 font-black uppercase tracking-[0.2em] mt-1">{user?.role || 'Superuser'}</p>
+                <p className="text-xs font-bold text-navy leading-none">{user?.full_name || 'Admin'}</p>
+                <p className="text-[10px] text-slate-300 font-bold mt-1">{user?.role || 'Administrator'}</p>
               </div>
               <Avatar className="w-10 h-10 border border-slate-100">
                 <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.full_name || 'Admin'}`} />

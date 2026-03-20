@@ -79,16 +79,16 @@ export default function TrustStrip() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           {metrics.map((m, i) => (
             <div key={i} className={`text-center space-y-2 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`} style={{ transitionDelay: `${i * 100}ms` }}>
-              <p className="text-3xl font-black text-navy uppercase tracking-tight">
+              <p className="text-3xl font-bold text-navy">
                 <AnimatedCounter value={m.value} isVisible={isVisible} />
               </p>
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">{m.label}</p>
+              <p className="text-xs font-bold text-slate-400 leading-none">{m.label}</p>
             </div>
           ))}
         </div>
 
         <div className="mt-12 flex items-center gap-8">
-            <div className="flex-shrink-0 text-[10px] font-black text-blue uppercase tracking-[0.2em] opacity-40">Collaborating Partners</div>
+            <div className="flex-shrink-0 text-xs font-bold text-blue opacity-40">Collaborating Partners</div>
             <div className="flex-grow h-px bg-slate-100" />
         </div>
 
@@ -97,7 +97,7 @@ export default function TrustStrip() {
             {[...collaborators, ...collaborators].map((c, i) => (
               <div key={i} className="flex items-center gap-3 opacity-30 hover:opacity-100 transition-opacity whitespace-nowrap">
                 <c.icon className="w-5 h-5 text-navy" />
-                <span className="text-navy text-[11px] font-black uppercase tracking-widest">{c.name}</span>
+                <span className="text-navy text-xs font-bold">{c.name}</span>
               </div>
             ))}
           </div>

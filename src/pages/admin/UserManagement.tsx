@@ -58,7 +58,7 @@ export default function UserManagement() {
     }
   };
 
-  if (loading) return <AdminLayout><div className="text-[10px] font-black uppercase tracking-widest text-slate-400 p-12">Syncing Core...</div></AdminLayout>;
+  if (loading) return <AdminLayout><div className="text-xs font-bold text-slate-400 p-12">Loading users...</div></AdminLayout>;
 
   return (
     <AdminLayout>
@@ -66,7 +66,7 @@ export default function UserManagement() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <h1 className="text-3xl font-black text-slate-900 mb-2 font-outfit">User Directory</h1>
+            <h1 className="text-3xl font-bold text-slate-900 mb-2 font-outfit">User Directory</h1>
             <p className="text-slate-500 font-medium">Manage platform members, permissions, and profiles.</p>
           </div>
           <div className="flex items-center gap-3">
@@ -92,7 +92,7 @@ export default function UserManagement() {
             <Button variant="outline" className="rounded-2xl border-slate-100 bg-slate-50/50 text-slate-600 font-bold h-12 gap-2 flex-1 md:flex-initial">
               <Filter className="w-4 h-4 text-slate-400" /> Filter
             </Button>
-            <Button variant="outline" className="rounded-2xl border-slate-100 bg-slate-50/50 text-slate-600 font-bold h-12 gap-2 flex-1 md:flex-initial uppercase text-[10px] tracking-widest">
+            <Button variant="outline" className="rounded-2xl border-slate-100 bg-slate-50/50 text-slate-600 font-bold h-12 gap-2 flex-1 md:flex-initial text-xs">
               Active Only
             </Button>
           </div>
@@ -103,9 +103,9 @@ export default function UserManagement() {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-slate-50/50 border-b border-slate-100 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                <tr className="bg-slate-50/50 border-b border-slate-100 text-xs font-bold text-slate-400">
                   <th className="px-8 py-6">Member</th>
-                  <th className="px-6 py-6 font-outfit">Position</th>
+                  <th className="px-6 py-6 font-outfit">Role</th>
                   <th className="px-6 py-6 font-outfit">Registration Date</th>
                   <th className="px-6 py-6 font-outfit">Status</th>
                   <th className="px-8 py-6 text-right font-outfit">Action</th>
@@ -138,7 +138,7 @@ export default function UserManagement() {
                       <span className="text-sm font-medium text-slate-500">{new Date(user.created_at).toLocaleDateString()}</span>
                     </td>
                     <td className="px-6 py-5">
-                      <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase ${
+                      <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold ${
                         user.status === 'Active' ? 'bg-emerald-50 text-emerald-600' :
                         user.status === 'Pending' ? 'bg-amber-50 text-amber-600' :
                         'bg-rose-50 text-rose-600'
@@ -177,8 +177,8 @@ export default function UserManagement() {
                                 <div className="pt-16 pb-10 px-10">
                                   <div className="flex justify-between items-start mb-8">
                                      <div>
-                                      <h2 className="text-2xl font-black text-slate-900 font-outfit">{selectedUser.full_name}</h2>
-                                      <p className="text-slate-500 font-medium">{selectedUser.role} at {selectedUser.institution || 'WISVORA PEAK'}</p>
+                                      <h2 className="text-2xl font-bold text-slate-900 font-outfit">{selectedUser.full_name}</h2>
+                                      <p className="text-slate-500 font-medium">{selectedUser.role} at {selectedUser.institution || 'ASCENDIX SUMMITS'}</p>
                                     </div>
                                     <div className="flex gap-2">
                                       <Button size="sm" variant="outline" className="rounded-xl border-slate-100 font-bold h-10 px-4">
@@ -197,7 +197,7 @@ export default function UserManagement() {
                                           <MapPin className="w-5 h-5" />
                                         </div>
                                         <div>
-                                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Location</p>
+                                          <p className="text-xs font-bold text-slate-400">Location</p>
                                           <p className="text-sm font-bold text-slate-700">{selectedUser.location}</p>
                                         </div>
                                       </div>
@@ -206,7 +206,7 @@ export default function UserManagement() {
                                           <Briefcase className="w-5 h-5" />
                                         </div>
                                         <div>
-                                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Institution</p>
+                                          <p className="text-xs font-bold text-slate-400">Institution</p>
                                           <p className="text-sm font-bold text-slate-700">{selectedUser.institution}</p>
                                         </div>
                                       </div>
@@ -217,8 +217,8 @@ export default function UserManagement() {
                                           <GraduationCap className="w-5 h-5" />
                                         </div>
                                         <div>
-                                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Experience</p>
-                                          <p className="text-sm font-bold text-slate-700">Senior Research Fellow</p>
+                                           <p className="text-xs font-bold text-slate-400">Title</p>
+                                           <p className="text-sm font-bold text-slate-700">Senior Research Fellow</p>
                                         </div>
                                       </div>
                                       <div className="flex items-center gap-3 text-slate-600">
@@ -226,7 +226,7 @@ export default function UserManagement() {
                                           <LinkIcon className="w-5 h-5" />
                                         </div>
                                         <div>
-                                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Personal Web</p>
+                                          <p className="text-xs font-bold text-slate-400">Personal Web</p>
                                           <p className="text-sm font-bold text-indigo-500">{selectedUser.web}</p>
                                         </div>
                                       </div>
@@ -234,7 +234,7 @@ export default function UserManagement() {
                                   </div>
 
                                   <div className="bg-slate-50 p-6 rounded-3xl border border-slate-100">
-                                    <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Academic Biography</h4>
+                                     <h4 className="text-xs font-bold text-slate-400 mb-3">Biography</h4>
                                     <p className="text-sm text-slate-600 leading-relaxed font-medium">
                                       {selectedUser.bio} Extensive experience in developing high-performance composite materials for aerospace applications. 
                                       Has published over 15 peer-reviewed papers in industry-leading journals.

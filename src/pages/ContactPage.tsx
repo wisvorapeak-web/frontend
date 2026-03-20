@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import PageLayout from './PageLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,7 +9,6 @@ import { toast } from 'sonner';
 
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [settings, setSettings] = useState<any>(null);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -17,18 +16,6 @@ export default function ContactPage() {
     subject: '',
     message: ''
   });
-
-  useEffect(() => {
-    const fetchSettings = async () => {
-      try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/site/settings`);
-        if (res.ok) setSettings(await res.json());
-      } catch (err) {
-        console.error('Failed to fetch contact settings:', err);
-      }
-    };
-    fetchSettings();
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,9 +47,9 @@ export default function ContactPage() {
   };
 
   const contactItems = [
-    { icon: Mail, label: 'Event Team', values: [settings?.contact_email || 'CONTACT@ASCENDIX2026.ORG', 'SUBMISSIONS@ASCENDIX2026.ORG'] },
-    { icon: Phone, label: 'Support Phone', values: [settings?.contact_phone || '+91 9366531405', settings?.office_hours || 'MON-FRI, 09:00 - 18:00 IST'] },
-    { icon: MapPin, label: 'Our Office', values: [settings?.contact_address?.toUpperCase() || 'GUWAHATI, ASSAM, INDIA'] },
+    { icon: Mail, label: 'Event Team', values: ['contact@ascendix.com', 'submissions@ascendix.com'] },
+    { icon: Phone, label: 'Support Phone', values: ['+91 XXXXX XXXXX', 'Mon-Fri, 09:00 - 18:00 IST'] },
+    { icon: MapPin, label: 'Conference Venue', values: ['New Delhi, India'] },
   ];
 
   return (
@@ -75,8 +62,8 @@ export default function ContactPage() {
           {/* Contact Details */}
           <div className="space-y-12 animate-in fade-in slide-in-from-left-10 duration-700">
             <div className="space-y-6">
-              <h2 className="text-3xl font-black text-navy uppercase tracking-tight">Send us a <span className="text-blue">Message</span></h2>
-              <p className="text-[13px] font-bold text-slate-500 uppercase tracking-widest leading-loose">
+              <h2 className="text-3xl font-bold text-navy">Send us a <span className="text-blue">Message</span></h2>
+              <p className="text-sm font-semibold text-slate-500 leading-loose">
                 Our team is here to help speakers and visitors from all over the world.
               </p>
             </div>
@@ -88,9 +75,9 @@ export default function ContactPage() {
                     <item.icon className="w-5 h-5" />
                   </div>
                   <div className="space-y-2">
-                    <h3 className="text-[10px] font-black text-blue uppercase tracking-[0.2em]">{item.label}</h3>
+                    <h3 className="text-xs font-bold text-blue">{item.label}</h3>
                     {item.values.map((v, vi) => (
-                      <p key={vi} className="text-[11px] font-black text-navy uppercase tracking-widest opacity-60 group-hover:opacity-100 transition-opacity">{v}</p>
+                      <p key={vi} className="text-xs font-semibold text-navy opacity-60 group-hover:opacity-100 transition-opacity">{v}</p>
                     ))}
                   </div>
                 </div>
@@ -103,20 +90,20 @@ export default function ContactPage() {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-3">
-                  <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">First Name</Label>
+                  <Label className="text-xs font-semibold text-slate-400">First Name</Label>
                   <Input 
-                    className="h-12 bg-slate-50 border-transparent rounded-xl text-[10px] font-black uppercase tracking-widest focus:bg-white focus:border-blue transition-all"
-                    placeholder="JOHN" 
+                    className="h-12 bg-slate-50 border-transparent rounded-xl text-sm font-semibold focus:bg-white focus:border-blue transition-all"
+                    placeholder="John" 
                     required 
                     value={formData.firstName}
                     onChange={(e) => setFormData({...formData, firstName: e.target.value})}
                   />
                 </div>
                 <div className="space-y-3">
-                  <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Last Name</Label>
+                  <Label className="text-xs font-semibold text-slate-400">Last Name</Label>
                   <Input 
-                    className="h-12 bg-slate-50 border-transparent rounded-xl text-[10px] font-black uppercase tracking-widest focus:bg-white focus:border-blue transition-all"
-                    placeholder="DOE" 
+                    className="h-12 bg-slate-50 border-transparent rounded-xl text-sm font-semibold focus:bg-white focus:border-blue transition-all"
+                    placeholder="Doe" 
                     required 
                     value={formData.lastName}
                     onChange={(e) => setFormData({...formData, lastName: e.target.value})}
@@ -125,11 +112,11 @@ export default function ContactPage() {
               </div>
               
               <div className="space-y-3">
-                <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Email Address</Label>
+                <Label className="text-xs font-semibold text-slate-400">Email Address</Label>
                 <Input 
-                  className="h-12 bg-slate-50 border-transparent rounded-xl text-[10px] font-black uppercase tracking-widest focus:bg-white focus:border-blue transition-all"
+                  className="h-12 bg-slate-50 border-transparent rounded-xl text-sm font-semibold focus:bg-white focus:border-blue transition-all"
                   type="email" 
-                  placeholder="EMAIL@UNIVERSITY.EDU" 
+                  placeholder="email@university.edu" 
                   required 
                   value={formData.emailAddress}
                   onChange={(e) => setFormData({...formData, emailAddress: e.target.value})}
@@ -137,10 +124,10 @@ export default function ContactPage() {
               </div>
 
               <div className="space-y-3">
-                <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Subject</Label>
+                <Label className="text-xs font-semibold text-slate-400">Subject</Label>
                 <Input 
-                  className="h-12 bg-slate-50 border-transparent rounded-xl text-[10px] font-black uppercase tracking-widest focus:bg-white focus:border-blue transition-all"
-                  placeholder="SUMMIT LOGISTICS" 
+                  className="h-12 bg-slate-50 border-transparent rounded-xl text-sm font-semibold focus:bg-white focus:border-blue transition-all"
+                  placeholder="Summit Logistics" 
                   required 
                   value={formData.subject}
                   onChange={(e) => setFormData({...formData, subject: e.target.value})}
@@ -148,17 +135,17 @@ export default function ContactPage() {
               </div>
 
               <div className="space-y-3">
-                <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Message</Label>
+                <Label className="text-xs font-semibold text-slate-400">Message</Label>
                 <Textarea 
-                  className="bg-slate-50 border-transparent rounded-xl text-[10px] font-black uppercase tracking-widest focus:bg-white focus:border-blue transition-all min-h-[150px]"
-                  placeholder="HOW CAN WE HELP?" 
+                  className="bg-slate-50 border-transparent rounded-xl text-sm font-semibold focus:bg-white focus:border-blue transition-all min-h-[150px]"
+                  placeholder="How can we help?" 
                   required 
                   value={formData.message}
                   onChange={(e) => setFormData({...formData, message: e.target.value})}
                 />
               </div>
 
-              <Button type="submit" className="w-full h-14 bg-blue text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-navy transition-all" disabled={isSubmitting}>
+              <Button type="submit" className="w-full h-14 bg-blue text-white text-sm font-bold rounded-2xl hover:bg-navy transition-all" disabled={isSubmitting}>
                 {isSubmitting ? 'Processing...' : 'Send Message'}
               </Button>
             </form>

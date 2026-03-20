@@ -53,9 +53,9 @@ export default function FAQ() {
         <div className="text-center mb-16 space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue/5 border border-blue/10">
             <span className="w-1.5 h-1.5 rounded-full bg-blue" />
-            <span className="text-[10px] font-black text-blue uppercase tracking-widest">Inquiries</span>
+            <span className="text-xs font-bold text-blue">Inquiries</span>
           </div>
-          <h2 className="text-4xl lg:text-5xl font-black text-navy uppercase tracking-tight">Questions?</h2>
+          <h2 className="text-4xl lg:text-5xl font-bold text-navy">Questions?</h2>
           <p className="text-slate-500 text-base font-medium max-w-2xl mx-auto">
             Find answers to the most common questions about our event.
           </p>
@@ -65,12 +65,12 @@ export default function FAQ() {
           {faqs.map((f, i) => (
             <div key={i} className={`bg-white rounded-2xl border ${openIndex === i ? 'border-blue/20 ring-4 ring-blue/5' : 'border-slate-100'} overflow-hidden transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`} style={{ transitionDelay: `${i * 50}ms` }}>
               <button onClick={() => setOpenIndex(openIndex === i ? null : i)} className="w-full flex items-center justify-between p-6 text-left group">
-                <span className={`text-[13px] font-black uppercase tracking-tight ${openIndex === i ? 'text-blue' : 'text-navy'} transition-colors`}>{f.question}</span>
+                <span className={`text-sm font-bold ${openIndex === i ? 'text-blue' : 'text-navy'} transition-colors`}>{f.question}</span>
                 <ChevronDown className={`w-4 h-4 transition-transform duration-500 ${openIndex === i ? 'rotate-180 text-blue' : 'text-slate-300 group-hover:text-navy'}`} />
               </button>
               
               <div className={`overflow-hidden transition-all duration-500 ${openIndex === i ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-                <div className="px-6 pb-6 text-[12px] font-medium text-slate-500 leading-relaxed uppercase tracking-wide opacity-80">
+                <div className="px-6 pb-6 text-sm font-medium text-slate-500 leading-relaxed opacity-80">
                   {f.answer}
                 </div>
               </div>
@@ -79,8 +79,8 @@ export default function FAQ() {
         </div>
 
         <div className={`mt-16 text-center transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
-           <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">Still have questions?</p>
-           <a href="#contact" className="inline-flex items-center gap-2 px-8 py-4 bg-navy text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-black transition-all">
+           <p className="text-xs font-bold text-slate-400 mb-4">Still have questions?</p>
+           <a href="#contact" className="inline-flex items-center gap-2 px-8 py-4 bg-navy text-white text-xs font-bold rounded-xl hover:bg-black transition-all">
              Send us an Email
            </a>
         </div>

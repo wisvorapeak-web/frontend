@@ -49,7 +49,7 @@ export default function OrganizersPage() {
         {/* Management Team */}
         <section className="space-y-12">
            <div className="text-center max-w-2xl mx-auto space-y-4">
-              <h2 className="text-3xl font-black text-slate-900 font-outfit uppercase">Core Scientific Leadership</h2>
+              <h2 className="text-3xl font-bold text-slate-900 font-outfit">Core Scientific Leadership</h2>
               <p className="text-slate-500 font-medium">Meet the global experts overseeing the technical integrity of our summit.</p>
            </div>
            
@@ -61,11 +61,11 @@ export default function OrganizersPage() {
                            <AvatarImage src={member.image} />
                            <AvatarFallback>{member.name[0]}</AvatarFallback>
                         </Avatar>
-                        <h3 className="text-xl font-black text-slate-900 font-outfit leading-tight mb-1">{member.name}</h3>
-                        <p className="text-[10px] font-black uppercase text-indigo-500 tracking-widest mb-4">{member.role}</p>
+                        <h3 className="text-xl font-bold text-slate-900 font-outfit leading-tight mb-1">{member.name}</h3>
+                        <p className="text-xs font-bold text-indigo-500 mb-4">{member.role}</p>
                         <div className="bg-slate-50 w-full p-4 rounded-2xl border border-slate-100/50 group-hover:bg-indigo-50 transition-colors">
                            <p className="text-xs font-bold text-slate-600 mb-1">{member.affiliation}</p>
-                           <p className="text-[9px] font-black uppercase text-slate-400 tracking-widest">{member.location}</p>
+                           <p className="text-xs font-semibold text-slate-400">{member.location}</p>
                         </div>
                     </div>
                 </div>
@@ -75,7 +75,7 @@ export default function OrganizersPage() {
 
         {/* Global Regional Advisors */}
         <section className="bg-slate-950 p-12 lg:p-20 rounded-[4rem] text-white">
-           <h3 className="text-2xl font-black mb-12 font-outfit text-center uppercase tracking-tight">Regional Scientific Advisors</h3>
+           <h3 className="text-2xl font-bold mb-12 font-outfit text-center">Regional Scientific Advisors</h3>
            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {[
                 { region: 'Europe', leads: '12 Advisors' },
@@ -84,8 +84,8 @@ export default function OrganizersPage() {
                 { region: 'Middle East', leads: '8 Advisors' },
               ].map((adv, i) => (
                  <div key={i} className="bg-white/5 p-8 rounded-[2rem] border border-white/5 text-center group hover:bg-white/10 transition-colors">
-                    <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-2">{adv.region}</p>
-                    <p className="text-xl font-black font-outfit">{adv.leads}</p>
+                    <p className="text-xs font-bold text-indigo-400 mb-2">{adv.region}</p>
+                    <p className="text-xl font-bold font-outfit">{adv.leads}</p>
                  </div>
               ))}
            </div>
@@ -97,7 +97,7 @@ export default function OrganizersPage() {
              <h4 className="text-xl font-bold font-outfit mb-1">Interested in joining the Scientific Program Committee?</h4>
              <p className="text-indigo-200 text-sm font-medium">Please send your academic CV to scientific@ascendix2026.org</p>
            </div>
-           <button className="bg-white text-indigo-600 px-8 py-3.5 rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-slate-50 transition-all active:scale-95 shadow-xl shadow-indigo-900/10">
+           <button className="bg-white text-indigo-600 px-8 py-3.5 rounded-2xl font-bold text-sm shadow-xl shadow-indigo-900/10 hover:bg-slate-50 transition-all active:scale-95">
               Apply to join
            </button>
         </section>

@@ -35,15 +35,16 @@
 
 @layer base {
   h1, h2, h3, h4, h5, h6 {
-    @apply font-roboto uppercase tracking-tight;
+    @apply font-outfit tracking-tight text-navy;
   }
   
-  h2 { @apply text-xl lg:text-2xl font-black font-roboto uppercase tracking-tight; }
-  h3 { @apply text-sm lg:text-base font-black font-roboto uppercase tracking-tight; }
+  h1 { @apply text-4xl lg:text-6xl font-bold; }
+  h2 { @apply text-3xl lg:text-5xl font-bold; }
+  h3 { @apply text-2xl lg:text-3xl font-bold; }
   
-  p { @apply text-[12px] lg:text-[13px] leading-relaxed text-slate-500 font-roboto font-medium; }
+  p { @apply text-sm lg:text-base leading-relaxed text-slate-500 font-medium font-outfit; }
   
-  button, .btn { @apply text-[10px] font-black uppercase tracking-widest font-roboto; }
+  button, .btn { @apply font-bold font-outfit; }
 }
 
 @layer base {
@@ -57,7 +58,7 @@
   
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: "Roboto", "Outfit", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: "Outfit", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   }
 
   .font-montserrat {

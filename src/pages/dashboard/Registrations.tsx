@@ -72,12 +72,12 @@ export default function Registrations() {
           <Table>
             <TableHeader className="bg-gray-50/50">
               <TableRow className="border-b-gray-100 divide-x-0">
-                <TableHead className="text-[10px] font-bold uppercase tracking-widest text-gray-400 py-6 pl-8">Order ID</TableHead>
-                <TableHead className="text-[10px] font-bold uppercase tracking-widest text-gray-400 py-6">Event Name</TableHead>
-                <TableHead className="text-[10px] font-bold uppercase tracking-widest text-gray-400 py-6">Date</TableHead>
-                <TableHead className="text-[10px] font-bold uppercase tracking-widest text-gray-400 py-6">Amount</TableHead>
-                <TableHead className="text-[10px] font-bold uppercase tracking-widest text-gray-400 py-6">Status</TableHead>
-                <TableHead className="text-[10px] font-bold uppercase tracking-widest text-gray-400 py-6 text-right pr-8">Actions</TableHead>
+                <TableHead className="text-xs font-bold text-gray-400 py-6 pl-8">Order ID</TableHead>
+                <TableHead className="text-xs font-bold text-gray-400 py-6">Event Name</TableHead>
+                <TableHead className="text-xs font-bold text-gray-400 py-6">Date</TableHead>
+                <TableHead className="text-xs font-bold text-gray-400 py-6">Amount</TableHead>
+                <TableHead className="text-xs font-bold text-gray-400 py-6">Status</TableHead>
+                <TableHead className="text-xs font-bold text-gray-400 py-6 text-right pr-8">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -88,7 +88,7 @@ export default function Registrations() {
                   <TableCell className="text-gray-500 text-sm whitespace-nowrap">{reg.date}</TableCell>
                   <TableCell className="font-bold text-navy text-sm">{reg.amount}</TableCell>
                   <TableCell>
-                    <div className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase inline-flex items-center gap-1.5 ${
+                    <div className={`px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1.5 ${
                       reg.status === 'Paid' ? 'bg-emerald-100 text-emerald-600' : 'bg-gray-100 text-gray-600'
                     }`}>
                       {reg.status === 'Paid' ? <CheckCircle2 className="w-3 h-3" /> : <Clock className="w-3 h-3" />}

@@ -62,9 +62,9 @@ export default function Abstracts() {
               <CardContent className="p-0 flex flex-col md:flex-row">
                 {/* ID section */}
                 <div className="md:w-48 bg-gray-50/50 p-6 flex flex-col justify-center border-r border-gray-100">
-                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Submission ID</p>
+                  <p className="text-xs font-bold text-gray-400 mb-1">Submission ID</p>
                   <p className="font-bold text-navy text-sm">{abs.id}</p>
-                  <div className={`mt-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase ${
+                  <div className={`mt-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${
                     abs.status === 'Accepted' ? 'bg-emerald-100 text-emerald-600' : 'bg-amber-100 text-amber-600'
                   }`}>
                     {abs.status === 'Accepted' ? <CheckCircle2 className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
@@ -76,7 +76,7 @@ export default function Abstracts() {
                 <div className="flex-1 p-6 relative">
                   <div className="flex justify-between items-start gap-4 mb-4">
                     <div>
-                      <p className="text-[10px] font-bold text-blue uppercase tracking-widest mb-1">{abs.type}</p>
+                      <p className="text-xs font-bold text-blue mb-1">{abs.type}</p>
                       <h3 className="text-lg font-bold text-navy group-hover:text-blue transition-colors leading-tight mb-2">
                         {abs.title}
                       </h3>

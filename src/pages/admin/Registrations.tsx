@@ -61,7 +61,7 @@ export default function Registrations() {
     { label: 'Pending Payout', value: `₹${registrations.filter(r => r.payment_status === 'Pending').length * 400}`, change: '-3%', icon: Clock, color: 'text-amber-500 bg-amber-50' },
   ];
 
-  if (loading) return <AdminLayout><div className="text-[10px] font-black uppercase tracking-widest text-slate-400 p-12">Recalculating Ledgers...</div></AdminLayout>;
+  if (loading) return <AdminLayout><div className="text-xs font-bold text-slate-400 p-12">Loading financial data...</div></AdminLayout>;
 
   return (
     <AdminLayout>
@@ -69,12 +69,14 @@ export default function Registrations() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <h1 className="text-3xl font-black text-slate-900 mb-2 font-outfit text-indigo-900">Financial Treasury</h1>
-            <p className="text-slate-500 font-medium font-outfit">Monitor ticket sales, scholarship payouts, and global revenue streams.</p>
+          <div>
+            <h1 className="text-3xl font-bold text-slate-900 mb-2 font-outfit text-indigo-900">Payment Records</h1>
+            <p className="text-slate-500 font-medium font-outfit">View ticket sales and total income.</p>
+          </div>
           </div>
           <div className="flex items-center gap-3">
             <Button variant="outline" className="rounded-xl border-slate-200 font-bold text-slate-600 gap-2 h-11 px-6 shadow-sm border-2">
-              <Download className="w-4 h-4" /> Export Ledger
+              <Download className="w-4 h-4" /> Export to CSV
             </Button>
             <Button className="rounded-xl bg-indigo-600 hover:bg-indigo-700 font-bold shadow-lg shadow-indigo-600/20 gap-2 h-11 px-6 active:scale-95 transition-all">
               <CreditCard className="w-4 h-4" /> Issue Refund
@@ -87,10 +89,10 @@ export default function Registrations() {
           {stats.map((stat, i) => (
             <div key={i} className="p-8 bg-white border border-slate-100 rounded-[2rem] shadow-xl shadow-slate-200/50 flex items-center justify-between group hover:border-indigo-500/20 transition-all cursor-pointer">
               <div className="space-y-2">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{stat.label}</p>
+                <p className="text-xs font-bold text-slate-400">{stat.label}</p>
                 <div className="flex items-baseline gap-2">
-                  <h3 className="text-3xl font-black text-slate-900 font-outfit uppercase tracking-tighter">{stat.value}</h3>
-                  <span className="text-[9px] font-black text-emerald-500">{stat.change}</span>
+                  <h3 className="text-3xl font-bold text-slate-900 font-outfit">{stat.value}</h3>
+                  <span className="text-[10px] font-bold text-emerald-500">{stat.change}</span>
                 </div>
               </div>
               <div className={`p-4 rounded-2xl ${stat.color} group-hover:scale-110 transition-transform duration-500`}>
@@ -114,12 +116,12 @@ export default function Registrations() {
 
           <Table>
             <TableHeader className="bg-slate-50/50">
-              <TableRow className="border-none font-outfit uppercase tracking-widest text-[9px] text-slate-400 font-black">
-                <TableHead className="py-6 pl-10">Member Information</TableHead>
-                <TableHead className="py-6">Tier Details</TableHead>
-                <TableHead className="py-6">Financial Status</TableHead>
-                <TableHead className="py-6">Date Processed</TableHead>
-                <TableHead className="py-6 text-right pr-10">Inventory Actions</TableHead>
+              <TableRow className="border-none font-outfit text-xs text-slate-400 font-bold">
+                <TableHead className="py-6 pl-10">User Details</TableHead>
+                <TableHead className="py-6">Package Type</TableHead>
+                <TableHead className="py-6">Payment Status</TableHead>
+                <TableHead className="py-6">Payment Date</TableHead>
+                <TableHead className="py-6 text-right pr-10">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -132,34 +134,31 @@ export default function Registrations() {
                            <AvatarFallback className="font-bold text-slate-400">{reg.name[0]}</AvatarFallback>
                         </Avatar>
                         <div>
-                           <p className="text-sm font-black text-slate-900 group-hover:text-indigo-600 transition-colors uppercase tracking-tight">{reg.name}</p>
-                           <p className="text-[10px] font-bold text-slate-400 tracking-wider">{reg.email}</p>
+                           <p className="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">{reg.name}</p>
+                           <p className="text-[10px] font-bold text-slate-400">{reg.email}</p>
                         </div>
                      </div>
                   </TableCell>
                   <TableCell>
                      <div className="flex flex-col">
-                        <span className="text-xs font-black text-slate-700 uppercase tracking-widest leading-none mb-1">{reg.tier}</span>
-                        <span className="text-[8px] font-bold text-slate-300 uppercase tracking-[0.2em]">Platform Access</span>
+                        <span className="text-xs font-bold text-slate-700 leading-none mb-1">{reg.tier}</span>
+                        <span className="text-[10px] font-bold text-slate-300">Full Access</span>
                      </div>
                   </TableCell>
                   <TableCell>
-                     <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest ${
+                     <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-bold ${
                        reg.payment_status === 'Paid' ? 'bg-emerald-50 text-emerald-500 border border-emerald-100' : 
                        reg.payment_status === 'Pending' ? 'bg-amber-50 text-amber-500 border border-amber-100' : 'bg-rose-50 text-rose-500 border border-rose-100'
                      }`}>
-                       <div className={`w-1.5 h-1.5 rounded-full ${
-                          reg.payment_status === 'Paid' ? 'bg-emerald-500' : 
-                          reg.payment_status === 'Pending' ? 'bg-amber-500' : 'bg-rose-500'
-                       }`} />
+                       <div className="w-1.5 h-1.5 rounded-full" />
                        {reg.payment_status}
                      </div>
                   </TableCell>
                   <TableCell>
-                     <span className="text-[10px] font-black text-slate-400 uppercase tracking-tighter">{new Date(reg.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                     <span className="text-xs font-bold text-slate-400">{new Date(reg.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}</span>
                   </TableCell>
                   <TableCell className="text-right pr-10">
-                     <Button variant="ghost" size="sm" className="rounded-xl font-black text-[9px] text-slate-400 hover:text-indigo-600 uppercase tracking-widest hover:bg-white shadow-sm border border-transparent hover:border-slate-100">
+                     <Button variant="ghost" size="sm" className="rounded-xl font-bold text-[10px] text-slate-400 hover:text-indigo-600 hover:bg-white shadow-sm border border-transparent hover:border-slate-100">
                         View Receipt
                      </Button>
                   </TableCell>
@@ -171,8 +170,8 @@ export default function Registrations() {
                       <div className="w-24 h-24 bg-slate-50/50 rounded-[2.5rem] flex items-center justify-center mx-auto text-slate-200 mb-8 border-2 border-dashed border-slate-100">
                          <History className="w-12 h-12" />
                       </div>
-                      <h4 className="text-xl font-black text-slate-900 font-outfit mb-2 uppercase tracking-tight">No Transactions Found</h4>
-                      <p className="text-xs text-slate-400 font-bold uppercase tracking-[0.15em] max-w-sm mx-auto leading-relaxed">The financial ledger is currently empty. Global sales will appear here in real-time as they are processed.</p>
+                       <h4 className="text-xl font-bold text-slate-900 font-outfit mb-2">No Payments Found</h4>
+                       <p className="text-xs text-slate-400 font-bold max-w-sm mx-auto leading-relaxed">No payments have been made yet. New sales will show up here as they happen.</p>
                    </TableCell>
                 </TableRow>
               )}

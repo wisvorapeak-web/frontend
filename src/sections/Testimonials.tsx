@@ -67,9 +67,9 @@ export default function Testimonials() {
         <div className="text-center mb-20 space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue/5 border border-blue/10">
             <span className="w-1.5 h-1.5 rounded-full bg-blue" />
-            <span className="text-[10px] font-black text-blue uppercase tracking-widest">Feedback</span>
+            <span className="text-xs font-bold text-blue">Feedback</span>
           </div>
-          <h2 className="text-4xl lg:text-5xl font-black text-navy uppercase tracking-tight">What People Say</h2>
+          <h2 className="text-4xl lg:text-5xl font-bold text-navy">What People Say</h2>
           <p className="text-slate-500 text-base font-medium max-w-2xl mx-auto">
             Trusted by scientists and business leaders from all over the world.
           </p>
@@ -80,7 +80,7 @@ export default function Testimonials() {
             <div className={`lg:col-span-8 space-y-8 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
                 <div className="relative">
                     <Quote className="absolute -top-10 -left-10 w-24 h-24 text-slate-50 opacity-10" />
-                    <blockquote className="text-2xl lg:text-3xl font-black text-navy uppercase tracking-tight leading-snug">
+                    <blockquote className="text-2xl lg:text-3xl font-bold text-navy leading-snug">
                        "{testimonials[activeIndex].quote}"
                     </blockquote>
                 </div>
@@ -89,9 +89,9 @@ export default function Testimonials() {
                     <div className="w-16 h-16 rounded-2xl overflow-hidden border-2 border-slate-50">
                         <img src={testimonials[activeIndex].image} alt={testimonials[activeIndex].name} className="w-full h-full object-cover grayscale" />
                     </div>
-                    <div>
-                        <p className="text-lg font-black text-navy uppercase tracking-tight">{testimonials[activeIndex].name}</p>
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{testimonials[activeIndex].role} @ {testimonials[activeIndex].institution}</p>
+                     <div>
+                        <p className="text-lg font-bold text-navy">{testimonials[activeIndex].name}</p>
+                        <p className="text-xs font-bold text-slate-400">{testimonials[activeIndex].role} @ {testimonials[activeIndex].institution}</p>
                     </div>
                 </div>
             </div>
@@ -103,9 +103,9 @@ export default function Testimonials() {
                         <div className={`w-8 h-8 rounded-lg overflow-hidden flex-shrink-0 ${i === activeIndex ? 'ring-2 ring-white/20' : ''}`}>
                             <img src={t.image} alt={t.name} className="w-full h-full object-cover grayscale" />
                         </div>
-                        <div className="min-w-0">
-                            <p className="text-[10px] font-black uppercase tracking-tight truncate">{t.name}</p>
-                            <p className={`text-[8px] font-black uppercase tracking-widest opacity-40 truncate ${i === activeIndex ? 'text-white' : 'text-slate-400'}`}>{t.country}</p>
+                         <div className="min-w-0">
+                            <p className="text-xs font-bold truncate">{t.name}</p>
+                            <p className={`text-[10px] font-bold opacity-40 truncate ${i === activeIndex ? 'text-white' : 'text-slate-400'}`}>{t.country}</p>
                         </div>
                     </button>
                 ))}
@@ -118,9 +118,9 @@ export default function Testimonials() {
             { value: '88%', label: 'Coming Back' },
             { value: '4.9/5', label: 'Star Rating' },
           ].map((s, i) => (
-            <div key={i} className="text-center">
-              <p className="text-2xl font-black text-navy uppercase tracking-tight">{s.value}</p>
-              <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">{s.label}</p>
+             <div key={i} className="text-center">
+              <p className="text-2xl font-bold text-navy">{s.value}</p>
+              <p className="text-xs font-bold text-slate-400 mt-1">{s.label}</p>
             </div>
           ))}
         </div>

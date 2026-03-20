@@ -59,7 +59,7 @@ const AbstractForm = () => {
         <Label htmlFor="abstract">Abstract Content</Label>
         <Textarea id="abstract" placeholder="Enter your abstract (max 300 words)" rows={4} required />
       </div>
-      <Button type="submit" className="w-full bg-blue hover:bg-navy text-white text-[10px] font-black uppercase tracking-widest h-12 rounded-xl transition-all">
+      <Button type="submit" className="w-full bg-blue hover:bg-navy text-white text-sm font-bold h-12 rounded-xl transition-all">
         Submit Your Talk
       </Button>
     </form>
@@ -74,8 +74,8 @@ const RegistrationForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
+    <form onSubmit={handleSubmit} className="space-y-4 text-left">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="regFirstName">First Name</Label>
           <Input id="regFirstName" placeholder="John" required />
@@ -140,10 +140,10 @@ export default function FinalCTA() {
         <div className={`space-y-6 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full">
             <Sparkles className="w-3 h-3 text-blue" />
-            <span className="text-[10px] font-black text-white uppercase tracking-widest">Don't Miss Out</span>
+            <span className="text-xs font-bold text-white">Don't Miss Out</span>
           </div>
           
-          <h2 className="text-5xl lg:text-7xl font-black text-white uppercase tracking-tighter leading-none">
+          <h2 className="text-5xl lg:text-7xl font-bold text-white leading-none">
             Join Us in <span className="text-blue">2026</span>
           </h2>
           
@@ -153,30 +153,40 @@ export default function FinalCTA() {
         </div>
 
         <div className={`flex flex-wrap justify-center gap-6 transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
-           <Dialog>
+            <Dialog>
               <DialogTrigger asChild>
-                <Button className="h-16 px-10 bg-blue text-white text-[11px] font-black uppercase tracking-widest rounded-2xl hover:bg-white hover:text-navy transition-all flex items-center gap-3">
+                <Button className="h-16 px-10 bg-blue text-white text-sm font-bold rounded-2xl hover:bg-white hover:text-navy transition-all flex items-center gap-3">
                   <FileText className="w-4 h-4" />
-                  Submit Abstract
+                  Submit Your Talk
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-lg"><DialogHeader><DialogTitle className="text-xl font-black text-navy uppercase">Submit Your Abstract</DialogTitle></DialogHeader><AbstractForm /></DialogContent>
-           </Dialog>
+              <DialogContent className="max-w-lg">
+                <DialogHeader>
+                  <DialogTitle className="text-xl font-bold text-navy">Submit Your Talk</DialogTitle>
+                </DialogHeader>
+                <AbstractForm />
+              </DialogContent>
+            </Dialog>
 
-           <Dialog>
+            <Dialog>
               <DialogTrigger asChild>
-                <Button variant="outline" className="h-16 px-10 border-white/10 text-white text-[11px] font-black uppercase tracking-widest rounded-2xl hover:bg-white/5 transition-all">
+                <Button variant="outline" className="h-16 px-10 border-white/10 text-white text-sm font-bold rounded-2xl hover:bg-white/5 transition-all">
                   Register Now
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-lg"><DialogHeader><DialogTitle className="text-xl font-black text-navy uppercase">Register</DialogTitle></DialogHeader><RegistrationForm /></DialogContent>
-           </Dialog>
+              <DialogContent className="max-w-lg">
+                <DialogHeader>
+                  <DialogTitle className="text-xl font-bold text-navy">Register</DialogTitle>
+                </DialogHeader>
+                <RegistrationForm />
+              </DialogContent>
+            </Dialog>
         </div>
 
         <div className={`pt-12 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-8 transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
            {['IARI', 'CIMMYT', 'FAO', 'ICAR'].map((inst, i) => (
-             <span key={i} className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em]">{inst}</span>
+             <span key={i} className="text-xs font-bold text-white/40">{inst}</span>
            ))}
         </div>
       </div>

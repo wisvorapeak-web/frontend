@@ -51,7 +51,7 @@ export default function Inbox() {
     return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
   };
 
-  if (loading) return <AdminLayout><div className="text-[10px] font-black uppercase tracking-widest text-slate-400 p-12">Decrypting Communications...</div></AdminLayout>;
+  if (loading) return <AdminLayout><div className="text-xs font-bold text-slate-400 p-12">Loading messages...</div></AdminLayout>;
 
   return (
     <AdminLayout>
@@ -59,8 +59,10 @@ export default function Inbox() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <h1 className="text-3xl font-black text-slate-900 mb-2 font-outfit">Contact Inbox</h1>
-            <p className="text-slate-500 font-medium">Handle site inquiries, support tickets, and scientist communication.</p>
+          <div>
+            <h1 className="text-3xl font-bold text-slate-900 mb-2 font-outfit">Contact Inbox</h1>
+            <p className="text-slate-500 font-medium font-outfit">Handle site inquiries, support tickets, and scientist communication.</p>
+          </div>
           </div>
           <div className="flex items-center gap-3">
              <div className="bg-slate-100 flex p-1 rounded-xl">
@@ -106,7 +108,7 @@ export default function Inbox() {
                        <span className={`w-2 h-2 rounded-full ${msg.status === 'Unread' ? 'bg-indigo-500 animate-pulse' : 'bg-transparent'}`} />
                        <p className={`text-sm font-bold ${msg.status === 'Unread' ? 'text-slate-900' : 'text-slate-500'}`}>{msg.name}</p>
                     </div>
-                    <span className="text-[10px] font-bold text-slate-400">{formatTime(msg.created_at)}</span>
+                    <span className="text-xs font-bold text-slate-400">{formatTime(msg.created_at)}</span>
                   </div>
                   
                   <h4 className={`text-xs font-bold mb-2 line-clamp-1 ${msg.status === 'Unread' ? 'text-slate-900' : 'text-slate-600'}`}>
@@ -118,7 +120,7 @@ export default function Inbox() {
                   
                   <div className="flex items-center gap-2 mt-4">
                      {msg.isStarred && <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />}
-                     <span className="text-[8px] font-black px-2 py-0.5 bg-slate-100 text-slate-400 rounded-full uppercase tracking-widest">{msg.category}</span>
+                     <span className="text-[10px] font-bold px-2 py-0.5 bg-slate-100 text-slate-400 rounded-full">{msg.category}</span>
                   </div>
                 </div>
               ))}
@@ -137,7 +139,7 @@ export default function Inbox() {
                          <AvatarFallback>SJ</AvatarFallback>
                        </Avatar>
                        <div>
-                         <h2 className="text-xl font-black text-slate-900 font-outfit leading-tight">{selectedMsg.name}</h2>
+                         <h2 className="text-xl font-bold text-slate-900 font-outfit leading-tight">{selectedMsg.name}</h2>
                          <p className="text-xs text-slate-400 font-bold">{selectedMsg.email}</p>
                        </div>
                     </div>
@@ -158,12 +160,12 @@ export default function Inbox() {
                   <div className="flex-1 p-10 overflow-y-auto scrollbar-none">
                      <div className="mb-10">
                         <div className="flex items-center gap-3 mb-4">
-                          <span className="text-[9px] font-black uppercase text-indigo-500 bg-indigo-50 px-3 py-1 rounded-full tracking-widest">Scientific Inquiry</span>
-                          <div className="flex items-center gap-1.5 text-[10px] text-slate-400 font-bold">
+                          <span className="text-xs font-bold text-indigo-500 bg-indigo-50 px-3 py-1 rounded-full">Scientific Inquiry</span>
+                          <div className="flex items-center gap-1.5 text-xs text-slate-400 font-bold">
                              <Clock className="w-3.5 h-3.5" /> Received {formatTime(selectedMsg.created_at)}
                           </div>
                         </div>
-                        <h2 className="text-2xl font-black text-slate-900 font-outfit mb-6 leading-tight">{selectedMsg.subject}</h2>
+                        <h2 className="text-2xl font-bold text-slate-900 font-outfit mb-6 leading-tight">{selectedMsg.subject}</h2>
                      </div>
 
                      <div className="prose prose-slate max-w-none">
@@ -183,7 +185,7 @@ export default function Inbox() {
                            </div>
                            <div className="pr-4">
                               <p className="text-xs font-bold text-slate-900">Curriculum_Vitae.pdf</p>
-                              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">2.1 MB • SCANNED</p>
+                              <p className="text-xs font-bold text-slate-400">2.1 MB • Scanned</p>
                            </div>
                         </div>
                      )}
@@ -209,7 +211,7 @@ export default function Inbox() {
                   <div className="w-24 h-24 rounded-[2rem] bg-slate-50 flex items-center justify-center text-slate-300 mb-6">
                      <InboxIcon className="w-10 h-10" />
                   </div>
-                  <h3 className="text-xl font-black text-slate-900 mb-2 font-outfit leading-tight">No Message Selected</h3>
+                  <h3 className="text-xl font-bold text-slate-900 mb-2 font-outfit leading-tight">No Message Selected</h3>
                   <p className="text-slate-400 text-sm font-medium max-w-sm">Select a conversation from the sidebar to read full communication thread.</p>
                </div>
              )}

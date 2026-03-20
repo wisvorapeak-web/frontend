@@ -66,7 +66,7 @@ export default function SiteSettings() {
     }
   };
 
-  if (loading) return <AdminLayout><div className="text-[10px] font-black uppercase tracking-widest text-slate-400 p-12">Loading Protocols...</div></AdminLayout>;
+  if (loading) return <AdminLayout><div className="text-xs font-bold text-slate-400 p-12">Loading settings...</div></AdminLayout>;
   if (!settings) return null;
   return (
     <AdminLayout>
@@ -74,8 +74,10 @@ export default function SiteSettings() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <h1 className="text-3xl font-black text-slate-900 mb-2 font-outfit">Admin Settings</h1>
-            <p className="text-slate-500 font-medium">Manage your website's main information and search appearance.</p>
+          <div>
+            <h1 className="text-3xl font-bold text-slate-900 mb-2 font-outfit">Admin Settings</h1>
+            <p className="text-slate-500 font-medium font-outfit">Manage your website's main information and search appearance.</p>
+          </div>
           </div>
           <div className="flex items-center gap-3">
              <Button variant="outline" className="rounded-xl border-slate-200 font-bold text-slate-600 gap-2 h-11 px-6 bg-white shadow-sm">
@@ -86,17 +88,17 @@ export default function SiteSettings() {
                disabled={isUpdating}
                className="rounded-xl bg-indigo-600 hover:bg-indigo-700 font-bold shadow-lg shadow-indigo-600/20 gap-2 h-11 px-8"
               >
-                {isUpdating ? <><RefreshCcw className="w-4 h-4 animate-spin" /> Deploying...</> : <><Save className="w-4 h-4" /> Deploy Changes</>}
+                {isUpdating ? <><RefreshCcw className="w-4 h-4 animate-spin" /> Saving...</> : <><Save className="w-4 h-4" /> Save Changes</>}
               </Button>
           </div>
         </div>
 
         <Tabs defaultValue="general" className="w-full">
           <TabsList className="bg-slate-100 p-1 rounded-2xl mb-10 h-14 w-full md:w-auto overflow-x-auto scrollbar-none flex gap-1">
-            <TabsTrigger value="general" className="data-[state=active]:bg-white data-[state=active]:text-indigo-600 data-[state=active]:shadow-sm rounded-xl font-bold text-xs h-full px-8 gap-2 uppercase tracking-widest"><Globe className="w-4 h-4" /> General</TabsTrigger>
-            <TabsTrigger value="seo" className="data-[state=active]:bg-white data-[state=active]:text-indigo-600 data-[state=active]:shadow-sm rounded-xl font-bold text-xs h-full px-8 gap-2 uppercase tracking-widest"><Search className="w-4 h-4" /> SEO & Meta</TabsTrigger>
-            <TabsTrigger value="api" className="data-[state=active]:bg-white data-[state=active]:text-indigo-600 data-[state=active]:shadow-sm rounded-xl font-bold text-xs h-full px-8 gap-2 uppercase tracking-widest"><Key className="w-4 h-4" /> API & Bridges</TabsTrigger>
-            <TabsTrigger value="branding" className="data-[state=active]:bg-white data-[state=active]:text-indigo-600 data-[state=active]:shadow-sm rounded-xl font-bold text-xs h-full px-8 gap-2 uppercase tracking-widest"><Smartphone className="w-4 h-4" /> Logo & Design</TabsTrigger>
+            <TabsTrigger value="general" className="data-[state=active]:bg-white data-[state=active]:text-indigo-600 data-[state=active]:shadow-sm rounded-xl font-bold text-xs h-full px-8 gap-2"><Globe className="w-4 h-4" /> General</TabsTrigger>
+            <TabsTrigger value="seo" className="data-[state=active]:bg-white data-[state=active]:text-indigo-600 data-[state=active]:shadow-sm rounded-xl font-bold text-xs h-full px-8 gap-2"><Search className="w-4 h-4" /> SEO & Meta</TabsTrigger>
+             <TabsTrigger value="api" className="data-[state=active]:bg-white data-[state=active]:text-indigo-600 data-[state=active]:shadow-sm rounded-xl font-bold text-xs h-full px-8 gap-2"><Key className="w-4 h-4" /> Advanced Settings</TabsTrigger>
+            <TabsTrigger value="branding" className="data-[state=active]:bg-white data-[state=active]:text-indigo-600 data-[state=active]:shadow-sm rounded-xl font-bold text-xs h-full px-8 gap-2"><Smartphone className="w-4 h-4" /> Logo & Design</TabsTrigger>
           </TabsList>
 
           <TabsContent value="general">
@@ -106,13 +108,13 @@ export default function SiteSettings() {
                    <CardHeader className="p-8 pb-4">
                       <div className="flex items-center gap-3 mb-2">
                          <div className="p-2 bg-indigo-50 rounded-lg"><Globe className="w-5 h-5 text-indigo-500" /></div>
-                         <CardTitle className="text-xl font-black text-slate-900 font-outfit uppercase tracking-tight">Platform Identity</CardTitle>
+                         <CardTitle className="text-xl font-bold text-slate-900 font-outfit">Site Info</CardTitle>
                       </div>
-                      <CardDescription className="text-slate-400 font-medium font-outfit">General information about the summit platform.</CardDescription>
+                      <CardDescription className="text-slate-400 font-medium font-outfit">General information about your website.</CardDescription>
                    </CardHeader>
                    <CardContent className="p-8 space-y-6">
                       <div className="space-y-2">
-                         <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Platform Name</Label>
+                         <Label className="text-xs font-bold text-slate-400 ml-1">Site Name</Label>
                          <Input 
                             value={settings.site_title} 
                             onChange={(e) => setSettings({ ...settings, site_title: e.target.value })}
@@ -120,7 +122,7 @@ export default function SiteSettings() {
                           />
                       </div>
                       <div className="space-y-2">
-                         <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Official Tagline</Label>
+                         <Label className="text-xs font-bold text-slate-400 ml-1">Official Tagline</Label>
                          <Input 
                             value={settings.site_tagline} 
                             onChange={(e) => setSettings({ ...settings, site_tagline: e.target.value })}
@@ -129,7 +131,7 @@ export default function SiteSettings() {
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                           <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Currency</Label>
+                           <Label className="text-xs font-bold text-slate-400 ml-1">Currency</Label>
                            <Input 
                              value={settings.currency} 
                              onChange={(e) => setSettings({ ...settings, currency: e.target.value })}
@@ -137,7 +139,7 @@ export default function SiteSettings() {
                            />
                         </div>
                         <div className="space-y-2">
-                           <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Support Email</Label>
+                           <Label className="text-xs font-bold text-slate-400 ml-1">Support Email</Label>
                            <Input 
                              value={settings.contact_email} 
                              onChange={(e) => setSettings({ ...settings, contact_email: e.target.value })}
@@ -153,14 +155,14 @@ export default function SiteSettings() {
                    <CardHeader className="p-8 pb-4">
                       <div className="flex items-center gap-3 mb-2">
                          <div className="p-2 bg-emerald-50 rounded-lg"><Phone className="w-5 h-5 text-emerald-500" /></div>
-                         <CardTitle className="text-xl font-black text-slate-900 font-outfit uppercase tracking-tight">Contact Network</CardTitle>
+                         <CardTitle className="text-xl font-bold text-slate-900 font-outfit">Contact Details</CardTitle>
                       </div>
-                      <CardDescription className="text-slate-400 font-medium font-outfit">Dynamic contact details for footer and support pages.</CardDescription>
+                      <CardDescription className="text-slate-400 font-medium font-outfit">Contact info shown on the site.</CardDescription>
                    </CardHeader>
                    <CardContent className="p-8 space-y-6">
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                           <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Direct Phone</Label>
+                           <Label className="text-xs font-bold text-slate-400 ml-1">Direct Phone</Label>
                            <Input 
                              value={settings.contact_phone} 
                              onChange={(e) => setSettings({ ...settings, contact_phone: e.target.value })}
@@ -168,7 +170,7 @@ export default function SiteSettings() {
                            />
                         </div>
                         <div className="space-y-2">
-                           <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Office Hours</Label>
+                           <Label className="text-xs font-bold text-slate-400 ml-1">Office Hours</Label>
                            <Input 
                              value={settings.office_hours} 
                              onChange={(e) => setSettings({ ...settings, office_hours: e.target.value })}
@@ -177,7 +179,7 @@ export default function SiteSettings() {
                         </div>
                       </div>
                       <div className="space-y-2">
-                         <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Global HQ Address</Label>
+                         <Label className="text-xs font-bold text-slate-400 ml-1">Office Address</Label>
                          <Input 
                             value={settings.contact_address} 
                             onChange={(e) => setSettings({ ...settings, contact_address: e.target.value })}
@@ -185,7 +187,7 @@ export default function SiteSettings() {
                           />
                       </div>
                       <div className="flex items-center justify-between p-4 bg-emerald-50/50 rounded-2xl border border-emerald-100">
-                         <p className="text-[10px] font-black uppercase text-emerald-600 tracking-widest">Active Status</p>
+                         <p className="text-xs font-bold text-emerald-600">Active Status</p>
                          <Switch checked />
                       </div>
                    </CardContent>
@@ -196,14 +198,14 @@ export default function SiteSettings() {
                    <CardHeader className="p-8 pb-4">
                       <div className="flex items-center gap-3 mb-2">
                          <div className="p-2 bg-blue/5 rounded-lg"><Twitter className="w-5 h-5 text-blue" /></div>
-                         <CardTitle className="text-xl font-black text-slate-900 font-outfit uppercase tracking-tight">Social Presence</CardTitle>
+                         <CardTitle className="text-xl font-bold text-slate-900 font-outfit">Social Media</CardTitle>
                       </div>
-                      <CardDescription className="text-slate-400 font-medium font-outfit">Global handles for community engagement.</CardDescription>
+                      <CardDescription className="text-slate-400 font-medium font-outfit">Links to your social media pages.</CardDescription>
                    </CardHeader>
                    <CardContent className="p-8 space-y-6">
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                           <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Twitter (X)</Label>
+                           <Label className="text-xs font-bold text-slate-400 ml-1">Twitter (X)</Label>
                            <Input 
                              value={settings.twitter_url} 
                              onChange={(e) => setSettings({ ...settings, twitter_url: e.target.value })}
@@ -211,7 +213,7 @@ export default function SiteSettings() {
                            />
                         </div>
                         <div className="space-y-2">
-                           <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">LinkedIn</Label>
+                           <Label className="text-xs font-bold text-slate-400 ml-1">LinkedIn</Label>
                            <Input 
                              value={settings.linkedin_url} 
                              onChange={(e) => setSettings({ ...settings, linkedin_url: e.target.value })}
@@ -219,7 +221,7 @@ export default function SiteSettings() {
                            />
                         </div>
                         <div className="space-y-2">
-                           <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Facebook</Label>
+                           <Label className="text-xs font-bold text-slate-400 ml-1">Facebook</Label>
                            <Input 
                              value={settings.facebook_url} 
                              onChange={(e) => setSettings({ ...settings, facebook_url: e.target.value })}
@@ -227,7 +229,7 @@ export default function SiteSettings() {
                            />
                         </div>
                         <div className="space-y-2">
-                           <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Instagram</Label>
+                           <Label className="text-xs font-bold text-slate-400 ml-1">Instagram</Label>
                            <Input 
                              value={settings.instagram_url} 
                              onChange={(e) => setSettings({ ...settings, instagram_url: e.target.value })}
@@ -244,29 +246,29 @@ export default function SiteSettings() {
                    <CardHeader className="p-8 pb-4 relative z-10">
                       <div className="flex items-center gap-3 mb-2 ">
                          <div className="p-2 bg-white/10 rounded-lg"><Shield className="w-5 h-5 text-white" /></div>
-                         <CardTitle className="text-xl font-black font-outfit uppercase tracking-tight">Security & Protocol</CardTitle>
+                         <CardTitle className="text-xl font-bold font-outfit">Website Status</CardTitle>
                       </div>
-                      <CardDescription className="text-slate-400 font-medium font-outfit">Critical platform access controls.</CardDescription>
+                      <CardDescription className="text-slate-400 font-medium font-outfit">Control who can register or review.</CardDescription>
                    </CardHeader>
                    <CardContent className="p-8 space-y-6 relative z-10">
                       <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10 group cursor-pointer hover:bg-white/10 transition-all">
                         <div>
                           <p className="text-sm font-bold">Registration Portal</p>
-                          <p className="text-[10px] uppercase font-black tracking-widest text-slate-500 transition-colors">ALLOW NEW SCIENTISTS</p>
+                           <p className="text-xs font-bold text-slate-500 transition-colors tracking-tight">Allow new users</p>
                         </div>
                         <Switch checked className="data-[state=checked]:bg-emerald-400" />
                       </div>
                       <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10 group cursor-pointer hover:bg-white/10 transition-all">
                         <div>
                           <p className="text-sm font-bold">Scientific Review</p>
-                          <p className="text-[10px] uppercase font-black tracking-widest text-slate-500">OPEN FOR REVIEWERS</p>
+                          <p className="text-xs font-bold text-slate-500 tracking-tight">Open for reviews</p>
                         </div>
                         <Switch checked />
                       </div>
                       <div className="pt-2">
-                         <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">Global Overrides</p>
-                         <Button className="w-full h-12 bg-white text-slate-950 hover:bg-slate-50 rounded-2xl font-black active:scale-95 transition-all shadow-xl shadow-slate-950/20">
-                            ENTER MAINTENANCE MODE
+                         <p className="text-xs font-bold text-slate-500 mb-3">Global Overrides</p>
+                         <Button className="w-full h-12 bg-white text-slate-950 hover:bg-slate-50 rounded-2xl font-bold active:scale-95 transition-all shadow-xl shadow-slate-950/20">
+                             Turn on Maintenance Mode
                          </Button>
                       </div>
                    </CardContent>
@@ -279,32 +281,32 @@ export default function SiteSettings() {
                 <CardHeader className="p-8 pb-4">
                     <div className="flex items-center gap-3 mb-2">
                        <div className="p-2 bg-slate-50 rounded-lg"><Search className="w-5 h-5 text-slate-400" /></div>
-                       <CardTitle className="text-xl font-black text-slate-900 font-outfit">Discovery Optimization</CardTitle>
-                    </div>
-                </CardHeader>
-                <CardContent className="p-8 space-y-6">
+                        <CardTitle className="text-xl font-bold text-slate-900 font-outfit">Search Engine Settings</CardTitle>
+                     </div>
+                 </CardHeader>
+                 <CardContent className="p-8 space-y-6">
                    <div className="space-y-2">
-                      <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Meta Title Strategy</Label>
+                      <Label className="text-xs font-bold text-slate-400 ml-1">Search Title</Label>
                       <Input defaultValue="| World Summit & Expo on Polymers 2026" className="h-12 bg-slate-50 border-none rounded-2xl focus-visible:ring-indigo-500/10 font-bold" />
                    </div>
                    <div className="space-y-2">
-                      <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Meta Description</Label>
+                      <Label className="text-xs font-bold text-slate-400 ml-1">Meta Description</Label>
                       <Textarea defaultValue="Join the leading World Summit on Polymers and Composite Materials. Explore cutting-edge research in biopolymers, nanomaterials, and sustainable manufacturing in 2026." className="min-h-32 bg-slate-50 border-none rounded-[2rem] focus-visible:ring-indigo-500/10 font-medium text-slate-600 p-6 leading-relaxed resize-none" />
                    </div>
                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
                       <div className="p-6 bg-slate-50 rounded-3xl space-y-4">
                          <div className="flex items-center gap-3">
                             <div className="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center text-indigo-500"><SettingIcon className="w-4 h-4" /></div>
-                            <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-900">Custom Robot.txt</h4>
+                            <h4 className="text-xs font-bold text-slate-900">Custom Robot.txt</h4>
                          </div>
-                         <Button variant="outline" className="w-full rounded-xl bg-white font-bold h-10 px-4 border-slate-100 uppercase text-[9px] tracking-widest text-slate-400">Edit Direct File</Button>
+                         <Button variant="outline" className="w-full rounded-xl bg-white font-bold h-10 px-4 border-slate-100 text-xs text-slate-400">Edit Direct File</Button>
                       </div>
                       <div className="p-6 bg-indigo-50/50 rounded-3xl space-y-4">
                          <div className="flex items-center gap-3">
                             <div className="w-8 h-8 rounded-lg bg-indigo-500 shadow-sm flex items-center justify-center text-white"><SettingIcon className="w-4 h-4" /></div>
-                            <h4 className="text-[10px] font-black uppercase tracking-widest text-indigo-600 transition-colors">Sitemap Control</h4>
+                            <h4 className="text-xs font-bold text-indigo-600 transition-colors">Sitemap Control</h4>
                          </div>
-                         <Button className="w-full rounded-xl bg-indigo-500 hover:bg-indigo-600 font-bold h-10 px-4 text-white uppercase text-[9px] tracking-widest active:scale-95 transition-all">Regenerate Sitemap</Button>
+                         <Button className="w-full rounded-xl bg-indigo-500 hover:bg-indigo-600 font-bold h-10 px-4 text-white text-xs active:scale-95 transition-all">Regenerate Sitemap</Button>
                       </div>
                    </div>
                 </CardContent>
@@ -320,19 +322,19 @@ export default function SiteSettings() {
                             <Database className="w-6 h-6" />
                          </div>
                          <div>
-                            <h3 className="text-xl font-black text-slate-900 font-outfit leading-tight ">Supabase DB Bridge</h3>
-                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">ACTIVE CONNECTION</p>
+                             <h3 className="text-xl font-bold text-slate-900 font-outfit leading-tight ">Database Connection</h3>
+                            <p className="text-xs font-bold text-slate-400">Active Connection</p>
                          </div>
                       </div>
                       <div className="space-y-2">
-                         <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Project reference</Label>
+                         <Label className="text-xs font-bold text-slate-400 ml-1">Project Reference</Label>
                          <Input value="polymers-2026-prod" readOnly className="h-12 bg-slate-50 border-none rounded-2xl focus-visible:ring-indigo-500/10 font-bold text-slate-400" />
                       </div>
                       <div className="space-y-2">
-                         <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Direct Connection string</Label>
+                         <Label className="text-xs font-bold text-slate-400 ml-1">Direct Connection String</Label>
                          <div className="relative group">
                             <Input type="password" value="**********************************************" readOnly className="h-12 bg-slate-50 border-none rounded-2xl focus-visible:ring-indigo-500/10 font-bold" />
-                            <Button variant="ghost" className="absolute right-2 top-1/2 -translate-y-1/2 h-8 text-[10px] font-bold text-slate-400 uppercase tracking-widest hover:bg-slate-100 rounded-lg">Show URL</Button>
+                            <Button variant="ghost" className="absolute right-2 top-1/2 -translate-y-1/2 h-8 text-xs font-bold text-slate-400 hover:bg-slate-100 rounded-lg">Show URL</Button>
                          </div>
                       </div>
                    </CardContent>
@@ -344,10 +346,10 @@ export default function SiteSettings() {
                          <Smartphone className="w-10 h-10" />
                       </div>
                       <div>
-                         <h4 className="text-xl font-black font-outfit mb-2 leading-tight">Webhook Notifications</h4>
-                         <p className="text-indigo-400 text-sm font-medium px-4">Receive real-time alerts on your administrative endpoint for critical platform events.</p>
+                         <h4 className="text-xl font-bold font-outfit mb-2 leading-tight">System Notifications</h4>
+                         <p className="text-indigo-400 text-sm font-medium px-4">Get alerts for important website events.</p>
                       </div>
-                      <Button className="rounded-2xl bg-white text-indigo-900 hover:bg-indigo-50 font-black h-12 px-8 uppercase text-xs tracking-widest active:scale-95 transition-all">Configure Listener</Button>
+                      <Button className="rounded-2xl bg-white text-indigo-900 hover:bg-indigo-50 font-bold h-12 px-8 text-xs active:scale-95 transition-all">Set Up Alerts</Button>
                    </CardContent>
                 </Card>
              </div>

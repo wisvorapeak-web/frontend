@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
-  ShieldCheck, 
   ArrowRight, 
   ChevronLeft,
   Loader2,
@@ -30,9 +29,9 @@ export default function ForgotPassword() {
       <div className="flex-1 flex items-center justify-center p-8 lg:p-12">
         <div className="w-full max-w-[440px] space-y-8 animate-in fade-in slide-in-from-left-4 duration-700">
           <div className="space-y-2">
-            <h1 className="text-3xl font-black text-white tracking-tight uppercase">Recover Key</h1>
-            <p className="text-[11px] font-black text-slate-500 uppercase tracking-widest leading-relaxed">
-              Initialize recovery protocol to reset your portal access credentials within the Wisvora scientific infrastructure.
+            <h1 className="text-3xl font-bold text-white">Reset Password</h1>
+            <p className="text-xs font-bold text-slate-500 leading-relaxed">
+              Enter your email to receive instructions on how to reset your password.
             </p>
           </div>
 
@@ -40,16 +39,16 @@ export default function ForgotPassword() {
             {!isSubmitted ? (
                <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
-                  <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Email Protocol</Label>
+                  <Label className="text-xs font-bold text-slate-400 ml-1">Email Address</Label>
                   <Input 
                     type="email" 
-                    placeholder="ANAND@UNIVERSITY.EDU"
-                    className="h-12 bg-white/5 border-white/5 focus:border-blue focus:ring-4 focus:ring-blue/5 rounded-xl px-4 text-white text-[10px] font-black uppercase tracking-widest placeholder:text-slate-700 transition-all border-none"
+                    placeholder="anand@university.edu"
+                    className="h-12 bg-white/5 border-white/5 focus:border-blue focus:ring-4 focus:ring-blue/5 rounded-xl px-4 text-white text-xs font-bold placeholder:text-slate-700 transition-all border-none"
                     required
                   />
                 </div>
 
-                <Button type="submit" className="w-full h-12 rounded-xl bg-blue hover:bg-white hover:text-navy text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-xl shadow-blue/5 active:scale-[0.98] transition-all" disabled={isLoading}>
+                <Button type="submit" className="w-full h-12 rounded-xl bg-blue hover:bg-white hover:text-navy text-white text-xs font-bold shadow-xl shadow-blue/5 active:scale-[0.98] transition-all" disabled={isLoading}>
                   {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Send Reset Instructions <ArrowRight className="w-4 h-4 ml-2" /></>}
                 </Button>
               </form>
@@ -59,19 +58,19 @@ export default function ForgotPassword() {
                     <CheckCircle2 className="w-8 h-8" />
                  </div>
                  <div className="space-y-2">
-                    <h3 className="text-xl font-black text-white uppercase tracking-tight">Transmission Sent</h3>
-                    <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-relaxed">
-                       Secure reset instructions have been dispatched to your primary email protocol.
+                     <h3 className="text-xl font-bold text-white">Email Sent</h3>
+                    <p className="text-xs font-bold text-slate-500 leading-relaxed">
+                       We have sent password reset instructions to your email address.
                     </p>
                  </div>
-                 <Button variant="ghost" onClick={() => setIsSubmitted(false)} className="text-[9px] font-black text-blue uppercase tracking-widest hover:text-white transition-colors">
-                    Retry Protocol?
+                  <Button variant="ghost" onClick={() => setIsSubmitted(false)} className="text-xs font-bold text-blue hover:text-white transition-colors">
+                    Try again?
                  </Button>
               </div>
             )}
           </div>
 
-          <Link to="/login" className="flex items-center justify-center gap-2 text-slate-700 hover:text-white text-[10px] font-black uppercase tracking-widest transition-colors group">
+          <Link to="/login" className="flex items-center justify-center gap-2 text-slate-700 hover:text-white text-xs font-bold transition-colors group">
             <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Access
           </Link>
         </div>
@@ -81,29 +80,28 @@ export default function ForgotPassword() {
       <div className="hidden lg:flex flex-1 bg-navy items-center justify-center relative overflow-hidden">
         <div className="absolute inset-0 bg-blue/10 blur-[100px] -translate-y-1/2 translate-x-1/2 rounded-full" />
         <div className="max-w-md text-center space-y-10 relative z-10 px-8">
-           <div className="w-16 h-16 rounded-2xl bg-blue mx-auto flex items-center justify-center shadow-2xl shadow-blue/20">
-              <ShieldCheck className="text-white w-9 h-9" />
-           </div>
+           <Link to="/" className="inline-block hover:scale-105 active:scale-95 transition-all mb-10">
+              <img src="/logo.png" alt="Ascendix Summits" className="h-16 w-auto object-contain brightness-0 invert" />
+           </Link>
            
            <div className="space-y-4">
-              <h2 className="text-4xl font-black text-white uppercase tracking-tighter leading-none">Wisvora <span className="text-blue">Core</span></h2>
-              <p className="text-xs font-black text-white/30 uppercase tracking-[0.2em] leading-relaxed">
-                The high-performance scientific engine for materials research and global board management.
+              <p className="text-xs font-bold text-white/30 leading-relaxed">
+                The leading platform for world food, agriculture, and animal science summits.
               </p>
            </div>
 
            <div className="grid grid-cols-3 gap-8 pt-8 border-t border-white/5">
               <div className="space-y-1">
-                 <p className="text-[14px] font-black text-white tracking-widest">99.9%</p>
-                 <p className="text-[8px] font-black text-blue uppercase tracking-widest">Uptime</p>
+                 <p className="text-sm font-bold text-white">99.9%</p>
+                 <p className="text-[10px] font-bold text-blue">Uptime</p>
               </div>
               <div className="space-y-1 border-x border-white/5">
-                 <p className="text-[14px] font-black text-white tracking-widest">&lt;1s</p>
-                 <p className="text-[8px] font-black text-blue uppercase tracking-widest">Latency</p>
+                 <p className="text-sm font-bold text-white">&lt;1s</p>
+                 <p className="text-[10px] font-bold text-blue">Latency</p>
               </div>
               <div className="space-y-1">
-                 <p className="text-[14px] font-black text-white tracking-widest">1K+</p>
-                 <p className="text-[8px] font-black text-blue uppercase tracking-widest">Nodes</p>
+                 <p className="text-sm font-bold text-white">1K+</p>
+                 <p className="text-[10px] font-bold text-blue">Members</p>
               </div>
            </div>
         </div>

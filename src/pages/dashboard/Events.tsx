@@ -81,7 +81,7 @@ export default function Events() {
                 {/* Status Badge */}
                 <div className="absolute top-4 left-4 z-10">
                   <Badge variant={event.status === 'Confirmed' ? 'default' : 'secondary'} className={`
-                    px-3 py-1 text-[10px] font-bold uppercase rounded-lg border-none
+                    px-3 py-1 text-xs font-bold rounded-lg border-none
                     ${event.status === 'Confirmed' ? 'bg-emerald-500 hover:bg-emerald-600' : 'bg-blue hover:bg-blue-600'}
                   `}>
                     {event.status}
@@ -91,7 +91,7 @@ export default function Events() {
 
               <CardContent className="p-6 flex-1 flex flex-col">
                 <div className="mb-4">
-                  <p className="text-[10px] font-bold text-blue uppercase tracking-widest mb-1">{event.type}</p>
+                  <p className="text-xs font-bold text-blue mb-1">{event.type}</p>
                   <h3 className="text-lg font-bold text-navy leading-tight group-hover:text-blue transition-colors">
                     {event.title}
                   </h3>

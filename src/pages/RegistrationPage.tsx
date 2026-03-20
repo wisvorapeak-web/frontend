@@ -1,108 +1,361 @@
+import { useState } from 'react';
 import PageLayout from './PageLayout';
 import { 
   Users, 
   GraduationCap, 
-  Building2, 
   CheckCircle2, 
-  ShieldCheck
+  ShieldCheck,
+  CreditCard,
+  Building2,
+  Phone,
+  Mail,
+  User,
+  Globe,
+  Hotel,
+  ShieldAlert,
+  Info
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
-
-const pricing = [
-  { 
-    title: 'Professional', 
-    price: '₹18,000', 
-    type: 'Business/Worker', 
-    features: ['Technical Sessions', 'Exhibition Access', 'Event Guide', 'Gala Dinner'],
-    icon: Building2,
-    color: 'bg-indigo-600 text-white shadow-indigo-600/20'
-  },
-  { 
-    title: 'Academic', 
-    price: '₹12,000', 
-    type: 'Teacher/Researcher', 
-    features: ['Technical Sessions', 'Poster Presentation', 'Talk Summaries', 'Lunch & Coffee'],
-    icon: GraduationCap,
-    color: 'bg-white text-slate-900 border-slate-100 shadow-slate-100/50'
-  },
-  { 
-    title: 'Student', 
-    price: '₹6,000', 
-    type: 'PhD & Masters', 
-    features: ['Learning Sessions', 'Student Forum', 'Certificate', 'Lunch Voucher'],
-    icon: Users,
-    color: 'bg-white text-slate-900 border-slate-100 shadow-slate-100/50'
-  },
-];
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { toast } from 'sonner';
 
 export default function RegistrationPage() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    title: '',
+    name: '',
+    email: '',
+    phone: '',
+    country: '',
+    university: '',
+    regType: '',
+    accommodation: 'none',
+    nights: '0',
+    accompanyingGuest: false,
+    captcha: ''
+  });
+
+  const registrationTypes = [
+    { id: 'speaker', name: 'Speaker Registration', early: 749, standard: 849 },
+    { id: 'delegate', name: 'Delegate Registration', early: 899, standard: 999 },
+    { id: 'poster', name: 'Poster Registration', early: 449, standard: 549 },
+    { id: 'student', name: 'Student Registration', early: 399, standard: 599 },
+  ];
+
+  const accommodationRates = {
+    single: [200, 400, 600, 800],
+    double: [240, 480, 720, 960]
+  };
+
+  const calculateTotal = () => {
+    let total = 0;
+    const selectedReg = registrationTypes.find(r => r.id === formData.regType);
+    if (selectedReg) {
+      // Assuming Early Bird for now, can be dynamic based on date
+      total += selectedReg.early;
+    }
+
+    if (formData.accommodation !== 'none' && parseInt(formData.nights) > 0) {
+      const nightsIdx = parseInt(formData.nights) - 1;
+      if (formData.accommodation === 'single') {
+        total += accommodationRates.single[nightsIdx] || 0;
+      } else if (formData.accommodation === 'double') {
+        total += accommodationRates.double[nightsIdx] || 0;
+      }
+    }
+
+    if (formData.accompanyingGuest) {
+      total += 299;
+    }
+
+    return total;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (formData.captcha !== '1234') {
+      toast.error('Invalid Captcha. Please verify you are human.');
+      return;
+    }
+    setIsSubmitting(true);
+    setTimeout(() => {
+      setIsSubmitting(false);
+      toast.success('Form submitted! Redirecting to payment gateway...');
+    }, 2000);
+  };
+
   return (
     <PageLayout 
-      title="Tickets" 
-      subtitle="Get your tickets for the 2026 conference."
+      title="Register Now" 
+      subtitle="Complete your registration for Ascendix World Food, AgroTech & Animal Science."
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-16 space-y-24">
-        {/* Registration Tiers */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
-           {pricing.map((tier, i) => (
-              <div key={i} className={`p-10 border ${tier.title === 'Professional' ? 'border-blue bg-blue/5' : 'border-slate-100'} rounded-3xl flex flex-col items-center text-center space-y-8 hover:shadow-2xl hover:shadow-blue/5 transition-all`}>
-                 <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm">
-                    <tier.icon className={`w-5 h-5 ${tier.title === 'Professional' ? 'text-blue' : 'text-slate-400'}`} />
-                 </div>
-                 
-                 <div className="space-y-1">
-                    <h3 className="text-xl font-black text-navy uppercase tracking-tight">{tier.title}</h3>
-                    <p className="text-[10px] font-black text-blue uppercase tracking-widest opacity-60">{tier.type}</p>
-                 </div>
+      <div className="max-w-7xl mx-auto px-6 lg:px-16 pb-24">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          
+          {/* Form Side */}
+          <div className="lg:col-span-2 space-y-8">
+            <div className="bg-white border border-slate-100 rounded-[2rem] p-8 lg:p-12 shadow-2xl shadow-blue/5">
+              <form onSubmit={handleSubmit} className="space-y-10">
+                
+                {/* 1. Personal Details */}
+                <section className="space-y-6">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-10 h-10 bg-blue/10 rounded-xl flex items-center justify-center text-blue">
+                      <User className="w-5 h-5" />
+                    </div>
+                    <h3 className="text-xl font-bold text-navy">Personal Details</h3>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
+                    <div className="md:col-span-2 space-y-2">
+                      <Label className="text-xs font-bold text-slate-400">Title</Label>
+                      <Select onValueChange={(val) => setFormData({...formData, title: val})}>
+                        <SelectTrigger className="h-12 rounded-xl border-slate-100">
+                          <SelectValue placeholder="Select" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {['Mr', 'Ms', 'Mrs', 'Dr', 'Prof', 'Assoc. Prof. Dr', 'Assist. Prof. Dr', 'Other'].map(t => (
+                            <SelectItem key={t} value={t}>{t}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="md:col-span-4 space-y-2">
+                      <Label className="text-xs font-bold text-slate-400">Full Name</Label>
+                      <Input 
+                        placeholder="As appears on passport" 
+                        className="h-12 rounded-xl border-slate-100"
+                        required
+                        value={formData.name}
+                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                      />
+                    </div>
+                  </div>
 
-                 <div className="text-5xl font-black text-navy uppercase tracking-tighter">{tier.price}</div>
-                 
-                 <ul className="w-full space-y-4">
-                    {tier.features.map((feat, fi) => (
-                       <li key={fi} className="flex items-center gap-3 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                          <CheckCircle2 className="w-3 h-3 text-blue" />
-                          {feat}
-                       </li>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label className="text-xs font-bold text-slate-400">Email Address</Label>
+                      <Input 
+                        type="email"
+                        placeholder="email@university.edu" 
+                        className="h-12 rounded-xl border-slate-100"
+                        required
+                        value={formData.email}
+                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-xs font-bold text-slate-400">Contact Number</Label>
+                      <Input 
+                        placeholder="+XX XXXXX XXXXX" 
+                        className="h-12 rounded-xl border-slate-100"
+                        required
+                        value={formData.phone}
+                        onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label className="text-xs font-bold text-slate-400">Country/Region</Label>
+                      <Input 
+                        placeholder="Residing country" 
+                        className="h-12 rounded-xl border-slate-100"
+                        required
+                        value={formData.country}
+                        onChange={(e) => setFormData({...formData, country: e.target.value})}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-xs font-bold text-slate-400">University/Organization</Label>
+                      <Input 
+                        placeholder="Full affiliation" 
+                        className="h-12 rounded-xl border-slate-100"
+                        required
+                        value={formData.university}
+                        onChange={(e) => setFormData({...formData, university: e.target.value})}
+                      />
+                    </div>
+                  </div>
+                </section>
+
+                <hr className="border-slate-50" />
+
+                {/* 2. Registration Type */}
+                <section className="space-y-6">
+                   <div className="flex items-center gap-3 mb-6">
+                    <div className="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600">
+                      <CreditCard className="w-5 h-5" />
+                    </div>
+                    <h3 className="text-xl font-bold text-navy">Registration Type</h3>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {registrationTypes.map((type) => (
+                      <div 
+                        key={type.id}
+                        onClick={() => setFormData({...formData, regType: type.id})}
+                        className={`p-6 rounded-2xl border-2 cursor-pointer transition-all ${formData.regType === type.id ? 'border-blue bg-blue/5 shadow-xl shadow-blue/5' : 'border-slate-100 hover:border-slate-200'}`}
+                      >
+                        <div className="flex justify-between items-start mb-2">
+                          <h4 className="text-sm font-bold text-navy">{type.name}</h4>
+                          {formData.regType === type.id && <CheckCircle2 className="w-4 h-4 text-blue" />}
+                        </div>
+                        <div className="flex items-baseline gap-2">
+                          <span className="text-2xl font-bold text-navy">${type.early}</span>
+                          <span className="text-[10px] font-bold text-blue">Early Bird</span>
+                        </div>
+                      </div>
                     ))}
-                 </ul>
-                 
-                 <Link 
-                    to="/register" 
-                    className={`w-full h-14 rounded-2xl flex items-center justify-center text-[10px] font-black uppercase tracking-[0.2em] transition-all ${tier.title === 'Professional' ? 'bg-blue text-white hover:bg-navy' : 'bg-slate-50 text-navy hover:bg-slate-100'}`}
-                 >
-                    Select Pass
-                 </Link>
-              </div>
-           ))}
-        </section>
+                  </div>
+                </section>
 
-        {/* Policies */}
-        <section className="bg-navy p-12 lg:p-16 rounded-[2.5rem] grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-           <div className="space-y-8">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full">
-                 <ShieldCheck className="w-3 h-3 text-blue" />
-                 <span className="text-[9px] font-black text-white uppercase tracking-widest">Compliance</span>
+                <hr className="border-slate-50" />
+
+                {/* 3. Accommodation */}
+                <section className="space-y-6">
+                   <div className="flex items-center gap-3 mb-6">
+                    <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
+                      <Hotel className="w-5 h-5" />
+                    </div>
+                    <h3 className="text-xl font-bold text-navy">Accommodation</h3>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label className="text-xs font-bold text-slate-400">Occupancy Type</Label>
+                      <Select onValueChange={(val) => setFormData({...formData, accommodation: val})} defaultValue="none">
+                        <SelectTrigger className="h-12 rounded-xl border-slate-100">
+                          <SelectValue placeholder="Select" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="none">None (Registration Only)</SelectItem>
+                          <SelectItem value="single">Single Occupancy</SelectItem>
+                          <SelectItem value="double">Double Occupancy</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-xs font-bold text-slate-400">Duration</Label>
+                      <Select disabled={formData.accommodation === 'none'} onValueChange={(val) => setFormData({...formData, nights: val})} value={formData.nights}>
+                        <SelectTrigger className="h-12 rounded-xl border-slate-100">
+                          <SelectValue placeholder="Select Nights" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="0">Select Nights</SelectItem>
+                          <SelectItem value="1">1 Night</SelectItem>
+                          <SelectItem value="2">2 Nights</SelectItem>
+                          <SelectItem value="3">3 Nights</SelectItem>
+                          <SelectItem value="4">4 Nights</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-3 p-6 bg-slate-50 rounded-2xl border border-slate-100">
+                    <Checkbox 
+                      id="guest" 
+                      checked={formData.accompanyingGuest}
+                      onCheckedChange={(checked) => setFormData({...formData, accompanyingGuest: !!checked})}
+                    />
+                     <label 
+                      htmlFor="guest" 
+                      className="text-xs font-bold text-navy cursor-pointer"
+                    >
+                      Accompanying Guest - <span className="text-blue">$299</span> <span className="opacity-40">(Optional)</span>
+                    </label>
+                  </div>
+                </section>
+
+                {/* 4. Submission & Captcha */}
+                <section className="pt-10 border-t border-slate-50 space-y-6">
+                   <div className="flex flex-col md:flex-row gap-6 items-end">
+                       <div className="flex-1 space-y-2">
+                        <Label className="text-xs font-bold text-slate-400">Captcha Verification</Label>
+                        <div className="flex items-center gap-3">
+                          <div className="h-12 px-6 bg-slate-900 text-white font-mono flex items-center justify-center rounded-xl tracking-widest select-none">
+                            1 2 3 4
+                          </div>
+                          <Input 
+                            placeholder="Enter code" 
+                            className="h-12 rounded-xl border-slate-100 font-bold tracking-widest"
+                            required
+                            value={formData.captcha}
+                            onChange={(e) => setFormData({...formData, captcha: e.target.value})}
+                          />
+                        </div>
+                      </div>
+                       <Button 
+                        type="submit" 
+                        disabled={isSubmitting}
+                        className="h-14 px-12 bg-blue hover:bg-navy text-white text-sm font-bold rounded-2xl transition-all shadow-xl shadow-blue/20"
+                      >
+                        {isSubmitting ? 'Processing...' : 'Complete & Pay'}
+                      </Button>
+                   </div>
+                </section>
+
+              </form>
+            </div>
+          </div>
+
+          {/* Info Side */}
+          <div className="space-y-8">
+             <div className="bg-navy p-10 rounded-[2rem] text-white space-y-8 shadow-2xl shadow-navy/20">
+               <h3 className="text-xl font-bold">Summary</h3>
+              
+              <div className="space-y-4">
+                 <div className="flex justify-between items-center text-xs font-bold text-white/40">
+                   <span>Gross Total</span>
+                   <span>${calculateTotal()}</span>
+                 </div>
+                <div className="h-px bg-white/5" />
+                 <div className="flex justify-between items-center text-xl font-bold text-white">
+                   <span>Total Due</span>
+                   <span className="text-blue font-bold">${calculateTotal()}</span>
+                 </div>
               </div>
-              <h2 className="text-3xl lg:text-4xl font-black text-white uppercase tracking-tight leading-none">Registration <span className="text-blue">Manifesto</span></h2>
-              <p className="text-white/40 text-[13px] font-bold uppercase tracking-wide leading-relaxed">
-                 We maintain a rigorous standard of transparency and security for all 
-                 international delegates. our commitment to accessibility remains paramount.
-              </p>
-           </div>
-           
-           <div className="grid grid-cols-1 gap-4">
-              {[
-                { t: 'Cancellation', d: 'Full credit issuance up to 45 calendars prior to summit onset.' },
-                { t: 'Group Incentives', d: 'Cumulative 15% reduction for cohorts exceeding 5 researchers.' },
-                { t: 'Security', d: 'Standardized SSL/TLS encryption for all international transactions.' },
-              ].map((item, i) => (
-                <div key={i} className="p-8 border border-white/5 bg-white/5 rounded-2xl space-y-2">
-                   <h4 className="text-blue text-[11px] font-black uppercase tracking-widest">{item.t}</h4>
-                   <p className="text-white/30 text-[10px] font-bold uppercase tracking-widest leading-loose">{item.d}</p>
+
+              <div className="space-y-6 pt-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center shrink-0">
+                    <ShieldCheck className="w-4 h-4 text-blue" />
+                  </div>
+                   <div className="space-y-1">
+                     <p className="text-xs font-bold">Secure Payment</p>
+                     <p className="text-[10px] font-semibold text-white/30 leading-relaxed">Securely processed for your safety.</p>
+                   </div>
                 </div>
-              ))}
-           </div>
-        </section>
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center shrink-0">
+                    <Mail className="w-4 h-4 text-blue" />
+                  </div>
+                   <div className="space-y-1">
+                     <p className="text-xs font-bold">Instant Receipt</p>
+                     <p className="text-[10px] font-semibold text-white/30 leading-relaxed">Confirmation and invoice sent automatically.</p>
+                   </div>
+                </div>
+              </div>
+            </div>
+
+             <div className="bg-slate-50 p-10 rounded-[2rem] space-y-8 border border-slate-100">
+                <h3 className="text-sm font-bold text-navy">Registration Includes</h3>
+               <ul className="space-y-4">
+                   {['Speaker Certificate', 'Official Program Inclusion', 'E-Abstract Book Publication', 'Research Paper Publication', 'Complimentary Meals', 'Full Session Access'].map((item, i) => (
+                    <li key={i} className="flex gap-3 text-xs font-semibold text-slate-500 items-start">
+                       <CheckCircle2 className="w-3.5 h-3.5 text-blue shrink-0" />
+                       {item}
+                    </li>
+                  ))}
+               </ul>
+            </div>
+          </div>
+
+        </div>
       </div>
     </PageLayout>
   );

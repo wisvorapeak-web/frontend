@@ -56,14 +56,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       >
         <div className="h-full flex flex-col p-6 overflow-y-auto scrollbar-none">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 mb-10 group flex-none">
-            <div className="w-10 h-10 rounded-xl bg-blue flex items-center justify-center group-hover:rotate-12 transition-transform shadow-lg shadow-blue/20">
-              <span className="text-white font-bold text-xl">A</span>
-            </div>
-            <div className="text-white">
-              <p className="font-bold text-lg leading-tight tracking-tight">Ascendix</p>
-              <p className="text-[10px] text-white/50 uppercase tracking-widest font-semibold">Summits</p>
-            </div>
+          <Link to="/" className="flex items-center gap-3 mb-10 group flex-none hover:scale-105 active:scale-95 transition-all">
+            <img src="/logo.png" alt="Ascendix Summits" className="h-10 w-auto object-contain brightness-0 invert" />
           </Link>
 
           {/* Nav Links */}

@@ -11,19 +11,19 @@ const quickLinks = [
   { label: 'Home', href: '/' },
   { label: 'About', href: '/about' },
   { label: 'Topics', href: '/topics' },
-  { label: 'Dates', href: '/dates' },
+  { label: 'Key Dates', href: '/dates' },
   { label: 'Registration', href: '/registration' },
-  { label: 'Venue', href: '/venue' },
+  { label: 'Venue & Travel', href: '/venue' },
   { label: 'Contact', href: '/contact' },
 ];
 
 const resources = [
-  { label: 'Abstract Guidelines', href: '#' },
-  { label: 'Presentation Templates', href: '#' },
-  { label: 'Visa Information', href: '#' },
-  { label: 'Accommodation', href: '#' },
-  { label: 'Sponsorship', href: '#' },
-  { label: 'Media Kit', href: '#' },
+  { label: 'Abstract Guidelines', href: '/abstract-submission' },
+  { label: 'Event Program', href: '/program' },
+  { label: 'Visa Information', href: '/venue' },
+  { label: 'Accommodation', href: '/venue' },
+  { label: 'Sponsorship', href: '/sponsorship' },
+  { label: 'Media Partners', href: '/contact' },
 ];
 
 export default function Footer() {
@@ -56,10 +56,10 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16">
           <div className="space-y-8">
-            <h3 className="text-2xl font-black text-white uppercase tracking-tighter">
-              {settings?.site_title?.split(' ')[0] || 'ASCENDIX'} <span className="text-blue">{settings?.site_title?.split(' ')[1] || 'SUMMITS'}</span> 
-            </h3>
-            <p className="text-[11px] font-bold text-white/40 uppercase tracking-widest leading-loose">
+            <Link to="/" className="inline-block hover:scale-105 active:scale-95 transition-all">
+              <img src="/logo.png" alt="Ascendix Summits" className="h-16 md:h-20 w-auto object-contain brightness-0 invert" />
+            </Link>
+            <p className="text-sm font-medium text-white/40 leading-loose">
               {settings?.site_tagline || 'Helping shape the future of farming and food technology.'}
             </p>
             <div className="flex gap-4">
@@ -72,11 +72,11 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-[10px] font-black text-blue uppercase tracking-[0.3em] mb-8">Navigation</h4>
+            <h4 className="text-xs font-bold text-blue mb-8">Navigation</h4>
             <ul className="space-y-4">
               {quickLinks.map((l) => (
                 <li key={l.label}>
-                  <Link to={l.href} className="text-xs font-black text-white/50 hover:text-white uppercase tracking-widest transition-colors flex items-center gap-2">
+                  <Link to={l.href} className="text-sm font-medium text-white/50 hover:text-white transition-colors flex items-center gap-2">
                     {l.label}
                   </Link>
                 </li>
@@ -85,34 +85,34 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-[10px] font-black text-blue uppercase tracking-[0.3em] mb-8">Resources</h4>
+            <h4 className="text-xs font-bold text-blue mb-8">Resources</h4>
             <ul className="space-y-4">
               {resources.map((l) => (
                 <li key={l.label}>
-                  <a href={l.href} className="text-xs font-black text-white/50 hover:text-white uppercase tracking-widest transition-colors">
+                  <Link to={l.href} className="text-sm font-medium text-white/50 hover:text-white transition-colors">
                     {l.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
 
           <div className="space-y-8">
-            <h4 className="text-[10px] font-black text-blue uppercase tracking-[0.3em] mb-8">Newsletter</h4>
+            <h4 className="text-xs font-bold text-blue mb-8">Newsletter</h4>
             <form className="space-y-3">
-              <input type="email" placeholder="EMAIL ADDRESS" className="w-full h-12 bg-white/5 border border-white/10 rounded-xl px-4 text-[10px] font-black text-white placeholder:text-white/20 focus:outline-none focus:border-blue transition-all" />
-              <button className="w-full h-12 bg-blue text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-white hover:text-navy transition-all">Subscribe</button>
+              <input type="email" placeholder="Email Address" className="w-full h-12 bg-white/5 border border-white/10 rounded-xl px-4 text-sm font-medium text-white placeholder:text-white/20 focus:outline-none focus:border-blue transition-all" />
+              <button className="w-full h-12 bg-blue text-white text-sm font-bold rounded-xl hover:bg-white hover:text-navy transition-all">Subscribe</button>
             </form>
           </div>
         </div>
 
         <div className="mt-20 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-[9px] font-black text-white/20 uppercase tracking-[0.2em]">
-            © 2026 ASCENDIX SUMMITS. 
+          <p className="text-xs font-medium text-white/20">
+            © 2026 Ascendix Summits. 
           </p>
           <div className="flex gap-8">
             {['Privacy', 'Terms', 'Cookies'].map((t) => (
-              <a key={t} href="#" className="text-[9px] font-black text-white/20 hover:text-white uppercase tracking-widest transition-colors">{t}</a>
+              <a key={t} href="#" className="text-xs font-medium text-white/20 hover:text-white transition-colors">{t}</a>
             ))}
           </div>
         </div>

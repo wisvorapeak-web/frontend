@@ -43,7 +43,7 @@ export default function Overview() {
   const [dashboardStats, setDashboardStats] = useState({
     registeredEvents: 0,
     submittedAbstracts: 0,
-    professionalIndex: 8.4,
+    profileScore: 8.4,
     networkPoints: 450
   });
 
@@ -74,7 +74,7 @@ export default function Overview() {
   const displayStats = [
     { label: 'Registered Events', value: dashboardStats.registeredEvents.toString(), icon: Calendar, color: 'text-blue bg-blue/10' },
     { label: 'Submitted Abstracts', value: dashboardStats.submittedAbstracts.toString(), icon: FileText, color: 'text-purple-600 bg-purple-50' },
-    { label: 'Professional Index', value: dashboardStats.professionalIndex.toString(), icon: Award, color: 'text-amber-600 bg-amber-50' },
+    { label: 'Profile Score', value: dashboardStats.profileScore.toString(), icon: Award, color: 'text-amber-600 bg-amber-50' },
     { label: 'Network Points', value: dashboardStats.networkPoints.toString(), icon: Users, color: 'text-emerald-600 bg-emerald-50' },
   ];
 
@@ -137,10 +137,10 @@ export default function Overview() {
                     >
                       <div className="flex justify-between items-start mb-2">
                         <div>
-                          <p className="text-xs text-blue font-bold uppercase tracking-wider mb-1">{event.type}</p>
+                          <p className="text-xs text-blue font-bold mb-1">{event.type}</p>
                           <h4 className="font-bold text-navy group-hover:text-blue transition-colors">{event.title}</h4>
                         </div>
-                        <span className={`px-2 py-1 rounded-md text-[10px] font-bold uppercase ${
+                        <span className={`px-2 py-1 rounded-md text-xs font-bold ${
                           event.status === 'Confirmed' ? 'bg-emerald-100 text-emerald-600' : 'bg-amber-100 text-amber-600'
                         }`}>
                           {event.status}

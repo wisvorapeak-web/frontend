@@ -52,8 +52,8 @@ export default function DatesPage() {
               {milestones.map((milestone, i) => (
                 <div key={i} className="flex flex-col md:flex-row items-center gap-10 group">
                    <div className="flex flex-col items-center md:items-end min-w-[200px] text-center md:text-right">
-                      <p className="text-[10px] font-black uppercase text-indigo-400 tracking-widest mb-1">Target Date</p>
-                      <h4 className="text-2xl font-black font-outfit text-slate-900 group-hover:text-indigo-600 transition-colors uppercase leading-tight">{milestone.date}</h4>
+                      <p className="text-xs font-bold text-indigo-400 mb-1">Target Date</p>
+                      <h4 className="text-2xl font-bold font-outfit text-slate-900 group-hover:text-indigo-600 transition-colors leading-tight">{milestone.date}</h4>
                    </div>
 
                    {/* Connector Dot */}
@@ -63,8 +63,8 @@ export default function DatesPage() {
 
                    <div className="flex-1 space-y-2 text-center md:text-left">
                       <div className="flex flex-col md:flex-row items-center gap-4">
-                         <h3 className="text-xl font-black text-slate-900 font-outfit uppercase tracking-tight leading-tight">{milestone.title}</h3>
-                         <div className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${milestone.color}`}>
+                         <h3 className="text-xl font-bold text-slate-900 font-outfit leading-tight">{milestone.title}</h3>
+                         <div className={`px-4 py-1.5 rounded-full text-[10px] font-bold border ${milestone.color}`}>
                             {milestone.status}
                          </div>
                       </div>
@@ -79,12 +79,12 @@ export default function DatesPage() {
         <section className="bg-slate-900 p-10 lg:p-12 rounded-[2.5rem] text-white flex flex-col md:flex-row items-center justify-between text-center md:text-left gap-8 overflow-hidden relative">
            <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(99,102,241,0.05),transparent)] pointer-events-none" />
            <div className="space-y-4 relative z-10">
-              <h2 className="text-3xl font-black font-outfit uppercase tracking-tight">Need a customized schedule?</h2>
+              <h2 className="text-3xl font-bold font-outfit">Need a customized schedule?</h2>
               <p className="text-slate-400 text-lg font-medium leading-relaxed max-w-xl">
                  Sync the entire summit calendar to your Google or Outlook calendar to receive mobile alerts for scientific track deadlines.
               </p>
            </div>
-           <button className="bg-white text-slate-900 px-10 py-5 rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-indigo-600 hover:text-white transition-all active:scale-95 shadow-2xl relative z-10 group inline-flex items-center gap-2">
+           <button className="bg-white text-slate-900 px-10 py-5 rounded-2xl font-bold text-sm hover:bg-indigo-600 hover:text-white transition-all active:scale-95 shadow-2xl relative z-10 group inline-flex items-center gap-2">
               Sync to Calendar <CheckCircle2 className="w-3.5 h-3.5 opacity-50" />
            </button>
         </section>

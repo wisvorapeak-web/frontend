@@ -9,6 +9,7 @@ import {
   Award
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const audiences = [
   {
@@ -24,6 +25,7 @@ const audiences = [
     ],
     color: 'from-blue-500 to-cyan-400',
     bgColor: 'bg-blue/5',
+    link: '/abstract-submission'
   },
   {
     icon: GraduationCap,
@@ -38,6 +40,7 @@ const audiences = [
     ],
     color: 'from-purple-500 to-pink-400',
     bgColor: 'bg-purple/5',
+    link: '/registration'
   },
   {
     icon: Briefcase,
@@ -52,6 +55,7 @@ const audiences = [
     ],
     color: 'from-orange-500 to-amber-400',
     bgColor: 'bg-orange/5',
+    link: '/sponsorship'
   },
 ];
 
@@ -71,9 +75,9 @@ export default function WhyAttend() {
         <div className="text-center mb-16 space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue/5 border border-blue/10">
             <span className="w-1.5 h-1.5 rounded-full bg-blue" />
-            <span className="text-[10px] font-black text-blue uppercase tracking-widest">Why Join Us?</span>
+            <span className="text-xs font-bold text-blue">Why Join Us?</span>
           </div>
-          <h2 className="text-4xl lg:text-5xl font-black text-navy uppercase tracking-tight">Made for You</h2>
+          <h2 className="text-4xl lg:text-5xl font-bold text-navy">Made for You</h2>
           <p className="text-slate-500 text-base font-medium max-w-2xl mx-auto">
             An event designed for the needs of researchers, students, and industry experts.
           </p>
@@ -88,8 +92,8 @@ export default function WhyAttend() {
               
               <div className="space-y-4">
                 <div>
-                  <p className="text-blue text-[10px] font-black uppercase tracking-widest mb-1">{a.subtitle}</p>
-                  <h3 className="text-2xl font-black text-navy uppercase tracking-tight">{a.title}</h3>
+                  <p className="text-blue text-xs font-bold mb-1">{a.subtitle}</p>
+                  <h3 className="text-2xl font-bold text-navy">{a.title}</h3>
                 </div>
                 
                 <p className="text-slate-500 text-[13px] font-medium leading-relaxed opacity-80">
@@ -98,7 +102,7 @@ export default function WhyAttend() {
 
                 <ul className="space-y-3 pt-4">
                   {a.benefits.map((b, j) => (
-                    <li key={j} className="flex items-center gap-3 text-[11px] font-bold text-navy/60 uppercase tracking-wide">
+                    <li key={j} className="flex items-center gap-3 text-xs font-semibold text-navy/60">
                       <div className="w-1.5 h-1.5 rounded-full bg-blue/40" />
                       {b}
                     </li>
@@ -106,9 +110,11 @@ export default function WhyAttend() {
                 </ul>
 
                 <div className="pt-6">
-                    <Button variant="ghost" className="p-0 h-auto text-[10px] font-black uppercase tracking-widest text-navy hover:text-blue hover:bg-transparent">
-                        Discover More <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
+                    <Link to={a.link}>
+                        <Button variant="ghost" className="p-0 h-auto text-xs font-bold text-navy hover:text-blue hover:bg-transparent">
+                            Discover More <ArrowRight className="w-4 h-4 ml-2" />
+                        </Button>
+                    </Link>
                 </div>
               </div>
             </div>
@@ -124,8 +130,8 @@ export default function WhyAttend() {
           ].map((s, i) => (
             <div key={i} className="text-center space-y-2">
               <s.icon className="w-5 h-5 text-blue mx-auto mb-2 opacity-50" />
-              <p className="text-2xl font-black text-navy uppercase tracking-tight">{s.value}</p>
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{s.label}</p>
+              <p className="text-2xl font-bold text-navy">{s.value}</p>
+              <p className="text-xs font-semibold text-slate-400">{s.label}</p>
             </div>
           ))}
         </div>

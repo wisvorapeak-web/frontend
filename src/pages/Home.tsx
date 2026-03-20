@@ -11,6 +11,9 @@ import Testimonials from '../sections/Testimonials';
 import FAQ from '../sections/FAQ';
 import FinalCTA from '../sections/FinalCTA';
 import Footer from '../sections/Footer';
+import ChairsBanner from '../sections/ChairsBanner';
+import WorkshopsBanner from '../sections/WorkshopsBanner';
+import JournalsBanner from '../sections/JournalsBanner';
 import { Reveal } from '../components/Reveal';
 
 export default function Home() {
@@ -27,9 +30,15 @@ export default function Home() {
         <div className="section-divider" />
         <Reveal width="100%"><Speakers /></Reveal>
         <div className="section-divider" />
+        <Reveal width="100%"><ChairsBanner /></Reveal>
+        <div className="section-divider" />
         <Reveal width="100%"><WhyAttend /></Reveal>
         <div className="section-divider" />
+        <Reveal width="100%"><WorkshopsBanner /></Reveal>
+        <div className="section-divider" />
         <Reveal width="100%"><Registration /></Reveal>
+        <div className="section-divider" />
+        <Reveal width="100%"><JournalsBanner /></Reveal>
         <div className="section-divider" />
         <Reveal width="100%"><Venue /></Reveal>
         <div className="section-divider" />

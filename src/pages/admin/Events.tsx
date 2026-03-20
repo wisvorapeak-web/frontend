@@ -38,7 +38,7 @@ export default function AdminEvents() {
     }
   };
 
-  if (loading) return <AdminLayout><div className="text-[10px] font-black uppercase tracking-widest text-slate-400 p-12">Synchronizing Itineraries...</div></AdminLayout>;
+  if (loading) return <AdminLayout><div className="text-xs font-bold text-slate-400 p-12">Loading schedule...</div></AdminLayout>;
 
   return (
     <AdminLayout>
@@ -46,8 +46,10 @@ export default function AdminEvents() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <h1 className="text-3xl font-black text-slate-900 mb-2 font-outfit text-indigo-900">Summit Manager</h1>
-            <p className="text-slate-500 font-medium font-outfit">Control the scientific program, schedule releases, and milestone dates.</p>
+          <div>
+            <h1 className="text-3xl font-bold text-slate-900 mb-2 font-outfit text-indigo-900">Schedule Manager</h1>
+            <p className="text-slate-500 font-medium font-outfit">Manage the event program, session times, and important dates.</p>
+          </div>
           </div>
           <div className="flex items-center gap-3">
             <Button variant="outline" className="rounded-xl border-slate-200 font-bold text-slate-600 gap-2 h-11 px-6 shadow-sm border-2">
@@ -67,9 +69,9 @@ export default function AdminEvents() {
                    <div className="p-2.5 bg-indigo-50 rounded-xl">
                       <Clock className="w-5 h-5" />
                    </div>
-                   <h3 className="text-xl font-black font-outfit tracking-tight uppercase">Program Timeline</h3>
+                    <h3 className="text-xl font-bold font-outfit">Event Schedule</h3>
                 </div>
-                <span className="text-[10px] font-black text-slate-300 uppercase underline decoration-2 underline-offset-4 cursor-pointer hover:text-indigo-600">Reorder All</span>
+                <span className="text-xs font-bold text-slate-300 underline decoration-2 underline-offset-4 cursor-pointer hover:text-indigo-600">Reorder All</span>
              </div>
 
              <div className="space-y-4">
@@ -77,8 +79,8 @@ export default function AdminEvents() {
                    <div key={session.id} className="group p-6 bg-white border border-slate-100 rounded-[2rem] shadow-xl shadow-slate-200/50 hover:border-indigo-500/20 transition-all">
                       <div className="flex justify-between items-start mb-4">
                          <div className="space-y-1">
-                            <span className="text-[9px] font-black text-indigo-500 uppercase tracking-[0.2em]">{session.day} • {session.start_time} - {session.end_time}</span>
-                            <h4 className="text-lg font-black text-slate-900 font-outfit leading-tight group-hover:text-indigo-600 transition-colors uppercase tracking-tight">{session.title}</h4>
+                            <span className="text-xs font-bold text-indigo-500">{session.day} • {session.start_time} - {session.end_time}</span>
+                            <h4 className="text-lg font-bold text-slate-900 font-outfit leading-tight group-hover:text-indigo-600 transition-colors">{session.title}</h4>
                          </div>
                          <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                             <Button variant="ghost" size="icon" className="w-8 h-8 rounded-lg text-slate-300 hover:text-indigo-600 hover:bg-indigo-50">
@@ -89,7 +91,7 @@ export default function AdminEvents() {
                             </Button>
                          </div>
                       </div>
-                      <div className="flex items-center gap-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
+                      <div className="flex items-center gap-4 text-xs font-bold text-slate-400">
                          <div className="flex items-center gap-1.5 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-100">
                             <MapPin className="w-3.5 h-3.5" /> {session.location || 'Main Hall'}
                          </div>
@@ -104,7 +106,7 @@ export default function AdminEvents() {
                       <div className="w-16 h-16 bg-white rounded-3xl flex items-center justify-center mx-auto text-slate-200 mb-6 shadow-sm">
                          <Clock className="w-8 h-8" />
                       </div>
-                      <p className="text-xs font-black text-slate-400 uppercase tracking-widest">No Active Sessions</p>
+                       <p className="text-xs font-bold text-slate-400">No Active Sessions</p>
                    </div>
                 )}
              </div>
@@ -117,9 +119,9 @@ export default function AdminEvents() {
                    <div className="p-2.5 bg-emerald-50 rounded-xl">
                       <CalendarDays className="w-5 h-5 text-emerald-600" />
                    </div>
-                   <h3 className="text-xl font-black font-outfit tracking-tight uppercase">Critical Milestones</h3>
+                    <h3 className="text-xl font-bold font-outfit">Important Dates</h3>
                 </div>
-                <Button variant="ghost" className="h-9 px-4 rounded-xl text-emerald-600 hover:bg-emerald-50 font-bold text-[10px] uppercase">
+                <Button variant="ghost" className="h-9 px-4 rounded-xl text-emerald-600 hover:bg-emerald-50 font-bold text-xs">
                    Add Date
                 </Button>
              </div>
@@ -131,15 +133,15 @@ export default function AdminEvents() {
                       
                       <div className="flex justify-between items-start relative z-10">
                          <div className="space-y-1">
-                            <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-1">{new Date(date.date).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })}</p>
-                            <h4 className="text-lg font-black font-outfit uppercase tracking-tight">{date.event}</h4>
+                            <p className="text-xs font-bold text-emerald-400 mb-1">{new Date(date.date).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })}</p>
+                            <h4 className="text-lg font-bold font-outfit">{date.event}</h4>
                          </div>
                          <Button variant="ghost" size="icon" className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-white hover:bg-white hover:text-emerald-900 transition-all">
                             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                          </Button>
                       </div>
-                      <p className="mt-4 text-[10px] font-bold text-emerald-400/80 uppercase tracking-[0.2em] leading-relaxed">
-                         {date.description || 'Public deployment pending final confirmation.'}
+                       <p className="mt-4 text-xs font-bold text-emerald-400/80 leading-relaxed">
+                          {date.description || 'Waiting for final confirmation.'}
                       </p>
                    </div>
                 ))}
@@ -148,7 +150,7 @@ export default function AdminEvents() {
                       <div className="w-16 h-16 bg-white rounded-3xl flex items-center justify-center mx-auto text-slate-200 mb-6 shadow-sm">
                          <Calendar className="w-8 h-8" />
                       </div>
-                      <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Static Milestones Pending</p>
+                        <p className="text-xs font-bold text-slate-400">No important dates set.</p>
                    </div>
                 )}
              </div>

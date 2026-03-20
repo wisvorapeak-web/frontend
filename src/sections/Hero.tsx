@@ -45,23 +45,23 @@ const AbstractForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid grid-cols-2 gap-4">
+    <form onSubmit={handleSubmit} className="space-y-6 text-left">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">First Name</Label>
+          <Label className="text-xs font-semibold text-slate-400">First Name</Label>
           <Input 
-            className="h-10 bg-slate-50 border-transparent rounded-lg text-[10px] font-black uppercase tracking-widest focus:bg-white focus:border-blue transition-all"
-            placeholder="JOHN" 
+            className="h-10 bg-slate-50 border-transparent rounded-lg text-sm font-semibold focus:bg-white focus:border-blue transition-all"
+            placeholder="John" 
             required 
             value={formData.firstName}
             onChange={(e) => setFormData({...formData, firstName: e.target.value})}
           />
         </div>
         <div className="space-y-2">
-          <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Last Name</Label>
+          <Label className="text-xs font-semibold text-slate-400">Last Name</Label>
           <Input 
-            className="h-10 bg-slate-50 border-transparent rounded-lg text-[10px] font-black uppercase tracking-widest focus:bg-white focus:border-blue transition-all"
-            placeholder="DOE" 
+            className="h-10 bg-slate-50 border-transparent rounded-lg text-sm font-semibold focus:bg-white focus:border-blue transition-all"
+            placeholder="Doe" 
             required 
             value={formData.lastName}
             onChange={(e) => setFormData({...formData, lastName: e.target.value})}
@@ -70,11 +70,11 @@ const AbstractForm = () => {
       </div>
       
       <div className="space-y-2">
-        <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Email</Label>
+        <Label className="text-xs font-semibold text-slate-400">Email</Label>
         <Input 
-          className="h-10 bg-slate-50 border-transparent rounded-lg text-[10px] font-black uppercase tracking-widest focus:bg-white focus:border-blue transition-all"
+          className="h-10 bg-slate-50 border-transparent rounded-lg text-sm font-semibold focus:bg-white focus:border-blue transition-all"
           type="email" 
-          placeholder="EMAIL@UNIVERSITY.EDU" 
+          placeholder="email@university.edu" 
           required 
           value={formData.email}
           onChange={(e) => setFormData({...formData, email: e.target.value})}
@@ -82,24 +82,24 @@ const AbstractForm = () => {
       </div>
 
       <div className="space-y-2">
-        <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Category</Label>
+        <Label className="text-xs font-semibold text-slate-400">Category</Label>
         <Select onValueChange={(val) => setFormData({...formData, topic: val})}>
-          <SelectTrigger className="h-10 bg-slate-50 border-transparent rounded-lg text-[10px] font-black uppercase tracking-widest">
-            <SelectValue placeholder="SELECT CATEGORY" />
+          <SelectTrigger className="h-10 bg-slate-50 border-transparent rounded-lg text-sm font-semibold">
+            <SelectValue placeholder="Select Category" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="crop-science" className="text-[10px] font-black uppercase">Crop Science & Genetics</SelectItem>
-            <SelectItem value="food-safety" className="text-[10px] font-black uppercase">Food Safety & Quality</SelectItem>
-            <SelectItem value="animal-health" className="text-[10px] font-black uppercase">Animal Health & Nutrition</SelectItem>
-            <SelectItem value="agri-iot" className="text-[10px] font-black uppercase">Agri-IoT & Automation</SelectItem>
-            <SelectItem value="sustainable-farming" className="text-[10px] font-black uppercase">Sustainable Farming</SelectItem>
-            <SelectItem value="bio-engineering" className="text-[10px] font-black uppercase">Bio-resource Engineering</SelectItem>
+            <SelectItem value="crop-science" className="text-sm font-semibold">Crop Science & Genetics</SelectItem>
+            <SelectItem value="food-safety" className="text-sm font-semibold">Food Safety & Quality</SelectItem>
+            <SelectItem value="animal-health" className="text-sm font-semibold">Animal Health & Nutrition</SelectItem>
+            <SelectItem value="agri-iot" className="text-sm font-semibold">Agri-IoT & Automation</SelectItem>
+            <SelectItem value="sustainable-farming" className="text-sm font-semibold">Sustainable Farming</SelectItem>
+            <SelectItem value="bio-engineering" className="text-sm font-semibold">Bio-resource Engineering</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
-      <Button type="submit" className="w-full h-12 bg-blue text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-navy transition-all" disabled={isSubmitting}>
-        {isSubmitting ? 'SENDING...' : 'SUBMIT ABSTRACT'}
+      <Button type="submit" className="w-full h-12 bg-blue text-white text-sm font-bold rounded-xl hover:bg-navy transition-all" disabled={isSubmitting}>
+        {isSubmitting ? 'Sending...' : 'Submit Your Talk'}
       </Button>
     </form>
   );
@@ -140,23 +140,23 @@ const RegistrationForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid grid-cols-2 gap-4">
+    <form onSubmit={handleSubmit} className="space-y-6 text-left">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">First Name</Label>
+          <Label className="text-xs font-semibold text-slate-400">First Name</Label>
           <Input 
-            className="h-10 bg-slate-50 border-transparent rounded-lg text-[10px] font-black uppercase tracking-widest focus:bg-white focus:border-blue transition-all"
-            placeholder="JOHN" 
+            className="h-10 bg-slate-50 border-transparent rounded-lg text-sm font-semibold focus:bg-white focus:border-blue transition-all"
+            placeholder="John" 
             required 
             value={formData.firstName}
             onChange={(e) => setFormData({...formData, firstName: e.target.value})}
           />
         </div>
         <div className="space-y-2">
-          <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Last Name</Label>
+          <Label className="text-xs font-semibold text-slate-400">Last Name</Label>
           <Input 
-            className="h-10 bg-slate-50 border-transparent rounded-lg text-[10px] font-black uppercase tracking-widest focus:bg-white focus:border-blue transition-all"
-            placeholder="DOE" 
+            className="h-10 bg-slate-50 border-transparent rounded-lg text-sm font-semibold focus:bg-white focus:border-blue transition-all"
+            placeholder="Doe" 
             required 
             value={formData.lastName}
             onChange={(e) => setFormData({...formData, lastName: e.target.value})}
@@ -164,31 +164,31 @@ const RegistrationForm = () => {
         </div>
       </div>
       <div className="space-y-2">
-        <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Email</Label>
+        <Label className="text-xs font-semibold text-slate-400">Email</Label>
         <Input 
-          className="h-10 bg-slate-50 border-transparent rounded-lg text-[10px] font-black uppercase tracking-widest focus:bg-white focus:border-blue transition-all"
+          className="h-10 bg-slate-50 border-transparent rounded-lg text-sm font-semibold focus:bg-white focus:border-blue transition-all"
           type="email" 
-          placeholder="EMAIL@UNIVERSITY.EDU" 
+          placeholder="email@university.edu" 
           required 
           value={formData.email}
           onChange={(e) => setFormData({...formData, email: e.target.value})}
         />
       </div>
       <div className="space-y-2">
-        <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Registration Type</Label>
+        <Label className="text-xs font-semibold text-slate-400">Registration Type</Label>
         <Select onValueChange={(val) => setFormData({...formData, ticketType: val})}>
-          <SelectTrigger className="h-10 bg-slate-50 border-transparent rounded-lg text-[10px] font-black uppercase tracking-widest">
-            <SelectValue placeholder="SELECT TIER" />
+          <SelectTrigger className="h-10 bg-slate-50 border-transparent rounded-lg text-sm font-semibold">
+            <SelectValue placeholder="Select Tier" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="early" className="text-[10px] font-black uppercase">Early Bird</SelectItem>
-            <SelectItem value="standard" className="text-[10px] font-black uppercase">Standard</SelectItem>
-            <SelectItem value="student" className="text-[10px] font-black uppercase">Student</SelectItem>
+            <SelectItem value="early" className="text-sm font-semibold">Early Bird</SelectItem>
+            <SelectItem value="standard" className="text-sm font-semibold">Standard</SelectItem>
+            <SelectItem value="student" className="text-sm font-semibold">Student</SelectItem>
           </SelectContent>
         </Select>
       </div>
-      <Button type="submit" className="w-full h-12 bg-navy text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-blue transition-all" disabled={isSubmitting}>
-        {isSubmitting ? 'PROCESSING...' : 'REGISTER NOW'}
+      <Button type="submit" className="w-full h-12 bg-navy text-white text-sm font-bold rounded-xl hover:bg-blue transition-all" disabled={isSubmitting}>
+        {isSubmitting ? 'Processing...' : 'Register Now'}
       </Button>
     </form>
   );
@@ -200,74 +200,71 @@ export default function Hero() {
       {/* Background */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue/5 rounded-full blur-[150px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
       
-      <div className="absolute right-0 top-0 w-[50%] h-full hidden lg:block overflow-hidden pointer-events-none">
+      {/* Full Background Image */}
+      <div className="absolute inset-0 z-0">
         <img
-          src="/hero-bg.jpg"
-          alt="Scientific Innovation"
-          className="w-full h-full object-cover opacity-20 grayscale"
+          src="/hero-banner.png"
+          alt="Food, AgroTech & Animal Science"
+          className="w-full h-full object-cover opacity-40"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/90 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-navy/90 via-navy/70 to-navy" />
       </div>
 
-      <div className="relative z-10 w-full px-6 lg:px-16 xl:px-24">
-        <div className="max-w-3xl space-y-8">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full">
-            <span className="w-1.5 h-1.5 rounded-full bg-blue" />
-            <span className="text-[9px] text-white/50 font-black uppercase tracking-[0.2em]">AgroTech Event</span>
-          </div>
+      <div className="relative z-10 w-full px-6 lg:px-16 xl:px-24 flex justify-center">
+        <div className="max-w-4xl space-y-10 text-center flex flex-col items-center">
+         
 
           <div className="space-y-4">
-            <p className="text-[10px] font-black text-blue/60 uppercase tracking-[0.4em] mb-4">Presented by Ascendix Summits</p>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-none uppercase tracking-tighter">
+            <p className="text-sm font-bold text-blue/60 mb-4">Presented by Ascendix</p>
+            <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-white leading-tight">
               Ascendix World Food, <br />
               <span className="text-blue">AgroTech & Animal Science</span>
             </h1>
           </div>
 
 
-            <p className="text-[11px] font-bold text-white/40 uppercase tracking-widest leading-loose max-w-lg">
+            <p className="text-sm font-bold text-white/50 leading-loose max-w-2xl mx-auto">
               Join leading experts to advance sustainable farming, food technology, and animal health for a better future.
             </p>
 
-          <div className="flex flex-wrap gap-10 py-6 border-y border-white/5">
+          <div className="flex flex-wrap justify-center gap-12 py-10 border-y border-white/5 w-full">
             <div className="flex items-center gap-4">
-              <Calendar className="w-4 h-4 text-blue opacity-40" />
-              <div className="space-y-1">
-                <p className="text-[8px] text-white/20 uppercase font-black tracking-widest leading-none">Dates</p>
-                <p className="font-black text-[10px] text-white uppercase tracking-widest">June 24-26, 2026</p>
+              <Calendar className="w-5 h-5 text-blue opacity-50" />
+              <div className="space-y-1 text-left">
+                <p className="text-xs text-white/30 font-bold leading-none">Dates</p>
+                <p className="font-bold text-sm text-white">June 24-26, 2026</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <MapPin className="w-4 h-4 text-blue opacity-40" />
-              <div className="space-y-1">
-                <p className="text-[8px] text-white/20 uppercase font-black tracking-widest leading-none">Location</p>
-                <p className="font-black text-[10px] text-white uppercase tracking-widest">New Delhi, India</p>
+              <MapPin className="w-5 h-5 text-blue opacity-50" />
+              <div className="space-y-1 text-left">
+                <p className="text-xs text-white/30 font-bold leading-none">Location</p>
+                <p className="font-bold text-sm text-white">New Delhi, India</p>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-4 pt-2">
+          <div className="flex flex-wrap justify-center gap-4 pt-4">
              <Dialog>
               <DialogTrigger asChild>
-                <Button className="h-12 px-8 bg-blue text-white text-[9px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-white hover:text-navy transition-all">
-                  Submit Abstract
+                <Button className="h-12 px-8 bg-blue text-white text-sm font-bold rounded-xl hover:bg-white hover:text-navy transition-all">
+                  Submit Your Talk
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-lg">
-                <DialogHeader><DialogTitle className="text-xl font-black text-navy uppercase tracking-tight">Submit <span className="text-blue">Abstract</span></DialogTitle></DialogHeader>
+                <DialogHeader><DialogTitle className="text-xl font-bold text-navy">Submit <span className="text-blue">Your Talk</span></DialogTitle></DialogHeader>
                 <AbstractForm />
               </DialogContent>
             </Dialog>
 
             <Dialog>
               <DialogTrigger asChild>
-                <Button className="h-12 px-8 border border-white/10 text-white text-[9px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-white hover:text-navy transition-all">
-                  Get Tickets
+                <Button className="h-12 px-8 border border-white/10 text-white text-sm font-bold rounded-xl hover:bg-white hover:text-navy transition-all">
+                  Register Now
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-lg">
-                <DialogHeader><DialogTitle className="text-xl font-black text-navy uppercase tracking-tight">Complete <span className="text-blue">Registration</span></DialogTitle></DialogHeader>
+                <DialogHeader><DialogTitle className="text-xl font-bold text-navy">Complete <span className="text-blue">Registration</span></DialogTitle></DialogHeader>
                 <RegistrationForm />
               </DialogContent>
             </Dialog>

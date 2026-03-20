@@ -1,50 +1,33 @@
-import { useEffect } from 'react';
-import { MessageSquare, PhoneCall, Linkedin } from 'lucide-react';
+import { MessageSquare } from 'lucide-react';
 
 export default function FloatingWidgets() {
-  useEffect(() => {
-    // --- Tawk.to Integration ---
-    const s1 = document.createElement("script");
-    const s0 = document.getElementsByTagName("script")[0];
-    s1.async = true;
-    s1.src = 'https://embed.tawk.to/YOUR_TAWK_ID/default'; // USER needs to replace this
-    s1.charset = 'UTF-8';
-    s1.setAttribute('crossorigin', '*');
-    s0.parentNode?.insertBefore(s1, s0);
 
-    return () => {
-       // Cleanup if needed
-    };
-  }, []);
 
-  const openWhatsapp = () => {
-    window.open('https://wa.me/91XXXXXXXXXX', '_blank'); // USER needs to replace number
+
+
+  const openTawk = () => {
+    if (window.Tawk_API && window.Tawk_API.maximize) {
+      window.Tawk_API.maximize();
+    }
   };
 
   return (
-    <div className="fixed bottom-8 right-8 flex flex-col gap-4 z-50 animate-in slide-in-from-bottom-10 fade-in duration-1000">
-       {/* LinkedIn Link */}
-       <a 
-          href="https://linkedin.com/company/polymers2026" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="w-14 h-14 bg-white text-[#0077b5] rounded-2xl shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all border border-slate-100"
-       >
-          <Linkedin className="w-6 h-6 fill-current" />
-       </a>
-
-       {/* WhatsApp Widget */}
-       <button 
-          onClick={openWhatsapp}
-          className="w-14 h-14 bg-[#25d366] text-white rounded-2xl shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all border-none"
-       >
-          <PhoneCall className="w-6 h-6 fill-current" />
-       </button>
-
-       {/* Custom Chat Indication (for Tawk) */}
-       <div className="w-14 h-14 bg-indigo-600 text-white rounded-2xl shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all border-none">
-          <MessageSquare className="w-6 h-6" />
+    <div className="fixed bottom-6 right-6 z-[9999] group/stack">
+       {/* Support Tooltip */}
+       <div className="absolute bottom-full right-0 mb-4 opacity-0 group-hover/stack:opacity-100 transition-all scale-95 group-hover/stack:scale-100 pointer-events-none origin-bottom-right">
+          <div className="bg-white/95 backdrop-blur-xl border border-slate-100 px-4 py-2 rounded-2xl shadow-2xl flex items-center gap-3">
+             <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
+             <span className="text-xs font-bold text-navy whitespace-nowrap">Need help? We're online</span>
+          </div>
        </div>
+
+       {/* Tawk.to Chat Widget Trigger */}
+       <button 
+          onClick={openTawk}
+          className="w-14 h-14 bg-indigo-600 text-white rounded-2xl shadow-2xl flex items-center justify-center hover:scale-110 hover:-rotate-12 active:scale-95 transition-all border-none group"
+       >
+          <MessageSquare className="w-6 h-6 group-hover:scale-110 transition-transform" />
+       </button>
     </div>
   );
 }

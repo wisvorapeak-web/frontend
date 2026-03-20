@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 
 interface Speaker {
     id: string;
@@ -39,10 +41,15 @@ export default function Speakers() {
           <div className="space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue/5 border border-blue/10 rounded-full">
               <span className="w-1.5 h-1.5 rounded-full bg-blue" />
-              <span className="text-[10px] font-black text-blue uppercase tracking-widest">The Experts</span>
+              <span className="text-xs font-bold text-blue">The Experts</span>
             </div>
-            <h2 className="text-4xl lg:text-5xl font-black text-navy uppercase tracking-tighter leading-none">Our <span className="text-blue">Speakers</span></h2>
+            <h2 className="text-4xl lg:text-5xl font-bold text-navy leading-none">Our <span className="text-blue">Speakers</span></h2>
           </div>
+          <Link to="/speakers">
+            <Button variant="outline" className="h-12 px-8 border-navy/10 text-navy text-sm font-bold rounded-xl hover:bg-navy hover:text-white transition-all">
+                View All Speakers
+            </Button>
+          </Link>
         </div>
 
         <div ref={scrollContainerRef} className="flex gap-8 overflow-x-auto pb-12 snap-x snap-mandatory no-scrollbar">
@@ -57,20 +64,20 @@ export default function Speakers() {
                         </div>
                         <div className="p-6 space-y-3">
                            <div className="flex justify-between items-start">
-                              <div>
-                                <h3 className="text-sm font-black text-navy uppercase tracking-widest">{speaker.name}</h3>
-                                <p className="text-[9px] font-black text-slate-300 uppercase tracking-widest mt-1">{speaker.institution}</p>
-                              </div>
-                              <span className="text-[8px] font-black text-blue px-2 py-0.5 border border-blue/10 rounded uppercase">{speaker.category}</span>
+                               <div>
+                                 <h3 className="text-sm font-bold text-navy">{speaker.name}</h3>
+                                 <p className="text-[10px] font-semibold text-slate-400 mt-1">{speaker.institution}</p>
+                               </div>
+                               <span className="text-[10px] font-bold text-blue px-2 py-0.5 border border-blue/10 rounded">{speaker.category}</span>
                            </div>
-                           <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-relaxed line-clamp-2">{speaker.topic}</p>
+                           <p className="text-xs font-medium text-slate-400 leading-relaxed line-clamp-2">{speaker.topic}</p>
                         </div>
                     </div>
                 </div>
             ))
           ) : (
             <div className="w-full py-24 text-center">
-               <p className="text-[10px] font-black text-slate-200 uppercase tracking-[0.3em]">We are announcing our speakers soon...</p>
+               <p className="text-sm font-bold text-slate-300">We are announcing our speakers soon...</p>
             </div>
           )}
         </div>

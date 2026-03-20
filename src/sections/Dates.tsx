@@ -83,10 +83,10 @@ export default function Dates() {
             }}
           >
             <span className="w-1.5 h-1.5 rounded-full bg-blue" />
-            <span className="text-xs font-bold text-white/80 uppercase tracking-widest">Mark Your Calendar</span>
+            <span className="text-xs font-bold text-white/80">Mark Your Calendar</span>
           </div>
 
-          <h2 className="text-3xl lg:text-5xl font-black text-white mb-4 font-outfit"
+          <h2 className="text-3xl lg:text-5xl font-bold text-white mb-4 font-outfit"
             style={{
               transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
               opacity: isVisible ? 1 : 0,
@@ -130,9 +130,9 @@ export default function Dates() {
                               ${isHigh ? 'bg-indigo-500 text-white' : 'bg-white/10 text-white/80'}
                             `}>
                               <Icon className="w-4 h-4" />
-                              <span className="text-xs font-black uppercase tracking-widest">{new Date(item.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+                              <span className="text-xs font-bold">{new Date(item.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
                             </div>
-                            <h3 className="text-xl font-black mb-2 text-white font-outfit uppercase tracking-tight">{item.event}</h3>
+                             <h3 className="text-xl font-bold mb-2 text-white font-outfit">{item.event}</h3>
                             <p className="text-white/50 text-sm font-medium leading-relaxed">{item.description}</p>
                           </div>
                         </div>

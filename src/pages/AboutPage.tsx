@@ -6,6 +6,7 @@ import {
   FileText, 
   Rocket 
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function AboutPage() {
   const stats = [
@@ -26,29 +27,22 @@ export default function AboutPage() {
           <div className="space-y-8">
              <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue/5 border border-blue/10 rounded-full">
                 <Rocket className="w-3 h-3 text-blue" />
-                <span className="text-[9px] font-black text-blue uppercase tracking-widest">Working Together</span>
+                <span className="text-xs font-bold text-blue">Working Together</span>
              </div>
              
-             <h2 className="text-3xl lg:text-4xl font-black text-navy uppercase tracking-tight leading-none">
+             <h2 className="text-3xl lg:text-4xl font-bold text-navy leading-none">
                 Building a Better <span className="text-blue">Future</span>
              </h2>
 
-             <p className="text-slate-500 text-[13px] font-bold uppercase tracking-wide leading-relaxed">
+             <p className="text-slate-500 text-sm font-medium leading-relaxed">
                 Ascendix 2026 is a top meeting for researchers and business leaders to share new ideas that will change how we produce food. Our focus is on sustainable farming and new technology.
              </p>
-
-             <div className="p-8 border-l-2 border-slate-100 bg-slate-50/50">
-                <p className="text-navy text-[11px] font-black uppercase tracking-widest leading-loose italic opacity-60">
-                   "Accelerating the global transition toward a circular economy through 
-                   unprecedented multinational collaboration and engineering precision."
-                </p>
-             </div>
           </div>
 
           <div className="relative">
              <div className="rounded-3xl overflow-hidden border-8 border-white shadow-2xl rotate-1 group transition-transform duration-1000 hover:rotate-0">
                 <img 
-                   src="https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&q=80" 
+                   src="/about-agrotech.png" 
                    alt="Research Lab" 
                    className="w-full h-[450px] object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
                 />
@@ -60,14 +54,32 @@ export default function AboutPage() {
         <section className="bg-navy py-12 rounded-3xl grid grid-cols-2 lg:grid-cols-4 gap-8 px-8">
           {stats.map((s, i) => (
             <div key={i} className="text-center space-y-1">
-              <p className="text-3xl font-black text-white uppercase tracking-tighter">{s.count}</p>
-              <p className="text-[9px] font-black text-blue uppercase tracking-widest opacity-60">{s.label}</p>
+              <p className="text-3xl font-bold text-white">{s.count}</p>
+              <p className="text-xs font-semibold text-blue opacity-60">{s.label}</p>
             </div>
           ))}
         </section>
 
+        {/* Honoured Speaker CTA */}
+        <section className="bg-indigo-600 p-12 lg:p-20 rounded-[4rem] text-center text-white space-y-10 shadow-2xl shadow-indigo-600/20">
+            <h2 className="text-3xl lg:text-4xl font-bold font-outfit">Become an Honoured Speaker</h2>
+            <p className="max-w-xl mx-auto text-indigo-100 text-lg font-medium opacity-80 leading-relaxed">
+               Join the most prestigious scientific platform in the world for 
+               advancing the boundaries of global research and development.
+            </p>
+            
+            <div className="flex flex-wrap justify-center gap-6">
+               <Link to="/abstract-submission" className="h-16 px-10 bg-white text-indigo-600 rounded-2xl flex items-center justify-center text-sm font-bold shadow-2xl hover:bg-slate-50 transition-all active:scale-95 text-decoration-none">
+                  Apply to Speak
+               </Link>
+               <Link to="/sessions" className="h-16 px-10 border border-white/20 text-white rounded-2xl flex items-center justify-center text-sm font-bold hover:bg-white/5 transition-all text-decoration-none">
+                  View Tracks
+               </Link>
+            </div>
+        </section>
+
         {/* Focus areas */}
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-20">
            {[
              { title: 'Worldwide Meetings', desc: 'Sharing ideas from all over the world to help science grow.', icon: Globe },
              { title: 'Business Connections', desc: 'Connecting new research with real-world farming and manufacturing.', icon: Rocket },
@@ -77,8 +89,8 @@ export default function AboutPage() {
                 <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-blue opacity-40">
                    <obj.icon className="w-5 h-5" />
                 </div>
-                <h3 className="text-lg font-black text-navy uppercase tracking-tight">{obj.title}</h3>
-                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest leading-loose">{obj.desc}</p>
+                <h3 className="text-lg font-bold text-navy">{obj.title}</h3>
+                <p className="text-xs font-semibold text-slate-400 leading-loose">{obj.desc}</p>
              </div>
            ))}
         </section>

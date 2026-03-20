@@ -89,14 +89,14 @@ export default function Profile() {
               <CardContent className="pt-6 space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label className="text-xs font-bold uppercase tracking-wider text-gray-400">Institution</Label>
+                    <Label className="text-xs font-bold text-gray-400">Institution</Label>
                     <div className="relative group">
                       <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                       <Input defaultValue="Indian Institute of Materials" className="pl-10 bg-gray-50 border-transparent focus:bg-white focus:border-blue/20 rounded-xl" />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-xs font-bold uppercase tracking-wider text-gray-400">Designation</Label>
+                    <Label className="text-xs font-bold text-gray-400">Job Title</Label>
                     <div className="relative group">
                       <GraduationCap className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                       <Input defaultValue="Senior Research Fellow" className="pl-10 bg-gray-50 border-transparent focus:bg-white focus:border-blue/20 rounded-xl" />
@@ -118,21 +118,21 @@ export default function Profile() {
               </CardHeader>
               <CardContent className="pt-6 space-y-4">
                 <div className="space-y-2">
-                  <Label className="text-xs font-bold uppercase tracking-wider text-gray-400">Email Address</Label>
+                  <Label className="text-xs font-bold text-gray-400">Email Address</Label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <Input readOnly defaultValue="anand.verma@research.edu" className="pl-10 bg-gray-100 border-transparent rounded-xl text-gray-500" />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-xs font-bold uppercase tracking-wider text-gray-400">Phone Number</Label>
+                  <Label className="text-xs font-bold text-gray-400">Phone Number</Label>
                   <div className="relative">
                     <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <Input defaultValue="+91 98765 43210" className="pl-10 bg-gray-50 border-transparent focus:bg-white focus:border-blue/20 rounded-xl" />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-xs font-bold uppercase tracking-wider text-gray-400">Location</Label>
+                  <Label className="text-xs font-bold text-gray-400">Location</Label>
                   <div className="relative">
                     <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <Input defaultValue="Mumbai, India" className="pl-10 bg-gray-50 border-transparent focus:bg-white focus:border-blue/20 rounded-xl" />
@@ -150,11 +150,11 @@ export default function Profile() {
               </CardHeader>
               <CardContent className="pt-6 space-y-4">
                 <div className="space-y-2">
-                  <Label className="text-xs font-bold uppercase tracking-wider text-gray-400">Google Scholar</Label>
+                  <Label className="text-xs font-bold text-gray-400">Google Scholar</Label>
                   <Input placeholder="scholar.google.com/..." className="bg-gray-50 border-transparent focus:bg-white focus:border-blue/20 rounded-xl" />
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-xs font-bold uppercase tracking-wider text-gray-400">LinkedIn Profile</Label>
+                  <Label className="text-xs font-bold text-gray-400">LinkedIn Profile</Label>
                   <Input placeholder="linkedin.com/in/..." className="bg-gray-50 border-transparent focus:bg-white focus:border-blue/20 rounded-xl" />
                 </div>
               </CardContent>

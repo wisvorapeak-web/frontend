@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
-  ShieldCheck, 
   ArrowRight, 
   Chrome,
   Github,
@@ -45,10 +44,10 @@ export default function Login() {
         toast.success('You have successfully logged in.');
         navigate('/dashboard');
       } else {
-        toast.error(data.error || 'Identity verification failed.');
+        toast.error(data.error || 'Login failed.');
       }
     } catch (error) {
-      toast.error('Could not connect to the security cluster.');
+      toast.error('Could not connect to the server.');
     } finally {
       setIsLoading(false);
     }
@@ -60,8 +59,8 @@ export default function Login() {
       <div className="flex-1 flex items-center justify-center p-8 lg:p-12">
         <div className="w-full max-w-[440px] space-y-8 animate-in fade-in slide-in-from-left-4 duration-700">
           <div className="space-y-2">
-            <h1 className="text-3xl font-black text-white tracking-tight uppercase">Portal Login</h1>
-            <p className="text-[11px] font-black text-slate-500 uppercase tracking-widest leading-relaxed">
+            <h1 className="text-3xl font-bold text-white">Login</h1>
+            <p className="text-xs font-bold text-slate-500 leading-relaxed">
               Log in to manage your account, abstracts, and event registrations.
             </p>
           </div>
@@ -69,27 +68,27 @@ export default function Login() {
           <div className="bg-[#0f172a]/50 backdrop-blur-3xl border border-white/5 rounded-2xl p-8 lg:p-10 shadow-2xl">
             <form onSubmit={handleLogin} className="space-y-6">
               <div className="space-y-2">
-                <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Email Address</Label>
+                <Label className="text-xs font-bold text-slate-400 ml-1">Email Address</Label>
                 <Input 
                   name="email"
                   type="email" 
-                  placeholder="ANAND@UNIVERSITY.EDU"
-                  className="h-12 bg-white/5 border-white/5 focus:border-blue focus:ring-4 focus:ring-blue/5 rounded-xl px-4 text-white text-[10px] font-black uppercase tracking-widest placeholder:text-slate-700 transition-all border-none"
+                  placeholder="anand@university.edu"
+                  className="h-12 bg-white/5 border-white/5 focus:border-blue focus:ring-4 focus:ring-blue/5 rounded-xl px-4 text-white text-xs font-bold placeholder:text-slate-700 transition-all border-none"
                   required
                 />
               </div>
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between ml-1">
-                  <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Password</Label>
-                  <Link to="/forgot-password" title="Recover account" className="text-[9px] font-black text-blue hover:text-white uppercase tracking-widest transition-colors">Forgot Password?</Link>
+                  <Label className="text-xs font-bold text-slate-400">Password</Label>
+                  <Link to="/forgot-password" title="Recover account" className="text-xs font-bold text-blue hover:text-white transition-colors">Forgot Password?</Link>
                 </div>
                 <div className="relative group">
                   <Input 
                     name="password"
                     type={showPassword ? "text" : "password"} 
                     placeholder="••••••••••••"
-                    className="h-12 bg-white/5 border-white/5 focus:border-blue focus:ring-4 focus:ring-blue/5 rounded-xl px-4 text-white text-[10px] font-black uppercase tracking-widest placeholder:text-slate-700 transition-all border-none"
+                    className="h-12 bg-white/5 border-white/5 focus:border-blue focus:ring-4 focus:ring-blue/5 rounded-xl px-4 text-white text-xs font-bold placeholder:text-slate-700 transition-all border-none"
                     required
                   />
                   <button 
@@ -102,7 +101,7 @@ export default function Login() {
                 </div>
               </div>
 
-              <Button type="submit" className="w-full h-12 rounded-xl bg-blue hover:bg-white hover:text-navy text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-xl shadow-blue/5 active:scale-[0.98] transition-all" disabled={isLoading}>
+              <Button type="submit" className="w-full h-12 rounded-xl bg-blue hover:bg-white hover:text-navy text-white text-xs font-bold shadow-xl shadow-blue/5 active:scale-[0.98] transition-all" disabled={isLoading}>
                 {isLoading ? <Loader2 className="w-4 h-4 animate-spin text-white" /> : <>Log In <ArrowRight className="w-4 h-4 ml-2" /></>}
               </Button>
             </form>
@@ -115,11 +114,11 @@ export default function Login() {
             </div>
           </div>
 
-          <p className="text-center text-[10px] font-black uppercase tracking-widest text-slate-500">
+          <p className="text-center text-xs font-bold text-slate-500">
             First time? <Link to="/register" title="Create Account" className="text-blue hover:text-white transition-colors">Create Account</Link>
           </p>
 
-          <Link to="/" className="flex items-center justify-center gap-2 text-slate-700 hover:text-white text-[10px] font-black uppercase tracking-widest transition-colors group">
+          <Link to="/" className="flex items-center justify-center gap-2 text-slate-700 hover:text-white text-xs font-bold transition-colors group">
             <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Go back Home
           </Link>
         </div>
@@ -129,29 +128,28 @@ export default function Login() {
       <div className="hidden lg:flex flex-1 bg-navy items-center justify-center relative overflow-hidden">
         <div className="absolute inset-0 bg-blue/10 blur-[100px] -translate-y-1/2 translate-x-1/2 rounded-full" />
         <div className="max-w-md text-center space-y-10 relative z-10 px-8">
-           <div className="w-16 h-16 rounded-2xl bg-blue mx-auto flex items-center justify-center shadow-2xl shadow-blue/20">
-              <ShieldCheck className="text-white w-9 h-9" />
-           </div>
+           <Link to="/" className="inline-block hover:scale-105 active:scale-95 transition-all mb-10">
+              <img src="/logo.png" alt="Ascendix Summits" className="h-16 w-auto object-contain brightness-0 invert" />
+           </Link>
            
            <div className="space-y-4">
-              <h2 className="text-4xl font-black text-white uppercase tracking-tighter leading-none">Ascendix <span className="text-blue">Summits</span></h2>
-              <p className="text-xs font-black text-white/30 uppercase tracking-[0.2em] leading-relaxed">
+              <p className="text-xs font-bold text-white/30 leading-relaxed">
                 The leading platform for world food, agriculture, and animal science summits.
               </p>
            </div>
 
            <div className="grid grid-cols-3 gap-8 pt-8 border-t border-white/5">
               <div className="space-y-1">
-                 <p className="text-[14px] font-black text-white tracking-widest">99.9%</p>
-                 <p className="text-[8px] font-black text-blue uppercase tracking-widest">Uptime</p>
+                 <p className="text-sm font-bold text-white">99.9%</p>
+                 <p className="text-[10px] font-bold text-blue">Uptime</p>
               </div>
               <div className="space-y-1 border-x border-white/5">
-                 <p className="text-[14px] font-black text-white tracking-widest">&lt;1s</p>
-                 <p className="text-[8px] font-black text-blue uppercase tracking-widest">Latency</p>
+                 <p className="text-sm font-bold text-white">&lt;1s</p>
+                 <p className="text-[10px] font-bold text-blue">Latency</p>
               </div>
               <div className="space-y-1">
-                 <p className="text-[14px] font-black text-white tracking-widest">1K+</p>
-                 <p className="text-[8px] font-black text-blue uppercase tracking-widest">Nodes</p>
+                 <p className="text-sm font-bold text-white">1K+</p>
+                 <p className="text-[10px] font-bold text-blue">Members</p>
               </div>
            </div>
         </div>
