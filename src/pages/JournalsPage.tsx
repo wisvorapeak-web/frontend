@@ -1,5 +1,5 @@
 import PageLayout from './PageLayout';
-import { FileText, CheckCircle2, Globe, FileCheck } from 'lucide-react';
+import { FileText, CheckCircle2, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function JournalsPage() {

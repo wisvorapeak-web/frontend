@@ -1,19 +1,12 @@
 import { useState } from 'react';
 import PageLayout from './PageLayout';
 import { 
-  Users, 
-  GraduationCap, 
   CheckCircle2, 
   ShieldCheck,
   CreditCard,
-  Building2,
-  Phone,
   Mail,
   User,
-  Globe,
   Hotel,
-  ShieldAlert,
-  Info
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
