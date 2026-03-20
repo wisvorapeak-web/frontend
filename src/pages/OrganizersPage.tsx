@@ -95,7 +95,7 @@ export default function OrganizersPage() {
         <section className="bg-indigo-600 p-8 rounded-[2.5rem] flex flex-col md:flex-row items-center justify-between text-white shadow-2xl shadow-indigo-600/20">
            <div className="text-center md:text-left mb-6 md:mb-0">
              <h4 className="text-xl font-bold font-outfit mb-1">Interested in joining the Scientific Program Committee?</h4>
-             <p className="text-indigo-200 text-sm font-medium">Please send your academic CV to scientific@ascendix2026.org</p>
+             <p className="text-indigo-200 text-sm font-medium">Please send your academic CV to scientific@foodagriexpo.com</p>
            </div>
            <button className="bg-white text-indigo-600 px-8 py-3.5 rounded-2xl font-bold text-sm shadow-xl shadow-indigo-900/10 hover:bg-slate-50 transition-all active:scale-95">
               Apply to join

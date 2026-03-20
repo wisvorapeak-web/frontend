@@ -47,7 +47,7 @@ export default function ContactPage() {
   };
 
   const contactItems = [
-    { icon: Mail, label: 'Event Team', values: ['contact@ascendix.com', 'submissions@ascendix.com'] },
+    { icon: Mail, label: 'Event Team', values: ['contact@foodagriexpo.com', 'submissions@foodagriexpo.com'] },
     { icon: Phone, label: 'Support Phone', values: ['+91 XXXXX XXXXX', 'Mon-Fri, 09:00 - 18:00 IST'] },
     { icon: MapPin, label: 'Conference Venue', values: ['New Delhi, India'] },
   ];

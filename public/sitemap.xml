@@ -1,44 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- General Site Structure -->
   <url>
-    <loc>https://wisvorapeak.com/</loc>
-    <priority>1.0</priority>
+    <loc>https://www.foodagriexpo.com/</loc>
+    <priority>1.00</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://www.foodagriexpo.com/about</loc>
+    <priority>0.80</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://wisvorapeak.com/about</loc>
-    <priority>0.8</priority>
+    <loc>https://www.foodagriexpo.com/topics</loc>
+    <priority>0.85</priority>
+    <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://wisvorapeak.com/topics</loc>
-    <priority>0.8</priority>
+    <loc>https://www.foodagriexpo.com/dates</loc>
+    <priority>0.90</priority>
+    <changefreq>daily</changefreq>
   </url>
   <url>
-    <loc>https://wisvorapeak.com/dates</loc>
-    <priority>0.8</priority>
+    <loc>https://www.foodagriexpo.com/registration</loc>
+    <priority>1.00</priority>
+    <changefreq>daily</changefreq>
   </url>
   <url>
-    <loc>https://wisvorapeak.com/organizers</loc>
-    <priority>0.7</priority>
+    <loc>https://www.foodagriexpo.com/abstract-submission</loc>
+    <priority>0.95</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  
+  <!-- Event Specific Pages -->
+  <url>
+    <loc>https://www.foodagriexpo.com/speakers</loc>
+    <priority>0.90</priority>
+    <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://wisvorapeak.com/speakers</loc>
-    <priority>0.9</priority>
+    <loc>https://www.foodagriexpo.com/program</loc>
+    <priority>0.95</priority>
+    <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://wisvorapeak.com/program</loc>
-    <priority>0.9</priority>
+    <loc>https://www.foodagriexpo.com/sessions</loc>
+    <priority>0.85</priority>
+    <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://wisvorapeak.com/venue</loc>
-    <priority>0.7</priority>
+    <loc>https://www.foodagriexpo.com/workshops</loc>
+    <priority>0.80</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+
+  <!-- Support & Travel -->
+  <url>
+    <loc>https://www.foodagriexpo.com/venue</loc>
+    <priority>0.70</priority>
+    <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://wisvorapeak.com/contact</loc>
-    <priority>0.8</priority>
+    <loc>https://www.foodagriexpo.com/contact</loc>
+    <priority>0.70</priority>
+    <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://wisvorapeak.com/submissions/abstract</loc>
-    <priority>0.9</priority>
+    <loc>https://www.foodagriexpo.com/sponsorship</loc>
+    <priority>0.75</priority>
+    <changefreq>monthly</changefreq>
   </url>
 </urlset>

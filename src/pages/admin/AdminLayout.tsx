@@ -183,7 +183,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
         {/* Workspace */}
         <div className="flex-1 overflow-y-auto">
-          <main className="p-10 max-w-7xl mx-auto min-h-full">
+          <main className="p-4 sm:p-6 lg:p-10 max-w-7xl mx-auto min-h-full">
             {children}
           </main>
         </div>

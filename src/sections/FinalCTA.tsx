@@ -17,7 +17,7 @@ const AbstractForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="firstName">First Name</Label>
           <Input id="firstName" placeholder="John" required />
@@ -129,7 +129,7 @@ export default function FinalCTA() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative py-32 bg-navy overflow-hidden">
+    <section ref={sectionRef} className="relative py-20 lg:py-32 bg-navy overflow-hidden">
       <div className="absolute inset-0">
         <img src="/cta-agrotech.png" className="w-full h-full object-cover opacity-20" alt="CTA BG" />
         <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/80 to-transparent" />
@@ -143,7 +143,7 @@ export default function FinalCTA() {
             <span className="text-xs font-bold text-white">Don't Miss Out</span>
           </div>
           
-          <h2 className="text-5xl lg:text-7xl font-bold text-white leading-none">
+          <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white leading-none">
             Join Us in <span className="text-blue">2026</span>
           </h2>
           

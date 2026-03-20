@@ -214,10 +214,10 @@ export default function Hero() {
         <div className="max-w-4xl space-y-10 text-center flex flex-col items-center">
          
 
-          <div className="space-y-4">
-            <p className="text-sm font-bold text-blue/60 mb-4">Presented by Ascendix</p>
-            <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-white leading-tight">
-              Ascendix World Food, <br />
+          <div className="space-y-3 sm:space-y-4">
+            <p className="text-[10px] sm:text-xs font-bold text-blue/60 mb-2 uppercase tracking-widest leading-none">Presented by Ascendix</p>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight lg:leading-[1.1] text-balance">
+              Ascendix World Food, <br className="hidden sm:block" />
               <span className="text-blue">AgroTech & Animal Science</span>
             </h1>
           </div>
@@ -227,19 +227,19 @@ export default function Hero() {
               Join leading experts to advance sustainable farming, food technology, and animal health for a better future.
             </p>
 
-          <div className="flex flex-wrap justify-center gap-12 py-10 border-y border-white/5 w-full">
-            <div className="flex items-center gap-4">
-              <Calendar className="w-5 h-5 text-blue opacity-50" />
-              <div className="space-y-1 text-left">
-                <p className="text-xs text-white/30 font-bold leading-none">Dates</p>
-                <p className="font-bold text-sm text-white">June 24-26, 2026</p>
+          <div className="flex flex-wrap justify-center gap-6 sm:gap-12 py-8 sm:py-10 border-y border-white/5 w-full">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-blue opacity-50" />
+              <div className="space-y-0.5 sm:space-y-1 text-left">
+                <p className="text-[10px] text-white/30 font-bold leading-none uppercase tracking-tighter">Dates</p>
+                <p className="font-bold text-xs sm:text-sm text-white">June 24-26, 2026</p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <MapPin className="w-5 h-5 text-blue opacity-50" />
-              <div className="space-y-1 text-left">
-                <p className="text-xs text-white/30 font-bold leading-none">Location</p>
-                <p className="font-bold text-sm text-white">New Delhi, India</p>
+            <div className="flex items-center gap-3 sm:gap-4">
+              <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-blue opacity-50" />
+              <div className="space-y-0.5 sm:space-y-1 text-left">
+                <p className="text-[10px] text-white/30 font-bold leading-none uppercase tracking-tighter">Location</p>
+                <p className="font-bold text-xs sm:text-sm text-white">New Delhi, India</p>
               </div>
             </div>
           </div>

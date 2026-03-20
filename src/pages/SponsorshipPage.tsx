@@ -239,7 +239,7 @@ export default function SponsorshipPage() {
                         Contact Team
                     </button>
                 </Link>
-                <a href="mailto:contact@ascendix.com">
+                <a href="mailto:contact@foodagriexpo.com">
                     <button className="h-16 px-12 border border-slate-200 text-navy font-bold text-sm rounded-2xl hover:bg-white transition-all w-full flex items-center justify-center gap-3">
                         <Mail className="w-4 h-4" /> Email Us
                     </button>

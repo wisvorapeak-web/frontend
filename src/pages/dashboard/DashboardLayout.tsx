@@ -136,7 +136,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
         {/* Dynamic Content - This is the only part that scrolls */}
         <div className="flex-1 overflow-y-auto bg-gray-50/50">
-          <main className="p-6 sm:p-10 max-w-[1600px] mx-auto min-h-full">
+          <main className="p-4 sm:p-6 lg:p-10 max-w-[1600px] mx-auto min-h-full">
             <div className="max-w-6xl mx-auto">
               {children}
             </div>

@@ -32,7 +32,7 @@ const faqs = [
   },
   {
     question: 'How can I become a sponsor or exhibitor?',
-    answer: 'We have different ways to partner with us. Please contact our team at sponsors@ascendix2026.org for the guide.',
+    answer: 'We have different ways to partner with us. Please contact our team at sponsors@foodagriexpo.com for the guide.',
   },
 ];
 

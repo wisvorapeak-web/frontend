@@ -38,15 +38,15 @@ export default function About() {
           {/* Image Side */}
           <div className={`relative transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
             <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-gray-100">
-              <img src="/about-agrotech.png" alt="Innovation" className="w-full h-[500px] object-cover" />
+              <img src="/about-agrotech.png" alt="Innovation" className="w-full h-[300px] sm:h-[400px] lg:h-[500px] object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-navy/40 to-transparent" />
               
-              <div className="absolute bottom-8 left-8 p-6 bg-white/95 backdrop-blur shadow-xl rounded-2xl border border-white/20">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-blue flex items-center justify-center text-white font-black text-xl">3</div>
+              <div className="absolute bottom-4 left-4 sm:bottom-8 sm:left-8 p-4 sm:p-6 bg-white/95 backdrop-blur shadow-xl rounded-2xl border border-white/20">
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-blue flex items-center justify-center text-white font-black text-lg sm:text-xl">3</div>
                   <div>
-                    <p className="text-navy font-bold text-sm">Days of Learning</p>
-                    <p className="text-slate-500 text-xs font-semibold">Innovation & Expo</p>
+                    <p className="text-navy font-bold text-[10px] sm:text-sm">Days of Learning</p>
+                    <p className="text-slate-500 text-[8px] sm:text-xs font-semibold">Innovation & Expo</p>
                   </div>
                 </div>
               </div>

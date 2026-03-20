@@ -162,72 +162,72 @@ export default function UserManagement() {
                               <Eye className="w-4 h-4" />
                             </Button>
                           </DialogTrigger>
-                          <DialogContent className="max-w-2xl p-0 overflow-hidden border-none rounded-[2.5rem] bg-white shadow-2xl">
+                          <DialogContent className="max-w-2xl p-0 overflow-hidden border-none rounded-[1.5rem] sm:rounded-[2.5rem] bg-white shadow-2xl mx-4 sm:mx-0">
                             {selectedUser && (
                               <div className="flex flex-col h-full">
                                 {/* Profile Header Background */}
-                                <div className="h-32 bg-gradient-to-r from-indigo-500 to-blue-600 relative">
-                                  <div className="absolute -bottom-12 left-10">
-                                    <Avatar className="w-24 h-24 border-4 border-white shadow-xl">
+                                  <div className="h-24 sm:h-32 bg-gradient-to-r from-indigo-500 to-blue-600 relative">
+                                  <div className="absolute -bottom-8 sm:-bottom-12 left-6 sm:left-10">
+                                    <Avatar className="w-20 h-20 sm:w-24 sm:h-24 border-4 border-white shadow-xl">
                                       <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${selectedUser.full_name}`} />
                                       <AvatarFallback>AD</AvatarFallback>
                                     </Avatar>
                                   </div>
                                 </div>
-                                <div className="pt-16 pb-10 px-10">
-                                  <div className="flex justify-between items-start mb-8">
-                                     <div>
-                                      <h2 className="text-2xl font-bold text-slate-900 font-outfit">{selectedUser.full_name}</h2>
-                                      <p className="text-slate-500 font-medium">{selectedUser.role} at {selectedUser.institution || 'ASCENDIX SUMMITS'}</p>
+                                <div className="pt-12 sm:pt-16 pb-6 sm:pb-10 px-6 sm:px-10 overflow-y-auto max-h-[70vh]">
+                                  <div className="flex flex-col sm:flex-row justify-between items-start gap-6 sm:items-start mb-8">
+                                     <div className="space-y-1">
+                                      <h2 className="text-xl sm:text-2xl font-bold text-slate-900 font-outfit">{selectedUser.full_name}</h2>
+                                      <p className="text-xs sm:text-sm text-slate-500 font-medium">{selectedUser.role} at {selectedUser.institution || 'ASCENDIX SUMMITS'}</p>
                                     </div>
-                                    <div className="flex gap-2">
-                                      <Button size="sm" variant="outline" className="rounded-xl border-slate-100 font-bold h-10 px-4">
+                                    <div className="flex gap-2 w-full sm:w-auto">
+                                      <Button size="sm" variant="outline" className="rounded-xl border-slate-100 font-bold h-10 px-4 flex-1 sm:flex-initial">
                                         <Mail className="w-4 h-4 mr-2 text-slate-400" /> Message
                                       </Button>
-                                      <Button size="sm" className="rounded-xl bg-slate-900 hover:bg-slate-800 font-bold h-10 px-4">
+                                      <Button size="sm" className="rounded-xl bg-slate-900 hover:bg-slate-800 font-bold h-10 px-4 flex-1 sm:flex-initial">
                                         Edit Profile
                                       </Button>
                                     </div>
                                   </div>
 
-                                  <div className="grid grid-cols-2 gap-8 mb-8">
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mb-8">
                                     <div className="space-y-4">
                                       <div className="flex items-center gap-3 text-slate-600">
-                                        <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400">
-                                          <MapPin className="w-5 h-5" />
+                                        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 shrink-0">
+                                          <MapPin className="w-4 h-4 sm:w-5 sm:h-5" />
                                         </div>
                                         <div>
-                                          <p className="text-xs font-bold text-slate-400">Location</p>
-                                          <p className="text-sm font-bold text-slate-700">{selectedUser.location}</p>
+                                          <p className="text-[10px] font-bold text-slate-400">Location</p>
+                                          <p className="text-xs sm:text-sm font-bold text-slate-700 leading-none">{selectedUser.location}</p>
                                         </div>
                                       </div>
                                       <div className="flex items-center gap-3 text-slate-600">
-                                        <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400">
-                                          <Briefcase className="w-5 h-5" />
+                                        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 shrink-0">
+                                          <Briefcase className="w-4 h-4 sm:w-5 sm:h-5" />
                                         </div>
                                         <div>
-                                          <p className="text-xs font-bold text-slate-400">Institution</p>
-                                          <p className="text-sm font-bold text-slate-700">{selectedUser.institution}</p>
+                                          <p className="text-[10px] font-bold text-slate-400">Institution</p>
+                                          <p className="text-xs sm:text-sm font-bold text-slate-700 leading-none">{selectedUser.institution}</p>
                                         </div>
                                       </div>
                                     </div>
                                     <div className="space-y-4">
                                       <div className="flex items-center gap-3 text-slate-600">
-                                        <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400">
-                                          <GraduationCap className="w-5 h-5" />
+                                        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 shrink-0">
+                                          <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5" />
                                         </div>
                                         <div>
-                                           <p className="text-xs font-bold text-slate-400">Title</p>
-                                           <p className="text-sm font-bold text-slate-700">Senior Research Fellow</p>
+                                           <p className="text-[10px] font-bold text-slate-400">Title</p>
+                                           <p className="text-xs sm:text-sm font-bold text-slate-700 leading-none">Senior Research Fellow</p>
                                         </div>
                                       </div>
                                       <div className="flex items-center gap-3 text-slate-600">
-                                        <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400">
-                                          <LinkIcon className="w-5 h-5" />
+                                        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 shrink-0">
+                                          <LinkIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                                         </div>
                                         <div>
-                                          <p className="text-xs font-bold text-slate-400">Personal Web</p>
-                                          <p className="text-sm font-bold text-indigo-500">{selectedUser.web}</p>
+                                          <p className="text-[10px] font-bold text-slate-400">Personal Web</p>
+                                          <p className="text-xs sm:text-sm font-bold text-indigo-500 leading-none">{selectedUser.web}</p>
                                         </div>
                                       </div>
                                     </div>

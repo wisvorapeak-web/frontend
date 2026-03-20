@@ -124,7 +124,7 @@ export default function Setup() {
                 <Input 
                   name="email"
                   type="email" 
-                  placeholder="admin@ascendix.com"
+                  placeholder="admin@foodagriexpo.com"
                   className="h-12 bg-white/5 border-white/5 focus:border-blue focus:ring-4 focus:ring-blue/5 rounded-xl px-4 text-white text-xs font-bold placeholder:text-slate-700 transition-all border-none"
                   required
                 />

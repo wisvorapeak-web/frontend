@@ -57,8 +57,12 @@
   }
   
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-background text-foreground antialiased overflow-x-hidden;
     font-family: "Outfit", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  html {
+    @apply overflow-x-hidden;
   }
 
   .font-montserrat {
@@ -184,5 +188,5 @@
 
 /* Section transitions */
 .section-divider {
-  @apply w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent my-12 opacity-50;
+  @apply w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent my-8 lg:my-12 opacity-50;
 }
