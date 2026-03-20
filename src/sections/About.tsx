@@ -5,18 +5,18 @@ import { Network, Lightbulb, Handshake } from 'lucide-react';
 const benefits = [
   {
     icon: Network,
-    title: 'Global Networking',
-    description: 'Connect with 1000+ researchers, industry leaders, and policymakers from around the world.',
+    title: 'Meet People Globally',
+    description: 'Connect with over 1000 researchers, leaders, and planners from all over the world.',
   },
   {
     icon: Lightbulb,
-    title: 'Research Exposure',
-    description: 'Present your work to an international audience and gain valuable feedback from experts.',
+    title: 'Share Your Work',
+    description: 'Present your research to an international group and get helpful feedback from experts.',
   },
   {
     icon: Handshake,
-    title: 'Industry Collaboration',
-    description: 'Explore partnership opportunities with leading companies in the agro-tech industry.',
+    title: 'Work with Companies',
+    description: 'Find ways to partner with top companies in the agriculture industry.',
   },
 ];
 
@@ -60,13 +60,12 @@ export default function About() {
             </div>
 
             <h2 className="text-4xl lg:text-5xl font-black text-navy leading-tight">
-              Cultivating the Future <br />
+              Growing the Future <br />
               <span className="text-blue">Agro-Science</span>
             </h2>
 
             <p className="text-slate-500 text-base font-medium leading-relaxed">
-              The World Summit on Food and AgroTech is the premier international platform 
-              for researchers and industry leaders to share breakthroughs that define the future of sustainable food systems.
+              Ascendix 2026 is a top meeting for researchers and business leaders to share new ideas that will change how we produce food.
             </p>
 
             <div className="grid gap-6">

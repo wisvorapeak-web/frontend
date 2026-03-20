@@ -70,7 +70,7 @@ const AbstractForm = () => {
 const RegistrationForm = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success('Registration initiated! Please check your email for payment instructions.');
+    toast.success('Registration started! Please check your email for payment steps.');
   };
 
   return (
@@ -138,16 +138,15 @@ export default function FinalCTA() {
         <div className={`space-y-6 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full">
             <Sparkles className="w-3 h-3 text-blue" />
-            <span className="text-[10px] font-black text-white uppercase tracking-widest">Final Call</span>
+            <span className="text-[10px] font-black text-white uppercase tracking-widest">Don't Miss Out</span>
           </div>
           
           <h2 className="text-5xl lg:text-7xl font-black text-white uppercase tracking-tighter leading-none">
-            Join the Global <span className="text-blue">Nexus</span>
+            Join Us in <span className="text-blue">2026</span>
           </h2>
           
           <p className="text-lg font-medium text-white/50 max-w-2xl mx-auto">
-             Converge with the world's most influential researchers and industry pioneers 
-             at Ascendix 2026.
+             Meet top researchers and industry leaders at Ascendix 2026.
           </p>
         </div>
 
@@ -160,7 +159,7 @@ export default function FinalCTA() {
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-lg"><DialogHeader><DialogTitle className="text-xl font-black text-navy uppercase">Abstract Submission</DialogTitle></DialogHeader><AbstractForm /></DialogContent>
+              <DialogContent className="max-w-lg"><DialogHeader><DialogTitle className="text-xl font-black text-navy uppercase">Submit Your Abstract</DialogTitle></DialogHeader><AbstractForm /></DialogContent>
            </Dialog>
 
            <Dialog>
@@ -169,7 +168,7 @@ export default function FinalCTA() {
                   Register Now
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-lg"><DialogHeader><DialogTitle className="text-xl font-black text-navy uppercase">Pass Selection</DialogTitle></DialogHeader><RegistrationForm /></DialogContent>
+              <DialogContent className="max-w-lg"><DialogHeader><DialogTitle className="text-xl font-black text-navy uppercase">Register</DialogTitle></DialogHeader><RegistrationForm /></DialogContent>
            </Dialog>
         </div>
 

@@ -35,24 +35,24 @@ const navLinks = [
     label: 'About', 
     href: '/about',
     subItems: [
-        { label: 'The Summit', href: '/about', icon: Info },
-        { label: 'Scientific Committee', href: '/organizers', icon: Users },
-        { label: 'Important Dates', href: '/dates', icon: Calendar },
+        { label: 'About the Event', href: '/about', icon: Info },
+        { label: 'Organizers', href: '/organizers', icon: Users },
+        { label: 'Key Dates', href: '/dates', icon: Calendar },
         { label: 'Venue & Travel', href: '/venue', icon: MapPin },
     ]
   },
   { 
-    label: 'Scientific', 
+    label: 'Conference', 
     href: '/speakers',
     subItems: [
-        { label: 'Keynote Speakers', href: '/speakers', icon: Mic2 },
-        { label: 'Scientific Program', href: '/program', icon: Monitor },
-        { label: 'Scientific Sessions', href: '/sessions', icon: Zap },
-        { label: 'Abstract Submission', href: '/abstract-submission', icon: FileText },
+        { label: 'Our Speakers', href: '/speakers', icon: Mic2 },
+        { label: 'Event Schedule', href: '/program', icon: Monitor },
+        { label: 'Meeting Sessions', href: '/sessions', icon: Zap },
+        { label: 'Submit Abstract', href: '/abstract-submission', icon: FileText },
     ]
   },
   { 
-    label: 'Partners', 
+    label: 'Sponsors', 
     href: '/sponsorship',
     subItems: [
         { label: 'Sponsorship', href: '/sponsorship', icon: Trophy },
@@ -95,12 +95,12 @@ const AbstractForm = () => {
 
       if (!response.ok) throw new Error('Submission failed');
 
-      toast.success('Scientific abstract successfully registered for review.');
+      toast.success('Your abstract has been submitted for review.');
       setFormData({
         firstName: '', lastName: '', email: '', institution: '', topic: '', title: '', abstract: ''
       });
     } catch (error) {
-      toast.error('Scientific transmission failed. Verify connection.');
+      toast.error('Failed to send. Please check your internet connection.');
     } finally {
       setIsSubmitting(false);
     }
@@ -172,10 +172,10 @@ const AbstractForm = () => {
       </div>
 
       <div className="space-y-2">
-        <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Abstract Narrative</Label>
+        <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Brief Summary</Label>
         <Textarea 
           className="bg-slate-50 border-transparent rounded-xl text-[10px] font-black uppercase tracking-widest focus:bg-white focus:border-blue transition-all min-h-[120px]"
-          placeholder="ENTER SCIENTIFIC NARRATIVE..." 
+          placeholder="TELL US ABOUT YOUR WORK..." 
           required 
           value={formData.abstract}
           onChange={(e) => setFormData({...formData, abstract: e.target.value})}
@@ -183,7 +183,7 @@ const AbstractForm = () => {
       </div>
 
       <Button type="submit" className="w-full h-12 bg-blue text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-navy transition-all" disabled={isSubmitting}>
-        {isSubmitting ? 'TRANSMITTING...' : 'REGISTER ABSTRACT'}
+        {isSubmitting ? 'SENDING...' : 'SUBMIT ABSTRACT'}
       </Button>
     </form>
   );

@@ -14,8 +14,8 @@ const audiences = [
   {
     icon: FlaskConical,
     title: 'For Researchers',
-    subtitle: 'Expand Your Impact',
-    description: 'Present your latest findings to a global audience of peers. Gain valuable feedback, establish collaborations, and increase your research visibility.',
+    subtitle: 'Make an Impact',
+    description: 'Show your latest work to experts from around the world. Get helpful feedback and find people to work with.',
     benefits: [
       'Present papers and posters',
       'Network with global experts',
@@ -28,8 +28,8 @@ const audiences = [
   {
     icon: GraduationCap,
     title: 'For Students',
-    subtitle: 'Launch Your Career',
-    description: 'Learn from world-renowned experts, discover career opportunities, and build your professional network in materials science.',
+    subtitle: 'Start Your Career',
+    description: 'Learn from top experts, find new job paths, and meet professionals in the field of agriculture.',
     benefits: [
       'Student discounts available',
       'Career development workshops',
@@ -42,8 +42,8 @@ const audiences = [
   {
     icon: Briefcase,
     title: 'For Industry',
-    subtitle: 'Drive Innovation',
-    description: 'Connect with leading researchers, discover new technologies, and explore partnership opportunities for your business.',
+    subtitle: 'Fuel Innovation',
+    description: 'Meet top researchers, see new technology, and find new partners for your business.',
     benefits: [
       'Technology showcase',
       'B2B networking',
@@ -73,9 +73,9 @@ export default function WhyAttend() {
             <span className="w-1.5 h-1.5 rounded-full bg-blue" />
             <span className="text-[10px] font-black text-blue uppercase tracking-widest">Why Join Us?</span>
           </div>
-          <h2 className="text-4xl lg:text-5xl font-black text-navy uppercase tracking-tight">Tailored Experience</h2>
+          <h2 className="text-4xl lg:text-5xl font-black text-navy uppercase tracking-tight">Made for You</h2>
           <p className="text-slate-500 text-base font-medium max-w-2xl mx-auto">
-            A comprehensive summit designed to cater to the distinct needs of researchers, students, and industry experts.
+            An event designed for the needs of researchers, students, and industry experts.
           </p>
         </div>
 
@@ -117,10 +117,10 @@ export default function WhyAttend() {
 
         <div className={`grid grid-cols-2 lg:grid-cols-4 gap-8 mt-20 pt-12 border-t border-slate-100 transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
           {[
-            { icon: Users, value: '50+', label: 'Elite Speakers' },
-            { icon: BookOpen, value: '100+', label: 'Research Tracks' },
-            { icon: Award, value: 'Awards', label: 'Poster Sessions' },
-            { icon: Briefcase, value: 'Industry', label: 'B2B Networking' },
+            { icon: Users, value: '50+', label: 'Top Speakers' },
+            { icon: BookOpen, value: '100+', label: 'Study Areas' },
+            { icon: Award, value: 'Awards', label: 'Research Posters' },
+            { icon: Briefcase, value: 'Industry', label: 'Business Meetings' },
           ].map((s, i) => (
             <div key={i} className="text-center space-y-2">
               <s.icon className="w-5 h-5 text-blue mx-auto mb-2 opacity-50" />

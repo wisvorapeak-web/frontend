@@ -13,9 +13,6 @@ import {
   Key,
   Phone,
   Twitter,
-  Linkedin,
-  Facebook,
-  Instagram,
   Settings as SettingIcon
 } from 'lucide-react';
 import { Button } from '../../components/ui/button';
@@ -77,8 +74,8 @@ export default function SiteSettings() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <h1 className="text-3xl font-black text-slate-900 mb-2 font-outfit">Console Settings</h1>
-            <p className="text-slate-500 font-medium">Configure global platform metadata, SEO, and integration bridges.</p>
+            <h1 className="text-3xl font-black text-slate-900 mb-2 font-outfit">Admin Settings</h1>
+            <p className="text-slate-500 font-medium">Manage your website's main information and search appearance.</p>
           </div>
           <div className="flex items-center gap-3">
              <Button variant="outline" className="rounded-xl border-slate-200 font-bold text-slate-600 gap-2 h-11 px-6 bg-white shadow-sm">
@@ -99,7 +96,7 @@ export default function SiteSettings() {
             <TabsTrigger value="general" className="data-[state=active]:bg-white data-[state=active]:text-indigo-600 data-[state=active]:shadow-sm rounded-xl font-bold text-xs h-full px-8 gap-2 uppercase tracking-widest"><Globe className="w-4 h-4" /> General</TabsTrigger>
             <TabsTrigger value="seo" className="data-[state=active]:bg-white data-[state=active]:text-indigo-600 data-[state=active]:shadow-sm rounded-xl font-bold text-xs h-full px-8 gap-2 uppercase tracking-widest"><Search className="w-4 h-4" /> SEO & Meta</TabsTrigger>
             <TabsTrigger value="api" className="data-[state=active]:bg-white data-[state=active]:text-indigo-600 data-[state=active]:shadow-sm rounded-xl font-bold text-xs h-full px-8 gap-2 uppercase tracking-widest"><Key className="w-4 h-4" /> API & Bridges</TabsTrigger>
-            <TabsTrigger value="branding" className="data-[state=active]:bg-white data-[state=active]:text-indigo-600 data-[state=active]:shadow-sm rounded-xl font-bold text-xs h-full px-8 gap-2 uppercase tracking-widest"><Smartphone className="w-4 h-4" /> Visual Identity</TabsTrigger>
+            <TabsTrigger value="branding" className="data-[state=active]:bg-white data-[state=active]:text-indigo-600 data-[state=active]:shadow-sm rounded-xl font-bold text-xs h-full px-8 gap-2 uppercase tracking-widest"><Smartphone className="w-4 h-4" /> Logo & Design</TabsTrigger>
           </TabsList>
 
           <TabsContent value="general">

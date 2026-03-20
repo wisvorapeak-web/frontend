@@ -60,7 +60,7 @@ export default function Footer() {
               {settings?.site_title?.split(' ')[0] || 'WISVORA'} <span className="text-blue">{settings?.site_title?.split(' ')[1] || 'PEAK'}</span> 
             </h3>
             <p className="text-[11px] font-bold text-white/40 uppercase tracking-widest leading-loose">
-              {settings?.site_tagline || 'Pioneering the future of Sustainable Agriculture and Food Technology.'}
+              {settings?.site_tagline || 'Helping shape the future of farming and food technology.'}
             </p>
             <div className="flex gap-4">
               {socialLinks.map((s, i) => (

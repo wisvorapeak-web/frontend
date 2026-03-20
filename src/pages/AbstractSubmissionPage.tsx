@@ -10,18 +10,18 @@ import {
 import { Link } from 'react-router-dom';
 
 const guidelines = [
-  'Scientific abstracts should be 250-400 words in length.',
-  'Include a clear methodology, results summary, and keywords.',
+  'Abstracts should be between 250 and 400 words.',
+  'Include your methods, results, and key words.',
   'Accepted formats: PDF or Microsoft Word (.docx).',
-  'Must belong to one of our 18 technical sessions.',
-  'Maximum 2 abstract submissions per lead author.'
+  'Must match one of our event topics.',
+  'Maximum 2 submissions per main author.'
 ];
 
 export default function AbstractSubmissionPage() {
   return (
     <PageLayout 
-      title="Call for Abstracts" 
-      subtitle="Contribute your breakthrough research to the global scientific archive of Polymers 2026."
+      title="Submit Your Abstract" 
+      subtitle="Share your research with the world and be part of Ascendix 2026."
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 py-20 space-y-24">
         {/* Intro Grid */}
@@ -33,7 +33,7 @@ export default function AbstractSubmissionPage() {
               </div>
               <h2 className="text-4xl lg:text-5xl font-black text-slate-900 leading-tight font-outfit uppercase">Share Your Research</h2>
               <p className="text-slate-600 leading-relaxed text-lg font-medium">
-                 We are seeking high-quality, unpublished research that addresses the summit's core themes: sustainability, performance composites, and bio-macromolecular systems.
+                 We are looking for new research on sustainable farming, food technology, and animal science.
               </p>
               
               <div className="space-y-4">
@@ -54,7 +54,7 @@ export default function AbstractSubmissionPage() {
               </div>
 
               <Link to="/register" className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black uppercase text-[10px] tracking-widest transition-all shadow-xl shadow-indigo-600/20 active:scale-95 flex items-center justify-center gap-3">
-                 Register to Submit <Upload className="w-4 h-4 opacity-50" />
+                 Register and Submit <Upload className="w-4 h-4 opacity-50" />
               </Link>
            </div>
            

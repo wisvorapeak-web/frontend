@@ -48,7 +48,7 @@ export default function ContactPage() {
 
       if (!response.ok) throw new Error('Submission failed');
 
-      toast.success('Your message has been sent successfully. We will respond within 24 hours!');
+      toast.success('Your message has been sent! We will get back to you soon.');
       setFormData({
         firstName: '', lastName: '', emailAddress: '', subject: '', message: ''
       });
@@ -60,25 +60,24 @@ export default function ContactPage() {
   };
 
   const contactItems = [
-    { icon: Mail, label: 'Scientific Secretariat', values: [settings?.contact_email || 'CONTACT@WISVORAPEAK.COM', 'SUBMISSIONS@WISVORAPEAK.COM'] },
-    { icon: Phone, label: 'Global Helpline', values: [settings?.contact_phone || '+91 9366531405', settings?.office_hours || 'MON-FRI, 09:00 - 18:00 IST'] },
-    { icon: MapPin, label: 'Official Headquarters', values: [settings?.contact_address?.toUpperCase() || 'GUWAHATI, ASSAM, INDIA'] },
+    { icon: Mail, label: 'Event Team', values: [settings?.contact_email || 'CONTACT@WISVORAPEAK.COM', 'SUBMISSIONS@WISVORAPEAK.COM'] },
+    { icon: Phone, label: 'Support Phone', values: [settings?.contact_phone || '+91 9366531405', settings?.office_hours || 'MON-FRI, 09:00 - 18:00 IST'] },
+    { icon: MapPin, label: 'Our Office', values: [settings?.contact_address?.toUpperCase() || 'GUWAHATI, ASSAM, INDIA'] },
   ];
 
   return (
     <PageLayout 
-      title="Global Communications" 
-      subtitle="Direct access to the summit's organizing committee and technical board."
+      title="Contact Us" 
+      subtitle="Get in touch with our team for any questions or help."
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-16 space-y-24 font-outfit">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
           {/* Contact Details */}
           <div className="space-y-12 animate-in fade-in slide-in-from-left-10 duration-700">
             <div className="space-y-6">
-              <h2 className="text-3xl font-black text-navy uppercase tracking-tight">Direct <span className="text-blue">Inquiry</span></h2>
+              <h2 className="text-3xl font-black text-navy uppercase tracking-tight">Send us a <span className="text-blue">Message</span></h2>
               <p className="text-[13px] font-bold text-slate-500 uppercase tracking-widest leading-loose">
-                Our support team maintains active coverage for international delegates, 
-                speakers, and corporate partners across all time zones.
+                Our team is here to help speakers and visitors from all over the world.
               </p>
             </div>
             
@@ -138,7 +137,7 @@ export default function ContactPage() {
               </div>
 
               <div className="space-y-3">
-                <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Inquiry Type</Label>
+                <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Subject</Label>
                 <Input 
                   className="h-12 bg-slate-50 border-transparent rounded-xl text-[10px] font-black uppercase tracking-widest focus:bg-white focus:border-blue transition-all"
                   placeholder="SUMMIT LOGISTICS" 
@@ -152,7 +151,7 @@ export default function ContactPage() {
                 <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Message</Label>
                 <Textarea 
                   className="bg-slate-50 border-transparent rounded-xl text-[10px] font-black uppercase tracking-widest focus:bg-white focus:border-blue transition-all min-h-[150px]"
-                  placeholder="DETAIL YOUR REQUIREMENTS..." 
+                  placeholder="HOW CAN WE HELP?" 
                   required 
                   value={formData.message}
                   onChange={(e) => setFormData({...formData, message: e.target.value})}
@@ -160,7 +159,7 @@ export default function ContactPage() {
               </div>
 
               <Button type="submit" className="w-full h-14 bg-blue text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-navy transition-all" disabled={isSubmitting}>
-                {isSubmitting ? 'Processing...' : 'Send Transmission'}
+                {isSubmitting ? 'Processing...' : 'Send Message'}
               </Button>
             </form>
           </div>

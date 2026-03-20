@@ -17,8 +17,8 @@ export default function AboutPage() {
 
   return (
     <PageLayout 
-      title="Scientific Context" 
-      subtitle="Fostering elite dialogue in macromolecular and material innovation."
+      title="About the Event" 
+      subtitle="Bringing people together to improve farming and food technology."
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-16 space-y-24">
         {/* Intro */}
@@ -26,17 +26,15 @@ export default function AboutPage() {
           <div className="space-y-8">
              <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue/5 border border-blue/10 rounded-full">
                 <Rocket className="w-3 h-3 text-blue" />
-                <span className="text-[9px] font-black text-blue uppercase tracking-widest">Global Outreach</span>
+                <span className="text-[9px] font-black text-blue uppercase tracking-widest">Working Together</span>
              </div>
              
              <h2 className="text-3xl lg:text-4xl font-black text-navy uppercase tracking-tight leading-none">
-                Expanding Human <span className="text-blue">Potential</span>
+                Building a Better <span className="text-blue">Future</span>
              </h2>
 
              <p className="text-slate-500 text-[13px] font-bold uppercase tracking-wide leading-relaxed">
-                The polymers 2026 summit serves as the premier intersection for theoretical 
-                excellence and industrial application. our focus remains on the sustainable 
-                architecture of next-generation materials.
+                Ascendix 2026 is a top meeting for researchers and business leaders to share new ideas that will change how we produce food. Our focus is on sustainable farming and new technology.
              </p>
 
              <div className="p-8 border-l-2 border-slate-100 bg-slate-50/50">
@@ -71,9 +69,9 @@ export default function AboutPage() {
         {/* Focus areas */}
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
            {[
-             { title: 'Global Exchange', desc: 'Synthesizing diverse perspectives into a unified scientific trajectory.', icon: Globe },
-             { title: 'Industry Link', desc: 'Direct mapping of research capabilities to practical manufacturing requirements.', icon: Rocket },
-             { title: 'Early Careers', desc: 'Dedicated professional development for the next generation of materials experts.', icon: Users }
+             { title: 'Worldwide Meetings', desc: 'Sharing ideas from all over the world to help science grow.', icon: Globe },
+             { title: 'Business Connections', desc: 'Connecting new research with real-world farming and manufacturing.', icon: Rocket },
+             { title: 'Support for Students', desc: 'Helping the next generation of experts grow their careers.', icon: Users }
            ].map((obj, i) => (
              <div key={i} className="p-10 border border-slate-100 rounded-2xl hover:border-blue/20 hover:shadow-2xl hover:shadow-blue/5 transition-all space-y-6">
                 <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-blue opacity-40">

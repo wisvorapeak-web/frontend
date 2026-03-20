@@ -3,15 +3,15 @@ import { MapPin, Plane, Train, Hotel, ExternalLink } from 'lucide-react';
 
 export default function VenuePage() {
   const directions = [
-    { title: 'Air Hub', desc: 'Indira Gandhi International (DEL) is situated 45 minutes from the central venue.', icon: Plane },
-    { title: 'Logistics', desc: 'New Delhi Railway Junction provides seamless connectivity to multiple urban hubs.', icon: Train },
-    { title: 'Residency', desc: 'Curated summit rates at five-star partner establishments within a 2km radius.', icon: Hotel },
+    { title: 'By Air', desc: 'Indira Gandhi International Airport (DEL) is about 45 minutes from the event.', icon: Plane },
+    { title: 'By Train', desc: 'New Delhi Railway Station makes it easy to travel from other cities.', icon: Train },
+    { title: 'Where to Stay', desc: 'We have special rates at nearby five-star hotels for our guests.', icon: Hotel },
   ];
 
   return (
     <PageLayout 
-      title="Strategic Host City" 
-      subtitle="The summit will be hosted at a premium scientific convention center in the heart of New Delhi, India."
+      title="Host City & Venue" 
+      subtitle="The summit will be in New Delhi, India, at a top-tier convention center."
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-16 space-y-24">
         {/* Intro */}
@@ -21,11 +21,10 @@ export default function VenuePage() {
                  <MapPin className="w-3 h-3 text-blue" />
                  <span className="text-[9px] font-black text-blue uppercase tracking-widest">New Delhi, India</span>
               </div>
-              <h2 className="text-3xl lg:text-4xl font-black text-navy uppercase tracking-tight leading-none">Scientifically <span className="text-blue">Central</span></h2>
+              <h2 className="text-3xl lg:text-4xl font-black text-navy uppercase tracking-tight leading-none">The Perfect <span className="text-blue">Location</span></h2>
               <p className="text-slate-500 text-[13px] font-bold uppercase tracking-wide leading-relaxed">
-                 As the intellectual capital of south asia, new delhi provides an unrivaled 
-                 backdrop for material science innovation. the summit convention center 
-                 features 500,000 sq. ft. of advanced scientific installation space.
+                 New Delhi is a great place to meet and share new ideas. 
+                 Our event center has plenty of space for all our sessions and exhibits.
               </p>
               
               <div className="flex gap-4">

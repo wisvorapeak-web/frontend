@@ -64,12 +64,12 @@ export default function Topics() {
         <div className="text-center mb-16 space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue/5 border border-blue/10">
             <span className="w-1.5 h-1.5 rounded-full bg-blue" />
-            <span className="text-[10px] font-black text-blue uppercase tracking-widest">Scientific Tracks</span>
+            <span className="text-[10px] font-black text-blue uppercase tracking-widest">Event Topics</span>
           </div>
 
-          <h2 className="text-4xl lg:text-5xl font-black text-navy uppercase tracking-tight">Key Research Topics</h2>
+          <h2 className="text-4xl lg:text-5xl font-black text-navy uppercase tracking-tight">What we will talk about</h2>
           <p className="text-slate-500 text-base font-medium max-w-2xl mx-auto">
-            Our summit features zero-depth exploration into the critical pillars of modern material science.
+            Join us as we explore the most important parts of modern farming and food science.
           </p>
         </div>
 
@@ -92,7 +92,7 @@ export default function Topics() {
               </p>
               
               <div className="mt-6 flex items-center gap-2 text-blue text-[10px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all">
-                Explore Track <ArrowUpRight className="w-3 h-3" />
+                Learn More <ArrowUpRight className="w-3 h-3" />
               </div>
             </div>
           ))}
