@@ -87,8 +87,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               <ShieldCheck className="text-white w-4 h-4" />
             </div>
             <div>
-              <p className="text-white font-black text-xs uppercase tracking-widest">Console</p>
-              <p className="text-[9px] text-white/30 uppercase tracking-[0.2em] font-black">Scientific Board</p>
+              <p className="text-white font-black text-xs uppercase tracking-widest">Ascendix Summits</p>
+              <p className="text-[9px] text-white/30 uppercase tracking-[0.2em] font-black">Admin Panel</p>
             </div>
           </div>
 
@@ -123,7 +123,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             className="flex items-center gap-3 px-3 py-4 rounded-xl text-white/20 hover:text-red-400 hover:bg-red-400/5 transition-all mt-6 font-black text-[10px] uppercase tracking-widest"
           >
             <LogOut className="w-4 h-4" />
-            Termination
+            Log Out
           </button>
         </div>
       </aside>

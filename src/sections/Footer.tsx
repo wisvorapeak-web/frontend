@@ -57,7 +57,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16">
           <div className="space-y-8">
             <h3 className="text-2xl font-black text-white uppercase tracking-tighter">
-              {settings?.site_title?.split(' ')[0] || 'WISVORA'} <span className="text-blue">{settings?.site_title?.split(' ')[1] || 'PEAK'}</span> 
+              {settings?.site_title?.split(' ')[0] || 'ASCENDIX'} <span className="text-blue">{settings?.site_title?.split(' ')[1] || 'SUMMITS'}</span> 
             </h3>
             <p className="text-[11px] font-bold text-white/40 uppercase tracking-widest leading-loose">
               {settings?.site_tagline || 'Helping shape the future of farming and food technology.'}
@@ -108,7 +108,7 @@ export default function Footer() {
 
         <div className="mt-20 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-[9px] font-black text-white/20 uppercase tracking-[0.2em]">
-            © 2026 WISVORA PEAK PRIVATE LIMITED. 
+            © 2026 ASCENDIX SUMMITS. 
           </p>
           <div className="flex gap-8">
             {['Privacy', 'Terms', 'Cookies'].map((t) => (

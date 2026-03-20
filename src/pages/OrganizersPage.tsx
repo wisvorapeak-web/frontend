@@ -43,7 +43,7 @@ export default function OrganizersPage() {
   return (
     <PageLayout 
       title="Organizing Committee" 
-      subtitle="The visionary leaders and scientific experts driving the excellence of WISVORA PEAK."
+      subtitle="The visionary leaders and experts driving the success of Ascendix Summits."
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 py-20 space-y-24">
         {/* Management Team */}
@@ -95,7 +95,7 @@ export default function OrganizersPage() {
         <section className="bg-indigo-600 p-8 rounded-[2.5rem] flex flex-col md:flex-row items-center justify-between text-white shadow-2xl shadow-indigo-600/20">
            <div className="text-center md:text-left mb-6 md:mb-0">
              <h4 className="text-xl font-bold font-outfit mb-1">Interested in joining the Scientific Program Committee?</h4>
-             <p className="text-indigo-200 text-sm font-medium">Please send your academic CV to scientific@wisvorapeak.com</p>
+             <p className="text-indigo-200 text-sm font-medium">Please send your academic CV to scientific@ascendix2026.org</p>
            </div>
            <button className="bg-white text-indigo-600 px-8 py-3.5 rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-slate-50 transition-all active:scale-95 shadow-xl shadow-indigo-900/10">
               Apply to join

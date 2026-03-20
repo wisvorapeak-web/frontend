@@ -224,7 +224,7 @@ export default function Navigation() {
               to="/" 
               className={`text-lg font-black transition-all font-montserrat tracking-tighter hover:scale-105 active:scale-95 ${isScrolled || !isHomePage ? 'text-navy' : 'text-white'}`}
             >
-              WISVORA <span className="text-blue">PEAK</span>
+              ASCENDIX <span className="text-blue">SUMMITS</span>
             </Link>
 
             {/* Desktop Navigation */}

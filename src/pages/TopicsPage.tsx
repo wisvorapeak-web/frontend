@@ -7,7 +7,7 @@ export default function TopicsPage() {
   return (
     <PageLayout 
       title="Research Topics" 
-      subtitle="From biopolymers to 3D printing and AI in materials science – explore the key themes of WISVORA PEAK."
+      subtitle="Explore the key themes of Ascendix World Food, AgroTech & Animal Science - 2026."
     >
       <Topics />
       <About />

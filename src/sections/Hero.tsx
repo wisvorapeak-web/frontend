@@ -218,7 +218,7 @@ export default function Hero() {
           </div>
 
           <div className="space-y-4">
-            <p className="text-[10px] font-black text-blue/60 uppercase tracking-[0.4em] mb-4">Presented by WISVORA PEAK</p>
+            <p className="text-[10px] font-black text-blue/60 uppercase tracking-[0.4em] mb-4">Presented by Ascendix Summits</p>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-none uppercase tracking-tighter">
               Ascendix World Food, <br />
               <span className="text-blue">AgroTech & Animal Science</span>
@@ -242,7 +242,7 @@ export default function Hero() {
               <MapPin className="w-4 h-4 text-blue opacity-40" />
               <div className="space-y-1">
                 <p className="text-[8px] text-white/20 uppercase font-black tracking-widest leading-none">Location</p>
-                <p className="font-black text-[10px] text-white uppercase tracking-widest">Warsaw, Poland</p>
+                <p className="font-black text-[10px] text-white uppercase tracking-widest">New Delhi, India</p>
               </div>
             </div>
           </div>

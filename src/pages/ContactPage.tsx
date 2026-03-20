@@ -60,7 +60,7 @@ export default function ContactPage() {
   };
 
   const contactItems = [
-    { icon: Mail, label: 'Event Team', values: [settings?.contact_email || 'CONTACT@WISVORAPEAK.COM', 'SUBMISSIONS@WISVORAPEAK.COM'] },
+    { icon: Mail, label: 'Event Team', values: [settings?.contact_email || 'CONTACT@ASCENDIX2026.ORG', 'SUBMISSIONS@ASCENDIX2026.ORG'] },
     { icon: Phone, label: 'Support Phone', values: [settings?.contact_phone || '+91 9366531405', settings?.office_hours || 'MON-FRI, 09:00 - 18:00 IST'] },
     { icon: MapPin, label: 'Our Office', values: [settings?.contact_address?.toUpperCase() || 'GUWAHATI, ASSAM, INDIA'] },
   ];
