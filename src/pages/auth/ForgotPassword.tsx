@@ -10,17 +10,30 @@ import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
 
+import { apiRequest } from '../../lib/api';
+
 export default function ForgotPassword() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    setTimeout(() => {
-        setIsLoading(false);
-        setIsSubmitted(true);
-    }, 1500);
+
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get('email');
+
+    try {
+      await apiRequest('/api/auth/forgot-password', {
+        method: 'POST',
+        body: { email }
+      });
+      setIsSubmitted(true);
+    } catch (error) {
+      // Error is already toasted by apiRequest
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
