@@ -33,7 +33,7 @@ export default function Hero() {
       {/* Background Section */}
       <div className="absolute inset-0 z-0 text-decoration-none">
         <img
-          src={settings.hero_image_url || "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&q=80"}
+          src={settings.hero_image_url || "/hero.png"}
           alt="Event Background"
           className="w-full h-full object-cover opacity-80 scale-110 transition-transform duration-[10000ms]"
         />
