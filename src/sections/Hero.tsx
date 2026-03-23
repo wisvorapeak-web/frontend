@@ -5,9 +5,9 @@ import { useState, useEffect } from 'react';
 
 export default function Hero() {
   const [settings, setSettings] = useState<any>({
-    site_title: 'Ascendix Summit: Food, Agri-Tech & Animal Science',
+    site_title: 'Ascendix Summit on Food, Agri-Tech and Animal Science',
     site_tagline: 'ASFAA-2026: Join leaders in food and agriculture.',
-    hero_title: 'Global Event for Food, Agri-Tech & Animal Science.',
+    hero_title: 'Ascendix Summit on Food, Agri-Tech and Animal Science',
     hero_tagline: 'Join experts in Singapore for a major scientific meeting.',
     hero_image_url: '/hero.png'
   });

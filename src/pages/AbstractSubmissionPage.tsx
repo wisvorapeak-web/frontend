@@ -14,8 +14,7 @@ const guidelines = [
   'Abstracts should be between 250 and 400 words.',
   'Include your methods, results, and key words.',
   'Accepted formats: PDF or Microsoft Word (.docx).',
-  'Must match one of our event topics.',
-  'Maximum 2 submissions per main author.'
+  'Must match one of our event topics.'
 ];
 
 export default function AbstractSubmissionPage() {

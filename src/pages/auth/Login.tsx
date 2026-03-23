@@ -132,7 +132,7 @@ export default function Login() {
         <div className="absolute inset-0 bg-blue/10 blur-[100px] -translate-y-1/2 translate-x-1/2 rounded-full" />
         <div className="max-w-md text-center space-y-10 relative z-10 px-8">
            <Link to="/" className="inline-block hover:scale-105 active:scale-95 transition-all mb-10">
-              <img src="/logo.png" alt="Ascendix Summits" className="h-16 w-auto object-contain brightness-0 invert" />
+              <img src="/logo.png" alt="Ascendix Summit on Food, Agri-Tech and Animal Science" className="h-16 w-auto object-contain brightness-0 invert" />
            </Link>
            
            <div className="space-y-4">

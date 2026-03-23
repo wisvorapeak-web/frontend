@@ -108,7 +108,7 @@ export default function Footer() {
 
         <div className="mt-20 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-xs font-medium text-white/20">
-            © 2026 {settings?.site_title || 'Ascendix Summits'}. All rights reserved. Registered in India.
+            © 2026 {settings?.site_title || 'Ascendix Summit on Food, Agri-Tech and Animal Science'}. All rights reserved. Registered in India.
           </p>
           <div className="flex gap-8">
             {[
