@@ -56,7 +56,7 @@ export default function AboutPage() {
           <div className="relative">
              <div className="rounded-2xl overflow-hidden border-2 border-slate- family rotate-1 group transition-transform duration-1000 hover:rotate-0 shadow-2xl">
                 <img 
-                   src={settings?.about_image_url || "/about-agrotech.png"} 
+                   src={settings?.about_image_url || "/venue-image-1.jpg"} 
                    alt="Research" 
                    className="w-full h-[280px] object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
                 />
