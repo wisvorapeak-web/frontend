@@ -9,7 +9,7 @@ export default function Hero() {
     site_tagline: 'ASFAA-2026: Join leaders in food and agriculture.',
     hero_title: 'Global Event for Food, Agri-Tech & Animal Science.',
     hero_tagline: 'Join experts in Singapore for a major scientific meeting.',
-    hero_image_url: 'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?auto=format&fit=crop&q=80'
+    hero_image_url: '/hero.png'
   });
   const [venue, setVenue] = useState<any>({
     venue_name: 'Singapore',

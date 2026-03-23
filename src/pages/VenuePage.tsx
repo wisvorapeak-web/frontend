@@ -61,10 +61,10 @@ export default function VenuePage() {
            
            <div className="grid grid-cols-2 gap-4 h-[320px]">
               <div className="rounded-3xl overflow-hidden shadow-2xl">
-                 <img src="https://images.unsplash.com/photo-1525625232214-93361839e342?auto=format&fit=crop&q=80" className="w-full h-full object-cover" alt="Singapore" />
+                 <img src="/hero.png" className="w-full h-full object-cover" alt="Singapore" />
               </div>
               <div className="rounded-3xl overflow-hidden shadow-2xl translate-y-8">
-                 <img src="https://images.unsplash.com/photo-1557053503-0c252e5c8093?auto=format&fit=crop&q=80" className="w-full h-full object-cover" alt="Singapore Skyline" />
+                 <img src="/hero.png" className="w-full h-full object-cover" alt="Singapore Skyline" />
               </div>
            </div>
         </section>
@@ -95,12 +95,12 @@ export default function VenuePage() {
             <div className="grid grid-cols-2 gap-4 h-[300px]">
                <div className="bg-white p-3 rounded-2xl shadow-xl shadow-slate-200/50 -rotate-2 hover:rotate-0 transition-all duration-700">
                   <div className="w-full h-full rounded-xl overflow-hidden">
-                     <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80" className="w-full h-full object-cover" alt="Hotel Interior" />
+                     <img src="/hero.png" className="w-full h-full object-cover" alt="Hotel Interior" />
                   </div>
                </div>
                <div className="bg-white p-3 rounded-2xl shadow-xl shadow-slate-200/50 rotate-2 translate-y-8 hover:rotate-0 transition-all duration-700">
                   <div className="w-full h-full rounded-xl overflow-hidden">
-                     <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80" className="w-full h-full object-cover" alt="Hotel Exterior" />
+                     <img src="/hero.png" className="w-full h-full object-cover" alt="Hotel Exterior" />
                   </div>
                </div>
             </div>
@@ -119,7 +119,7 @@ export default function VenuePage() {
            </div>
            
            <div className="relative rounded-3xl overflow-hidden border-8 border-white shadow-2xl h-[400px]">
-              <img src="https://images.unsplash.com/photo-1525625232214-93361839e342?auto=format&fit=crop&q=80" className="w-full h-full object-cover" alt="Singapore Tourism" />
+              <img src="/hero.png" className="w-full h-full object-cover" alt="Singapore Tourism" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
               <div className="absolute bottom-10 left-10 right-10 flex flex-col md:flex-row items-end justify-between gap-6">
                  <div className="space-y-2">

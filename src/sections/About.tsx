@@ -19,7 +19,7 @@ export default function About() {
   const [settings, setSettings] = useState<any>({
     about_title: 'The Future of Food',
     about_content: 'Join us in Singapore for a global meeting of leaders and researchers in agriculture.',
-    about_image_url: 'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?auto=format&fit=crop&q=80'
+    about_image_url: '/hero.png'
   });
   const [venue, setVenue] = useState<any>(null);
   const sectionRef = useRef<HTMLElement>(null);
@@ -49,7 +49,7 @@ export default function About() {
           {/* Main Visual */}
           <div className={`relative transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'}`}>
             <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-navy/10 border border-slate-50 group">
-              <img src={settings.about_image_url || "https://images.unsplash.com/photo-1542601906990-b4d3fb773b09?auto=format&fit=crop&q=80"} alt="About Innovation" className="w-full h-[400px] object-cover transition-transform duration-[3000ms] group-hover:scale-105" />
+              <img src={settings.about_image_url || "/hero.png"} alt="About Innovation" className="w-full h-[400px] object-cover transition-transform duration-[3000ms] group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-navy/30 to-transparent pointer-events-none" />
               
               <div className="absolute top-6 left-6 p-4 bg-white/95 backdrop-blur-2xl shadow-xl rounded-xl border border-white/20">
