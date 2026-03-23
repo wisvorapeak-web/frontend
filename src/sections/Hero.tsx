@@ -4,28 +4,23 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 export default function Hero() {
-  const [settings, setSettings] = useState<any>({
+  const [settings] = useState<any>({
     site_title: 'Ascendix Summit on Food, Agri-Tech and Animal Science',
     site_tagline: 'ASFAA-2026: Join leaders in food and agriculture.',
     hero_title: 'Ascendix Summit on Food, Agri-Tech and Animal Science',
     hero_tagline: 'Join experts in Singapore for a major scientific meeting.',
-    hero_image_url: '/hero.png'
+    hero_image_url: '/hero.png',
+    event_dates: 'November 18-20, 2026',
+    global_reach: '50+ Countries'
   });
-  const [venue, setVenue] = useState<any>({
+  const [venue] = useState<any>({
     venue_name: 'Singapore',
     city: 'Singapore',
     country: 'Singapore'
   });
 
   useEffect(() => {
-    // Parallel fetch for primary settings
-    Promise.all([
-      fetch(`${import.meta.env.VITE_API_URL}/api/site/settings`).then(res => res.json()),
-      fetch(`${import.meta.env.VITE_API_URL}/api/site/venue`).then(res => res.json())
-    ]).then(([sData, vData]) => {
-      if (sData) setSettings(sData);
-      if (vData) setVenue(vData);
-    }).catch(err => console.error('Hero orchestration failed:', err));
+    // Static mode: no fetch
   }, []);
 
   return (

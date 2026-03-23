@@ -9,7 +9,13 @@ import { toast } from 'sonner';
 
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [settings, setSettings] = useState<any>(null);
+  const [settings] = useState<any>({
+    contact_email: 'contact@foodagriexpo.com',
+    contact_phone: '+91 91542 54625',
+    office_hours: 'Mon-Fri, 09:00 - 18:00 IST',
+    contact_address: 'Singapore'
+  });
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -19,39 +25,19 @@ export default function ContactPage() {
   });
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/site/settings`)
-      .then(res => res.json())
-      .then(data => setSettings(data))
-      .catch(() => console.error('Settings sync failed'));
+    // Static mode
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/submissions/contact`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: `${formData.firstName} ${formData.lastName}`,
-          email: formData.emailAddress,
-          subject: formData.subject,
-          message: formData.message
-        }),
-      });
-
-      if (!response.ok) throw new Error('Submission failed');
-
+    setTimeout(() => {
       toast.success('Your message has been sent! We will get back to you soon.');
       setFormData({
         firstName: '', lastName: '', emailAddress: '', subject: '', message: ''
       });
-    } catch (error) {
-      toast.error('Failed to send message. Please try again.');
-    } finally {
       setIsSubmitting(false);
-    }
+    }, 1000);
   };
 
   const contactItems = [

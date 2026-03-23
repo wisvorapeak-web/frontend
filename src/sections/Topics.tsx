@@ -32,31 +32,21 @@ const icons: any = {
 };
 
 export default function Topics() {
-  const [topics, setTopics] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [topics] = useState<any[]>([
+    { title: 'Food Security', description: 'Sustainable solutions for global food supply.', icon_name: 'Sprout', color_gradient: 'from-emerald-600 to-green-400' },
+    { title: 'Agri-Tech', description: 'Precision farming and digital agriculture.', icon_name: 'Zap', color_gradient: 'from-blue-600 to-indigo-400' },
+    { title: 'Animal Health', description: 'Advances in veterinary science and livestock.', icon_name: 'Beef', color_gradient: 'from-orange-600 to-red-400' },
+    { title: 'Biotechnology', description: 'Genetic research for resilient crops.', icon_name: 'Dna', color_gradient: 'from-purple-600 to-pink-400' }
+  ]);
+  const [loading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    fetchTopics();
     const observer = new IntersectionObserver(([e]) => e.isIntersecting && setIsVisible(true), { threshold: 0.1 });
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
-
-  const fetchTopics = async () => {
-    try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/site/topics`);
-      if (res.ok) {
-        const data = await res.json();
-        setTopics(data);
-      }
-    } catch (err) {
-      console.error('Failed to fetch topics:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <section ref={sectionRef} id="topics" className="relative py-12 bg-slate-50 overflow-hidden font-outfit">

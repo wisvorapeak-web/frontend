@@ -19,23 +19,33 @@ const getColor = (type: string) => {
 };
 
 export default function ProgramPage() {
-  const [schedule, setSchedule] = useState<any[]>([]);
+  const [schedule] = useState<any[]>([
+    {
+      day: 'Day 1',
+      sessions: [
+        { title: 'Opening Ceremony', start_time: '09:00', end_time: '10:00', location: 'Main Hall', session_type: 'Opening', description: 'Kickoff for the Ascendix Summit 2026.' },
+        { title: 'Food Security Session', start_time: '10:30', end_time: '12:30', location: 'Hall A', session_type: 'Session', description: 'Sustainable solutions for global food supply.' },
+        { title: 'Lunch Break', start_time: '12:30', end_time: '14:00', location: 'Dining Area', session_type: 'Break', description: 'Networking lunch.' }
+      ]
+    },
+    {
+      day: 'Day 2',
+      sessions: [
+        { title: 'Agri-Tech Workshop', start_time: '09:30', end_time: '11:30', location: 'Lab 1', session_type: 'Workshop', description: 'Precision farming and digital agriculture.' },
+        { title: 'Keynote Speech', start_time: '14:00', end_time: '15:30', location: 'Auditorium', session_type: 'Keynote', description: 'The future of biotechnology.' }
+      ]
+    },
+    {
+      day: 'Day 3',
+      sessions: [
+        { title: 'Animal Science Panel', start_time: '10:00', end_time: '12:00', location: 'Hall B', session_type: 'Panel', description: 'Advances in livestock and veterinary science.' },
+        { title: 'Closing Awards', start_time: '16:00', end_time: '17:30', location: 'Main Hall', session_type: 'Closing', description: 'Recognition of top research contributions.' }
+      ]
+    }
+  ]);
+
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/site/program`)
-      .then(res => res.json())
-      .then(data => {
-        const grouped = data.reduce((acc: any, item: any) => {
-          if (!acc[item.day]) acc[item.day] = [];
-          acc[item.day].push(item);
-          return acc;
-        }, {});
-        const scheduleArray = Object.keys(grouped).map(day => ({
-          day,
-          sessions: grouped[day]
-        }));
-        setSchedule(scheduleArray);
-      })
-      .catch(() => {});
+    // Static mode
   }, []);
 
   return (

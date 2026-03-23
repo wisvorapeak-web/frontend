@@ -14,25 +14,17 @@ interface Speaker {
 }
 
 export default function Speakers() {
-  const [speakers, setSpeakers] = useState<Speaker[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [speakers] = useState<Speaker[]>([
+    { id: '1', name: 'Dr. Sarah Chen', category: 'Plenary', university: 'Stanford University', country: 'USA', bio: 'Expert in sustainable agriculture and food security.' },
+    { id: '2', name: 'Prof. James Wilson', category: 'Keynote', university: 'Cambridge University', country: 'UK', bio: 'Pioneering research in agri-tech and digital farming.' },
+    { id: '3', name: 'Dr. Elena Rossi', category: 'Invited', university: 'University of Bologna', country: 'Italy', bio: 'Specialist in animal health and veterinary science.' },
+    { id: '4', name: 'Prof. Akiko Tanaka', category: 'Keynote', university: 'University of Tokyo', country: 'Japan', bio: 'Leading innovator in biotechnology and crop resilience.' }
+  ]);
+  const [loading] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const fetchSpeakers = async () => {
-        try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/site/speakers`);
-            const data: Speaker[] = await res.json();
-            // Prioritize Plenary and Keynote for home feature
-            const featured = data.filter(s => ['plenary', 'keynote', 'invited'].includes((s.category || '').toLowerCase()));
-            setSpeakers(featured.length > 0 ? featured : data.slice(0, 8));
-        } catch (error) {
-            console.error('Featured Speakers Error:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-    fetchSpeakers();
+    // Static mode
   }, []);
 
   return (

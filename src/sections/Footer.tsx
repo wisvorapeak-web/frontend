@@ -28,18 +28,17 @@ const resources = [
 
 export default function Footer() {
   const location = useLocation();
-  const [settings, setSettings] = useState<any>(null);
+  const [settings] = useState<any>({
+    site_tagline: 'Leading the future of food and agriculture.',
+    site_title: 'Ascendix Summit on Food, Agri-Tech and Animal Science',
+    linkedin_url: '#',
+    twitter_url: '#',
+    facebook_url: '#',
+    instagram_url: '#'
+  });
 
   useEffect(() => {
-    const fetchSettings = async () => {
-      try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/site/settings`);
-        if (res.ok) setSettings(await res.json());
-      } catch (err) {
-        console.error('Failed to fetch footer settings:', err);
-      }
-    };
-    fetchSettings();
+    // Static mode
   }, []);
 
   if (location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/admin')) return null;

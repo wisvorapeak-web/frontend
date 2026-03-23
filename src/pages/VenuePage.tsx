@@ -7,17 +7,19 @@ import VenueGallery from '../sections/VenueGallery';
 import { useState, useEffect } from 'react';
 
 export default function VenuePage() {
-  const [venue, setVenue] = useState<any>(null);
-  const [settings, setSettings] = useState<any>(null);
+  const [venue] = useState<any>({
+    host_city: 'Singapore',
+    venue_name: 'Singapore Summit Center',
+    venue_description: 'The summit will be held in Singapore, a global center for research and business.',
+    map_url: '#',
+    virtual_tour_url: '#'
+  });
+  const [settings] = useState<any>({
+    site_tagline: 'Experience the culture of Singapore during the summit.'
+  });
 
   useEffect(() => {
-    Promise.all([
-      fetch(`${import.meta.env.VITE_API_URL}/api/site/venue`).then(res => res.json()),
-      fetch(`${import.meta.env.VITE_API_URL}/api/site/settings`).then(res => res.json())
-    ]).then(([vData, sData]) => {
-      setVenue(vData);
-      setSettings(sData);
-    }).catch(err => console.error('Failed to fetch venue info:', err));
+    // Static mode
   }, []);
 
   return (

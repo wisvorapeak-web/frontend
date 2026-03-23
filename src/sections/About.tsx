@@ -14,28 +14,21 @@ const iconMap: any = {
 
 export default function About() {
   const [isVisible, setIsVisible] = useState(false);
-  const [highlights, setHighlights] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [settings, setSettings] = useState<any>({
+  const [highlights] = useState<any[]>([
+    { title: 'Innovation', description: 'Showcasing the latest agritech solutions.', icon_name: 'Lightbulb' },
+    { title: 'Networking', description: 'Connect with 4000+ global experts.', icon_name: 'Network' },
+    { title: 'Sustainability', description: 'Focusing on future food security.', icon_name: 'Sparkles' }
+  ]);
+  const [loading] = useState(false);
+  const [settings] = useState<any>({
     about_title: 'The Future of Food',
     about_content: 'Join us in Singapore for a global meeting of leaders and researchers in agriculture.',
     about_image_url: '/venue-image-1.jpg'
   });
-  const [venue, setVenue] = useState<any>(null);
+  const [venue] = useState<any>({ host_city: 'Singapore' });
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    Promise.all([
-      fetch(`${import.meta.env.VITE_API_URL}/api/site/settings`).then(res => res.json()),
-      fetch(`${import.meta.env.VITE_API_URL}/api/site/venue`).then(res => res.json()),
-      fetch(`${import.meta.env.VITE_API_URL}/api/site/about-highlights`).then(res => res.json())
-    ]).then(([sData, vData, hData]) => {
-      if (sData) setSettings(sData);
-      if (vData) setVenue(vData);
-      if (hData) setHighlights(hData);
-    }).catch(err => console.error('About data fetch failed:', err))
-      .finally(() => setLoading(false));
-
     const observer = new IntersectionObserver(([e]) => e.isIntersecting && setIsVisible(true), { threshold: 0.1 });
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();

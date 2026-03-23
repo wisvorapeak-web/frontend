@@ -42,23 +42,23 @@ const sharedBenefits = [
 ];
 
 export default function SponsorshipPage() {
-  const [tiers, setTiers] = useState<PricingTier[]>([]);
-  const [sponsors, setSponsors] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [tiers] = useState<PricingTier[]>([
+    { id: '1', name: 'Platinum', category: 'Sponsorship', amount: 5000, currency: '$', description: 'Maximum visibility.', features: ['Premium Booth', 'Logo on Main Screen', '10 Free Passes', 'VIP Lounge Access'] },
+    { id: '2', name: 'Gold', category: 'Sponsorship', amount: 3000, currency: '$', description: 'High visibility.', features: ['Standard Booth', 'Logo on Website', '5 Free Passes', 'Networking Dinner'] },
+    { id: '3', name: 'Silver', category: 'Sponsorship', amount: 1500, currency: '$', description: 'Core visibility.', features: ['Small Booth', 'Logo in Booklet', '2 Free Passes'] },
+    { id: '4', name: 'Exhibitor Standard', category: 'Exhibition', amount: 800, currency: '$', description: 'Showcase your products.', features: ['Table & 2 Chairs', 'Power Supply', 'Listing in Catalog'] }
+  ]);
+  const [sponsors] = useState<any[]>([
+    { name: 'IARI', logo_url: '/logo.png', website_url: '#' },
+    { name: 'FAO', logo_url: '/logo.png', website_url: '#' },
+    { name: 'WHO', logo_url: '/logo.png', website_url: '#' },
+    { name: 'ICAR', logo_url: '/logo.png', website_url: '#' }
+  ]);
+  const [loading] = useState(false);
+  const [error] = useState(false);
 
   useEffect(() => {
-    Promise.all([
-      fetch(`${import.meta.env.VITE_API_URL}/api/site/pricing`).then(r => r.json()),
-      fetch(`${import.meta.env.VITE_API_URL}/api/site/sponsors`).then(r => r.json())
-    ]).then(([pricingData, sponsorData]) => {
-      setTiers(pricingData);
-      setSponsors(sponsorData);
-      setLoading(false);
-    }).catch(() => {
-      setError(true);
-      setLoading(false);
-    });
+    // Static mode
   }, []);
 
   const sponsorshipTiers = tiers.filter(t => t.category === 'Sponsorship');

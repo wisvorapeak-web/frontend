@@ -26,18 +26,11 @@ const venueImagesFallback = [
 
 export default function VenueGallery() {
   const [activeTab, setActiveTab] = useState(0);
-  const [gallery, setGallery] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [gallery] = useState<any[]>(venueImagesFallback);
+  const [loading] = useState(false);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/site/gallery`)
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.length > 0) setGallery(data);
-        else setGallery(venueImagesFallback);
-      })
-      .catch(() => setGallery(venueImagesFallback))
-      .finally(() => setLoading(false));
+    // Static mode
   }, []);
 
   const currentImage = gallery[activeTab] || gallery[0] || venueImagesFallback[0];

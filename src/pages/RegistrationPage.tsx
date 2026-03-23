@@ -86,37 +86,11 @@ export default function RegistrationPage() {
     }
     
     setIsSubmitting(true);
-    try {
-      const payload = {
-        firstName: formData.name.split(' ')[0] || '',
-        lastName: formData.name.split(' ').slice(1).join(' ') || '',
-        email: formData.email,
-        institution: formData.university,
-        country: formData.country,
-        ticketType: formData.regType,
-        phone: formData.phone
-      };
-
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/submissions/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify(payload)
-      });
-
-      const resData = await response.json();
-      
-      if (response.ok) {
-        toast.success('Registration successful! Redirecting to payment...');
-        navigate(`/payment/registration/${formData.regType}?regId=${resData.data.registrationId}&amount=${calculateTotal()}&method=${paymentMethod}`);
-      } else {
-        toast.error(resData.error || 'Registration failed.');
-      }
-    } catch (error) {
-       toast.error('An error occurred. Please try again.');
-    } finally {
+    setTimeout(() => {
+      toast.success('Registration successful! Redirecting to payment...');
+      navigate(`/payment/registration/${formData.regType}?regId=STATIC-REG-ID&amount=${calculateTotal()}&method=${paymentMethod}`);
       setIsSubmitting(false);
-    }
+    }, 1000);
   };
 
   return (

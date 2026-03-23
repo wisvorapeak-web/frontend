@@ -50,21 +50,23 @@ const AnimatedCounter = ({
 
 export default function TrustStrip() {
   const [isVisible, setIsVisible] = useState(false);
-  const [metrics, setMetrics] = useState<any[]>([]);
-  const [partners, setPartners] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [metrics] = useState<any[]>([
+    { label: 'Keynote Speakers', value: '45+', icon_name: 'Mic2' },
+    { label: 'Global Attendees', value: '4000+', icon_name: 'Users' },
+    { label: 'Research Papers', value: '850+', icon_name: 'BookOpen' },
+    { label: 'Representing Countries', value: '32+', icon_name: 'Globe' }
+  ]);
+  const [partners] = useState<any[]>([
+    { name: 'FAO', logo_url: 'https://api.dicebear.com/7.x/initials/svg?seed=FAO' },
+    { name: 'CGIAR', logo_url: 'https://api.dicebear.com/7.x/initials/svg?seed=CGIAR' },
+    { name: 'WFP', logo_url: 'https://api.dicebear.com/7.x/initials/svg?seed=WFP' },
+    { name: 'WHO', logo_url: 'https://api.dicebear.com/7.x/initials/svg?seed=WHO' },
+    { name: 'NUS', logo_url: 'https://api.dicebear.com/7.x/initials/svg?seed=NUS' }
+  ]);
+  const [loading] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    Promise.all([
-      fetch(`${import.meta.env.VITE_API_URL}/api/site/metrics`).then(res => res.json()),
-      fetch(`${import.meta.env.VITE_API_URL}/api/site/sponsors`).then(res => res.json())
-    ]).then(([mData, pData]) => {
-      if (mData) setMetrics(mData);
-      if (pData) setPartners(pData);
-    }).catch(err => console.error('Trust fetch failed:', err))
-      .finally(() => setLoading(false));
-
     const observer = new IntersectionObserver(([e]) => e.isIntersecting && setIsVisible(true), { threshold: 0.1 });
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();

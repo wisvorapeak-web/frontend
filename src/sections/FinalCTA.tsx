@@ -23,29 +23,20 @@ const iconMap: any = {
 
 export default function FinalCTA() {
   const [isVisible, setIsVisible] = useState(false);
-  const [metrics, setMetrics] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [metrics] = useState<any[]>([
+    { label: 'Attendees', value: '4000+', icon_name: 'Globe2' },
+    { label: 'Speakers', value: '150+', icon_name: 'Mic2' },
+    { label: 'Countries', value: '45+', icon_name: 'Award' },
+    { label: 'Exhibitors', value: '80+', icon_name: 'Rocket' }
+  ]);
+  const [loading] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    fetchMetrics();
     const observer = new IntersectionObserver(([e]) => e.isIntersecting && setIsVisible(true), { threshold: 0.2 });
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
-
-  const fetchMetrics = async () => {
-    try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/site/metrics`);
-      if (res.ok) {
-        setMetrics(await res.json());
-      }
-    } catch (err) {
-      console.error('Failed to fetch metrics:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <section ref={sectionRef} className="py-20 bg-navy relative overflow-hidden font-outfit">

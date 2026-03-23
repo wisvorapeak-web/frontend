@@ -26,22 +26,18 @@ interface Speaker {
 }
 
 export default function SpeakersPage() {
-  const [speakers, setSpeakers] = useState<Speaker[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [speakers] = useState<Speaker[]>([
+    { id: '1', name: 'Dr. Sarah Chen', category: 'plenary', university: 'Stanford University', country: 'USA', bio: 'Expert in sustainable agriculture and food security.' },
+    { id: '2', name: 'Prof. James Wilson', category: 'keynote', university: 'Cambridge University', country: 'UK', bio: 'Pioneering research in agri-tech and digital farming.' },
+    { id: '3', name: 'Dr. Elena Rossi', category: 'invited', university: 'University of Bologna', country: 'Italy', bio: 'Specialist in animal health and veterinary science.' },
+    { id: '4', name: 'Prof. Akiko Tanaka', category: 'keynote', university: 'University of Tokyo', country: 'Japan', bio: 'Leading innovator in biotechnology and crop resilience.' },
+    { id: '5', name: 'Dr. Michael Brown', category: 'young-research', university: 'MIT', country: 'USA', bio: 'Focusing on next-generation protein sources.' },
+    { id: '6', name: 'Dr. Sofia Garcia', category: 'plenary', university: 'University of Madrid', country: 'Spain', bio: 'Authority on Mediterranean food systems and circular economy.' }
+  ]);
+  const [loading] = useState(false);
 
   useEffect(() => {
-    const fetchSpeakers = async () => {
-        try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/site/speakers`);
-            const data = await res.json();
-            setSpeakers(data);
-        } catch (error) {
-            console.error('Failed to fetch speakers:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-    fetchSpeakers();
+    // Static mode
   }, []);
 
   return (

@@ -2,31 +2,22 @@ import { useEffect, useRef, useState } from 'react';
 import { ChevronDown, Loader2, HelpCircle } from 'lucide-react';
 
 export default function FAQ() {
-  const [faqs, setFaqs] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [faqs] = useState<any[]>([
+    { question: 'What is the abstract deadline?', answer: 'The final date to submit research abstracts is December 05, 2025.' },
+    { question: 'Will I get a certificate?', answer: 'Yes, all registered speakers and delegates receive an official certificate of attendance.' },
+    { question: 'Where is the summit held?', answer: 'The summit will take place in Singapore. Venue details are available on the Venue page.' },
+    { question: 'How can I register?', answer: 'You can register through our online portal on the Registration page.' }
+  ]);
+  const [loading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    fetchFaqs();
     const observer = new IntersectionObserver(([e]) => e.isIntersecting && setIsVisible(true), { threshold: 0.1 });
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
-
-  const fetchFaqs = async () => {
-    try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/site/faqs`);
-      if (res.ok) {
-        setFaqs(await res.json());
-      }
-    } catch (err) {
-      console.error('Failed to fetch FAQs:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <section ref={sectionRef} id="faq" className="relative py-12 bg-slate-50 overflow-hidden font-outfit">

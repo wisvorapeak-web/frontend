@@ -43,40 +43,20 @@ export default function AbstractSubmissionForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    const data = new FormData();
-    Object.entries(formData).forEach(([key, value]) => data.append(key, value));
-    if (file) data.append('file', file);
-
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/submissions/abstract`, {
-        method: 'POST',
-        credentials: 'include',
-        body: data, // Sending as FormData for file support
+    setTimeout(() => {
+      toast.success('Abstract submitted successfully! Check your email for confirmation.');
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        institution: '',
+        topic: '',
+        title: '',
+        abstract: ''
       });
-
-      const resData = await response.json();
-
-      if (response.ok) {
-        toast.success('Abstract submitted successfully! Check your email for confirmation.');
-        setFormData({
-          firstName: '',
-          lastName: '',
-          email: '',
-          institution: '',
-          topic: '',
-          title: '',
-          abstract: ''
-        });
-        setFile(null);
-      } else {
-        toast.error(resData.error || 'Submission failed.');
-      }
-    } catch (error) {
-      toast.error('Network error. Please try again later.');
-    } finally {
+      setFile(null);
       setIsSubmitting(false);
-    }
+    }, 1500);
   };
 
   return (

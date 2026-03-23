@@ -32,26 +32,19 @@ const getIcon = (name: string) => {
 
 export default function Registration() {
   const [isVisible, setIsVisible] = useState(false);
-  const [tiers, setTiers] = useState<PricingTier[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [tiers] = useState<PricingTier[]>([
+    { id: '1', name: 'Speaker', category: 'Registration', amount: 350, currency: '$', description: 'Present your research.', features: ['Full Conference Access', 'Presentation Slot', 'Certificate', 'Networking Gala'] },
+    { id: '2', name: 'Delegate', category: 'Registration', amount: 450, currency: '$', description: 'Attend the summit.', features: ['Full Conference Access', 'Workshops', 'Certificate', 'Lunch & Refreshments'] },
+    { id: '3', name: 'Student', category: 'Registration', amount: 200, currency: '$', description: 'Special rate for students.', features: ['Full Conference Access', 'Student Workshop', 'Certificate', 'Career Session'] },
+    { id: '4', name: 'Poster', category: 'Registration', amount: 300, currency: '$', description: 'Digital poster entry.', features: ['Conference Access', 'Poster Display', 'Certificate', 'Digital Archive'] }
+  ]);
+  const [loading] = useState(false);
+  const [error] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(([e]) => e.isIntersecting && setIsVisible(true), { threshold: 0.1 });
     if (sectionRef.current) observer.observe(sectionRef.current);
-    
-    fetch(`${import.meta.env.VITE_API_URL}/api/site/pricing`)
-      .then(res => res.json())
-      .then(data => {
-        setTiers(data.filter((t: PricingTier) => t.category === 'Registration'));
-        setLoading(false);
-      })
-      .catch(() => {
-        setError(true);
-        setLoading(false);
-      });
-
     return () => observer.disconnect();
   }, []);
 

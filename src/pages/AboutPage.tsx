@@ -10,13 +10,13 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function AboutPage() {
-  const [settings, setSettings] = useState<any>(null);
+  const [settings] = useState<any>({
+    site_tagline: "Better farming and food for the future.",
+    about_image_url: "/venue-image-1.jpg"
+  });
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/site/settings`)
-      .then(res => res.json())
-      .then(data => setSettings(data))
-      .catch(err => console.error('About settings fetch failed:', err));
+    // Static mode
   }, []);
 
   const stats = [

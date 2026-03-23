@@ -27,26 +27,16 @@ const icons: any = {
 };
 
 export default function BrochurePage() {
-  const [brochures, setBrochures] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [brochures] = useState<any[]>([
+    { title: 'Event Brochure 2026', category: 'General', file_size: '4.2 MB', icon_name: 'BookOpen', file_url: '/brochure.pdf' },
+    { title: 'Technical Program', category: 'Schedule', file_size: '2.1 MB', icon_name: 'FileText', file_url: '/program.pdf' },
+    { title: 'Venue Map', category: 'Location', file_size: '1.5 MB', icon_name: 'Map', file_url: '/map.pdf' }
+  ]);
+  const [loading] = useState(false);
 
   useEffect(() => {
-    fetchBrochures();
+    // Static mode
   }, []);
-
-  const fetchBrochures = async () => {
-    try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/site/brochures`);
-      if (res.ok) {
-        const data = await res.json();
-        setBrochures(data);
-      }
-    } catch (err) {
-      console.error('Failed to fetch brochures:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleDownload = (brochure: any) => {
     toast.success(`Preparing ${brochure.title} for download...`);

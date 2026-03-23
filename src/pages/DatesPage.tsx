@@ -2,33 +2,20 @@ import PageLayout from './PageLayout';
 import { Clock, Calendar, AlertCircle, FileCheck, CheckCircle2, Award, Zap } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
-const milestoneStyles = [
-  { icon: FileCheck, color: 'bg-emerald-50 text-emerald-600 border-emerald-100' },
-  { icon: Clock, color: 'bg-rose-50 text-rose-600 border-rose-100' },
-  { icon: AlertCircle, color: 'bg-indigo-50 text-indigo-600 border-indigo-100' },
-  { icon: Award, color: 'bg-amber-50 text-amber-600 border-amber-100' },
-  { icon: Calendar, color: 'bg-slate-50 text-slate-800 border-slate-200' },
-];
+
 
 export default function DatesPage() {
-  const [milestones, setMilestones] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [milestones] = useState<any[]>([
+    { title: 'Abstract Submission Opens', date: 'Aug 15, 2025', description: 'Begin submitting your research abstract.', status: 'Active', icon: FileCheck, color: 'bg-emerald-50 text-emerald-600 border-emerald-100' },
+    { title: 'Early Bird Registration', date: 'Oct 01, 2025', description: 'Register early for discounted rates.', status: 'Active', icon: Clock, color: 'bg-rose-50 text-rose-600 border-rose-100' },
+    { title: 'Abstract Submission Deadline', date: 'Dec 05, 2025', description: 'Final date to submit abstracts for review.', status: 'Active', icon: AlertCircle, color: 'bg-indigo-50 text-indigo-600 border-indigo-100' },
+    { title: 'Final Registration Deadline', date: 'Jan 15, 2026', description: 'Last day to register for the summit.', status: 'Active', icon: Award, color: 'bg-amber-50 text-amber-600 border-amber-100' },
+    { title: 'Summit Dates', date: 'Feb 20, 2026', description: 'Opening of the Ascendix Summit 2026.', status: 'Active', icon: Calendar, color: 'bg-slate-50 text-slate-800 border-slate-200' }
+  ]);
+  const [loading] = useState(false);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/site/dates`)
-      .then(res => res.json())
-      .then(data => {
-        const enriched = data.map((d: any, i: number) => ({
-          title: d.event,
-          description: d.description || 'Final deadline for this event.',
-          date: new Date(d.date).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
-          status: d.is_active ? 'Active' : 'Closed',
-          ...milestoneStyles[i % milestoneStyles.length]
-        }));
-        setMilestones(enriched);
-      })
-      .catch(err => console.error('Dates fetch failed:', err))
-      .finally(() => setLoading(false));
+    // Static mode
   }, []);
 
   if (loading) return <PageLayout title="Dates" subtitle="Loading..."><div className="p-40 text-center"><Zap className="w-12 h-12 text-slate-100 animate-spin mx-auto mb-6" /> <p className="text-slate-300 font-black text-xs uppercase tracking-[0.3em]">Loading dates...</p></div></PageLayout>;
