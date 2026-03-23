@@ -1,71 +1,58 @@
 import PageLayout from './PageLayout';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Link } from 'react-router-dom';
 
 const committee = [
   { 
-    name: 'Prof. Ananda Verma', 
-    role: 'Conference Chair', 
-    affiliation: 'Delhi Technological University', 
-    location: 'India',
-    image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Anand' 
+    name: 'To Be Announced', 
+    role: 'Event Chair', 
+    affiliation: 'Global University', 
+    location: 'Singapore',
+    image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=EventChair' 
   },
   { 
-    name: 'Dr. Sarah Jenkins', 
-    role: 'Scientific Committee Chair', 
-    affiliation: 'Oxford University', 
-    location: 'United Kingdom',
-    image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah' 
+    name: 'To Be Announced', 
+    role: 'Co-Chair', 
+    affiliation: 'International Institute', 
+    location: 'Singapore',
+    image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=CoChair' 
   },
   { 
-    name: 'Prof. Michael Chen', 
-    role: 'Organizing Secretary', 
-    affiliation: 'MIT Materials Science', 
-    location: 'USA',
-    image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Michael' 
-  },
-  { 
-    name: 'Dr. Elena Rodriguez', 
-    role: 'Technical Program Chair', 
-    affiliation: 'CSIC Madrid', 
-    location: 'Spain',
-    image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Elena' 
-  },
-  { 
-    name: 'Prof. Hiroshi Tanaka', 
-    role: 'Exhibition Chair', 
-    affiliation: 'University of Tokyo', 
-    location: 'Japan',
-    image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Hiroshi' 
+    name: 'To Be Announced', 
+    role: 'Host Chair', 
+    affiliation: 'Host University', 
+    location: 'Singapore',
+    image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=HostChair' 
   },
 ];
 
 export default function OrganizersPage() {
   return (
     <PageLayout 
-      title="Organizing Committee" 
-      subtitle="The visionary leaders and experts driving the success of Ascendix Summits."
+      title="Team" 
+      subtitle="The leaders and experts behind the summit."
     >
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 py-20 space-y-24">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 py-12 space-y-16">
         {/* Management Team */}
-        <section className="space-y-12">
-           <div className="text-center max-w-2xl mx-auto space-y-4">
-              <h2 className="text-3xl font-bold text-slate-900 font-outfit">Core Scientific Leadership</h2>
-              <p className="text-slate-500 font-medium">Meet the global experts overseeing the technical integrity of our summit.</p>
+        <section className="space-y-10">
+           <div className="text-center max-w-2xl mx-auto space-y-3">
+              <h2 className="text-2xl font-bold text-slate-900 font-outfit uppercase tracking-tight">Scientific Team</h2>
+              <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest italic">Global experts leading our event.</p>
            </div>
            
-           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {committee.map((member, i) => (
-                <div key={i} className="p-8 bg-white rounded-[2.5rem] shadow-xl shadow-indigo-100/50 border border-slate-50 relative group transition-all duration-700 hover:-translate-y-2">
+                <div key={i} className="p-6 bg-white rounded-3xl shadow-xl shadow-indigo-100/50 border border-slate-50 relative group transition-all duration-700 hover:-translate-y-1">
                     <div className="flex flex-col items-center text-center">
-                        <Avatar className="w-24 h-24 mb-6 border-[6px] border-slate-50 group-hover:border-indigo-50 shadow-xl transition-all duration-700">
+                        <Avatar className="w-20 h-20 mb-4 border-[4px] border-slate-50 group-hover:border-indigo-50 shadow-lg transition-all duration-700">
                            <AvatarImage src={member.image} />
                            <AvatarFallback>{member.name[0]}</AvatarFallback>
                         </Avatar>
-                        <h3 className="text-xl font-bold text-slate-900 font-outfit leading-tight mb-1">{member.name}</h3>
-                        <p className="text-xs font-bold text-indigo-500 mb-4">{member.role}</p>
-                        <div className="bg-slate-50 w-full p-4 rounded-2xl border border-slate-100/50 group-hover:bg-indigo-50 transition-colors">
-                           <p className="text-xs font-bold text-slate-600 mb-1">{member.affiliation}</p>
-                           <p className="text-xs font-semibold text-slate-400">{member.location}</p>
+                        <h3 className="text-lg font-bold text-slate-900 font-outfit leading-tight mb-0.5 uppercase tracking-tight">{member.name}</h3>
+                        <p className="text-[9px] font-black text-indigo-500 mb-4 uppercase tracking-widest">{member.role}</p>
+                        <div className="bg-slate-50 w-full p-4 rounded-xl border border-slate-100/50 group-hover:bg-indigo-50 transition-colors">
+                           <p className="text-[10px] font-black text-slate-600 mb-1 uppercase tracking-tight">{member.affiliation}</p>
+                           <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{member.location}</p>
                         </div>
                     </div>
                 </div>
@@ -74,32 +61,34 @@ export default function OrganizersPage() {
         </section>
 
         {/* Global Regional Advisors */}
-        <section className="bg-slate-950 p-12 lg:p-20 rounded-[4rem] text-white">
-           <h3 className="text-2xl font-bold mb-12 font-outfit text-center">Regional Scientific Advisors</h3>
-           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <section className="bg-slate-950 p-10 lg:p-12 rounded-3xl text-white">
+           <h3 className="text-xl font-bold mb-8 font-outfit text-center uppercase tracking-tight">Advisors</h3>
+           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {[
                 { region: 'Europe', leads: '12 Advisors' },
                 { region: 'Asia Pacific', leads: '18 Advisors' },
                 { region: 'Americas', leads: '15 Advisors' },
                 { region: 'Middle East', leads: '8 Advisors' },
               ].map((adv, i) => (
-                 <div key={i} className="bg-white/5 p-8 rounded-[2rem] border border-white/5 text-center group hover:bg-white/10 transition-colors">
-                    <p className="text-xs font-bold text-indigo-400 mb-2">{adv.region}</p>
-                    <p className="text-xl font-bold font-outfit">{adv.leads}</p>
+                 <div key={i} className="bg-white/5 p-6 rounded-2xl border border-white/5 text-center group hover:bg-white/10 transition-colors">
+                    <p className="text-[9px] font-black text-indigo-400 mb-1 uppercase tracking-widest">{adv.region}</p>
+                    <p className="text-lg font-black font-outfit uppercase tracking-tight">{adv.leads}</p>
                  </div>
               ))}
            </div>
         </section>
 
         {/* Advisory footer */}
-        <section className="bg-indigo-600 p-8 rounded-[2.5rem] flex flex-col md:flex-row items-center justify-between text-white shadow-2xl shadow-indigo-600/20">
-           <div className="text-center md:text-left mb-6 md:mb-0">
-             <h4 className="text-xl font-bold font-outfit mb-1">Interested in joining the Scientific Program Committee?</h4>
-             <p className="text-indigo-200 text-sm font-medium">Please send your academic CV to scientific@foodagriexpo.com</p>
+        <section className="bg-indigo-600 p-6 rounded-2xl flex flex-col md:flex-row items-center justify-between text-white shadow-xl shadow-indigo-600/10">
+           <div className="text-center md:text-left mb-4 md:mb-0">
+             <h4 className="text-lg font-bold font-outfit mb-0.5 uppercase tracking-tight">Want to join us?</h4>
+             <p className="text-indigo-200 text-[10px] font-black uppercase tracking-widest">contact@foodagriexpo.com</p>
            </div>
-           <button className="bg-white text-indigo-600 px-8 py-3.5 rounded-2xl font-bold text-sm shadow-xl shadow-indigo-900/10 hover:bg-slate-50 transition-all active:scale-95">
-              Apply to join
-           </button>
+           <Link to="/contact">
+             <button className="bg-white text-indigo-600 h-10 px-8 rounded-xl font-black text-[9px] uppercase tracking-widest shadow-lg hover:bg-slate-50 transition-all active:scale-95">
+                Contact
+             </button>
+           </Link>
         </section>
       </div>
     </PageLayout>

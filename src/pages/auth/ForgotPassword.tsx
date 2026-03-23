@@ -83,7 +83,7 @@ export default function ForgotPassword() {
             )}
           </div>
 
-          <Link to="/login" className="flex items-center justify-center gap-2 text-slate-700 hover:text-white text-xs font-bold transition-colors group">
+          <Link to="/admin/login" className="flex items-center justify-center gap-2 text-slate-700 hover:text-white text-xs font-bold transition-colors group">
             <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Access
           </Link>
         </div>
@@ -99,7 +99,7 @@ export default function ForgotPassword() {
            
            <div className="space-y-4">
               <p className="text-xs font-bold text-white/30 leading-relaxed">
-                The leading platform for world food, agriculture, and animal science summits.
+                The leading platform for food, agri-tech, and animal science summits.
               </p>
            </div>
 

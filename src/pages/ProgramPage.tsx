@@ -1,178 +1,133 @@
 import PageLayout from './PageLayout';
-import { useEffect, useState } from 'react';
+import { Clock, MapPin, Zap, Rocket } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Clock, 
-  MapPin, 
-  Mic2, 
-  Coffee, 
-  Utensils, 
-  Zap, 
-  Monitor, 
-  UserCircle 
-} from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { Link } from 'react-router-dom';
 
-interface Session {
-    id: string;
-    day: string;
-    date: string;
-    start_time: string;
-    end_time: string;
-    title: string;
-    location: string;
-    session_type: string;
-    speaker_name?: string;
-}
+const getIcon = (type: string) => {
+    const t = type.toLowerCase();
+    if (t.includes('session')) return Zap;
+    if (t.includes('break')) return Clock;
+    return Rocket;
+};
 
-interface GroupedDay {
-    day: string;
-    date: string;
-    sessions: Session[];
-}
+const getColor = (type: string) => {
+    const t = type.toLowerCase();
+    if (t.includes('session')) return 'bg-blue/5 text-blue border-blue/10';
+    if (t.includes('break')) return 'bg-amber-50 text-amber-600 border-amber-100';
+    return 'bg-emerald-50 text-emerald-600 border-emerald-100';
+};
 
 export default function ProgramPage() {
-  const [schedule, setSchedule] = useState<GroupedDay[]>([]);
-  const [loading, setLoading] = useState(true);
-
+  const [schedule, setSchedule] = useState<any[]>([]);
   useEffect(() => {
-    const fetchProgram = async () => {
-        try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/site/program`);
-            const data: Session[] = await res.json();
-            
-            // Group by day
-            const grouped = data.reduce((acc: GroupedDay[], session) => {
-                const day = session.day;
-                const existing = acc.find(d => d.day === day);
-                if (existing) {
-                    existing.sessions.push(session);
-                } else {
-                    acc.push({ day, date: session.date || '', sessions: [session] });
-                }
-                return acc;
-            }, []);
-
-            setSchedule(grouped);
-        } catch (error) {
-            console.error('Failed to fetch program:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-    fetchProgram();
+    fetch(`${import.meta.env.VITE_API_URL}/api/site/program`)
+      .then(res => res.json())
+      .then(data => {
+        const grouped = data.reduce((acc: any, item: any) => {
+          if (!acc[item.day]) acc[item.day] = [];
+          acc[item.day].push(item);
+          return acc;
+        }, {});
+        const scheduleArray = Object.keys(grouped).map(day => ({
+          day,
+          sessions: grouped[day]
+        }));
+        setSchedule(scheduleArray);
+      })
+      .catch(() => {});
   }, []);
-
-  const getIcon = (type: string) => {
-    switch (type.toLowerCase()) {
-        case 'registration': return UserCircle;
-        case 'plenary':
-        case 'keynote': return Zap;
-        case 'break': return Coffee;
-        case 'lunch': return Utensils;
-        default: return Monitor;
-    }
-  };
-
-  const getColor = (type: string) => {
-    switch (type.toLowerCase()) {
-        case 'registration': return 'bg-slate-100 text-slate-500';
-        case 'plenary':
-        case 'keynote': return 'bg-indigo-100 text-indigo-600';
-        case 'break': return 'bg-amber-100 text-amber-600';
-        case 'lunch': return 'bg-emerald-100 text-emerald-600';
-        default: return 'bg-blue-100 text-blue-600';
-    }
-  };
 
   return (
     <PageLayout 
-      title="Event Schedule" 
-      subtitle="See our full schedule for the 3rd world food and agriculture summit."
+      title="Program" 
+      subtitle="The full schedule for ASFAA 2026."
     >
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 py-12">
-        {loading ? (
-            <div className="space-y-8 animate-pulse">
-                <div className="h-16 bg-slate-100 rounded-[2rem] w-full" />
-                <div className="space-y-4">
-                    <div className="h-40 bg-slate-50 rounded-[2.5rem]" />
-                    <div className="h-40 bg-slate-50 rounded-[2.5rem]" />
-                </div>
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 py-12 space-y-16 pb-20 font-outfit">
+        
+        {/* Header Summary */}
+        <section className="bg-navy p-8 lg:p-10 rounded-2xl relative overflow-hidden group shadow-2xl shadow-navy/20">
+            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 group-hover:scale-125 transition-transform duration-1000" />
+            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-500/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2" />
+            
+            <div className="relative z-10 grid lg:grid-cols-2 gap-12 items-center">
+               <div className="space-y-6">
+                  <div className="inline-flex items-center gap-3 px-4 py-1.5 bg-white/5 border border-white/10 rounded-full backdrop-blur-md">
+                     <span className="w-2 h-2 rounded-full bg-blue animate-pulse" />
+                     <span className="text-[9px] font-black text-white uppercase tracking-widest">Summit Schedule</span>
+                  </div>
+                  <h2 className="text-3xl lg:text-5xl font-black text-white leading-tight tracking-tight uppercase">Program <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue to-indigo-400">Overview</span></h2>
+                  <p className="max-w-2xl text-white/40 text-[11px] font-bold uppercase tracking-widest leading-relaxed italic">
+                     Check the full schedule for the summit across {schedule.length} technical days.
+                  </p>
+               </div>
+               <div className="hidden lg:flex justify-end pr-10">
+                  <div className="w-32 h-32 bg-white/5 rounded-3xl border border-white/10 flex flex-col items-center justify-center text-center space-y-2 shadow-2xl relative">
+                     <div className="absolute -top-4 -right-4 w-12 h-12 bg-blue rounded-2xl flex items-center justify-center text-white font-black text-lg shadow-xl shadow-blue/40 rotate-12">{schedule.length}</div>
+                     <p className="text-xs font-black text-white uppercase tracking-widest leading-none">Days</p>
+                     <p className="text-[10px] font-bold text-white/20 uppercase tracking-widest">Schedule</p>
+                  </div>
+               </div>
             </div>
-        ) : schedule.length > 0 ? (
+        </section>
+
+        {schedule.length > 0 ? (
             <Tabs defaultValue={schedule[0]?.day} className="w-full">
-            <div className="bg-slate-50 p-1.5 rounded-[2rem] mb-8 border border-slate-100 overflow-x-auto scrollbar-none flex justify-center h-16 items-center">
-                <TabsList className="bg-transparent h-full flex gap-2">
+            <div className="bg-slate-50 p-1 rounded-full mb-12 border border-slate-100 overflow-x-auto scrollbar-none flex justify-center h-14 items-center max-w-2xl mx-auto shadow-inner">
+                <TabsList className="bg-transparent h-full flex gap-2 px-4">
                     {schedule.map((day) => (
                         <TabsTrigger 
                             key={day.day} 
                             value={day.day} 
-                            className="data-[state=active]:bg-white data-[state=active]:text-indigo-600 data-[state=active]:shadow-xl shadow-indigo-100/50 rounded-xl font-bold text-xs px-8 py-3 gap-3 transition-all h-full"
+                            className="data-[state=active]:bg-white data-[state=active]:text-indigo-600 data-[state=active]:shadow-xl shadow-indigo-100/50 rounded-full font-black text-[9px] uppercase tracking-widest px-8 py-2 transition-all h-10 group"
                         >
-                            <div className="flex flex-col items-center leading-none">
-                                <span className="text-xs text-slate-400 group-active:text-indigo-400 mb-1">{day.date}</span>
-                                <span>{day.day}</span>
-                            </div>
+                            {day.day}
                         </TabsTrigger>
                     ))}
                 </TabsList>
             </div>
 
             {schedule.map((day) => (
-                <TabsContent key={day.day} value={day.day} className="animate-in fade-in slide-in-from-bottom-5 duration-500">
-                    <div className="space-y-6">
-                        {day.sessions.map((session, i) => {
-                            const Icon = getIcon(session.session_type);
-                            const colorClass = getColor(session.session_type);
+                <TabsContent key={day.day} value={day.day} className="space-y-6 animate-in fade-in slide-in-from-bottom-5 duration-1000">
+                    <div className="grid grid-cols-1 gap-6">
+                        {day.sessions.map((session: any, i: number) => {
+                            const Icon = getIcon(session.session_type || 'Session');
+                            const colorClass = getColor(session.session_type || 'Session');
                             return (
-                            <div key={i} className="group relative">
-                                <div className="absolute left-10 top-20 bottom-0 w-0.5 bg-slate-100 group-last:hidden" />
-                                <div className="p-8 lg:p-10 bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/40 border border-slate-50 flex flex-col md:flex-row gap-10 hover:-translate-y-2 transition-all duration-500 group relative z-10 overflow-hidden">
-                                    <div className="absolute top-0 right-0 w-48 h-48 bg-slate-50/50 rotate-45 translate-x-32 -translate-y-32 group-hover:bg-indigo-50/50 group-hover:scale-150 transition-all duration-700" />
-                                    
-                                    {/* Time Area */}
-                                    <div className="flex flex-col gap-2 min-w-[180px]">
-                                        <div className="flex items-center gap-3 text-slate-400 font-bold mb-1">
-                                            <Clock className="w-4 h-4" />
-                                            <span className="text-xs">Time Slot</span>
+                                <div key={i} className="group relative flex gap-6 md:gap-10 transition-all duration-700 hover:-translate-x-2">
+                                    {/* Time Column */}
+                                    <div className="flex flex-col items-center min-w-[100px] md:min-w-[140px]">
+                                        <div className="p-4 rounded-2xl bg-white border border-slate-50 shadow-xl shadow-slate-200/50 group-hover:border-blue group-hover:scale-105 transition-all text-center w-full">
+                                            <p className="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-1 leading-none">Time</p>
+                                            <p className="text-base font-black text-navy uppercase tracking-tighter">{session.start_time} - {session.end_time}</p>
                                         </div>
-                                        <h4 className="text-sm font-bold text-slate-900 font-outfit">{session.start_time} - {session.end_time}</h4>
+                                        <div className="flex-1 w-px bg-gradient-to-b from-blue/20 to-transparent my-4 group-last:hidden" />
                                     </div>
 
-                                    {/* Content Area */}
-                                    <div className="flex-1 space-y-4">
-                                        <div className="flex items-center gap-3 mb-2">
-                                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${colorClass}`}>
-                                                <Icon className="w-5 h-5" />
-                                            </div>
-                                            <span className="text-xs font-bold text-indigo-500">{session.session_type}</span>
-                                        </div>
-                                        <h3 className="text-xl lg:text-2xl font-bold text-slate-900 font-outfit leading-tight group-hover:text-indigo-600 transition-colors">
-                                            {session.title}
-                                        </h3>
-                                        
-                                        <div className="flex flex-wrap items-center gap-6 pt-2">
-                                            <div className="flex items-center gap-2 text-slate-400 font-bold">
-                                                <MapPin className="w-4 h-4" />
-                                                <span className="text-xs">{session.location}</span>
-                                            </div>
-                                            {session.speaker_name && (
-                                                <div className="flex items-center gap-2 text-slate-400 font-bold">
-                                                    <Mic2 className="w-4 h-4" />
-                                                    <span className="text-xs text-indigo-500">Speaker: {session.speaker_name}</span>
+                                    {/* Info Column */}
+                                    <div className="flex-1 pb-10">
+                                        <div className="p-6 md:p-8 bg-white rounded-3xl border border-slate-50 shadow-xl shadow-slate-200/30 group-hover:shadow-blue/5 group-hover:border-blue/10 transition-all relative overflow-hidden h-full">
+                                            <div className="absolute top-0 right-0 w-32 h-32 bg-slate-50 rotate-45 translate-x-16 -translate-y-16 group-hover:bg-blue/5 transition-colors" />
+                                            
+                                            <div className="relative z-10 space-y-4">
+                                                <div className="flex flex-wrap items-center gap-3 mb-2">
+                                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${colorClass} shadow-xl shadow-black/5 group-hover:scale-110 group-hover:rotate-6 transition-all`}>
+                                                        <Icon className="w-5 h-5" />
+                                                    </div>
+                                                    <span className="text-[9px] font-black text-indigo-500 uppercase tracking-[0.2em] bg-indigo-50/50 px-5 py-1.5 rounded-full border border-indigo-100">{session.session_type}</span>
+                                                    <div className="flex items-center gap-2 text-[9px] font-black text-slate-300 uppercase tracking-widest bg-slate-50 px-5 py-1.5 rounded-full">
+                                                       <MapPin className="w-3.5 h-3.5" /> {session.location || 'Hall'}
+                                                    </div>
                                                 </div>
-                                            )}
+                                                
+                                                <div className="space-y-2">
+                                                    <h3 className="text-xl font-bold text-navy leading-tight uppercase tracking-tight group-hover:text-blue transition-colors">{session.title}</h3>
+                                                    <p className="text-slate-500 font-medium text-xs leading-relaxed max-w-2xl opacity-80">{session.description || 'Program details will be updated soon.'}</p>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    {/* Action Link */}
-                                    <div className="flex items-center justify-center md:justify-end">
-                                        <button className="w-12 h-12 rounded-2xl bg-slate-50 text-slate-400 hover:bg-slate-900 hover:text-white transition-all duration-500 flex items-center justify-center">
-                                            <Badge className="p-0 border-none">+</Badge>
-                                        </button>
                                     </div>
                                 </div>
-                            </div>
                             );
                         })}
                     </div>
@@ -180,24 +135,37 @@ export default function ProgramPage() {
             ))}
             </Tabs>
         ) : (
-            <div className="py-20 text-center">
-                <h3 className="text-2xl font-bold text-slate-300">We are still finishing the schedule...</h3>
+            <div className="py-20 text-center space-y-8 bg-white rounded-[3rem] border border-slate-50 shadow-xl shadow-slate-200/30">
+               <div className="w-24 h-24 bg-slate-50 rounded-[2.5rem] flex items-center justify-center mx-auto text-slate-200 shadow-inner group">
+                  <Zap className="w-10 h-10 group-hover:scale-110 transition-transform" />
+               </div>
+               <div className="space-y-4">
+                  <h3 className="text-3xl font-black font-outfit text-navy tracking-tight">Schedule Coming Soon</h3>
+                  <p className="text-slate-400 text-xs font-bold max-w-sm mx-auto leading-loose uppercase tracking-[0.2em]">The team is finishing the technical program.</p>
+               </div>
             </div>
         )}
 
-        {/* Full PDF Download CTA */}
-        <section className="bg-slate-950 p-10 lg:p-12 rounded-[2.5rem] text-white flex flex-col items-center text-center space-y-6 relative overflow-hidden mt-12">
-           <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/20 rounded-full blur-[100px]" />
-           <div className="bg-indigo-600/20 p-6 rounded-[2rem] border border-white/5 mb-2 group">
-              <Monitor className="w-10 h-10 text-indigo-400 group-hover:scale-110 transition-transform" />
-           </div>
-           <h2 className="text-3xl lg:text-4xl font-bold font-outfit">Download Schedule</h2>
-           <p className="text-slate-400 text-lg font-medium max-w-xl">
-              Get the full schedule with all the details and floor plans in one PDF document.
-           </p>
-           <button className="px-12 py-5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 font-bold text-sm active:scale-95 transition-all shadow-xl shadow-indigo-600/20 group inline-flex items-center gap-3">
-              Download PDF <Clock className="w-3.5 h-3.5 opacity-50" />
-           </button>
+        {/* Networking CTA */}
+        <section className="bg-navy p-10 lg:p-16 rounded-[3rem] text-center text-white space-y-10 relative overflow-hidden group shadow-2xl shadow-navy/40">
+            <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue/10 blur-[150px] rounded-full -translate-y-1/2 translate-x-1/2 group-hover:bg-blue/20 transition-all duration-1000" />
+            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-500/5 blur-[100px] rounded-full translate-y-1/2 -translate-x-1/2" />
+            
+            <div className="space-y-4 relative z-10">
+               <h2 className="text-3xl lg:text-5xl font-black uppercase tracking-tight leading-tight">Connect with the <span className="text-blue">Future</span></h2>
+               <p className="text-white/40 text-base lg:text-lg font-medium max-w-2xl mx-auto italic">
+                  Join researchers and industry experts for three days of discovery in Singapore.
+               </p>
+            </div>
+            
+            <div className="flex flex-wrap justify-center gap-4 relative z-10">
+                <Link to="/registration" className="h-14 px-10 bg-blue text-white rounded-xl font-black text-[9px] uppercase tracking-widest flex items-center justify-center hover:bg-white hover:text-navy transition-all shadow-xl active:scale-95 text-decoration-none border-0">
+                   Register Now
+                </Link>
+                <Link to="/about" className="h-14 px-10 border border-white/10 text-white rounded-xl font-black text-[9px] uppercase tracking-widest flex items-center justify-center hover:bg-white/5 transition-all text-decoration-none">
+                   Learn More
+                </Link>
+            </div>
         </section>
       </div>
     </PageLayout>

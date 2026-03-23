@@ -11,19 +11,19 @@ const quickLinks = [
   { label: 'Home', href: '/' },
   { label: 'About', href: '/about' },
   { label: 'Topics', href: '/topics' },
-  { label: 'Key Dates', href: '/dates' },
+  { label: 'Dates', href: '/dates' },
   { label: 'Registration', href: '/registration' },
-  { label: 'Venue & Travel', href: '/venue' },
+  { label: 'Venue', href: '/venue' },
   { label: 'Contact', href: '/contact' },
 ];
 
 const resources = [
-  { label: 'Abstract Guidelines', href: '/abstract-submission' },
-  { label: 'Event Program', href: '/program' },
-  { label: 'Visa Information', href: '/venue' },
-  { label: 'Accommodation', href: '/venue' },
+  { label: 'Research Rules', href: '/abstract-submission' },
+  { label: 'Program', href: '/program' },
+  { label: 'Visa', href: '/venue' },
+  { label: 'Guides', href: '/brochure' },
   { label: 'Sponsorship', href: '/sponsorship' },
-  { label: 'Media Partners', href: '/contact' },
+  { label: 'Media', href: '/contact' },
 ];
 
 export default function Footer() {
@@ -60,7 +60,7 @@ export default function Footer() {
               <img src="/logo.png" alt="Ascendix Summits" className="h-16 md:h-20 w-auto object-contain brightness-0 invert" />
             </Link>
             <p className="text-sm font-medium text-white/40 leading-loose">
-              {settings?.site_tagline || 'Helping shape the future of farming and food technology.'}
+              {settings?.site_tagline || 'Leading the future of food and agriculture.'}
             </p>
             <div className="flex gap-4">
               {socialLinks.map((s, i) => (
@@ -108,11 +108,15 @@ export default function Footer() {
 
         <div className="mt-20 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-xs font-medium text-white/20">
-            © 2026 Ascendix Summits. 
+            © 2026 {settings?.site_title || 'Ascendix Summits'}. All rights reserved. Registered in India.
           </p>
           <div className="flex gap-8">
-            {['Privacy', 'Terms', 'Cookies'].map((t) => (
-              <a key={t} href="#" className="text-xs font-medium text-white/20 hover:text-white transition-colors">{t}</a>
+            {[
+              { label: 'Privacy', slug: 'privacy' },
+              { label: 'Terms', slug: 'terms' },
+              { label: 'Cookies', slug: 'cookies' }
+            ].map((t) => (
+              <Link key={t.slug} to={`/legal/${t.slug}`} className="text-xs font-medium text-white/20 hover:text-white transition-colors uppercase tracking-[0.2em]">{t.label}</Link>
             ))}
           </div>
         </div>

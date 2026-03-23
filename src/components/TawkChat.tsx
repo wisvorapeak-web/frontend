@@ -43,7 +43,7 @@ const TawkChat = () => {
         
         if (user) {
           window.Tawk_API.setAttributes({
-            'name': user.full_name,
+            'name': user.name,
             'email': user.email
           }, (error: any) => {
             if (error) console.error('Tawk.to identification error:', error);

@@ -28,7 +28,7 @@ export default function Inbox() {
   const fetchMessages = async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/inbox`, {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('ascendix_token')}` }
+        credentials: 'include'
       });
       if (res.ok) {
         const data = await res.json();
@@ -51,7 +51,7 @@ export default function Inbox() {
     return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
   };
 
-  if (loading) return <AdminLayout><div className="text-xs font-bold text-slate-400 p-12">Loading messages...</div></AdminLayout>;
+  if (loading) return <AdminLayout><div className="text-xs font-bold text-slate-400 p-12">Loading...</div></AdminLayout>;
 
   return (
     <AdminLayout>
@@ -59,15 +59,13 @@ export default function Inbox() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-          <div>
-            <h1 className="text-3xl font-bold text-slate-900 mb-2 font-outfit">Contact Inbox</h1>
-            <p className="text-slate-500 font-medium font-outfit">Handle site inquiries, support tickets, and scientist communication.</p>
-          </div>
+            <h1 className="text-3xl font-bold text-slate-900 mb-2 font-outfit">Inbox</h1>
+            <p className="text-slate-500 font-medium font-outfit">View and reply to messages.</p>
           </div>
           <div className="flex items-center gap-3">
              <div className="bg-slate-100 flex p-1 rounded-xl">
-               <Button className="rounded-lg h-9 bg-white text-indigo-600 shadow-sm border-none font-bold text-xs px-4">Focused</Button>
-               <Button variant="ghost" className="rounded-lg h-9 text-slate-500 font-bold text-xs px-4">Other</Button>
+               <Button className="rounded-lg h-9 bg-white text-indigo-600 shadow-sm border-none font-bold text-xs px-4">All</Button>
+               <Button variant="ghost" className="rounded-lg h-9 text-slate-500 font-bold text-xs px-4">Archived</Button>
              </div>
           </div>
         </div>
@@ -81,7 +79,7 @@ export default function Inbox() {
               <div className="relative">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <Input 
-                  placeholder="Search messages..." 
+                  placeholder="Search..." 
                   className="pl-12 h-12 bg-slate-50 border-none rounded-2xl focus-visible:ring-indigo-500/10 placeholder:font-medium"
                 />
               </div>
@@ -160,7 +158,7 @@ export default function Inbox() {
                   <div className="flex-1 p-10 overflow-y-auto scrollbar-none">
                      <div className="mb-10">
                         <div className="flex items-center gap-3 mb-4">
-                          <span className="text-xs font-bold text-indigo-500 bg-indigo-50 px-3 py-1 rounded-full">Scientific Inquiry</span>
+                          <span className="text-xs font-bold text-indigo-500 bg-indigo-50 px-3 py-1 rounded-full">Message</span>
                           <div className="flex items-center gap-1.5 text-xs text-slate-400 font-bold">
                              <Clock className="w-3.5 h-3.5" /> Received {formatTime(selectedMsg.created_at)}
                           </div>
@@ -172,9 +170,6 @@ export default function Inbox() {
                         <p className="text-slate-600 leading-relaxed font-outfit text-base whitespace-pre-wrap">
                            {selectedMsg.message}
                         </p>
-                        <p className="mt-8 text-slate-600 leading-relaxed font-outfit text-base">
-                           Thank you for your assistance.
-                        </p>
                      </div>
 
                      {/* Attachments Placeholder */}
@@ -184,8 +179,8 @@ export default function Inbox() {
                               <Paperclip className="w-5 h-5" />
                            </div>
                            <div className="pr-4">
-                              <p className="text-xs font-bold text-slate-900">Curriculum_Vitae.pdf</p>
-                              <p className="text-xs font-bold text-slate-400">2.1 MB • Scanned</p>
+                              <p className="text-xs font-bold text-slate-900">Attachment.pdf</p>
+                              <p className="text-xs font-bold text-slate-400">2.1 MB</p>
                            </div>
                         </div>
                      )}
@@ -195,13 +190,13 @@ export default function Inbox() {
                   <div className="p-8 border-t border-slate-50 bg-slate-50/20">
                      <div className="flex gap-4">
                         <Button className="rounded-xl grow bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-600/20 font-bold h-12 gap-2">
-                           <Reply className="w-4 h-4" /> Compose Reply
+                           <Reply className="w-4 h-4" /> Reply
                         </Button>
                         <Button variant="outline" className="rounded-xl font-bold h-12 border-slate-200 text-slate-600 px-6">
                            Forward
                         </Button>
                         <Button variant="outline" className="rounded-xl font-bold h-12 border-slate-200 text-slate-600 px-6">
-                           <CheckCircle2 className="w-4 h-4 mr-2 text-emerald-500" /> Mark as Resolved
+                           <CheckCircle2 className="w-4 h-4 mr-2 text-emerald-500" /> Done
                         </Button>
                      </div>
                   </div>
@@ -212,7 +207,7 @@ export default function Inbox() {
                      <InboxIcon className="w-10 h-10" />
                   </div>
                   <h3 className="text-xl font-bold text-slate-900 mb-2 font-outfit leading-tight">No Message Selected</h3>
-                  <p className="text-slate-400 text-sm font-medium max-w-sm">Select a conversation from the sidebar to read full communication thread.</p>
+                  <p className="text-slate-400 text-sm font-medium max-w-sm">Select a message to read it.</p>
                </div>
              )}
           </div>

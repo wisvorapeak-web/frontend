@@ -1,275 +1,114 @@
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Calendar, MapPin } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { toast } from 'sonner';
-
-// Abstract Form Component
-const AbstractForm = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    institution: '',
-    topic: '',
-    title: '',
-    abstract: ''
-  });
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/submissions/abstract`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) throw new Error('Submission failed');
-
-      toast.success('Your abstract has been submitted for review.');
-      setFormData({
-        firstName: '', lastName: '', email: '', institution: '', topic: '', title: '', abstract: ''
-      });
-    } catch (error) {
-      toast.error('Failed to submit. Please check your internet connection.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-6 text-left">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label className="text-xs font-semibold text-slate-400">First Name</Label>
-          <Input 
-            className="h-10 bg-slate-50 border-transparent rounded-lg text-sm font-semibold focus:bg-white focus:border-blue transition-all"
-            placeholder="John" 
-            required 
-            value={formData.firstName}
-            onChange={(e) => setFormData({...formData, firstName: e.target.value})}
-          />
-        </div>
-        <div className="space-y-2">
-          <Label className="text-xs font-semibold text-slate-400">Last Name</Label>
-          <Input 
-            className="h-10 bg-slate-50 border-transparent rounded-lg text-sm font-semibold focus:bg-white focus:border-blue transition-all"
-            placeholder="Doe" 
-            required 
-            value={formData.lastName}
-            onChange={(e) => setFormData({...formData, lastName: e.target.value})}
-          />
-        </div>
-      </div>
-      
-      <div className="space-y-2">
-        <Label className="text-xs font-semibold text-slate-400">Email</Label>
-        <Input 
-          className="h-10 bg-slate-50 border-transparent rounded-lg text-sm font-semibold focus:bg-white focus:border-blue transition-all"
-          type="email" 
-          placeholder="email@university.edu" 
-          required 
-          value={formData.email}
-          onChange={(e) => setFormData({...formData, email: e.target.value})}
-        />
-      </div>
-
-      <div className="space-y-2">
-        <Label className="text-xs font-semibold text-slate-400">Category</Label>
-        <Select onValueChange={(val) => setFormData({...formData, topic: val})}>
-          <SelectTrigger className="h-10 bg-slate-50 border-transparent rounded-lg text-sm font-semibold">
-            <SelectValue placeholder="Select Category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="crop-science" className="text-sm font-semibold">Crop Science & Genetics</SelectItem>
-            <SelectItem value="food-safety" className="text-sm font-semibold">Food Safety & Quality</SelectItem>
-            <SelectItem value="animal-health" className="text-sm font-semibold">Animal Health & Nutrition</SelectItem>
-            <SelectItem value="agri-iot" className="text-sm font-semibold">Agri-IoT & Automation</SelectItem>
-            <SelectItem value="sustainable-farming" className="text-sm font-semibold">Sustainable Farming</SelectItem>
-            <SelectItem value="bio-engineering" className="text-sm font-semibold">Bio-resource Engineering</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      <Button type="submit" className="w-full h-12 bg-blue text-white text-sm font-bold rounded-xl hover:bg-navy transition-all" disabled={isSubmitting}>
-        {isSubmitting ? 'Sending...' : 'Submit Your Talk'}
-      </Button>
-    </form>
-  );
-};
-
-// Registration Form Component
-const RegistrationForm = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    institution: '',
-    country: '',
-    ticketType: ''
-  });
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/submissions/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) throw new Error('Registration failed');
-
-      toast.success('You have successfully registered.');
-      setFormData({ firstName: '', lastName: '', email: '', institution: '', country: '', ticketType: '' });
-    } catch (error) {
-      toast.error('Registration failed. Please check your details.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-6 text-left">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label className="text-xs font-semibold text-slate-400">First Name</Label>
-          <Input 
-            className="h-10 bg-slate-50 border-transparent rounded-lg text-sm font-semibold focus:bg-white focus:border-blue transition-all"
-            placeholder="John" 
-            required 
-            value={formData.firstName}
-            onChange={(e) => setFormData({...formData, firstName: e.target.value})}
-          />
-        </div>
-        <div className="space-y-2">
-          <Label className="text-xs font-semibold text-slate-400">Last Name</Label>
-          <Input 
-            className="h-10 bg-slate-50 border-transparent rounded-lg text-sm font-semibold focus:bg-white focus:border-blue transition-all"
-            placeholder="Doe" 
-            required 
-            value={formData.lastName}
-            onChange={(e) => setFormData({...formData, lastName: e.target.value})}
-          />
-        </div>
-      </div>
-      <div className="space-y-2">
-        <Label className="text-xs font-semibold text-slate-400">Email</Label>
-        <Input 
-          className="h-10 bg-slate-50 border-transparent rounded-lg text-sm font-semibold focus:bg-white focus:border-blue transition-all"
-          type="email" 
-          placeholder="email@university.edu" 
-          required 
-          value={formData.email}
-          onChange={(e) => setFormData({...formData, email: e.target.value})}
-        />
-      </div>
-      <div className="space-y-2">
-        <Label className="text-xs font-semibold text-slate-400">Registration Type</Label>
-        <Select onValueChange={(val) => setFormData({...formData, ticketType: val})}>
-          <SelectTrigger className="h-10 bg-slate-50 border-transparent rounded-lg text-sm font-semibold">
-            <SelectValue placeholder="Select Tier" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="early" className="text-sm font-semibold">Early Bird</SelectItem>
-            <SelectItem value="standard" className="text-sm font-semibold">Standard</SelectItem>
-            <SelectItem value="student" className="text-sm font-semibold">Student</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      <Button type="submit" className="w-full h-12 bg-navy text-white text-sm font-bold rounded-xl hover:bg-blue transition-all" disabled={isSubmitting}>
-        {isSubmitting ? 'Processing...' : 'Register Now'}
-      </Button>
-    </form>
-  );
-};
+import { Calendar, MapPin, Mic2, ArrowRight, Sparkles, Globe2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 export default function Hero() {
+  const [settings, setSettings] = useState<any>({
+    site_title: 'Ascendix Summit: Food, Agri-Tech & Animal Science',
+    site_tagline: 'ASFAA-2026: Join leaders in food and agriculture.',
+    hero_title: 'Global Event for Food, Agri-Tech & Animal Science.',
+    hero_tagline: 'Join experts in Singapore for a major scientific meeting.',
+    hero_image_url: 'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?auto=format&fit=crop&q=80'
+  });
+  const [venue, setVenue] = useState<any>({
+    venue_name: 'Singapore',
+    city: 'Singapore',
+    country: 'Singapore'
+  });
+
+  useEffect(() => {
+    // Parallel fetch for primary settings
+    Promise.all([
+      fetch(`${import.meta.env.VITE_API_URL}/api/site/settings`).then(res => res.json()),
+      fetch(`${import.meta.env.VITE_API_URL}/api/site/venue`).then(res => res.json())
+    ]).then(([sData, vData]) => {
+      if (sData) setSettings(sData);
+      if (vData) setVenue(vData);
+    }).catch(err => console.error('Hero orchestration failed:', err));
+  }, []);
+
   return (
-    <section className="relative min-h-[95vh] flex items-center bg-navy overflow-hidden">
-      {/* Background */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue/5 rounded-full blur-[150px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-      
-      {/* Full Background Image */}
-      <div className="absolute inset-0 z-0">
+    <section className="relative h-screen flex items-center justify-center bg-navy overflow-hidden font-outfit">
+      {/* Background Section */}
+      <div className="absolute inset-0 z-0 text-decoration-none">
         <img
-          src="/hero-banner.png"
-          alt="Food, AgroTech & Animal Science"
-          className="w-full h-full object-cover opacity-40"
+          src={settings.hero_image_url || "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&q=80"}
+          alt="Event Background"
+          className="w-full h-full object-cover opacity-80 scale-110 transition-transform duration-[10000ms]"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-navy/90 via-navy/70 to-navy" />
+        <div className="absolute inset-0 bg-navy/20 pointer-events-none" />
       </div>
 
-      <div className="relative z-10 w-full px-6 lg:px-16 xl:px-24 flex justify-center">
-        <div className="max-w-4xl space-y-10 text-center flex flex-col items-center">
-         
+      <div className="relative z-20 w-full px-6 lg:px-16 xl:px-24 flex flex-col items-center justify-center h-full pt-20">
+        <div className="max-w-5xl space-y-4 text-center flex flex-col items-center justify-center animate-in fade-in slide-in-from-bottom-10 duration-1000">
+          
+          <div className="space-y-2 flex flex-col items-center">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue/10 border border-blue/20 rounded-full backdrop-blur-xl mb-2 group hover:bg-blue/20 transition-all cursor-default shadow-2xl shadow-blue/10">
+               <Sparkles className="w-3 h-3 text-blue animate-pulse" />
+               <span className="text-[8px] font-black text-white uppercase tracking-[0.3em] leading-none">Global Event 2026</span>
+            </div>
 
-          <div className="space-y-3 sm:space-y-4">
-            <p className="text-[10px] sm:text-xs font-bold text-blue/60 mb-2 uppercase tracking-widest leading-none">Presented by Ascendix</p>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight lg:leading-[1.1] text-balance">
-              Ascendix World Food, <br className="hidden sm:block" />
-              <span className="text-blue">AgroTech & Animal Science</span>
+            <h1 className="text-3xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.1] tracking-tighter text-balance uppercase drop-shadow-2xl">
+              {settings.hero_title || settings.site_title}
             </h1>
           </div>
 
+          <p className="text-[10px] sm:text-[12px] font-black text-white/50 leading-relaxed max-w-2xl mx-auto px-6 font-inter uppercase tracking-[0.2em] italic opacity-80 decoration-blue/20 decoration-1 underline-offset-[6px] underline">
+            {settings.hero_tagline || settings.site_tagline}
+          </p>
 
-            <p className="text-sm font-bold text-white/50 leading-loose max-w-2xl mx-auto">
-              Join leading experts to advance sustainable farming, food technology, and animal health for a better future.
-            </p>
-
-          <div className="flex flex-wrap justify-center gap-6 sm:gap-12 py-8 sm:py-10 border-y border-white/5 w-full">
-            <div className="flex items-center gap-3 sm:gap-4">
-              <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-blue opacity-50" />
-              <div className="space-y-0.5 sm:space-y-1 text-left">
-                <p className="text-[10px] text-white/30 font-bold leading-none uppercase tracking-tighter">Dates</p>
-                <p className="font-bold text-xs sm:text-sm text-white">June 24-26, 2026</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 py-6 sm:py-8 border-y border-white/5 w-full max-w-3xl backdrop-blur-[2px] rounded-2xl mt-4">
+            <div className="flex flex-col items-center gap-2 group">
+              <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-blue group-hover:bg-blue group-hover:text-white transition-all duration-500 shadow-xl border border-white/10">
+                <Calendar className="w-4 h-4" />
+              </div>
+              <div className="space-y-0.5">
+                <p className="text-[6.5px] text-white/30 font-black leading-none uppercase tracking-widest">Dates</p>
+                <p className="font-black text-[10px] text-white tracking-tight uppercase">{settings.event_dates || 'November 18-20, 2026'}</p>
               </div>
             </div>
-            <div className="flex items-center gap-3 sm:gap-4">
-              <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-blue opacity-50" />
-              <div className="space-y-0.5 sm:space-y-1 text-left">
-                <p className="text-[10px] text-white/30 font-bold leading-none uppercase tracking-tighter">Location</p>
-                <p className="font-bold text-xs sm:text-sm text-white">New Delhi, India</p>
+
+            <div className="flex flex-col items-center gap-2 group border-x border-white/5 px-8">
+              <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-blue group-hover:bg-blue group-hover:text-white transition-all duration-500 shadow-xl border border-white/10">
+                <MapPin className="w-4 h-4" />
+              </div>
+              <div className="space-y-0.5">
+                <p className="text-[7px] text-white/30 font-black leading-none uppercase tracking-widest">City</p>
+                <p className="font-black text-[11px] text-white tracking-tight uppercase">{venue.city || 'Singapore'}</p>
+              </div>
+            </div>
+
+            <div className="flex flex-col items-center gap-2 group">
+               <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-blue group-hover:bg-blue group-hover:text-white transition-all duration-500 shadow-xl border border-white/10">
+                <Globe2 className="w-4 h-4" />
+              </div>
+              <div className="space-y-0.5">
+                <p className="text-[7px] text-white/30 font-black leading-none uppercase tracking-widest">Global Reach</p>
+                <p className="font-black text-[11px] text-white tracking-tight uppercase">{settings.global_reach || '50+ Countries'}</p>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-4 pt-4">
-             <Dialog>
-              <DialogTrigger asChild>
-                <Button className="h-12 px-8 bg-blue text-white text-sm font-bold rounded-xl hover:bg-white hover:text-navy transition-all">
-                  Submit Your Talk
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-lg">
-                <DialogHeader><DialogTitle className="text-xl font-bold text-navy">Submit <span className="text-blue">Your Talk</span></DialogTitle></DialogHeader>
-                <AbstractForm />
-              </DialogContent>
-            </Dialog>
-
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button className="h-12 px-8 border border-white/10 text-white text-sm font-bold rounded-xl hover:bg-white hover:text-navy transition-all">
-                  Register Now
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-lg">
-                <DialogHeader><DialogTitle className="text-xl font-bold text-navy">Complete <span className="text-blue">Registration</span></DialogTitle></DialogHeader>
-                <RegistrationForm />
-              </DialogContent>
-            </Dialog>
+          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mt-6">
+            <Link to="/registration" className="w-full sm:w-auto text-decoration-none">
+               <Button className="w-full h-12 px-12 bg-blue hover:bg-white hover:text-navy text-white font-black text-[9px] uppercase tracking-[0.2em] rounded-lg transition-all shadow-2xl shadow-blue/20 active:scale-95 group text-decoration-none">
+                Register Now <ArrowRight className="w-4 h-4 ml-3 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
+            <Link to="/abstract-submission" className="w-full sm:w-auto text-decoration-none">
+              <Button variant="ghost" className="w-full h-12 px-12 border border-white/10 text-white font-black text-[9px] uppercase tracking-[0.2em] rounded-lg hover:bg-white/5 transition-all active:scale-95 bg-white/5 backdrop-blur-md text-decoration-none">
+                Submit Research <Mic2 className="w-4 h-4 ml-3 opacity-50" />
+              </Button>
+            </Link>
           </div>
         </div>
+      </div>
+
+      {/* Aesthetic Accents */}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-20 animate-bounce">
+         <div className="w-px h-10 bg-gradient-to-b from-transparent via-white to-transparent" />
+         <span className="text-[6px] font-black text-white uppercase tracking-[0.5em] rotate-90">Scroll Down</span>
       </div>
     </section>
   );

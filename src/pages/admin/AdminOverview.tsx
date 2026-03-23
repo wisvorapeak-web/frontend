@@ -8,7 +8,8 @@ import {
   Activity, 
   Clock,
   CheckCircle2,
-  Mail
+  Mail,
+  Rocket
 } from 'lucide-react';
 
 
@@ -17,18 +18,19 @@ export default function AdminOverview() {
   const [loading, setLoading] = useState(true);
   const [adminStats, setAdminStats] = useState({
     totalRegistrations: 0,
-    abstractsSubmitted: 0,
-    totalRevenue: '$0',
-    activeSessions: 0,
+    totalAbstracts: 0,
+    totalRevenue: '₹0',
+    totalInquiries: 0,
+    totalSponsors: 0,
     recentInquiries: [],
-    chartData: [40, 60, 30, 80, 50, 70, 90]
+    registrationChartData: [40, 60, 30, 80, 50, 70, 90]
   });
 
   useEffect(() => {
     const fetchAdminStats = async () => {
       try {
         const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/stats`, {
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('ascendix_token')}` }
+          credentials: 'include'
         });
         if (res.ok) setAdminStats(await res.json());
       } catch (err) {
@@ -42,12 +44,13 @@ export default function AdminOverview() {
 
   const displayStats = [
     { label: 'Registrations', value: adminStats.totalRegistrations.toLocaleString(), change: '+12%', icon: Users },
-    { label: 'Abstracts', value: adminStats.abstractsSubmitted.toLocaleString(), change: '+8%', icon: FileText },
-    { label: 'Revenue', value: adminStats.totalRevenue, change: '+24%', icon: CreditCard },
-    { label: 'Active Sessions', value: adminStats.activeSessions.toString(), change: '-3%', icon: Activity },
+    { label: 'Abstracts', value: adminStats.totalAbstracts.toLocaleString(), change: '+8%', icon: FileText },
+    { label: 'Messages', value: adminStats.totalInquiries.toLocaleString(), change: '+24%', icon: Mail },
+    { label: 'Sponsors', value: adminStats.totalSponsors.toLocaleString(), change: '+5%', icon: Rocket },
+    { label: 'Earnings', value: adminStats.totalRevenue, change: '+24%', icon: CreditCard },
   ];
 
-  if (loading) return <AdminLayout><div className="text-xs font-bold text-slate-400 p-12">Loading Dashboard...</div></AdminLayout>;
+  if (loading) return <AdminLayout><div className="text-xs font-bold text-slate-400 p-12">Loading...</div></AdminLayout>;
 
   return (
     <AdminLayout>
@@ -57,15 +60,15 @@ export default function AdminOverview() {
           <div className="space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue/5 border border-blue/10 rounded-full">
               <Activity className="w-3 h-3 text-blue" />
-              <span className="text-xs font-bold text-blue">Real-time Metrics</span>
+              <span className="text-xs font-bold text-blue">Statistics</span>
             </div>
-            <h1 className="text-4xl font-bold text-navy leading-none text-outfit">Admin <span className="text-blue">Dashboard</span></h1>
+            <h1 className="text-4xl font-bold text-navy leading-none font-outfit">Overview</h1>
           </div>
           <div className="flex items-center gap-4 p-4 border border-slate-100 rounded-2xl">
             <Clock className="w-4 h-4 text-slate-300" />
             <div>
-              <p className="text-xs font-bold text-slate-400 leading-none">Last Updated</p>
-              <p className="text-xs font-bold text-navy mt-1">Active Now</p>
+              <p className="text-xs font-bold text-slate-400 leading-none">Last update</p>
+              <p className="text-xs font-bold text-navy mt-1">Active now</p>
             </div>
           </div>
         </div>
@@ -92,7 +95,7 @@ export default function AdminOverview() {
           {/* Traffic */}
           <div className="lg:col-span-2 p-10 border border-slate-100 rounded-3xl space-y-10">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-bold text-navy">System <span className="text-blue">Activity</span></h3>
+              <h3 className="text-lg font-bold text-navy">Activity</h3>
               <div className="flex gap-2">
                 {['D', 'W', 'M'].map(t => (
                   <button key={t} className={`w-8 h-8 rounded-lg text-xs font-bold transition-all ${t === 'W' ? 'bg-blue text-white' : 'text-slate-400 hover:bg-slate-50'}`}>{t}</button>
@@ -100,7 +103,7 @@ export default function AdminOverview() {
               </div>
             </div>
             <div className="h-64 flex items-end gap-3 pt-6">
-              {adminStats.chartData.map((val, i) => (
+              {adminStats.registrationChartData.map((val: number, i: number) => (
                 <div key={i} className="flex-1 group relative h-full flex flex-col justify-end">
                   <div 
                     className="w-full bg-slate-50 group-hover:bg-blue/10 rounded-lg transition-all relative overflow-hidden"
@@ -115,7 +118,7 @@ export default function AdminOverview() {
             </div>
           </div>
 
-          {/* Urgent Communications */}
+          {/* Recent Communications */}
           <div className="p-10 bg-navy rounded-3xl space-y-10 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-blue/5 rounded-full blur-3xl pointer-events-none" />
             
@@ -123,7 +126,7 @@ export default function AdminOverview() {
               <span className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-blue">
                 <Mail className="w-5 h-5" />
               </span>
-              <h3 className="text-lg font-bold text-white">Direct <span className="text-blue">Inbox</span></h3>
+              <h3 className="text-lg font-bold text-white">Messages</h3>
             </div>
             
             <div className="space-y-4">
@@ -137,13 +140,13 @@ export default function AdminOverview() {
                   <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mx-auto">
                     <CheckCircle2 className="w-6 h-6 text-white/10" />
                   </div>
-                  <p className="text-xs font-bold text-white/20">Empty Queue</p>
+                  <p className="text-xs font-bold text-white/20">No messages</p>
                 </div>
               )}
             </div>
             
-            <button className="w-full h-14 bg-blue text-white text-sm font-bold rounded-2xl hover:bg-white hover:text-navy transition-all">
-              Open Inbox
+            <button onClick={() => navigate('/admin/inbox')} className="w-full h-14 bg-blue text-white text-sm font-bold rounded-2xl hover:bg-white hover:text-navy transition-all">
+              Inbox
             </button>
           </div>
         </div>
@@ -151,9 +154,9 @@ export default function AdminOverview() {
         {/* Action Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
-            { label: 'User Management', sub: 'Manage Scientists', icon: Users, color: 'text-blue', path: '/admin/users' },
-            { label: 'Abstract Review', sub: 'Review Submissions', icon: CheckCircle2, color: 'text-indigo-600', path: '/admin/abstracts' },
-            { label: 'Financial Overview', sub: 'Payment History', icon: CreditCard, color: 'text-emerald-600', path: '/admin/registrations' },
+            { label: 'Abstracts', sub: 'Review', icon: CheckCircle2, color: 'text-indigo-600', path: '/admin/abstracts' },
+            { label: 'Registrations', sub: 'Payments', icon: CreditCard, color: 'text-emerald-600', path: '/admin/registrations' },
+            { label: 'Messages', sub: 'Read', icon: Mail, color: 'text-blue', path: '/admin/inbox' },
           ].map((action, i) => (
             <button 
               key={i} 

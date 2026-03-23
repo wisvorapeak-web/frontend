@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 
 export default function JournalsBanner() {
   return (
-    <section className="py-12 bg-white">
+    <section className="py-10 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-16">
-        <div className="bg-slate-950 rounded-[4rem] p-12 lg:p-24 flex flex-col lg:flex-row items-center gap-16 overflow-hidden relative border border-white/10 shadow-2xl">
+        <div className="bg-slate-950 rounded-3xl p-10 lg:p-12 flex flex-col lg:flex-row items-center gap-10 overflow-hidden relative border border-white/10 shadow-2xl">
           <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-blue/10 to-transparent blur-3xl opacity-20" />
           
           <div className="flex-grow space-y-10 relative z-10 text-center lg:text-left">

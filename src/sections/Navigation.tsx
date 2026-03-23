@@ -31,20 +31,20 @@ const navLinks = [
     label: 'About', 
     href: '/about',
     subItems: [
-        { label: 'About the Event', href: '/about', icon: Info },
+        { label: 'About', href: '/about', icon: Info },
         { label: 'Organizers', href: '/organizers', icon: Users },
-        { label: 'Conference Chairs', href: '/chairs', icon: Award },
-        { label: 'Key Dates', href: '/dates', icon: Calendar },
-        { label: 'Venue & Travel', href: '/venue', icon: MapPin },
+        { label: 'Team', href: '/chairs', icon: Award },
+        { label: 'Dates', href: '/dates', icon: Calendar },
+        { label: 'Venue', href: '/venue', icon: MapPin },
     ]
   },
   { 
     label: 'Event', 
     href: '/speakers',
     subItems: [
-        { label: 'Honoured Speakers', href: '/speakers', icon: Mic2 },
-        { label: 'Event Program', href: '/program', icon: Monitor },
-        { label: 'Talk Areas', href: '/sessions', icon: Zap },
+        { label: 'Speakers', href: '/speakers', icon: Mic2 },
+        { label: 'Program', href: '/program', icon: Monitor },
+        { label: 'Sessions', href: '/sessions', icon: Zap },
         { label: 'Workshops', href: '/workshops', icon: Rocket },
     ]
   },
@@ -54,7 +54,8 @@ const navLinks = [
     subItems: [
         { label: 'Sponsorship', href: '/sponsorship', icon: Trophy },
         { label: 'Exhibitors', href: '/sponsorship#exhibitors', icon: Building2 },
-        { label: 'Journal Collaborations', href: '/journals', icon: FileText },
+        { label: 'Journals', href: '/journals', icon: FileText },
+        { label: 'Guides', href: '/brochure', icon: Rocket },
     ]
   },
   { label: 'Contact', href: '/contact' },
@@ -123,10 +124,10 @@ export default function Navigation() {
     <>
       <nav 
         className={`
-          fixed top-0 left-0 right-0 z-50 transition-all duration-500
+          fixed top-0 left-0 right-0 z-50 transition-all duration-500 font-outfit
           ${isScrolled || !isHomePage
-            ? 'bg-white/70 backdrop-blur-2xl shadow-2xl shadow-navy/5 py-4 border-b border-white/20' 
-            : 'bg-transparent py-6'
+            ? 'bg-white/80 backdrop-blur-2xl shadow-xl shadow-navy/5 py-2 border-b border-slate-50' 
+            : 'bg-transparent py-4'
           }
         `}
       >
@@ -139,18 +140,18 @@ export default function Navigation() {
             >
               <img 
                 src="/logo.png" 
-                alt="Ascendix Summits" 
-                className={`h-8 sm:h-10 md:h-12 w-auto object-contain transition-all ${isScrolled || !isHomePage ? '' : 'brightness-0 invert'}`} 
+                alt="Ascendix" 
+                className={`h-7 sm:h-8 md:h-10 w-auto object-contain transition-all ${isScrolled || !isHomePage ? '' : 'brightness-0 invert'}`} 
               />
             </Link>
 
             {/* Desktop Nav */}
-            <div className="hidden lg:flex items-center gap-8 ml-auto">
+            <div className="hidden lg:flex items-center gap-6 ml-auto">
               {navLinks.map((link) => (
                 <NavItem key={link.label} link={link} scrolled={isScrolled} home={isHomePage} />
               ))}
-              <Button asChild className="bg-blue hover:bg-blue-600 text-white h-10 px-6 rounded-xl font-bold shadow-lg shadow-blue/20">
-                <Link to="/registration">Register Now</Link>
+              <Button asChild className="bg-blue hover:bg-blue-600 text-white h-9 px-5 rounded-lg text-[9px] font-black uppercase tracking-widest shadow-lg shadow-blue/20">
+                <Link to="/registration" className="text-decoration-none">Register Now</Link>
               </Button>
             </div>
 

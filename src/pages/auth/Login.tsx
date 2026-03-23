@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { 
   ArrowRight, 
   Chrome,
@@ -18,9 +18,10 @@ import { toast } from 'sonner';
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -34,15 +35,19 @@ export default function Login() {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        login(data.user, data.token);
-        toast.success('You have successfully logged in.');
-        navigate('/dashboard');
+        login(data.user);
+        toast.success('Successfully logged in.');
+        
+        // Redirect back to original path if it exists
+        const from = (location.state as any)?.from?.pathname || '/admin/overview';
+        navigate(from, { replace: true });
       } else {
         toast.error(data.error || 'Login failed.');
       }
@@ -81,7 +86,7 @@ export default function Login() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between ml-1">
                   <Label className="text-xs font-bold text-slate-400">Password</Label>
-                  <Link to="/forgot-password" title="Recover account" className="text-xs font-bold text-blue hover:text-white transition-colors">Forgot Password?</Link>
+                  <Link to="/admin/forgot-password" title="Recover account" className="text-xs font-bold text-blue hover:text-white transition-colors">Forgot Password?</Link>
                 </div>
                 <div className="relative group">
                   <Input 
@@ -114,9 +119,7 @@ export default function Login() {
             </div>
           </div>
 
-          <p className="text-center text-xs font-bold text-slate-500">
-            First time? <Link to="/register" title="Create Account" className="text-blue hover:text-white transition-colors">Create Account</Link>
-          </p>
+
 
           <Link to="/" className="flex items-center justify-center gap-2 text-slate-700 hover:text-white text-xs font-bold transition-colors group">
             <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Go back Home
@@ -134,7 +137,7 @@ export default function Login() {
            
            <div className="space-y-4">
               <p className="text-xs font-bold text-white/30 leading-relaxed">
-                The leading platform for world food, agriculture, and animal science summits.
+                The leading platform for food, agri-tech, and animal science summits.
               </p>
            </div>
 

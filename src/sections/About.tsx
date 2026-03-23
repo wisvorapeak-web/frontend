@@ -1,93 +1,130 @@
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Network, Lightbulb, Handshake } from 'lucide-react';
+import { Network, Lightbulb, Handshake, CheckSquare, Sparkles, Database, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const benefits = [
-  {
-    icon: Network,
-    title: 'Meet People Globally',
-    description: 'Connect with over 1000 researchers, leaders, and planners from all over the world.',
-  },
-  {
-    icon: Lightbulb,
-    title: 'Share Your Work',
-    description: 'Present your research to an international group and get helpful feedback from experts.',
-  },
-  {
-    icon: Handshake,
-    title: 'Work with Companies',
-    description: 'Find ways to partner with top companies in the agriculture industry.',
-  },
-];
+const iconMap: any = {
+  Lightbulb,
+  Network,
+  Handshake,
+  CheckSquare,
+  Sparkles,
+  Database
+};
 
 export default function About() {
   const [isVisible, setIsVisible] = useState(false);
+  const [highlights, setHighlights] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [settings, setSettings] = useState<any>({
+    about_title: 'The Future of Food',
+    about_content: 'Join us in Singapore for a global meeting of leaders and researchers in agriculture.',
+    about_image_url: 'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?auto=format&fit=crop&q=80'
+  });
+  const [venue, setVenue] = useState<any>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    Promise.all([
+      fetch(`${import.meta.env.VITE_API_URL}/api/site/settings`).then(res => res.json()),
+      fetch(`${import.meta.env.VITE_API_URL}/api/site/venue`).then(res => res.json()),
+      fetch(`${import.meta.env.VITE_API_URL}/api/site/about-highlights`).then(res => res.json())
+    ]).then(([sData, vData, hData]) => {
+      if (sData) setSettings(sData);
+      if (vData) setVenue(vData);
+      if (hData) setHighlights(hData);
+    }).catch(err => console.error('About data fetch failed:', err))
+      .finally(() => setLoading(false));
+
     const observer = new IntersectionObserver(([e]) => e.isIntersecting && setIsVisible(true), { threshold: 0.1 });
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
 
   return (
-    <section ref={sectionRef} id="about" className="relative py-24 bg-white overflow-hidden">
+    <section ref={sectionRef} id="about" className="relative py-12 bg-white overflow-hidden font-outfit">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Image Side */}
-          <div className={`relative transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-gray-100">
-              <img src="/about-agrotech.png" alt="Innovation" className="w-full h-[300px] sm:h-[400px] lg:h-[500px] object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-navy/40 to-transparent" />
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          
+          {/* Main Visual */}
+          <div className={`relative transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'}`}>
+            <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-navy/10 border border-slate-50 group">
+              <img src={settings.about_image_url || "https://images.unsplash.com/photo-1542601906990-b4d3fb773b09?auto=format&fit=crop&q=80"} alt="About Innovation" className="w-full h-[400px] object-cover transition-transform duration-[3000ms] group-hover:scale-105" />
+              <div className="absolute inset-0 bg-gradient-to-t from-navy/30 to-transparent pointer-events-none" />
               
-              <div className="absolute bottom-4 left-4 sm:bottom-8 sm:left-8 p-4 sm:p-6 bg-white/95 backdrop-blur shadow-xl rounded-2xl border border-white/20">
-                <div className="flex items-center gap-3 sm:gap-4">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-blue flex items-center justify-center text-white font-black text-lg sm:text-xl">3</div>
-                  <div>
-                    <p className="text-navy font-bold text-[10px] sm:text-sm">Days of Learning</p>
-                    <p className="text-slate-500 text-[8px] sm:text-xs font-semibold">Innovation & Expo</p>
+              <div className="absolute top-6 left-6 p-4 bg-white/95 backdrop-blur-2xl shadow-xl rounded-xl border border-white/20">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-blue flex items-center justify-center text-white">
+                     <Sparkles className="w-4 h-4" />
                   </div>
+                  <div className="space-y-0">
+                    <p className="text-navy font-black text-[8px] uppercase tracking-widest leading-none">Summit 2026</p>
+                    <p className="text-slate-400 text-[7px] font-black uppercase tracking-[0.2em]">{venue?.host_city || 'Singapore'}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="absolute bottom-6 right-6 p-4 bg-navy/95 backdrop-blur-2xl shadow-xl rounded-xl border border-white/5 text-white">
+                <div className="flex items-center gap-2">
+                   <Database className="w-3.5 h-3.5 text-blue" />
+                   <p className="text-[7px] font-black uppercase tracking-[0.3em] leading-none">Research</p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Text Side */}
-          <div className={`space-y-8 transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue/5 border border-blue/10">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue" />
-              <span className="text-xs font-bold text-blue">Who We Are</span>
+          {/* About Content */}
+          <div className={`space-y-6 transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'}`}>
+            <div className="space-y-3">
+               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue/5 border border-blue/10">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue animate-pulse" />
+                  <span className="text-[8px] font-black text-blue uppercase tracking-[0.3em]">About</span>
+               </div>
+
+               <h2 className="text-xl lg:text-3xl font-black text-navy leading-tight tracking-tight uppercase">
+                 {settings.about_title || 'The Future of Food'}
+               </h2>
+
+               <p className="text-slate-500 text-[11px] font-bold uppercase tracking-widest leading-relaxed max-w-xl italic opacity-80">
+                 {settings.about_content || 'A global conversation on the future of agriculture.'}
+               </p>
             </div>
 
-            <h2 className="text-4xl lg:text-5xl font-bold text-navy leading-tight">
-              Growing the Future <br />
-              <span className="text-blue">Agro-Science</span>
-            </h2>
+            {loading ? (
+              <div className="py-10 flex items-center gap-3">
+                <Loader2 className="w-4 h-4 text-blue animate-spin" />
+                <span className="text-[8px] font-black text-slate-300 uppercase tracking-widest">Loading Attributes...</span>
+              </div>
+            ) : (
+              <div className="grid gap-4">
+                {highlights.map((b, i) => {
+                  const Icon = iconMap[b.icon_name] || Lightbulb;
+                  return (
+                    <div key={i} className="flex gap-4 group">
+                      <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center flex-shrink-0 transition-all group-hover:bg-blue group-hover:text-white shadow-sm border border-slate-100">
+                        <Icon className="w-4 h-4" />
+                      </div>
+                      <div className="space-y-0">
+                        <h4 className="font-black text-navy text-[10px] uppercase tracking-tight group-hover:text-blue transition-colors">{b.title}</h4>
+                        <p className="text-slate-500 text-[10px] font-bold leading-relaxed max-w-xs opacity-70 italic">{b.description}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
 
-            <p className="text-slate-500 text-base font-medium leading-relaxed">
-              Ascendix 2026 is a top meeting for researchers and business leaders to share new ideas that will change how we produce food.
-            </p>
-
-            <div className="grid gap-6">
-              {benefits.map((b, i) => (
-                <div key={i} className="flex gap-4 p-4 rounded-xl border border-transparent hover:border-slate-100 transition-all">
-                  <div className="w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center flex-shrink-0">
-                    <b.icon className="w-6 h-6 text-blue" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-navy text-sm mb-1">{b.title}</h3>
-                    <p className="text-slate-500 text-xs font-medium leading-relaxed opacity-60">{b.description}</p>
-                  </div>
-                </div>
-              ))}
+            <div className="flex flex-col sm:flex-row gap-4 pt-4 items-center">
+               <Link to="/about">
+                  <Button className="bg-navy hover:bg-slate-900 text-white px-8 h-10 rounded-lg text-[8px] font-black uppercase tracking-widest transition-all">
+                     Learn More
+                  </Button>
+               </Link>
+               <div className="flex items-center gap-2 text-slate-300 font-black text-[8px] uppercase tracking-[0.2em] group">
+                  <div className="w-7 h-7 border border-slate-100 rounded-lg flex items-center justify-center group-hover:border-blue group-hover:text-blue transition-all"><CheckSquare className="w-3.5 h-3.5" /></div>
+                  Global Summit
+               </div>
             </div>
-
-            <Link to="/about">
-              <Button className="bg-navy hover:bg-black text-white px-8 h-12 rounded-xl text-sm font-bold shadow-xl shadow-navy/10">
-                Learn More
-              </Button>
-            </Link>
           </div>
         </div>
       </div>

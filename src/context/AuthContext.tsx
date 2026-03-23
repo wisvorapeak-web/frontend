@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useEffect, type ReactNode } from '
 
 interface User {
   id: string;
-  full_name: string;
+  name: string;
   email: string;
   role: string;
   institution?: string;
@@ -13,7 +13,7 @@ interface User {
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
-  login: (userData: User, token: string) => void;
+  login: (userData: User) => void;
   logout: () => void;
 }
 
@@ -24,31 +24,47 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check local storage for persisted user session
-    const storedUser = localStorage.getItem('ascendix_user');
-    if (storedUser) {
+    const checkSession = async () => {
       try {
-        setUser(JSON.parse(storedUser));
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/me`, {
+          credentials: 'include' // Always send cookies
+        });
+        
+        if (res.ok) {
+          const { user } = await res.json();
+          setUser(user);
+          localStorage.setItem('ascendix_user', JSON.stringify(user));
+        } else {
+          // If 401, clear user state
+          setUser(null);
+          localStorage.removeItem('ascendix_user');
+        }
       } catch (err) {
-        localStorage.removeItem('ascendix_user');
+        console.error('Session check failed');
+      } finally {
+        setIsLoading(false);
       }
-    }
-    setIsLoading(false);
+    };
+
+    checkSession();
   }, []);
 
-  const login = (userData: User, token: string) => {
+  const login = (userData: User) => {
     setUser(userData);
     localStorage.setItem('ascendix_user', JSON.stringify(userData));
-    localStorage.setItem('ascendix_token', token);
-    // Note: Cookie is also set by backend for HTTP-only security
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/auth/logout`, { 
+        method: 'POST',
+        credentials: 'include'
+      });
+    } catch (err) {}
+    
     setUser(null);
     localStorage.removeItem('ascendix_user');
-    localStorage.removeItem('ascendix_token');
-    // Backend logout should clear the cookie
-    fetch(`${import.meta.env.VITE_API_URL}/api/auth/logout`, { method: 'POST' });
+    localStorage.removeItem('ascendix_token'); // Cleanup old artifacts
   };
 
   return (

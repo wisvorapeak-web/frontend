@@ -2,7 +2,6 @@ import { useState, useEffect, type ReactNode } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { 
   BarChart3, 
-  Users, 
   FileCheck, 
   CreditCard, 
   Mail, 
@@ -11,7 +10,14 @@ import {
   LogOut, 
   Bell, 
   Search,
-  Menu
+  Menu,
+  Rocket,
+  MapPin,
+  Mic2,
+  Tag,
+  BookOpen,
+  Globe,
+  FileText
 } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '../../components/ui/avatar';
@@ -22,13 +28,19 @@ interface AdminLayoutProps {
 }
 
 const adminNavItems = [
-  { icon: BarChart3, label: 'Performance', path: '/admin/overview' },
-  { icon: Users, label: 'User Directory', path: '/admin/users' },
-  { icon: FileCheck, label: 'Abstract Review', path: '/admin/abstracts' },
-  { icon: CreditCard, label: 'Financials', path: '/admin/registrations' },
-  { icon: Mail, label: 'Communication Hub', path: '/admin/inbox' },
-  { icon: Calendar, label: 'Summit Manager', path: '/admin/events' },
-  { icon: Settings, label: 'System Settings', path: '/admin/settings' },
+  { icon: BarChart3, label: 'Overview', path: '/admin/overview' },
+  { icon: FileCheck, label: 'Abstracts', path: '/admin/abstracts' },
+  { icon: Mic2, label: 'Speakers', path: '/admin/speakers' },
+  { icon: CreditCard, label: 'Registrations', path: '/admin/registrations' },
+  { icon: Tag, label: 'Pricing', path: '/admin/pricing' },
+  { icon: BookOpen, label: 'Brochures', path: '/admin/brochures' },
+  { icon: Mail, label: 'Inbox', path: '/admin/inbox' },
+  { icon: Rocket, label: 'Sponsors', path: '/admin/sponsors' },
+  { icon: FileText, label: 'Website Content', path: '/admin/content' },
+  { icon: Globe, label: 'Topics', path: '/admin/topics' },
+  { icon: MapPin, label: 'Venue', path: '/admin/venue' },
+  { icon: Calendar, label: 'Schedule', path: '/admin/events' },
+  { icon: Settings, label: 'Settings', path: '/admin/settings' },
 ];
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
@@ -41,7 +53,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     const fetchStats = async () => {
       try {
         const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/stats`, {
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('ascendix_token')}` }
+          credentials: 'include'
         });
         if (res.ok) {
           const data = await res.json();
@@ -151,12 +163,12 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           <div className="flex items-center gap-6">
             <div className="hidden xl:flex items-center gap-6">
               <div className="text-right">
-                <p className="text-[10px] font-bold text-slate-300 leading-none">Global Registrations</p>
+                <p className="text-[10px] font-bold text-slate-300 leading-none">Total</p>
                 <p className="text-xs font-bold text-navy mt-1">{(stats.totalRegistrations / 1000).toFixed(1)}K</p>
               </div>
               <div className="w-px h-6 bg-slate-100" />
               <div className="text-right">
-                <p className="text-[10px] font-bold text-slate-300 leading-none">Revenue</p>
+                <p className="text-[10px] font-bold text-slate-300 leading-none">Earnings</p>
                 <p className="text-xs font-bold text-blue mt-1">{stats.totalRevenue}</p>
               </div>
             </div>
@@ -168,13 +180,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             
             <div className="flex items-center gap-3 pl-6 border-l border-slate-100">
               <div className="text-right hidden sm:block">
-                <p className="text-xs font-bold text-navy leading-none">{user?.full_name || 'Admin'}</p>
+                <p className="text-xs font-bold text-navy leading-none">{user?.name || 'Admin'}</p>
                 <p className="text-[10px] text-slate-300 font-bold mt-1">{user?.role || 'Administrator'}</p>
               </div>
               <Avatar className="w-10 h-10 border border-slate-100">
-                <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.full_name || 'Admin'}`} />
+                <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name || 'Admin'}`} />
                 <AvatarFallback className="bg-slate-100 text-slate-400 text-[10px] font-black">
-                   {user?.full_name?.split(' ').map((n: any) => n[0]).join('') || 'AD'}
+                   {user?.name?.split(' ').map((n: any) => n[0]).join('') || 'AD'}
                 </AvatarFallback>
               </Avatar>
             </div>

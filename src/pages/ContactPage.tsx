@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PageLayout from './PageLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [settings, setSettings] = useState<any>(null);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -16,6 +17,13 @@ export default function ContactPage() {
     subject: '',
     message: ''
   });
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/site/settings`)
+      .then(res => res.json())
+      .then(data => setSettings(data))
+      .catch(() => console.error('Settings sync failed'));
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,37 +55,37 @@ export default function ContactPage() {
   };
 
   const contactItems = [
-    { icon: Mail, label: 'Event Team', values: ['contact@foodagriexpo.com', 'submissions@foodagriexpo.com'] },
-    { icon: Phone, label: 'Support Phone', values: ['+91 XXXXX XXXXX', 'Mon-Fri, 09:00 - 18:00 IST'] },
-    { icon: MapPin, label: 'Conference Venue', values: ['New Delhi, India'] },
+    { icon: Mail, label: 'Email', values: [settings?.contact_email || 'contact@foodagriexpo.com'] },
+    { icon: Phone, label: 'Phone', values: [settings?.contact_phone || '+91 91542 54625', settings?.office_hours || 'Mon-Fri, 09:00 - 18:00 IST'] },
+    { icon: MapPin, label: 'Location', values: [settings?.contact_address || 'Singapore'] },
   ];
 
   return (
     <PageLayout 
-      title="Contact Us" 
-      subtitle="Get in touch with our team for any questions or help."
+      title="Contact" 
+      subtitle="Get in touch with our team for help."
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-16 space-y-24 font-outfit">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
+      <div className="max-w-7xl mx-auto px-6 lg:px-16 space-y-12 py-10 font-outfit">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Details */}
-          <div className="space-y-12 animate-in fade-in slide-in-from-left-10 duration-700">
-            <div className="space-y-6">
-              <h2 className="text-3xl font-bold text-navy">Send us a <span className="text-blue">Message</span></h2>
-              <p className="text-sm font-semibold text-slate-500 leading-loose">
-                Our team is here to help speakers and visitors from all over the world.
+          <div className="space-y-8 animate-in fade-in slide-in-from-left-5 duration-1000">
+            <div className="space-y-2">
+              <h2 className="text-2xl font-black text-navy uppercase tracking-tight leading-none">Get in <span className="text-blue">Touch</span></h2>
+              <p className="text-slate-400 text-[9px] font-black uppercase tracking-widest italic opacity-80 decoration-blue/20 decoration-1 underline-offset-4">
+                Support for all speakers and attendees.
               </p>
             </div>
             
-            <div className="space-y-8">
+            <div className="space-y-6">
               {contactItems.map((item, i) => (
-                <div key={i} className="flex items-start gap-6 group">
-                  <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center text-blue transition-all group-hover:bg-blue group-hover:text-white shadow-sm border border-slate-100">
-                    <item.icon className="w-5 h-5" />
+                <div key={i} className="flex items-start gap-4 group">
+                  <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-blue transition-all group-hover:bg-blue group-hover:text-white shadow-sm border border-slate-50">
+                    <item.icon className="w-4 h-4" />
                   </div>
-                  <div className="space-y-2">
-                    <h3 className="text-xs font-bold text-blue">{item.label}</h3>
+                  <div className="space-y-1">
+                    <h3 className="text-[9px] font-black text-blue uppercase tracking-widest leading-none">{item.label}</h3>
                     {item.values.map((v, vi) => (
-                      <p key={vi} className="text-xs font-semibold text-navy opacity-60 group-hover:opacity-100 transition-opacity">{v}</p>
+                      <p key={vi} className="text-[10px] font-bold text-navy opacity-60 group-hover:opacity-100 transition-opacity uppercase tracking-tight">{v}</p>
                     ))}
                   </div>
                 </div>
@@ -86,23 +94,23 @@ export default function ContactPage() {
           </div>
 
           {/* Contact Form */}
-          <div className="p-10 border border-slate-100 rounded-3xl hover:border-blue/20 hover:shadow-2xl hover:shadow-blue/5 transition-all">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="space-y-3">
-                  <Label className="text-xs font-semibold text-slate-400">First Name</Label>
+          <div className="p-6 border border-slate-50 rounded-3xl hover:border-blue/20 hover:shadow-2xl hover:shadow-blue/10 transition-all bg-white">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <Label className="text-[8px] font-black text-slate-300 uppercase tracking-widest">First Name</Label>
                   <Input 
-                    className="h-12 bg-slate-50 border-transparent rounded-xl text-sm font-semibold focus:bg-white focus:border-blue transition-all"
+                    className="h-10 bg-slate-50 border-transparent rounded-lg text-[10px] font-black uppercase tracking-tight focus:bg-white focus:border-blue transition-all"
                     placeholder="John" 
                     required 
                     value={formData.firstName}
                     onChange={(e) => setFormData({...formData, firstName: e.target.value})}
                   />
                 </div>
-                <div className="space-y-3">
-                  <Label className="text-xs font-semibold text-slate-400">Last Name</Label>
+                <div className="space-y-1.5">
+                  <Label className="text-[8px] font-black text-slate-300 uppercase tracking-widest">Last Name</Label>
                   <Input 
-                    className="h-12 bg-slate-50 border-transparent rounded-xl text-sm font-semibold focus:bg-white focus:border-blue transition-all"
+                    className="h-10 bg-slate-50 border-transparent rounded-lg text-[10px] font-black uppercase tracking-tight focus:bg-white focus:border-blue transition-all"
                     placeholder="Doe" 
                     required 
                     value={formData.lastName}
@@ -111,42 +119,42 @@ export default function ContactPage() {
                 </div>
               </div>
               
-              <div className="space-y-3">
-                <Label className="text-xs font-semibold text-slate-400">Email Address</Label>
+              <div className="space-y-1.5">
+                <Label className="text-[8px] font-black text-slate-300 uppercase tracking-widest">Email Address</Label>
                 <Input 
-                  className="h-12 bg-slate-50 border-transparent rounded-xl text-sm font-semibold focus:bg-white focus:border-blue transition-all"
+                  className="h-10 bg-slate-50 border-transparent rounded-lg text-[10px] font-black uppercase tracking-tight focus:bg-white focus:border-blue transition-all"
                   type="email" 
-                  placeholder="email@university.edu" 
+                  placeholder="your@email.com" 
                   required 
                   value={formData.emailAddress}
                   onChange={(e) => setFormData({...formData, emailAddress: e.target.value})}
                 />
               </div>
 
-              <div className="space-y-3">
-                <Label className="text-xs font-semibold text-slate-400">Subject</Label>
+              <div className="space-y-1.5">
+                <Label className="text-[8px] font-black text-slate-300 uppercase tracking-widest">Subject</Label>
                 <Input 
-                  className="h-12 bg-slate-50 border-transparent rounded-xl text-sm font-semibold focus:bg-white focus:border-blue transition-all"
-                  placeholder="Summit Logistics" 
+                  className="h-10 bg-slate-50 border-transparent rounded-lg text-[10px] font-black uppercase tracking-tight focus:bg-white focus:border-blue transition-all"
+                  placeholder="General Question" 
                   required 
                   value={formData.subject}
                   onChange={(e) => setFormData({...formData, subject: e.target.value})}
                 />
               </div>
 
-              <div className="space-y-3">
-                <Label className="text-xs font-semibold text-slate-400">Message</Label>
+              <div className="space-y-1.5">
+                <Label className="text-[8px] font-black text-slate-300 uppercase tracking-widest">Message</Label>
                 <Textarea 
-                  className="bg-slate-50 border-transparent rounded-xl text-sm font-semibold focus:bg-white focus:border-blue transition-all min-h-[150px]"
-                  placeholder="How can we help?" 
+                  className="bg-slate-50 border-transparent rounded-lg text-[10px] font-black uppercase tracking-tight focus:bg-white focus:border-blue transition-all min-h-[100px] italic opacity-70"
+                  placeholder="How can we help you?" 
                   required 
                   value={formData.message}
                   onChange={(e) => setFormData({...formData, message: e.target.value})}
                 />
               </div>
 
-              <Button type="submit" className="w-full h-14 bg-blue text-white text-sm font-bold rounded-2xl hover:bg-navy transition-all" disabled={isSubmitting}>
-                {isSubmitting ? 'Processing...' : 'Send Message'}
+              <Button type="submit" className="w-full h-10 bg-navy text-white text-[9px] font-black uppercase tracking-widest rounded-lg hover:bg-slate-900 transition-all shadow-xl shadow-navy/20 active:scale-95 text-decoration-none" disabled={isSubmitting}>
+                {isSubmitting ? 'Sending...' : 'Send Message'}
               </Button>
             </form>
           </div>

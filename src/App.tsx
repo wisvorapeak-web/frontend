@@ -25,30 +25,27 @@ const ChairsPage = lazy(() => import('./pages/ChairsPage'));
 const WorkshopsPage = lazy(() => import('./pages/WorkshopsPage'));
 const JournalsPage = lazy(() => import('./pages/JournalsPage'));
 const PaymentPage = lazy(() => import('./pages/PaymentPage'));
-
-// Lazy load Dashboard Pages
-const Overview = lazy(() => import('./pages/dashboard/Overview'));
-const Events = lazy(() => import('./pages/dashboard/Events'));
-const Registrations = lazy(() => import('./pages/dashboard/Registrations'));
-const Profile = lazy(() => import('./pages/dashboard/Profile'));
-const Settings = lazy(() => import('./pages/dashboard/Settings'));
-const Abstracts = lazy(() => import('./pages/dashboard/Abstracts'));
+const LegalPage = lazy(() => import('./pages/LegalPage'));
 
 // Lazy load Auth Pages
 const Login = lazy(() => import('./pages/auth/Login'));
-const Register = lazy(() => import('./pages/auth/Register'));
 const ForgotPassword = lazy(() => import('./pages/auth/ForgotPassword'));
-const Verify = lazy(() => import('./pages/auth/Verify'));
-const Setup = lazy(() => import('./pages/auth/Setup'));
 
 // Lazy load Admin Pages
 const AdminOverview = lazy(() => import('./pages/admin/AdminOverview'));
-const UserManagement = lazy(() => import('./pages/admin/UserManagement'));
 const AbstractReview = lazy(() => import('./pages/admin/AbstractReview'));
 const Inbox = lazy(() => import('./pages/admin/Inbox'));
 const SiteSettings = lazy(() => import('./pages/admin/SiteSettings'));
 const AdminRegistrations = lazy(() => import('./pages/admin/Registrations'));
 const AdminEvents = lazy(() => import('./pages/admin/Events'));
+const AdminSponsors = lazy(() => import('./pages/admin/AdminSponsors'));
+const AdminVenue = lazy(() => import('./pages/admin/Venue'));
+const AdminSpeakers = lazy(() => import('./pages/admin/Speakers'));
+const AdminPricing = lazy(() => import('./pages/admin/AdminPricing'));
+const AdminBrochures = lazy(() => import('./pages/admin/AdminBrochures'));
+const AdminTopics = lazy(() => import('./pages/admin/AdminTopics'));
+const AdminContent = lazy(() => import('./pages/admin/AdminContent'));
+const SetupPage = lazy(() => import('./pages/SetupPage'));
 
 // Loading Fallback Component
 const PageLoader = () => (
@@ -59,6 +56,8 @@ const PageLoader = () => (
     </div>
   </div>
 );
+
+import ProtectedRoute from './components/auth/ProtectedRoute';
 
 function App() {
   return (
@@ -88,33 +87,86 @@ function App() {
           <Route path="/chairs" element={<ChairsPage />} />
           <Route path="/workshops" element={<WorkshopsPage />} />
           <Route path="/journals" element={<JournalsPage />} />
-          <Route path="/pay/:type/:slug" element={<PaymentPage />} />
+          <Route path="/payment/:type/:slug" element={<PaymentPage />} />
+          <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/legal/:slug" element={<LegalPage />} />
+          <Route path="/setup" element={<SetupPage />} />
           
-          {/* Auth Routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/verify" element={<Verify />} />
-          <Route path="/setup" element={<Setup />} />
+          {/* Auth Routes moved to Admin */}
+          <Route path="/admin/login" element={<Login />} />
+          <Route path="/admin/forgot-password" element={<ForgotPassword />} />
           
-          {/* Dashboard Routes */}
-          <Route path="/dashboard" element={<Overview />} />
-          <Route path="/dashboard/overview" element={<Overview />} />
-          <Route path="/dashboard/events" element={<Events />} />
-          <Route path="/dashboard/registrations" element={<Registrations />} />
-          <Route path="/dashboard/profile" element={<Profile />} />
-          <Route path="/dashboard/settings" element={<Settings />} />
-          <Route path="/dashboard/abstracts" element={<Abstracts />} />
-
-          {/* Admin Routes */}
-          <Route path="/admin" element={<AdminOverview />} />
-          <Route path="/admin/overview" element={<AdminOverview />} />
-          <Route path="/admin/users" element={<UserManagement />} />
-          <Route path="/admin/abstracts" element={<AbstractReview />} />
-          <Route path="/admin/registrations" element={<AdminRegistrations />} />
-          <Route path="/admin/inbox" element={<Inbox />} />
-          <Route path="/admin/events" element={<AdminEvents />} />
-          <Route path="/admin/settings" element={<SiteSettings />} />
+          {/* Admin Routes (PROTECTED) */}
+          <Route path="/admin" element={
+            <ProtectedRoute requireAdmin>
+              <AdminOverview />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/overview" element={
+            <ProtectedRoute requireAdmin>
+              <AdminOverview />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/abstracts" element={
+            <ProtectedRoute requireAdmin>
+              <AbstractReview />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/registrations" element={
+            <ProtectedRoute requireAdmin>
+              <AdminRegistrations />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/pricing" element={
+            <ProtectedRoute requireAdmin>
+              <AdminPricing />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/inbox" element={
+            <ProtectedRoute requireAdmin>
+              <Inbox />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/events" element={
+            <ProtectedRoute requireAdmin>
+              <AdminEvents />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/sponsors" element={
+            <ProtectedRoute requireAdmin>
+              <AdminSponsors />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/venue" element={
+            <ProtectedRoute requireAdmin>
+              <AdminVenue />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/speakers" element={
+            <ProtectedRoute requireAdmin>
+              <AdminSpeakers />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/brochures" element={
+            <ProtectedRoute requireAdmin>
+              <AdminBrochures />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/topics" element={
+            <ProtectedRoute requireAdmin>
+              <AdminTopics />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/content" element={
+            <ProtectedRoute requireAdmin>
+              <AdminContent />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/settings" element={
+            <ProtectedRoute requireAdmin>
+              <SiteSettings />
+            </ProtectedRoute>
+          } />
         </Routes>
       </Suspense>
     </Router>

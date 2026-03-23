@@ -14,6 +14,7 @@ const Venue = lazy(() => import('../sections/Venue'));
 const Testimonials = lazy(() => import('../sections/Testimonials'));
 const FAQ = lazy(() => import('../sections/FAQ'));
 const FinalCTA = lazy(() => import('../sections/FinalCTA'));
+const VenueGallery = lazy(() => import('../sections/VenueGallery'));
 const Footer = lazy(() => import('../sections/Footer'));
 const ChairsBanner = lazy(() => import('../sections/ChairsBanner'));
 const WorkshopsBanner = lazy(() => import('../sections/WorkshopsBanner'));
@@ -38,6 +39,8 @@ export default function Home() {
           <Reveal width="100%"><About /></Reveal>
           <div className="section-divider" />
           <Reveal width="100%"><Topics /></Reveal>
+          <div className="section-divider" />
+          <Reveal width="100%"><VenueGallery /></Reveal>
           <div className="section-divider" />
           <Reveal width="100%"><Speakers /></Reveal>
           <div className="section-divider" />
