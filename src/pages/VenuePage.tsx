@@ -1,5 +1,5 @@
 import PageLayout from './PageLayout';
-import { MapPin, Hotel, ExternalLink, Plane, CheckCircle2, Globe, Palmtree } from 'lucide-react';
+import { MapPin, Hotel, ExternalLink, CheckCircle2, Globe, Palmtree } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import VenueGallery from '../sections/VenueGallery';
@@ -7,20 +7,37 @@ import VenueGallery from '../sections/VenueGallery';
 import { useState, useEffect } from 'react';
 
 export default function VenuePage() {
-  const [venue] = useState<any>({
+  const [venue, setVenue] = useState<any>({
     host_city: 'Singapore',
     venue_name: 'Singapore Summit Center',
     venue_description: 'The summit will be held in Singapore, a global center for research and business.',
     map_url: '#',
     virtual_tour_url: '#'
   });
-  const [settings] = useState<any>({
+  const [settings, setSettings] = useState<any>({
     site_tagline: 'Experience the culture of Singapore during the summit.'
   });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Static mode
+    Promise.all([
+      fetch(`${import.meta.env.VITE_API_URL}/api/site/settings`).then(res => res.json()),
+      fetch(`${import.meta.env.VITE_API_URL}/api/site/venue`).then(res => res.json())
+    ]).then(([sData, vData]) => {
+      if (sData) setSettings(sData);
+      if (vData) setVenue(vData);
+    }).catch(err => console.error('Venue Sync Error:', err))
+    .finally(() => setLoading(false));
   }, []);
+
+  if (loading) return (
+     <PageLayout title="Venue" subtitle="Loading Venue...">
+         <div className="flex flex-col items-center justify-center py-32 space-y-6">
+            <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+            <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em] animate-pulse">Wait a moment...</p>
+         </div>
+     </PageLayout>
+  );
 
   return (
     <PageLayout 
@@ -62,10 +79,14 @@ export default function VenuePage() {
            </div>
            
            <div className="grid grid-cols-2 gap-4 h-[320px]">
-              <div className="rounded-3xl overflow-hidden shadow-2xl">
-                 <img src="/venue-image-1.jpg" className="w-full h-full object-cover" alt="Singapore" />
+              <div className="rounded-3xl overflow-hidden shadow-2xl bg-slate-50">
+                 <img 
+                   src={venue?.venue_image_url || "/venue-image-1.jpg"} 
+                   className="w-full h-full object-cover transition-transform duration-[10000ms] hover:scale-110" 
+                   alt={venue?.venue_name || "Summit Venue"} 
+                 />
               </div>
-              <div className="rounded-3xl overflow-hidden shadow-2xl translate-y-8">
+              <div className="rounded-3xl overflow-hidden shadow-2xl translate-y-8 bg-slate-50">
                  <img src="/venue-image-2.jpg" className="w-full h-full object-cover" alt="Singapore Skyline" />
               </div>
            </div>
@@ -147,13 +168,13 @@ export default function VenuePage() {
                 </div>
                 <h2 className="text-3xl lg:text-4xl font-black text-white leading-none uppercase tracking-tight">Travel & <span className="text-blue">Visa</span></h2>
                 <p className="text-white/40 text-[9px] font-black uppercase tracking-widest max-w-xl mx-auto italic">
-                   We send invitation letters after you register.
+                   To support visa processing, an official invitation letter will be issued to speakers/delegates who have completed registration and confirmed accommodation.
                 </p>
             </div>
             
             <div className="flex flex-wrap justify-center gap-4 relative z-10 pt-4">
                 <Link to="/registration" className="h-12 px-10 bg-blue text-white text-[9px] font-black uppercase tracking-widest rounded-xl hover:bg-white hover:text-navy transition-all shadow-2xl shadow-blue/20 flex items-center justify-center text-decoration-none">
-                   Get Visa Letter
+                   Get Official Invitation Letter – Register
                 </Link>
                 <a href="#accommodation" className="h-12 px-10 border border-white/10 text-white text-[9px] font-black uppercase tracking-widest rounded-xl hover:bg-white/5 transition-all flex items-center justify-center text-decoration-none">
                    Hotels
@@ -162,12 +183,12 @@ export default function VenuePage() {
             
             <div className="pt-8 border-t border-white/5 flex flex-wrap justify-center gap-10 relative z-10">
                <div className="flex items-center gap-3 text-white/30">
-                  <Plane className="w-5 h-5" />
-                  <p className="text-[9px] font-black uppercase tracking-widest">Flights</p>
+                  <Globe className="w-5 h-5 text-blue" />
+                  <p className="text-[9px] font-black uppercase tracking-widest">Visa Support</p>
                </div>
                <div className="flex items-center gap-3 text-white/30">
-                  <MapPin className="w-5 h-5" />
-                  <p className="text-[9px] font-black uppercase tracking-widest">Visa Help</p>
+                  <MapPin className="w-5 h-5 text-blue" />
+                  <p className="text-[9px] font-black uppercase tracking-widest">Global Access</p>
                </div>
             </div>
         </section>

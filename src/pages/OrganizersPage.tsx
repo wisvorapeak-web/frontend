@@ -1,32 +1,31 @@
 import PageLayout from './PageLayout';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
-const committee = [
-  { 
-    name: 'To Be Announced', 
-    role: 'Event Chair', 
-    affiliation: 'Global University', 
-    location: 'Singapore',
-    image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=EventChair' 
-  },
-  { 
-    name: 'To Be Announced', 
-    role: 'Co-Chair', 
-    affiliation: 'International Institute', 
-    location: 'Singapore',
-    image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=CoChair' 
-  },
-  { 
-    name: 'To Be Announced', 
-    role: 'Host Chair', 
-    affiliation: 'Host University', 
-    location: 'Singapore',
-    image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=HostChair' 
-  },
-];
 
 export default function OrganizersPage() {
+  const [committee, setCommittee] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/api/site/chairs`)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) setCommittee(data);
+      })
+      .catch(err => console.error('Chairs Sync Error:', err))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) return (
+     <PageLayout title="Team" subtitle="Loading Scientific Committee...">
+         <div className="flex flex-col items-center justify-center py-40 space-y-6">
+            <div className="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+            <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em] animate-pulse">Syncing Committee Members...</p>
+         </div>
+     </PageLayout>
+  );
   return (
     <PageLayout 
       title="Team" 
@@ -60,23 +59,7 @@ export default function OrganizersPage() {
            </div>
         </section>
 
-        {/* Global Regional Advisors */}
-        <section className="bg-slate-950 p-10 lg:p-12 rounded-3xl text-white">
-           <h3 className="text-xl font-bold mb-8 font-outfit text-center uppercase tracking-tight">Advisors</h3>
-           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {[
-                { region: 'Europe', leads: '12 Advisors' },
-                { region: 'Asia Pacific', leads: '18 Advisors' },
-                { region: 'Americas', leads: '15 Advisors' },
-                { region: 'Middle East', leads: '8 Advisors' },
-              ].map((adv, i) => (
-                 <div key={i} className="bg-white/5 p-6 rounded-2xl border border-white/5 text-center group hover:bg-white/10 transition-colors">
-                    <p className="text-[9px] font-black text-indigo-400 mb-1 uppercase tracking-widest">{adv.region}</p>
-                    <p className="text-lg font-black font-outfit uppercase tracking-tight">{adv.leads}</p>
-                 </div>
-              ))}
-           </div>
-        </section>
+
 
         {/* Advisory footer */}
         <section className="bg-indigo-600 p-6 rounded-2xl flex flex-col md:flex-row items-center justify-between text-white shadow-xl shadow-indigo-600/10">

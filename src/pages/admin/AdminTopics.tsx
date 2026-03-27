@@ -4,14 +4,14 @@ import {
   Search, 
   Edit2, 
   Trash2, 
-  Globe, 
-  Layout, 
-  Save, 
-  X,
-  Loader2,
-  AlertCircle
+  X
 } from 'lucide-react';
 import { toast } from 'sonner';
+import AdminLayout from './AdminLayout';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { ImageUploadInput } from '@/components/admin/ImageUploadInput';
 
 export default function AdminTopics() {
   const [topics, setTopics] = useState<any[]>([]);
@@ -67,14 +67,14 @@ export default function AdminTopics() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this topic?')) return;
+    if (!confirm('Permanently remove this research topic?')) return;
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/topics/${id}`, {
         method: 'DELETE',
         credentials: 'include'
       });
       if (res.ok) {
-        toast.success('Topic deleted');
+        toast.success('Topic removed');
         fetchTopics();
       }
     } catch (err) {
@@ -87,224 +87,220 @@ export default function AdminTopics() {
     t.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  if (loading) return <AdminLayout><div className="text-xs font-bold text-slate-400 p-12 uppercase tracking-widest">Loading topics...</div></AdminLayout>;
+
   return (
-    <div className="space-y-6 animate-in fade-in duration-700 font-outfit">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-black text-navy uppercase tracking-tight">Topics</h1>
-          <p className="text-slate-500 text-xs font-bold uppercase tracking-widest opacity-60">Add and edit topics.</p>
-        </div>
-        <button 
-          onClick={() => {
-            setCurrentTopic({ title: '', description: '', icon_name: 'Globe', color_gradient: 'from-blue-600 to-indigo-400', display_order: topics.length + 1 });
-            setIsEditing(true);
-          }}
-          className="flex items-center gap-2 px-6 py-2.5 bg-blue text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-navy transition-all shadow-xl shadow-blue/20 active:scale-95"
-        >
-          <Plus className="w-4 h-4" /> Add
-        </button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-2 space-y-4">
-          <div className="relative group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-blue transition-colors" />
-            <input 
-              type="text" 
-              placeholder="Search topics..." 
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 bg-white border border-slate-100 rounded-2xl text-xs font-bold text-navy focus:outline-none focus:ring-4 focus:ring-blue/5 focus:border-blue/20 transition-all shadow-sm"
-            />
+    <AdminLayout>
+      <div className="space-y-6 font-inter pb-20">
+        <div className="flex items-center justify-between pb-6 border-b border-slate-200">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900">Conference Topics</h1>
+            <p className="text-sm text-slate-500 mt-1">Manage themes for abstract submission and website display.</p>
           </div>
+          <Button 
+            onClick={() => {
+              setCurrentTopic({ title: '', description: '', icon_name: 'Globe', color_gradient: 'from-blue-600 to-indigo-400', display_order: topics.length + 1 });
+              setIsEditing(true);
+            }}
+            className="h-10 bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 transition-none gap-2"
+          >
+            <Plus className="w-4 h-4" /> New Topic
+          </Button>
+        </div>
 
-          <div className="bg-white rounded-[2rem] border border-slate-100 shadow-xl shadow-navy/5 overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left">
-                <thead className="bg-slate-50/50 border-b border-slate-100">
-                  <tr>
-                    <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Topic</th>
-                    <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Icon</th>
-                    <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Order</th>
-                    <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-50">
-                  {loading ? (
-                    <tr>
-                      <td colSpan={4} className="px-6 py-12 text-center">
-                        <Loader2 className="w-6 h-6 text-blue animate-spin mx-auto mb-2" />
-                        <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest">Loading...</span>
-                      </td>
-                    </tr>
-                  ) : filteredTopics.map((topic) => (
-                    <tr key={topic.id} className="hover:bg-slate-50/50 transition-colors group">
-                      <td className="px-6 py-4">
-                        <div className="space-y-1">
-                          <p className="text-xs font-black text-navy uppercase tracking-tight">{topic.title}</p>
-                          <p className="text-[10px] font-bold text-slate-400 line-clamp-1 italic">{topic.description}</p>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 text-center">
-                        <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${topic.color_gradient} mx-auto flex items-center justify-center text-white shadow-lg`}>
-                          <Globe className="w-4 h-4" />
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 text-center">
-                        <span className="px-3 py-1 bg-slate-100 text-slate-500 rounded-full text-[10px] font-black">
-                          {topic.display_order}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 text-right">
-                        <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <button 
-                            onClick={() => {
-                              setCurrentTopic(topic);
-                              setIsEditing(true);
-                            }}
-                            className="p-2 text-slate-400 hover:text-blue hover:bg-blue/5 rounded-lg transition-all"
-                          >
-                            <Edit2 className="w-3.5 h-3.5" />
-                          </button>
-                          <button 
-                            onClick={() => handleDelete(topic.id)}
-                            className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 space-y-4">
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <input 
+                type="text" 
+                placeholder="Search topics..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-12 pr-4 py-2.5 bg-white border border-slate-200 rounded text-sm focus:outline-none focus:ring-4 focus:ring-blue-600/5 transition-none font-bold placeholder:font-normal text-slate-900"
+              />
             </div>
-          </div>
-        </div>
 
-        <div className="space-y-6">
-          <div className="bg-navy rounded-[2rem] p-6 text-white shadow-2xl shadow-navy/20 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-8 bg-blue/10 rounded-full blur-3xl group-hover:bg-blue/20 transition-all" />
-            <div className="relative z-10 space-y-4">
-              <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center border border-white/10">
-                <Layout className="w-6 h-6 text-blue" />
-              </div>
-              <div>
-                <h3 className="text-xl font-black uppercase tracking-tight">Topics</h3>
-                <p className="text-[10px] font-bold text-white/50 uppercase tracking-widest leading-relaxed mt-1">
-                  You have {topics.length} topics. These will show on the home page.
-                </p>
+            <div className="bg-white border border-slate-200 rounded shadow-sm overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left">
+                  <thead className="bg-slate-50 border-b border-slate-200">
+                    <tr className="divide-x divide-slate-100">
+                      <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Topic Details</th>
+                      <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">Order</th>
+                      <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right pr-6">Management</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 italic">
+                    {filteredTopics.map((topic) => (
+                      <tr key={topic.id} className="hover:bg-slate-50 transition-none group divide-x divide-slate-100">
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-4">
+                            {topic.image_url && (
+                              <div className="w-10 h-10 rounded overflow-hidden border border-slate-100 flex-shrink-0">
+                                <img src={topic.image_url} alt="" className="w-full h-full object-cover" />
+                              </div>
+                            )}
+                            <div className="space-y-0.5">
+                              <p className="text-sm font-bold text-slate-900 tracking-tight">{topic.title}</p>
+                              <p className="text-[11px] font-bold text-slate-400 line-clamp-1 uppercase tracking-tighter opacity-70">{topic.description}</p>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          <span className="px-2 py-0.5 bg-slate-100 text-slate-500 rounded border border-slate-200 text-[10px] font-bold">
+                            {topic.display_order}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-right pr-6 h-full">
+                          <div className="flex items-center justify-end gap-1 opacity-20 group-hover:opacity-100 transition-none">
+                            <Button 
+                              variant="ghost" size="icon"
+                              onClick={() => {
+                                setCurrentTopic(topic);
+                                setIsEditing(true);
+                              }}
+                              className="h-8 w-8 text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-none"
+                            >
+                              <Edit2 className="w-3.5 h-3.5" />
+                            </Button>
+                            <Button 
+                              variant="ghost" size="icon"
+                              onClick={() => handleDelete(topic.id)}
+                              className="h-8 w-8 text-slate-400 hover:text-red-600 hover:bg-red-50 transition-none"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                    {filteredTopics.length === 0 && (
+                      <tr>
+                        <td colSpan={3} className="px-6 py-12 text-center text-slate-400 font-bold text-xs uppercase tracking-widest opacity-60">
+                           No topics found.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
 
-          <div className="bg-amber-50 border border-amber-100 rounded-[2rem] p-6 space-y-3">
-            <div className="flex items-center gap-3 text-amber-600">
-               <AlertCircle className="w-5 h-5" />
-               <span className="text-[11px] font-black uppercase tracking-widest">Info</span>
+          <div className="space-y-6">
+            <div className="bg-slate-900 border border-slate-800 rounded p-6 text-white shadow-sm overflow-hidden h-fit">
+              <h3 className="text-sm font-bold uppercase tracking-widest text-slate-400 mb-2">Total Topics</h3>
+              <p className="text-3xl font-black italic">{topics.length}</p>
+              <p className="text-[11px] font-bold text-slate-500 uppercase tracking-tight mt-1">Themes published on website</p>
             </div>
-            <p className="text-[10px] font-bold text-amber-700 leading-relaxed opacity-80">
-              The list order determines the display sequence.
-            </p>
+
+            <div className="bg-blue-50 border border-blue-100 rounded p-6 space-y-2">
+              <span className="text-[10px] font-bold text-blue-600 uppercase tracking-widest block border-b border-blue-200/50 pb-2 mb-2 italic">Topic Order</span>
+              <p className="text-[11px] font-bold text-blue-900 leading-relaxed opacity-80 italic">
+                The number you give to each topic sets the order they appear on the website.
+              </p>
+            </div>
           </div>
         </div>
-      </div>
 
-      {isEditing && (
-        <div className="fixed inset-0 z-[70] flex items-center justify-center p-6 sm:p-12">
-          <div className="absolute inset-0 bg-navy/60 backdrop-blur-md" onClick={() => setIsEditing(false)} />
-          <div className="relative w-full max-w-2xl bg-white rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
-            <div className="px-8 py-6 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-black text-navy uppercase tracking-tight">
-                  {currentTopic.id ? 'Edit Topic' : 'Add Topic'}
+        {isEditing && (
+          <div className="fixed inset-0 z-[70] flex items-center justify-center p-6 bg-slate-900/10 backdrop-blur-sm transition-none">
+            <div className="relative w-full max-w-xl bg-white rounded border border-slate-200 shadow-2xl overflow-hidden transition-none">
+              <div className="px-6 py-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
+                <h3 className="text-sm font-bold text-slate-900 uppercase tracking-widest">
+                  {currentTopic.id ? 'Edit Topic' : 'New Topic'}
                 </h3>
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest opacity-60">Details</p>
+                <Button variant="ghost" size="icon" onClick={() => setIsEditing(false)} className="h-8 w-8 text-slate-400 hover:text-slate-900 transition-none">
+                  <X className="w-4 h-4" />
+                </Button>
               </div>
-              <button onClick={() => setIsEditing(false)} className="p-2 text-slate-400 hover:text-navy hover:bg-white rounded-xl transition-all">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
 
-            <form onSubmit={handleSave} className="p-8 space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <form onSubmit={handleSave} className="p-6 space-y-5">
+                <div className="grid grid-cols-5 gap-5">
+                  <div className="col-span-3 space-y-1.5">
+                    <Label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Topic Title</Label>
+                    <Input 
+                      required 
+                      type="text"
+                      value={currentTopic.title}
+                      onChange={(e) => setCurrentTopic({...currentTopic, title: e.target.value})}
+                      placeholder="e.g. Smart Farming"
+                      className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none font-bold"
+                    />
+                  </div>
+                  <div className="col-span-2 space-y-1.5">
+                     <Label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Order Number</Label>
+                     <input 
+                      required 
+                      type="number"
+                      value={currentTopic.display_order}
+                      onChange={(e) => setCurrentTopic({...currentTopic, display_order: parseInt(e.target.value)})}
+                      className="w-full h-10 px-3 bg-slate-50 border border-slate-200 rounded text-sm font-bold text-slate-900 transition-none outline-none focus:ring-4 ring-blue-600/5"
+                    />
+                  </div>
+                </div>
+
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Name</label>
-                  <input 
+                  <Label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Description</Label>
+                  <textarea 
                     required 
-                    type="text"
-                    value={currentTopic.title}
-                    onChange={(e) => setCurrentTopic({...currentTopic, title: e.target.value})}
-                    placeholder="e.g. Smart Farming"
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-xs font-bold text-navy focus:outline-none focus:ring-4 focus:ring-blue/5 focus:border-blue/20 transition-all font-outfit"
+                    rows={3}
+                    value={currentTopic.description}
+                    onChange={(e) => setCurrentTopic({...currentTopic, description: e.target.value})}
+                    placeholder="Provide a brief description of this topic..."
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded text-sm font-medium text-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-600/5 transition-none resize-none"
                   />
                 </div>
-                <div className="space-y-1.5">
-                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">List Order</label>
-                   <input 
-                    required 
-                    type="number"
-                    value={currentTopic.display_order}
-                    onChange={(e) => setCurrentTopic({...currentTopic, display_order: parseInt(e.target.value)})}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-xs font-bold text-navy focus:outline-none focus:ring-4 focus:ring-blue/5 focus:border-blue/20 transition-all font-outfit"
-                  />
-                </div>
-              </div>
 
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Description</label>
-                <textarea 
-                  required 
-                  rows={2}
-                  value={currentTopic.description}
-                  onChange={(e) => setCurrentTopic({...currentTopic, description: e.target.value})}
-                  placeholder="Description..."
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-xs font-bold text-navy focus:outline-none focus:ring-4 focus:ring-blue/5 focus:border-blue/20 transition-all font-outfit resize-none"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-1.5">
-                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Icon</label>
-                   <input 
-                    type="text"
-                    value={currentTopic.icon_name}
-                    onChange={(e) => setCurrentTopic({...currentTopic, icon_name: e.target.value})}
-                    placeholder="Globe, Zap, Database..."
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-xs font-bold text-navy focus:outline-none focus:ring-4 focus:ring-blue/5 focus:border-blue/20 transition-all"
-                  />
+                <div className="grid grid-cols-2 gap-5">
+                  <div className="space-y-1.5">
+                     <Label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Icon Name</Label>
+                     <Input 
+                      type="text"
+                      value={currentTopic.icon_name}
+                      onChange={(e) => setCurrentTopic({...currentTopic, icon_name: e.target.value})}
+                      placeholder="Globe, Zap, etc..."
+                      className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                     <ImageUploadInput label="Topic Image" value={currentTopic.image_url || ''} onChange={v => setCurrentTopic({ ...currentTopic, image_url: v })} />
+                  </div>
                 </div>
+
                 <div className="space-y-1.5">
-                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Color</label>
-                   <input 
+                   <Label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Colors (CSS)</Label>
+                   <Input 
                     type="text"
                     value={currentTopic.color_gradient}
                     onChange={(e) => setCurrentTopic({...currentTopic, color_gradient: e.target.value})}
                     placeholder="from-blue-600 to-indigo-400"
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-xs font-bold text-navy focus:outline-none focus:ring-4 focus:ring-blue/5 focus:border-blue/20 transition-all"
+                    className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none"
                   />
                 </div>
-              </div>
 
-              <div className="flex justify-end gap-3 pt-4">
-                <button 
-                  type="button" 
-                  onClick={() => setIsEditing(false)} 
-                  className="px-8 py-3 bg-slate-100 text-slate-500 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-slate-200 transition-all active:scale-95"
-                >
-                  Cancel
-                </button>
-                <button 
-                  type="submit" 
-                  className="px-8 py-3 bg-navy text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-blue transition-all shadow-xl shadow-navy/20 active:scale-95 flex items-center gap-2"
-                >
-                  <Save className="w-4 h-4" /> Save
-                </button>
-              </div>
-            </form>
+                <div className="flex justify-end gap-3 pt-6 border-t border-slate-50">
+                  <Button 
+                    type="button" 
+                    variant="outline"
+                    onClick={() => setIsEditing(false)} 
+                    className="h-10 px-8 font-bold text-[10px] uppercase tracking-widest border-slate-200 text-slate-500 transition-none rounded"
+                  >
+                    Discard Changes
+                  </Button>
+                  <Button 
+                    type="submit" 
+                    className="h-10 px-8 bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest transition-none rounded shadow-sm flex items-center gap-2"
+                  >
+                    Save Topic
+                  </Button>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </AdminLayout>
   );
 }

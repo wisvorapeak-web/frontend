@@ -26,16 +26,23 @@ const venueImagesFallback = [
 
 export default function VenueGallery() {
   const [activeTab, setActiveTab] = useState(0);
-  const [gallery] = useState<any[]>(venueImagesFallback);
-  const [loading] = useState(false);
+  const [gallery, setGallery] = useState<any[]>(venueImagesFallback);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Static mode
+    fetch(`${import.meta.env.VITE_API_URL}/api/site/gallery`)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+           setGallery(data);
+        }
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const currentImage = gallery[activeTab] || gallery[0] || venueImagesFallback[0];
 
-  if (loading) return <div className="py-24 text-center text-slate-400 font-bold flex items-center justify-center gap-3"><Loader2 className="w-5 h-5 animate-spin" /> Loading Gallery...</div>;
+  if (loading) return <div className="py-14 text-center text-slate-400 font-bold flex items-center justify-center gap-3"><Loader2 className="w-5 h-5 animate-spin" /> Loading Gallery...</div>;
 
   return (
     <section className="py-12 bg-slate-50 overflow-hidden font-outfit">
@@ -44,13 +51,13 @@ export default function VenueGallery() {
           <div className="space-y-1 max-w-2xl text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue/5 border border-blue/10 rounded-full mb-2">
               <span className="w-1.5 h-1.5 rounded-full bg-blue" />
-              <span className="text-[8px] font-black text-blue uppercase tracking-widest leading-none">Visual Registry</span>
+              <span className="text-[8px] font-black text-blue uppercase tracking-widest leading-none">Gallery</span>
             </div>
             <h2 className="text-2xl font-black text-navy leading-none uppercase tracking-tight">
-              Event <span className="text-blue">Showcase</span>
+              Venue <span className="text-blue">Photos</span>
             </h2>
             <p className="text-slate-400 text-[9px] font-black uppercase tracking-widest italic opacity-80 decoration-blue/20 decoration-1 underline-offset-4">
-              State-of-the-art facilities hosting the summit.
+              Photos of the venue and surrounding area.
             </p>
           </div>
         </div>

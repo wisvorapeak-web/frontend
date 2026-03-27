@@ -1,5 +1,5 @@
 /// <reference types="vite/client" />
-import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
 
 interface User {
   id: string;
@@ -14,61 +14,84 @@ interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   login: (userData: User) => void;
-  logout: () => void;
+  logout: () => Promise<void>;
+  refreshSession: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+/**
+ * Provides authentication state across the app.
+ * - Optimistically loads from localStorage for instant UI rendering
+ * - Validates against the server in the background
+ * - Automatically clears stale sessions
+ */
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  // Optimistic: load immediately from localStorage to avoid flash
+  const [user, setUser] = useState<User | null>(() => {
+    try {
+      const stored = localStorage.getItem('ascendix_user');
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  });
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const checkSession = async () => {
-      try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/me`, {
-          credentials: 'include' // Always send cookies
-        });
-        
-        if (res.ok) {
-          const { user } = await res.json();
-          setUser(user);
-          localStorage.setItem('ascendix_user', JSON.stringify(user));
-        } else {
-          // If 401, clear user state
-          setUser(null);
-          localStorage.removeItem('ascendix_user');
-        }
-      } catch (err) {
-        console.error('Session check failed');
-      } finally {
-        setIsLoading(false);
+  const checkSession = useCallback(async () => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/me`, {
+        credentials: 'include'
+      });
+      
+      if (res.ok) {
+        const { user: serverUser } = await res.json();
+        setUser(serverUser);
+        localStorage.setItem('ascendix_user', JSON.stringify(serverUser));
+      } else {
+        // Server says not authenticated — clear local state
+        setUser(null);
+        localStorage.removeItem('ascendix_user');
       }
-    };
-
-    checkSession();
+    } catch (err) {
+      // Network error — keep optimistic state but don't block
+      console.error('Session check failed:', err);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
-  const login = (userData: User) => {
+  useEffect(() => {
+    checkSession();
+  }, [checkSession]);
+
+  const login = useCallback((userData: User) => {
     setUser(userData);
     localStorage.setItem('ascendix_user', JSON.stringify(userData));
-  };
+  }, []);
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     try {
       await fetch(`${import.meta.env.VITE_API_URL}/api/auth/logout`, { 
         method: 'POST',
         credentials: 'include'
       });
-    } catch (err) {}
+    } catch (err) {
+      // Logout should always succeed client-side even if server call fails
+    }
     
     setUser(null);
     localStorage.removeItem('ascendix_user');
-    localStorage.removeItem('ascendix_token'); // Cleanup old artifacts
-  };
+    localStorage.removeItem('ascendix_token');
+  }, []);
+
+  const refreshSession = useCallback(async () => {
+    setIsLoading(true);
+    await checkSession();
+  }, [checkSession]);
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, logout }}>
+    <AuthContext.Provider value={{ user, isLoading, login, logout, refreshSession }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,5 +1,6 @@
 /// <reference types="vite/client" />
 import { useState, useEffect } from 'react';
+import { toast } from 'sonner';
 import AdminLayout from './AdminLayout';
 import { 
   Inbox as InboxIcon, 
@@ -7,14 +8,10 @@ import {
   Trash2, 
   CheckCircle2, 
   Star, 
-  Reply, 
-  Clock,
-  MoreVertical,
-  Paperclip
+  Reply
 } from 'lucide-react';
-import { Button } from '../../components/ui/button';
-import { Input } from '../../components/ui/input';
-import { Avatar, AvatarFallback, AvatarImage } from '../../components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export default function Inbox() {
   const [messages, setMessages] = useState<any[]>([]);
@@ -31,9 +28,10 @@ export default function Inbox() {
         credentials: 'include'
       });
       if (res.ok) {
-        const data = await res.json();
-        setMessages(data);
-        if (data.length > 0) setSelectedMsg(data[0]);
+        const json = await res.json();
+        const messages = Array.isArray(json) ? json : json.data || [];
+        setMessages(messages);
+        if (messages.length > 0) setSelectedMsg(messages[0]);
       }
     } catch (err) {
       console.error('Failed to fetch messages:', err);
@@ -42,83 +40,88 @@ export default function Inbox() {
     }
   };
 
-  const formatTime = (dateStr: string) => {
-    const date = new Date(dateStr);
-    const now = new Date();
-    if (date.toDateString() === now.toDateString()) {
-      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const handleDelete = async (id: string) => {
+    if (!confirm('Permanently remove this communication from the registry?')) return;
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/inbox/${id}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+      if (res.ok) {
+        toast.success('Communication removed');
+        const updated = messages.filter(m => m.id !== id);
+        setMessages(updated);
+        setSelectedMsg(updated.length > 0 ? updated[0] : null);
+      }
+    } catch (err) {
+      toast.error('Deletion failed');
     }
-    return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
   };
 
-  if (loading) return <AdminLayout><div className="text-xs font-bold text-slate-400 p-12">Loading...</div></AdminLayout>;
+
+  const formatTime = (dateStr: string) => {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString([], { month: 'short', day: 'numeric' }) + ', ' + 
+           date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
+  if (loading) return <AdminLayout><div className="text-xs font-bold text-slate-400 p-12">Loading messages...</div></AdminLayout>;
 
   return (
     <AdminLayout>
-      <div className="h-full flex flex-col space-y-8 animate-in fade-in slide-in-from-bottom-5 duration-700 pb-12">
+      <div className="h-full flex flex-col space-y-6 font-inter">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="flex items-center justify-between pb-6 border-b border-slate-200">
           <div>
-            <h1 className="text-3xl font-bold text-slate-900 mb-2 font-outfit">Inbox</h1>
-            <p className="text-slate-500 font-medium font-outfit">View and reply to messages.</p>
+            <h1 className="text-2xl font-bold text-slate-900">Communications Inbox</h1>
+            <p className="text-sm text-slate-500 mt-1">Review and manage inquiries from the contact portal.</p>
           </div>
-          <div className="flex items-center gap-3">
-             <div className="bg-slate-100 flex p-1 rounded-xl">
-               <Button className="rounded-lg h-9 bg-white text-indigo-600 shadow-sm border-none font-bold text-xs px-4">All</Button>
-               <Button variant="ghost" className="rounded-lg h-9 text-slate-500 font-bold text-xs px-4">Archived</Button>
-             </div>
+          <div className="flex bg-slate-100 p-1 rounded border border-slate-200">
+            <button className="px-5 py-1.5 text-xs font-bold bg-white text-blue-600 rounded shadow-sm">Inbox</button>
+            <button className="px-5 py-1.5 text-xs font-bold text-slate-500 hover:text-slate-900">Archive</button>
           </div>
         </div>
 
         {/* Messaging Interface */}
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 h-[calc(100vh-280px)] min-h-[600px]">
           {/* List Sidebar */}
-          <div className="xl:col-span-4 bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 flex flex-col overflow-hidden">
+          <div className="xl:col-span-4 bg-white border border-slate-200 rounded-lg flex flex-col overflow-hidden shadow-sm">
             {/* Search Bar */}
-            <div className="p-6 border-b border-slate-50">
+            <div className="p-4 border-b border-slate-200">
               <div className="relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                <Input 
-                  placeholder="Search..." 
-                  className="pl-12 h-12 bg-slate-50 border-none rounded-2xl focus-visible:ring-indigo-500/10 placeholder:font-medium"
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <input 
+                  placeholder="Search inquiries..." 
+                  className="w-full pl-10 h-10 bg-slate-50 border border-slate-200 rounded px-4 text-sm font-medium focus:ring-4 focus:ring-blue-600/5 focus:border-blue-600 outline-none"
                 />
               </div>
             </div>
 
             {/* Message List */}
-            <div className="flex-1 overflow-y-auto divide-y divide-slate-50 scrollbar-none">
+            <div className="flex-1 overflow-y-auto divide-y divide-slate-100 scrollbar-none">
               {messages.map((msg) => (
                 <div 
                   key={msg.id}
                   onClick={() => setSelectedMsg(msg)}
-                  className={`p-6 cursor-pointer transition-all relative group ${
+                  className={`p-5 cursor-pointer flex flex-col gap-2 ${
                     selectedMsg?.id === msg.id 
-                    ? 'bg-indigo-50/50' 
+                    ? 'bg-blue-50/50' 
                     : 'hover:bg-slate-50'
                   }`}
                 >
-                  {selectedMsg?.id === msg.id && (
-                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500" />
-                  )}
-                  
-                   <div className="flex justify-between items-start mb-3">
+                   <div className="flex justify-between items-center">
                     <div className="flex items-center gap-2">
-                       <span className={`w-2 h-2 rounded-full ${msg.status === 'Unread' ? 'bg-indigo-500 animate-pulse' : 'bg-transparent'}`} />
-                       <p className={`text-sm font-bold ${msg.status === 'Unread' ? 'text-slate-900' : 'text-slate-500'}`}>{msg.name}</p>
+                       <span className={`w-2 h-2 rounded-full ${msg.status === 'Unread' ? 'bg-blue-600' : 'bg-transparent'}`} />
+                       <p className="text-sm font-bold text-slate-900">{msg.name || `${msg.firstName} ${msg.lastName}`}</p>
                     </div>
-                    <span className="text-xs font-bold text-slate-400">{formatTime(msg.created_at)}</span>
+                    <span className="text-[10px] font-bold text-slate-400">{formatTime(msg.createdAt)}</span>
                   </div>
                   
-                  <h4 className={`text-xs font-bold mb-2 line-clamp-1 ${msg.status === 'Unread' ? 'text-slate-900' : 'text-slate-600'}`}>
-                    {msg.subject}
-                  </h4>
-                  <p className="text-[11px] text-slate-400 line-clamp-2 leading-relaxed font-medium">
-                    {msg.message}
-                  </p>
+                  <h4 className="text-xs font-bold text-slate-600 line-clamp-1">{msg.subject}</h4>
+                  <p className="text-[11px] text-slate-400 line-clamp-2 leading-relaxed font-medium">{msg.message}</p>
                   
-                  <div className="flex items-center gap-2 mt-4">
-                     {msg.isStarred && <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />}
-                     <span className="text-[10px] font-bold px-2 py-0.5 bg-slate-100 text-slate-400 rounded-full">{msg.category}</span>
+                  <div className="flex items-center gap-2 mt-2">
+                     <span className="text-[10px] font-bold px-2 py-0.5 bg-slate-100 text-slate-500 rounded border border-slate-200">{msg.type}</span>
                   </div>
                 </div>
               ))}
@@ -126,88 +129,65 @@ export default function Inbox() {
           </div>
 
           {/* Reading Pane */}
-          <div className="xl:col-span-8 bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 flex flex-col overflow-hidden">
+          <div className="xl:col-span-8 bg-white border border-slate-200 rounded-lg flex flex-col overflow-hidden shadow-sm">
              {selectedMsg ? (
-               <div className="flex flex-col h-full animate-in fade-in slide-in-from-right-10 duration-500">
+               <div className="flex flex-col h-full">
                   {/* Pane Header */}
-                  <div className="p-8 border-b border-slate-50 flex items-center justify-between bg-slate-50/20">
+                  <div className="p-8 border-b border-slate-200 flex items-center justify-between bg-slate-50/50">
                     <div className="flex items-center gap-4">
-                       <Avatar className="w-12 h-12 border-2 border-white shadow-sm ring-1 ring-slate-100">
+                       <Avatar className="w-12 h-12 border border-slate-200">
                          <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${selectedMsg.name}`} />
-                         <AvatarFallback>SJ</AvatarFallback>
+                         <AvatarFallback>{selectedMsg.name?.[0] || 'U'}</AvatarFallback>
                        </Avatar>
                        <div>
-                         <h2 className="text-xl font-bold text-slate-900 font-outfit leading-tight">{selectedMsg.name}</h2>
-                         <p className="text-xs text-slate-400 font-bold">{selectedMsg.email}</p>
+                         <h2 className="text-xl font-bold text-slate-900">{selectedMsg.name || `${selectedMsg.firstName} ${selectedMsg.lastName}`}</h2>
+                         <p className="text-xs text-slate-500 font-bold">{selectedMsg.email}</p>
                        </div>
                     </div>
                     <div className="flex items-center gap-2">
-                       <Button variant="ghost" size="icon" className="w-10 h-10 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl">
-                          <Star className={`w-5 h-5 ${selectedMsg.isStarred ? 'fill-amber-400 text-amber-400' : ''}`} />
+                       <Button variant="outline" size="icon" className="w-9 h-9 border-slate-200 text-slate-400 hover:text-blue-600">
+                          <Star className={`w-4 h-4 ${selectedMsg.isStarred ? 'fill-amber-400 text-amber-400' : ''}`} />
                        </Button>
-                       <Button variant="ghost" size="icon" className="w-10 h-10 text-slate-400 hover:text-red-500 hover:bg-rose-50 rounded-xl">
-                          <Trash2 className="w-5 h-5" />
-                       </Button>
-                       <Button variant="ghost" size="icon" className="w-10 h-10 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-xl">
-                          <MoreVertical className="w-5 h-5" />
+                       <Button 
+                        variant="outline" size="icon" 
+                        onClick={() => handleDelete(selectedMsg.id)}
+                        className="w-9 h-9 border-slate-200 text-slate-400 hover:text-rose-600 transition-none"
+                       >
+                          <Trash2 className="w-4 h-4" />
                        </Button>
                     </div>
-                  </div>
+                 </div>
 
                   {/* Message Body */}
-                  <div className="flex-1 p-10 overflow-y-auto scrollbar-none">
-                     <div className="mb-10">
-                        <div className="flex items-center gap-3 mb-4">
-                          <span className="text-xs font-bold text-indigo-500 bg-indigo-50 px-3 py-1 rounded-full">Message</span>
-                          <div className="flex items-center gap-1.5 text-xs text-slate-400 font-bold">
-                             <Clock className="w-3.5 h-3.5" /> Received {formatTime(selectedMsg.created_at)}
-                          </div>
+                  <div className="flex-1 p-8 overflow-y-auto space-y-6">
+                     <div className="space-y-4">
+                        <div className="flex items-center gap-3">
+                           <span className="text-[10px] font-bold text-blue-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded-full uppercase">Message Details</span>
+                           <div className="text-[10px] text-slate-400 font-bold">Received: {formatTime(selectedMsg.createdAt)}</div>
                         </div>
-                        <h2 className="text-2xl font-bold text-slate-900 font-outfit mb-6 leading-tight">{selectedMsg.subject}</h2>
-                     </div>
-
-                     <div className="prose prose-slate max-w-none">
-                        <p className="text-slate-600 leading-relaxed font-outfit text-base whitespace-pre-wrap">
-                           {selectedMsg.message}
-                        </p>
-                     </div>
-
-                     {/* Attachments Placeholder */}
-                     {selectedMsg.id === 1 && (
-                        <div className="mt-12 p-4 bg-slate-50 rounded-2xl border border-slate-100 inline-flex items-center gap-4 group cursor-pointer hover:bg-indigo-50 transition-colors">
-                           <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center text-indigo-500">
-                              <Paperclip className="w-5 h-5" />
-                           </div>
-                           <div className="pr-4">
-                              <p className="text-xs font-bold text-slate-900">Attachment.pdf</p>
-                              <p className="text-xs font-bold text-slate-400">2.1 MB</p>
-                           </div>
+                        <h2 className="text-2xl font-bold text-slate-900 leading-tight">{selectedMsg.subject}</h2>
+                        <div className="p-6 bg-slate-50 border border-slate-200 rounded min-h-[200px] text-sm text-slate-700 leading-relaxed font-medium whitespace-pre-wrap italic">
+                          {selectedMsg.message}
                         </div>
-                     )}
+                     </div>
                   </div>
 
                   {/* Reply Section */}
-                  <div className="p-8 border-t border-slate-50 bg-slate-50/20">
-                     <div className="flex gap-4">
-                        <Button className="rounded-xl grow bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-600/20 font-bold h-12 gap-2">
-                           <Reply className="w-4 h-4" /> Reply
+                  <div className="p-6 border-t border-slate-200 bg-white">
+                     <div className="flex gap-3">
+                        <Button className="flex-1 h-11 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded transition-none">
+                           <Reply className="w-4 h-4 mr-2" /> Mark for Follow-up
                         </Button>
-                        <Button variant="outline" className="rounded-xl font-bold h-12 border-slate-200 text-slate-600 px-6">
-                           Forward
-                        </Button>
-                        <Button variant="outline" className="rounded-xl font-bold h-12 border-slate-200 text-slate-600 px-6">
-                           <CheckCircle2 className="w-4 h-4 mr-2 text-emerald-500" /> Done
+                        <Button variant="outline" className="flex-1 h-11 border-slate-200 text-slate-600 font-bold text-xs rounded transition-none">
+                           <CheckCircle2 className="w-4 h-4 mr-2 text-emerald-500" /> Mark as Resolved
                         </Button>
                      </div>
                   </div>
                </div>
              ) : (
-               <div className="h-full flex flex-col items-center justify-center p-12 text-center">
-                  <div className="w-24 h-24 rounded-[2rem] bg-slate-50 flex items-center justify-center text-slate-300 mb-6">
-                     <InboxIcon className="w-10 h-10" />
-                  </div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-2 font-outfit leading-tight">No Message Selected</h3>
-                  <p className="text-slate-400 text-sm font-medium max-w-sm">Select a message to read it.</p>
+               <div className="h-full flex flex-col items-center justify-center p-12 text-center text-slate-400">
+                  <InboxIcon className="w-12 h-12 mb-4 opacity-20" />
+                  <p className="text-sm font-bold">Select a message from the list to view its contents.</p>
                </div>
              )}
           </div>

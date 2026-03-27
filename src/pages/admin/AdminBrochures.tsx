@@ -6,14 +6,7 @@ import {
   Plus,
   Trash2,
   Edit3,
-  BookOpen,
-  Layers,
-  FileText,
-  Save,
-  Loader2,
-  ExternalLink,
-  Smartphone,
-  ShieldCheck
+  Loader2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -25,14 +18,13 @@ import {
   TableHeader, 
   TableRow  
 } from '@/components/ui/table';
-import { Card, CardContent } from '@/components/ui/card';
 import { 
   Dialog, 
   DialogContent, 
-  DialogHeader, 
+  DialogDescription,
+  DialogHeader,
   DialogTitle, 
-  DialogTrigger,
-  DialogFooter
+  DialogTrigger
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 
@@ -90,7 +82,7 @@ export default function AdminBrochures() {
       });
 
       if (res.ok) {
-        toast.success(`Brochure ${editingBrochure ? 'updated' : 'created'} successfully.`);
+        toast.success(`Resource saved successfully.`);
         setIsDialogOpen(false);
         fetchBrochures();
         resetForm();
@@ -106,14 +98,14 @@ export default function AdminBrochures() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to remove this resource guide?')) return;
+    if (!confirm('Permanently remove this resource from the library?')) return;
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/brochures/${id}`, {
         method: 'DELETE',
         credentials: 'include'
       });
       if (res.ok) {
-        toast.success('Resource removed from library.');
+        toast.success('Resource removed.');
         fetchBrochures();
       }
     } catch (err) {
@@ -148,119 +140,120 @@ export default function AdminBrochures() {
     setIsDialogOpen(true);
   };
 
-  if (loading) return <AdminLayout><div className="p-12 text-slate-400 font-bold flex items-center gap-3"><Loader2 className="w-5 h-5 animate-spin" /> Loading brochures...</div></AdminLayout>;
+  if (loading) return <AdminLayout><div className="text-xs font-bold text-slate-400 p-12">Loading brochures...</div></AdminLayout>;
 
   return (
     <AdminLayout>
-      <div className="space-y-12 animate-in fade-in slide-in-from-bottom-5 duration-700 pb-20 font-outfit">
+      <div className="space-y-6 font-inter">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="flex items-center justify-between pb-6 border-b border-slate-200">
           <div>
-            <h1 className="text-3xl font-black text-slate-900 mb-2 tracking-tight">Brochures</h1>
-            <p className="text-slate-500 font-medium">Add and edit guides and brochures.</p>
+            <h1 className="text-2xl font-bold text-slate-900">Resource Library</h1>
+            <p className="text-sm text-slate-500 mt-1">Manage downloadable PDF guides, brochures and event maps.</p>
           </div>
           
           <Dialog open={isDialogOpen} onOpenChange={(open) => { setIsDialogOpen(open); if(!open) resetForm(); }}>
             <DialogTrigger asChild>
-              <Button className="h-16 rounded-[2rem] bg-indigo-600 hover:bg-navy text-white font-black px-10 shadow-2xl shadow-indigo-600/20 transition-all flex items-center gap-3">
-                 <Plus className="w-5 h-5" /> Add Brochure
+              <Button className="h-10 bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 transition-none gap-2">
+                 <Plus className="w-4 h-4" /> Add New Resource
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[600px] rounded-[3rem] p-10 border-none">
-              <DialogHeader className="mb-6">
-                <DialogTitle className="text-2xl font-black flex items-center gap-3 text-indigo-600">
-                  <FileText className="w-6 h-6" />
-                  {editingBrochure ? 'Edit' : 'Add Brochure'}
+            <DialogContent className="sm:max-w-[500px] border border-slate-200 p-0 overflow-hidden rounded-lg">
+              <DialogHeader className="p-6 border-b border-slate-100 bg-slate-50">
+                <DialogTitle className="text-sm font-bold text-slate-900 uppercase tracking-widest">
+                  {editingBrochure ? 'Edit Resource' : 'New Resource'}
                 </DialogTitle>
+                <DialogDescription className="sr-only">
+                  Upload and manage PDF guides, maps and other downloadable assets for summit participants.
+                </DialogDescription>
               </DialogHeader>
-              <form onSubmit={handleSave} className="space-y-6">
-                 <div className="grid grid-cols-2 gap-6">
-                    <div className="space-y-3">
-                       <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Title</Label>
+              <form onSubmit={handleSave} className="p-6 space-y-4">
+                 <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                       <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Resource Title</Label>
                        <Input 
                         value={formData.title}
                         onChange={e => setFormData({...formData, title: e.target.value})}
-                        className="h-14 bg-slate-50 border-none rounded-2xl font-bold px-6 focus-visible:ring-indigo-600/10" 
-                        placeholder="e.g. Overview" required
+                        className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none font-bold" 
+                        placeholder="Overview..." required
                        />
                     </div>
-                    <div className="space-y-3">
-                       <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Type</Label>
+                    <div className="space-y-1.5">
+                       <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Description</Label>
                        <Input 
                         value={formData.type}
                         onChange={e => setFormData({...formData, type: e.target.value})}
-                        className="h-14 bg-slate-50 border-none rounded-2xl font-bold px-6 focus-visible:ring-indigo-600/10" 
-                        placeholder="e.g. Guide, Map" required
+                        className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none" 
+                        placeholder="PDF Guide..." required
                        />
                     </div>
                  </div>
 
-                 <div className="grid grid-cols-2 gap-6">
-                    <div className="space-y-3">
-                       <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Category</Label>
+                 <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                       <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Category</Label>
                        <select 
                         value={formData.category}
                         onChange={e => setFormData({...formData, category: e.target.value})}
-                        className="w-full h-14 bg-slate-50 border-none rounded-2xl font-bold px-6 focus:ring-2 focus:ring-indigo-600/10 outline-none"
+                        className="w-full h-10 bg-slate-50 border border-slate-200 rounded text-sm px-3 appearance-none outline-none focus:ring-4 focus:ring-blue-600/5 transition-none font-medium"
                        >
                           {['Overview', 'Sponsors', 'Sessions', 'Map', 'Visa', 'Other'].map(c => (
                             <option key={c} value={c}>{c}</option>
                           ))}
                        </select>
                     </div>
-                    <div className="space-y-3">
-                       <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Size</Label>
+                    <div className="space-y-1.5">
+                       <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">File Size</Label>
                        <Input 
                         value={formData.file_size}
                         onChange={e => setFormData({...formData, file_size: e.target.value})}
-                        className="h-14 bg-slate-50 border-none rounded-2xl font-bold px-6 focus-visible:ring-indigo-600/10" 
-                        placeholder="e.g. 2.4 MB" required
+                        className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none" 
+                        placeholder="2.4 MB..." required
                        />
                     </div>
                  </div>
 
-                 <div className="space-y-3">
-                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">URL</Label>
+                 <div className="space-y-1.5">
+                    <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">File Link (URL)</Label>
                     <Input 
                       value={formData.file_url}
                       onChange={e => setFormData({...formData, file_url: e.target.value})}
-                      className="h-14 bg-slate-50 border-none rounded-2xl font-bold px-6 focus-visible:ring-indigo-600/10" 
-                      placeholder="https://..." required
+                      className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none" 
+                      placeholder="https://storage.googleapis.com/..." required
                     />
                  </div>
 
-                 <div className="grid grid-cols-2 gap-6">
-                    <div className="space-y-3">
-                       <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Icon</Label>
+                 <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                       <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Icon</Label>
                        <select 
                         value={formData.icon_name}
                         onChange={e => setFormData({...formData, icon_name: e.target.value})}
-                        className="w-full h-14 bg-slate-50 border-none rounded-2xl font-bold px-6 focus:ring-2 focus:ring-indigo-600/10 outline-none"
+                        className="w-full h-10 bg-slate-50 border border-slate-200 rounded text-sm px-3 appearance-none outline-none focus:ring-4 focus:ring-blue-600/5 transition-none font-medium"
                        >
                           {['FileDown', 'BookOpen', 'FileText', 'Calendar', 'Smartphone', 'ShieldCheck'].map(ic => (
                             <option key={ic} value={ic}>{ic}</option>
                           ))}
                        </select>
                     </div>
-                    <div className="space-y-3">
-                       <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Order</Label>
+                    <div className="space-y-1.5">
+                       <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Sort Order</Label>
                        <Input 
                         type="number"
                         value={formData.display_order}
                         onChange={e => setFormData({...formData, display_order: Number(e.target.value)})}
-                        className="h-14 bg-slate-50 border-none rounded-2xl font-bold px-6 focus-visible:ring-indigo-600/10" 
+                        className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none" 
                        />
                     </div>
                  </div>
 
-                 <DialogFooter className="pt-6 gap-3 sm:justify-end">
-                    <Button type="button" variant="ghost" className="rounded-xl h-14 font-black text-xs uppercase tracking-widest" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
-                    <Button disabled={isSaving} className="rounded-xl h-14 bg-indigo-600 text-white px-10 font-black text-xs uppercase tracking-widest shadow-xl shadow-indigo-600/20">
-                       {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4 mr-2" />} 
-                       {editingBrochure ? 'Save Changes' : 'Save'}
+                 <div className="pt-4 flex items-center justify-end gap-3 border-t border-slate-50">
+                    <Button type="button" variant="outline" className="h-10 border-slate-200 text-slate-500 font-bold uppercase text-[10px] tracking-widest transition-none px-6 rounded" onClick={() => setIsDialogOpen(false)}>Discard</Button>
+                    <Button disabled={isSaving} className="h-10 bg-blue-600 hover:bg-blue-700 text-white font-bold uppercase text-[10px] tracking-widest transition-none px-8 rounded">
+                       {isSaving ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : 'Save Resource'}
                     </Button>
-                 </DialogFooter>
+                 </div>
               </form>
             </DialogContent>
           </Dialog>
@@ -268,92 +261,67 @@ export default function AdminBrochures() {
 
         {/* Global Statistics */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-           <Card className="border-none shadow-xl shadow-slate-200/30 rounded-[2.5rem] bg-white p-2">
-              <CardContent className="p-8 flex items-center gap-4">
-                 <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                    <BookOpen className="w-6 h-6" />
-                 </div>
-                 <div>
-                    <h4 className="text-xl font-black text-slate-900 leading-none mb-1">{brochures.length}</h4>
-                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest opacity-60">Total</p>
-                 </div>
-              </CardContent>
-           </Card>
-           <Card className="border-none shadow-xl shadow-slate-200/30 rounded-[2.5rem] bg-white p-2">
-              <CardContent className="p-8 flex items-center gap-4">
-                 <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-500 flex items-center justify-center">
-                    <Smartphone className="w-6 h-6" />
-                 </div>
-                 <div>
-                    <h4 className="text-xl font-black text-slate-900 leading-none mb-1">Mobile</h4>
-                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest opacity-60">Mobile Ready</p>
-                 </div>
-              </CardContent>
-           </Card>
-           <Card className="border-none shadow-xl shadow-slate-200/30 rounded-[2.5rem] bg-white p-2">
-              <CardContent className="p-8 flex items-center gap-4">
-                 <div className="w-12 h-12 rounded-2xl bg-blue/5 text-blue flex items-center justify-center">
-                    <ShieldCheck className="w-6 h-6" />
-                 </div>
-                 <div>
-                    <h4 className="text-xl font-black text-slate-900 leading-none mb-1">Secure</h4>
-                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest opacity-60">Secure</p>
-                 </div>
-              </CardContent>
-           </Card>
+            <div className="bg-white border border-slate-200 rounded-lg p-6 shadow-sm">
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Total Assets</p>
+              <h3 className="text-2xl font-bold text-slate-900">{brochures.length}</h3>
+            </div>
+            <div className="bg-white border border-slate-200 rounded-lg p-6 shadow-sm">
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Status</p>
+              <h3 className="text-2xl font-bold text-emerald-600 flex items-center gap-2 italic">Active</h3>
+            </div>
+            <div className="bg-white border border-slate-200 rounded-lg p-6 shadow-sm">
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Access</p>
+              <h3 className="text-2xl font-bold text-blue-600 flex items-center gap-2 italic">Working</h3>
+            </div>
         </div>
 
         {/* Catalog Table */}
-        <div className="bg-white rounded-[3.5rem] shadow-xl shadow-slate-200/30 border border-slate-50 overflow-hidden">
-           <div className="p-10 border-b border-slate-50 bg-slate-50/20">
-              <h2 className="text-2xl font-black text-slate-900 tracking-tight leading-none mb-2 font-outfit">All Brochures</h2>
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">View and edit your brochures.</p>
+        <div className="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden">
+           <div className="p-4 border-b border-slate-100 bg-slate-50/50">
+              <h2 className="text-sm font-bold text-slate-900 uppercase tracking-widest">Library Catalog</h2>
            </div>
 
-           <div className="overflow-x-auto p-6">
+           <div className="overflow-x-auto">
               <Table>
-                <TableHeader>
-                  <TableRow className="border-none hover:bg-transparent">
-                    <TableHead className="py-8 pl-10 text-[10px] font-black text-slate-400 uppercase tracking-widest">Brochure</TableHead>
-                    <TableHead className="py-8 text-[10px] font-black text-slate-400 uppercase tracking-widest">Details</TableHead>
-                    <TableHead className="py-8 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Actions</TableHead>
+                <TableHeader className="bg-slate-50/30">
+                  <TableRow className="border-b border-slate-100 divide-x divide-slate-100">
+                    <TableHead className="py-4 pl-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Asset Details</TableHead>
+                    <TableHead className="py-4 text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest">Category</TableHead>
+                    <TableHead className="py-4 text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest">Size</TableHead>
+                    <TableHead className="py-4 pr-6 text-right text-[10px] font-bold text-slate-400 uppercase tracking-widest">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {brochures.map((item) => (
-                    <TableRow key={item.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-all group">
-                       <TableCell className="py-8 pl-10">
-                          <div className="flex items-center gap-6">
-                             <div className="w-14 h-14 rounded-[1.5rem] bg-indigo-600 text-white flex items-center justify-center shadow-lg group-hover:scale-105 transition-all">
-                                <FileDown className="w-6 h-6" />
+                    <TableRow key={item.id} className="border-b border-slate-100 divide-x divide-slate-100 hover:bg-slate-50/30 transition-none group">
+                       <TableCell className="py-4 pl-6">
+                          <div className="flex items-center gap-4">
+                             <div className="w-10 h-10 bg-slate-50 text-slate-300 border border-slate-100 flex items-center justify-center rounded transition-none">
+                                <FileDown className="w-4 h-4" />
                              </div>
                              <div>
-                                <p className="text-base font-black text-slate-800 mb-1">{item.title}</p>
-                                <div className="flex items-center gap-3 text-[9px] font-bold text-slate-300 uppercase tracking-widest">
-                                   <Layers className="w-3 h-3" /> {item.type}
-                                   <span className="w-1 h-1 rounded-full bg-slate-200" />
-                                   <ExternalLink className="w-3 h-3" /> <a href={item.file_url} target="_blank" className="hover:text-indigo-600 normal-case overflow-hidden max-w-[150px] truncate">{item.file_url}</a>
-                                </div>
+                                <p className="text-sm font-bold text-slate-900">{item.title}</p>
+                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tight truncate max-w-[200px] italic">{item.file_url}</p>
                              </div>
                           </div>
                        </TableCell>
-                       <TableCell>
-                          <div className="space-y-1">
-                             <p className="text-xs font-black text-slate-800">{item.category}</p>
-                             <p className="text-[9px] font-bold text-slate-300 uppercase tracking-widest">{item.file_size}</p>
-                          </div>
+                       <TableCell className="text-center font-bold text-xs text-slate-600">
+                          {item.category}
                        </TableCell>
-                       <TableCell>
-                          <div className="flex items-center justify-center gap-3">
+                       <TableCell className="text-center">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{item.file_size} / {item.type}</span>
+                       </TableCell>
+                       <TableCell className="text-right pr-6">
+                          <div className="flex items-center justify-end gap-2">
                              <Button 
                               onClick={() => handleEdit(item)}
-                              variant="ghost" size="icon" className="w-10 h-10 rounded-xl text-slate-300 hover:text-indigo-600 hover:bg-white shadow-sm border border-transparent hover:border-slate-100 transition-all">
-                                <Edit3 className="w-4 h-4" />
+                              variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-blue-600 transition-none rounded">
+                                <Edit3 className="w-3.5 h-3.5" />
                              </Button>
                              <Button 
                               onClick={() => handleDelete(item.id)}
-                              variant="ghost" size="icon" className="w-10 h-10 rounded-xl text-rose-100 hover:text-rose-500 hover:bg-rose-50 transition-all border border-transparent hover:border-rose-100">
-                                <Trash2 className="w-4 h-4" />
+                              variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-red-600 transition-none rounded">
+                                <Trash2 className="w-3.5 h-3.5" />
                              </Button>
                           </div>
                        </TableCell>
@@ -361,12 +329,8 @@ export default function AdminBrochures() {
                   ))}
                   {brochures.length === 0 && (
                     <TableRow>
-                       <TableCell colSpan={3} className="py-32 text-center bg-slate-50/20">
-                          <div className="w-20 h-20 bg-white rounded-[2.5rem] flex items-center justify-center mx-auto text-slate-200 mb-6 border-2 border-dashed border-slate-100">
-                             <FileText className="w-10 h-10" />
-                          </div>
-                          <h4 className="text-2xl font-black text-slate-800 font-outfit mb-2 tracking-tight">No brochures</h4>
-                          <p className="text-xs text-slate-400 font-bold max-w-sm mx-auto leading-relaxed uppercase tracking-widest opacity-60">Add your first brochure or guide to get started.</p>
+                       <TableCell colSpan={4} className="py-20 text-center text-slate-400 font-bold text-xs uppercase tracking-widest">
+                          The resource library is currently empty.
                        </TableCell>
                     </TableRow>
                   )}

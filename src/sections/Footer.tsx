@@ -2,7 +2,12 @@ import {
   Linkedin, 
   Twitter, 
   Facebook,
-  Instagram
+  Instagram,
+  Mail,
+  Phone,
+  MapPin,
+  ShieldCheck,
+  Scale
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -10,7 +15,7 @@ import { useEffect, useState } from 'react';
 const quickLinks = [
   { label: 'Home', href: '/' },
   { label: 'About', href: '/about' },
-  { label: 'Topics', href: '/topics' },
+  { label: 'Topics', href: '/#topics' },
   { label: 'Dates', href: '/dates' },
   { label: 'Registration', href: '/registration' },
   { label: 'Venue', href: '/venue' },
@@ -18,27 +23,32 @@ const quickLinks = [
 ];
 
 const resources = [
-  { label: 'Research Rules', href: '/abstract-submission' },
+  { label: 'Submit Abstract', href: '/abstract-submission' },
   { label: 'Program', href: '/program' },
-  { label: 'Visa', href: '/venue' },
-  { label: 'Guides', href: '/brochure' },
+  { label: 'Speakers', href: '/speakers' },
+  { label: 'Brochures', href: '/brochures' },
   { label: 'Sponsorship', href: '/sponsorship' },
-  { label: 'Media', href: '/contact' },
 ];
 
 export default function Footer() {
   const location = useLocation();
-  const [settings] = useState<any>({
-    site_tagline: 'Leading the future of food and agriculture.',
-    site_title: 'Ascendix Summit on Food, Agri-Tech and Animal Science',
-    linkedin_url: '#',
-    twitter_url: '#',
-    facebook_url: '#',
-    instagram_url: '#'
+  const [settings, setSettings] = useState<any>({
+    site_tagline: 'Leading the future of food, agriculture and animal systems.',
+    site_title: 'ASFAA-2026',
+    contact_email: 'contact@foodagriexpo.com',
+    contact_phone: '+65 6123 4567',
+    contact_address: 'Singapore Innovation Hub',
   });
 
   useEffect(() => {
-    // Static mode
+    fetch(`${import.meta.env.VITE_API_URL}/api/site/settings`)
+      .then(res => res.json())
+      .then(data => {
+        if (data && Object.keys(data).length > 0) {
+           setSettings(data);
+        }
+      })
+      .catch(err => console.error('Footer sync error:', err));
   }, []);
 
   if (location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/admin')) return null;
@@ -51,31 +61,45 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative bg-navy py-20 overflow-hidden border-t border-white/5 font-outfit">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16">
-          <div className="space-y-8">
-            <Link to="/" className="inline-block hover:scale-105 active:scale-95 transition-all">
-              <img src="/logo.png" alt="Ascendix Summits" className="h-16 md:h-20 w-auto object-contain brightness-0 invert" />
+    <footer className="bg-navy font-outfit">
+      {/* Main Footer */}
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+          
+          {/* Brand */}
+          <div className="space-y-4">
+            <Link to="/" className="inline-block hover:opacity-80 transition-opacity group">
+               <img 
+                 src="/logo.png" 
+                 alt={settings?.site_title || "Ascendix Summit"} 
+                 className="h-12 w-auto object-contain brightness-0 invert transition-all group-hover:scale-105" 
+               />
             </Link>
-            <p className="text-sm font-medium text-white/40 leading-loose">
-              {settings?.site_tagline || 'Leading the future of food and agriculture.'}
+            <p className="text-[10px] font-bold text-white/40 leading-relaxed uppercase tracking-widest italic">
+              Empowering global innovation in food, agriculture, and animal science through research and partnership.
             </p>
-            <div className="flex gap-4">
-              {socialLinks.map((s, i) => (
-                <a key={i} href={s.href} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-white/40 hover:bg-blue hover:text-white transition-all transform hover:-translate-y-1">
-                  <s.icon className="w-5 h-5" />
-                </a>
-              ))}
+            
+            {/* Contact Info */}
+            <div className="space-y-2 pt-2">
+              <a href={`mailto:${settings?.contact_email || 'contact@foodagriexpo.com'}`} className="flex items-center gap-2 text-[9px] font-bold text-white/30 hover:text-blue transition-colors uppercase tracking-wider">
+                <Mail className="w-3 h-3" /> {settings?.contact_email || 'contact@foodagriexpo.com'}
+              </a>
+              <a href={`tel:${settings?.contact_phone || '+65 6123 4567'}`} className="flex items-center gap-2 text-[9px] font-bold text-white/30 hover:text-blue transition-colors uppercase tracking-wider">
+                <Phone className="w-3 h-3" /> {settings?.contact_phone || '+65 6123 4567'}
+              </a>
+              <p className="flex items-center gap-2 text-[9px] font-bold text-white/20 uppercase tracking-wider">
+                <MapPin className="w-3 h-3" /> {settings?.contact_address || 'Singapore Innovation Hub'}
+              </p>
             </div>
           </div>
 
+          {/* Quick Links */}
           <div>
-            <h4 className="text-xs font-bold text-blue mb-8">Navigation</h4>
-            <ul className="space-y-4">
+            <h4 className="text-[9px] font-black text-blue mb-5 uppercase tracking-[0.4em]">Navigation</h4>
+            <ul className="space-y-2.5">
               {quickLinks.map((l) => (
                 <li key={l.label}>
-                  <Link to={l.href} className="text-sm font-medium text-white/50 hover:text-white transition-colors flex items-center gap-2">
+                  <Link to={l.href} className="text-[10px] font-bold text-white/35 hover:text-white transition-colors uppercase tracking-wider">
                     {l.label}
                   </Link>
                 </li>
@@ -83,12 +107,13 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* Resources */}
           <div>
-            <h4 className="text-xs font-bold text-blue mb-8">Resources</h4>
-            <ul className="space-y-4">
+            <h4 className="text-[9px] font-black text-blue mb-5 uppercase tracking-[0.4em]">Resources</h4>
+            <ul className="space-y-2.5">
               {resources.map((l) => (
                 <li key={l.label}>
-                  <Link to={l.href} className="text-sm font-medium text-white/50 hover:text-white transition-colors">
+                  <Link to={l.href} className="text-[10px] font-bold text-white/35 hover:text-white transition-colors uppercase tracking-wider">
                     {l.label}
                   </Link>
                 </li>
@@ -96,28 +121,38 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div className="space-y-8">
-            <h4 className="text-xs font-bold text-blue mb-8">Newsletter</h4>
-            <form className="space-y-3">
-              <input type="email" placeholder="Email Address" className="w-full h-12 bg-white/5 border border-white/10 rounded-xl px-4 text-sm font-medium text-white placeholder:text-white/20 focus:outline-none focus:border-blue transition-all" />
-              <button className="w-full h-12 bg-blue text-white text-sm font-bold rounded-xl hover:bg-white hover:text-navy transition-all">Subscribe</button>
-            </form>
+          {/* Social & Legal */}
+          <div className="space-y-5">
+            <h4 className="text-[9px] font-black text-blue mb-5 uppercase tracking-[0.4em]">Connect</h4>
+            <div className="flex gap-2">
+              {socialLinks.map((s, i) => (
+                <a key={i} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="w-9 h-9 bg-white/5 rounded-lg flex items-center justify-center text-white/30 hover:bg-blue hover:text-white transition-all border border-white/5 hover:shadow-lg hover:shadow-blue/20">
+                  <s.icon className="w-4 h-4" />
+                </a>
+              ))}
+            </div>
+            
+            <div className="space-y-2 pt-2">
+              <Link to="/legal/privacy" className="flex items-center gap-2 text-[9px] font-bold text-white/20 hover:text-blue transition-colors uppercase tracking-wider">
+                <ShieldCheck className="w-3 h-3 opacity-40" /> Privacy Policy
+              </Link>
+              <Link to="/legal/terms" className="flex items-center gap-2 text-[9px] font-bold text-white/20 hover:text-blue transition-colors uppercase tracking-wider">
+                <Scale className="w-3 h-3 opacity-40" /> Terms of Service
+              </Link>
+            </div>
           </div>
         </div>
+      </div>
 
-        <div className="mt-20 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-xs font-medium text-white/20">
-            © 2026 {settings?.site_title || 'Ascendix Summit on Food, Agri-Tech and Animal Science'}. All rights reserved. Registered in India.
-          </p>
-          <div className="flex gap-8">
-            {[
-              { label: 'Privacy', slug: 'privacy' },
-              { label: 'Terms', slug: 'terms' },
-              { label: 'Cookies', slug: 'cookies' }
-            ].map((t) => (
-              <Link key={t.slug} to={`/legal/${t.slug}`} className="text-xs font-medium text-white/20 hover:text-white transition-colors uppercase tracking-[0.2em]">{t.label}</Link>
-            ))}
-          </div>
+      {/* Bottom Bar */}
+      <div className="border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 py-4 flex flex-col sm:flex-row justify-between items-center gap-2">
+           <p className="text-[8px] font-bold text-white/20 uppercase tracking-[0.2em]">
+               © 2026 {settings?.site_title || 'ASFAA-2026'}. All Rights Reserved.
+           </p>
+           <p className="text-[8px] font-bold text-white/10 uppercase tracking-wider">
+              Registered in Singapore
+           </p>
         </div>
       </div>
     </footer>

@@ -45,6 +45,7 @@ const AdminPricing = lazy(() => import('./pages/admin/AdminPricing'));
 const AdminBrochures = lazy(() => import('./pages/admin/AdminBrochures'));
 const AdminTopics = lazy(() => import('./pages/admin/AdminTopics'));
 const AdminContent = lazy(() => import('./pages/admin/AdminContent'));
+const BulkEmail = lazy(() => import('./pages/admin/BulkEmail'));
 const SetupPage = lazy(() => import('./pages/SetupPage'));
 
 // Loading Fallback Component
@@ -165,6 +166,11 @@ function App() {
           <Route path="/admin/settings" element={
             <ProtectedRoute requireAdmin>
               <SiteSettings />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/bulk-email" element={
+            <ProtectedRoute requireAdmin>
+              <BulkEmail />
             </ProtectedRoute>
           } />
         </Routes>

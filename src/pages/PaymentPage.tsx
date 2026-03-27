@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import PageLayout from './PageLayout';
 import { Button } from '@/components/ui/button';
@@ -33,41 +33,48 @@ interface Tier {
 export default function PaymentPage() {
   const { type, slug } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   
   const [tiers, setTiers] = useState<Tier[]>([]);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/api/site/pricing`)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+           setTiers(data);
+        }
+      })
+      .catch(err => console.error('Pricing fetch error:', err))
+      .finally(() => setLoading(false));
+  }, []);
   const [selectedTier, setSelectedTier] = useState<Tier | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>('Registration');
   
   const [formData, setFormData] = useState({ name: '', email: '', institution: '', country: '' });
+  const [selectedAccomm, setSelectedAccomm] = useState<string>('');
+  const [guestAddon, setGuestAddon] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [method, setMethod] = useState<'stripe' | 'razorpay' | 'paypal'>('stripe');
 
   useEffect(() => {
-    fetchPricing();
-  }, []);
-
-  const fetchPricing = async () => {
-    try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/site/pricing`);
-      if (res.ok) {
-        const data = await res.json();
-        setTiers(data);
-        
-        // Auto-select if slug/type matches
-        if (type && slug) {
-          const matched = data.find((t: Tier) => 
-            t.id === slug || 
-            t.name.toLowerCase().replace(/\s+/g, '-') === slug.toLowerCase()
-          );
-          if (matched) setSelectedTier(matched);
-        }
-      }
-    } catch (err) {
-      toast.error('Failed to load pricing packages.');
-    } finally {
-      setLoading(false);
+    if (type && slug) {
+      const matched = tiers.find((t: Tier) => 
+        t.id === slug || 
+        t.name.toLowerCase().replace(/\s+/g, '-') === slug.toLowerCase()
+      );
+      if (matched) setSelectedTier(matched);
     }
+  }, [type, slug, tiers]);
+
+  const calculateFinalTotal = () => {
+    if (!selectedTier) return 0;
+    let total = selectedTier.amount;
+    const accomm = tiers.find(t => t.id === selectedAccomm);
+    if (accomm) total += accomm.amount;
+    if (guestAddon) total += 299; // Hardcoded or find from tiers
+    return total;
   };
 
   const handlePay = async (e: React.FormEvent) => {
@@ -78,13 +85,41 @@ export default function PaymentPage() {
     }
     
     setIsProcessing(true);
-    // Mock processing for demonstration. In production, this calls Stripe/Razorpay SDKs.
     try {
+      // 1. Mock payment gateway delay
       await new Promise(r => setTimeout(r, 2000));
-      toast.success("Transaction Initiated Successfully!");
+      
+      const params = new URLSearchParams(location.search);
+      const regId = params.get('regId');
+
+      // 2. Record transaction in backend
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/record`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          registration_id: regId,
+          payment_id: `PAY-${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
+          amount: calculateFinalTotal(),
+          currency: selectedTier.currency,
+          status: 'Completed',
+          method: method,
+          billing_details: {
+              ...formData,
+              accommodation_tier: selectedAccomm,
+              guest_addon: guestAddon
+          }
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to record transaction');
+      }
+
+      toast.success("Payment successful! Confirmation email has been sent.");
       navigate('/');
-    } catch (e) {
-      toast.error("Process interrupted.");
+    } catch (error: any) {
+      console.error('Payment Finalization Error:', error);
+      toast.error(error.message || "Process interrupted.");
     } finally {
       setIsProcessing(false);
     }
@@ -104,7 +139,7 @@ export default function PaymentPage() {
   return (
     <PageLayout 
       title={selectedTier ? "Complete Purchase" : "Summit Pass Selection"} 
-      subtitle={selectedTier ? `Finalizing ${selectedTier.name} for global delegates.` : "Select your entry tier for the Wisvora Scientific Summit 2026."}
+      subtitle={selectedTier ? `Finalizing ${selectedTier.name} for global delegates.` : "Select your entry tier for the Ascendix World Food, AgroTech & Animal Science 2026."}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-16 pb-12 font-outfit">
         
@@ -113,7 +148,7 @@ export default function PaymentPage() {
           <div className="space-y-10 animate-in fade-in slide-in-from-bottom-5 duration-700 py-6">
              <div className="flex justify-center">
                 <div className="bg-slate-100 p-1.5 rounded-2xl flex gap-1 h-12">
-                   {['Registration', 'Sponsorship', 'Exhibition'].map((cat) => (
+                   {['Registration', 'Accommodation', 'Sponsorship', 'Exhibition'].map((cat) => (
                     <Button 
                       key={cat}
                       onClick={() => setActiveCategory(cat)}
@@ -187,14 +222,14 @@ export default function PaymentPage() {
 
                   <div className="py-6 border-y border-slate-50 relative z-10">
                      <div className="flex items-baseline justify-between mb-1">
-                        <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Base Amount</span>
+                        <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Calculated Total</span>
                         <div className="flex items-baseline gap-1">
                            <span className="text-[10px] font-black text-blue">{selectedTier.currency}</span>
-                           <span className="text-3xl font-black text-navy tracking-tighter">{selectedTier.amount.toLocaleString()}</span>
+                           <span className="text-3xl font-black text-navy tracking-tighter">{calculateFinalTotal().toLocaleString()}</span>
                         </div>
                      </div>
                      <p className="text-[9px] text-emerald-500 font-bold uppercase tracking-widest flex items-center gap-2">
-                        <ShieldCheck className="w-3 h-3" /> All inclusive global fee
+                        <ShieldCheck className="w-3 h-3" /> Secure checkout authorized
                      </p>
                   </div>
 
@@ -263,6 +298,40 @@ export default function PaymentPage() {
                           />
                         </div>
                       </div>
+
+                      {selectedTier.category === 'Registration' && (
+                        <div className="pt-8 space-y-6 border-t border-slate-50">
+                           <div className="space-y-1">
+                              <h3 className="text-xl font-black text-navy tracking-tight uppercase">Hospitality <span className="text-blue">Upgrades</span></h3>
+                              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest italic">Optional lodging and guest services.</p>
+                           </div>
+
+                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                              <div className="space-y-2">
+                                 <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-4">Room selection</Label>
+                                 <select 
+                                    value={selectedAccomm}
+                                    onChange={(e) => setSelectedAccomm(e.target.value)}
+                                    className="w-full h-12 bg-slate-50 border-none rounded-xl px-4 text-[11px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-blue/10"
+                                 >
+                                    <option value="">No Accommodation Needed</option>
+                                    {tiers.filter(t => t.category === 'Accommodation').map(t => (
+                                       <option key={t.id} value={t.id}>{t.name} — ${t.amount}</option>
+                                    ))}
+                                 </select>
+                              </div>
+                              <div className="flex items-center justify-between p-4 bg-slate-50/50 rounded-xl border border-dashed border-slate-100 cursor-pointer" onClick={() => setGuestAddon(!guestAddon)}>
+                                 <div className="flex items-center gap-3">
+                                    <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${guestAddon ? 'bg-blue border-blue' : 'border-slate-200 bg-white'}`}>
+                                       {guestAddon && <Check className="w-3 h-3 text-white" />}
+                                    </div>
+                                    <span className="text-[9px] font-black text-navy uppercase tracking-widest">Accompanying Guest</span>
+                                 </div>
+                                 <span className="text-[9px] font-black text-blue">$299</span>
+                              </div>
+                           </div>
+                        </div>
+                      )}
 
                       <div className="pt-8 space-y-6 border-t border-slate-50">
                           <div className="flex items-center justify-between">

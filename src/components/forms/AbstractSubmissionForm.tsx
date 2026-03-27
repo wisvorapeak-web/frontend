@@ -43,7 +43,26 @@ export default function AbstractSubmissionForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setTimeout(() => {
+    
+    try {
+      const submitData = new FormData();
+      Object.entries(formData).forEach(([key, value]) => {
+        submitData.append(key, value);
+      });
+      if (file) {
+        submitData.append('file', file);
+      }
+
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/submissions/abstract`, {
+        method: 'POST',
+        body: submitData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Submission failed');
+      }
+
       toast.success('Abstract submitted successfully! Check your email for confirmation.');
       setFormData({
         firstName: '',
@@ -55,8 +74,12 @@ export default function AbstractSubmissionForm() {
         abstract: ''
       });
       setFile(null);
+    } catch (error: any) {
+      console.error('Submission error:', error);
+      toast.error(error.message || 'Failed to submit conference abstract. Please try again.');
+    } finally {
       setIsSubmitting(false);
-    }, 1500);
+    }
   };
 
   return (

@@ -2,20 +2,27 @@ import PageLayout from './PageLayout';
 import { Clock, Calendar, AlertCircle, FileCheck, CheckCircle2, Award, Zap } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
-
+const iconMap: any = {
+  FileCheck,
+  Clock,
+  AlertCircle,
+  Award,
+  Calendar
+};
 
 export default function DatesPage() {
-  const [milestones] = useState<any[]>([
-    { title: 'Abstract Submission Opens', date: 'Aug 15, 2025', description: 'Begin submitting your research abstract.', status: 'Active', icon: FileCheck, color: 'bg-emerald-50 text-emerald-600 border-emerald-100' },
-    { title: 'Early Bird Registration', date: 'Oct 01, 2025', description: 'Register early for discounted rates.', status: 'Active', icon: Clock, color: 'bg-rose-50 text-rose-600 border-rose-100' },
-    { title: 'Abstract Submission Deadline', date: 'Dec 05, 2025', description: 'Final date to submit abstracts for review.', status: 'Active', icon: AlertCircle, color: 'bg-indigo-50 text-indigo-600 border-indigo-100' },
-    { title: 'Final Registration Deadline', date: 'Jan 15, 2026', description: 'Last day to register for the summit.', status: 'Active', icon: Award, color: 'bg-amber-50 text-amber-600 border-amber-100' },
-    { title: 'Summit Dates', date: 'Feb 20, 2026', description: 'Opening of the Ascendix Summit 2026.', status: 'Active', icon: Calendar, color: 'bg-slate-50 text-slate-800 border-slate-200' }
-  ]);
-  const [loading] = useState(false);
+  const [milestones, setMilestones] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Static mode
+    fetch(`${import.meta.env.VITE_API_URL}/api/site/dates`)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+           setMilestones(data);
+        }
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   if (loading) return <PageLayout title="Dates" subtitle="Loading..."><div className="p-40 text-center"><Zap className="w-12 h-12 text-slate-100 animate-spin mx-auto mb-6" /> <p className="text-slate-300 font-black text-xs uppercase tracking-[0.3em]">Loading dates...</p></div></PageLayout>;
@@ -56,7 +63,10 @@ export default function DatesPage() {
                    {/* Connector Dot */}
                     <div className="relative py-2 md:py-0">
                        <div className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-indigo-600 group-hover:text-white group-hover:scale-110 transition-all shadow-xl shadow-slate-200/50 group-hover:shadow-indigo-600/20 group-hover:rotate-12">
-                          <milestone.icon className="w-5 h-5" />
+                          {(() => {
+                             const Icon = iconMap[milestone.icon] || Calendar;
+                             return <Icon className="w-5 h-5" />;
+                          })()}
                        </div>
                        <div className="absolute top-full left-1/2 -translate-x-1/2 w-0.5 h-12 bg-gradient-to-b from-indigo-50 to-transparent group-last:hidden" />
                     </div>

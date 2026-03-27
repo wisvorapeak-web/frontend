@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Globe2, Sparkles, ArrowRight, UserCheck } from 'lucide-react';
+import { Globe2, Sparkles, ArrowRight, UserCheck, Mic2, Star, Zap } from 'lucide-react';
 
 interface Speaker {
     id: string;
@@ -14,104 +14,128 @@ interface Speaker {
 }
 
 export default function Speakers() {
-  const [speakers] = useState<Speaker[]>([
-    { id: '1', name: 'Dr. Sarah Chen', category: 'Plenary', university: 'Stanford University', country: 'USA', bio: 'Expert in sustainable agriculture and food security.' },
-    { id: '2', name: 'Prof. James Wilson', category: 'Keynote', university: 'Cambridge University', country: 'UK', bio: 'Pioneering research in agri-tech and digital farming.' },
-    { id: '3', name: 'Dr. Elena Rossi', category: 'Invited', university: 'University of Bologna', country: 'Italy', bio: 'Specialist in animal health and veterinary science.' },
-    { id: '4', name: 'Prof. Akiko Tanaka', category: 'Keynote', university: 'University of Tokyo', country: 'Japan', bio: 'Leading innovator in biotechnology and crop resilience.' }
-  ]);
-  const [loading] = useState(false);
+  const [speakers, setSpeakers] = useState<Speaker[]>([]);
+  const [loading, setLoading] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Static mode
+    fetch(`${import.meta.env.VITE_API_URL}/api/site/speakers`)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+           setSpeakers(data);
+        }
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   return (
     <section id="speakers" className="relative py-12 bg-slate-50 overflow-hidden font-outfit">
-      {/* Visual Accents */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue/5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-500/5 rounded-full blur-[100px] pointer-events-none translate-y-1/2 -translate-x-1/2" />
+      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue/5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
 
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 space-y-10">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 space-y-10 relative z-10">
         
-        {/* Dynamic Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 animate-in fade-in slide-in-from-bottom-5 duration-1000">
-          <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue/5 border border-blue/10 rounded-full mb-2">
-               <Sparkles className="w-3.5 h-3.5 text-blue animate-pulse" />
-               <span className="text-[8px] font-black text-blue uppercase tracking-widest leading-none">Speakers</span>
+        {/* Header */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+          <div className="space-y-3 max-w-3xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue/5 border border-blue/10 rounded-full">
+               <Mic2 className="w-3 h-3 text-blue animate-pulse" />
+               <span className="text-[9px] font-black text-blue uppercase tracking-[0.3em] leading-none">Our Speakers</span>
             </div>
-            <h2 className="text-2xl lg:text-3xl font-black text-navy leading-tight tracking-tight uppercase max-w-2xl">
-              Our <span className="text-blue">Speakers</span>
+            <h2 className="text-2xl lg:text-3xl font-black text-navy leading-[1.1] tracking-tighter uppercase">
+              Meet Our <span className="text-blue">Speakers</span>
             </h2>
-            <p className="text-slate-400 text-[9px] font-black uppercase tracking-widest italic opacity-80 decoration-blue/20 decoration-1 underline-offset-4">
-               Experts in food and agriculture.
+            <p className="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] italic opacity-70 max-w-xl">
+               World-class experts leading the future of food systems.
             </p>
           </div>
-          <Link to="/speakers" className="text-decoration-none">
-            <Button variant="outline" className="h-10 px-8 border-slate-200 text-slate-500 text-[8px] uppercase font-black tracking-widest rounded-lg hover:bg-slate-900 hover:text-white hover:border-slate-950 transition-all shadow-lg active:scale-95 group">
-                See All Speakers <ArrowRight className="w-3.5 h-3.5 ml-2 group-hover:translate-x-1 transition-transform opacity-30 group-hover:opacity-100" />
+          <Link to="/speakers" className="w-full lg:w-auto">
+            <Button variant="outline" className="h-11 px-8 border-2 border-slate-200 text-navy text-[10px] uppercase font-black tracking-[0.3em] rounded-xl hover:bg-navy hover:text-white hover:border-navy transition-all shadow-lg active:scale-95 group bg-white">
+                View All <ArrowRight className="w-3.5 h-3.5 ml-2 group-hover:translate-x-2 transition-transform" />
             </Button>
           </Link>
         </div>
 
-        {/* Dynamic Carousel / Grid */}
-        <div ref={scrollContainerRef} className="flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory no-scrollbar scroll-smooth outline-none">
+        {/* Carousel */}
+        <div ref={scrollContainerRef} className="flex gap-6 overflow-x-auto pb-6 snap-x snap-mandatory no-scrollbar scroll-smooth p-2 -m-2">
           {loading ? (
              Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="flex-shrink-0 w-[240px] h-[360px] bg-white rounded-3xl animate-pulse border border-slate-50" />
+                <div key={i} className="flex-shrink-0 w-[260px] h-[360px] bg-white rounded-2xl animate-pulse border border-slate-100" />
              ))
           ) : speakers.length > 0 ? (
-            speakers.map((speaker) => (
-                <div key={speaker.id} className="flex-shrink-0 w-[240px] snap-center">
-                    <SpeakerCard speaker={speaker} />
+            speakers.map((speaker, index) => (
+                <div key={speaker.id} className="flex-shrink-0 w-[260px] snap-center">
+                    <SpeakerCard speaker={speaker} index={index} />
                 </div>
             ))
           ) : (
-            <div className="w-full py-12 text-center bg-white rounded-3xl border border-dashed border-slate-100 shadow-inner">
-               <UserCheck className="w-10 h-10 text-slate-100 mx-auto mb-3" />
-               <h3 className="text-lg font-black text-slate-400 uppercase tracking-tight">Coming Soon</h3>
+            <div className="w-full py-12 text-center bg-white rounded-2xl border-2 border-dashed border-slate-100">
+               <UserCheck className="w-14 h-14 text-slate-100 mx-auto mb-4 animate-bounce opacity-40" />
+               <h3 className="text-lg font-black text-slate-300 uppercase tracking-widest opacity-60">Speaker List Coming Soon</h3>
             </div>
           )}
         </div>
+
+        {/* Trust badges */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-8 opacity-40">
+            <div className="flex items-center gap-3">
+                <Star className="w-4 h-4 text-blue animate-spin-slow" />
+                <span className="text-[9px] font-black uppercase tracking-[0.3em]">95% Ph.D Excellence</span>
+            </div>
+            <div className="flex items-center gap-3">
+                <Zap className="w-4 h-4 text-blue" />
+                <span className="text-[9px] font-black uppercase tracking-[0.3em]">50+ Global Universities</span>
+            </div>
+        </div>
       </div>
-      <style>{`.no-scrollbar::-webkit-scrollbar { display: none; }`}</style>
+      <style>{`.no-scrollbar::-webkit-scrollbar { display: none; } @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } } .animate-spin-slow { animation: spin-slow 8s linear infinite; }`}</style>
     </section>
   );
 }
 
-function SpeakerCard({ speaker }: { speaker: Speaker }) {
+function SpeakerCard({ speaker, index }: { speaker: Speaker, index: number }) {
     return (
-        <div className="group relative bg-white border border-slate-50 rounded-3xl overflow-hidden shadow-xl shadow-slate-200/20 hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-500 h-[380px] flex flex-col">
-            <div className="h-[260px] overflow-hidden transition-transform duration-[2000ms] group-hover:scale-105 relative">
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10" />
-                <img src={speaker.image_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${speaker.name}`} alt={speaker.name} className="w-full h-full object-cover" />
+        <div className="group relative bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-lg hover:border-blue/20 hover:-translate-y-2 transition-all duration-700 flex flex-col h-[380px]">
+            {/* Image */}
+            <div className="h-[240px] overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-t from-navy/80 via-navy/20 to-transparent opacity-80 group-hover:opacity-40 transition-opacity duration-700 z-10" />
+                <img 
+                    src={speaker.image_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${speaker.name}`} 
+                    alt={speaker.name} 
+                    className="w-full h-full object-cover transition-transform duration-[3000ms] group-hover:scale-110 grayscale group-hover:grayscale-0" 
+                />
                 
-                {/* Category Badge */}
                 <div className="absolute top-4 left-4 z-20">
-                   <div className="px-3 py-1 bg-blue/90 backdrop-blur-md text-white rounded-full text-[8px] font-black uppercase tracking-widest shadow-lg border border-white/10 group-hover:bg-navy transition-all">
-                      {speaker.category || 'Expert'}
+                   <div className="px-3 py-1 bg-blue/90 backdrop-blur-xl text-white rounded-lg text-[8px] font-black uppercase tracking-[0.3em] shadow-lg border border-white/20">
+                      ID {index + 101}
                    </div>
                 </div>
 
-                {/* Hover Reveal Details */}
-                <div className="absolute bottom-4 left-4 right-4 z-20 space-y-1 translate-y-5 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-700">
-                   <div className="flex items-center gap-2 text-white/80 text-[8px] font-black uppercase tracking-widest leading-none mb-0.5">
-                      <Globe2 className="w-3 h-3 text-blue" /> {speaker.country || 'International'}
+                <div className="absolute bottom-4 left-4 right-4 z-20 space-y-1 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-700">
+                   <div className="flex items-center gap-2 text-white/50 text-[9px] font-black uppercase tracking-[0.2em] leading-none group-hover:text-blue transition-colors">
+                      <Globe2 className="w-3 h-3" /> {speaker.country || 'International'}
                    </div>
-                   <h3 className="text-lg font-black text-white leading-tight font-outfit uppercase tracking-tight">{speaker.name}</h3>
-                   <p className="text-[8px] font-black text-blue uppercase tracking-widest leading-none pt-0.5">{speaker.university || 'University'}</p>
+                   <h3 className="text-xl font-black text-white leading-tight uppercase tracking-tighter drop-shadow-lg">{speaker.name}</h3>
+                   <div className="w-8 h-0.5 bg-blue rounded-full group-hover:w-full transition-all duration-700" />
                 </div>
+
+                <Sparkles className="absolute top-4 right-4 w-4 h-4 text-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
 
-            <div className="p-5 flex-1 flex flex-col justify-center bg-white group-hover:bg-indigo-50/30 transition-colors">
-               <p className="text-[10px] font-bold text-slate-400 leading-relaxed line-clamp-2 italic opacity-80 group-hover:opacity-100 transition-opacity uppercase tracking-tight">
-                  “{speaker.bio || 'Expert in food and agriculture.'}”
-               </p>
-               <div className="pt-3 mt-3 border-t border-slate-50 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                  <span className="text-[8px] font-black text-slate-300 uppercase tracking-widest leading-none">Details</span>
-                  <div className="w-6 h-6 rounded-lg bg-blue/10 text-blue flex items-center justify-center group-hover:bg-blue group-hover:text-white transition-all"><ArrowRight className="w-3.5 h-3.5" /></div>
+            {/* Meta */}
+            <div className="p-5 flex-1 flex flex-col justify-between bg-white group-hover:bg-slate-50 transition-colors">
+               <div className="space-y-2">
+                   <p className="text-[10px] font-black text-blue uppercase tracking-[0.2em] leading-none opacity-60 group-hover:opacity-100 transition-opacity">
+                       {speaker.category || 'Expert Speaker'}
+                   </p>
+                   <p className="text-[10px] font-bold text-slate-500 leading-relaxed line-clamp-2 italic opacity-60 group-hover:opacity-100 transition-opacity uppercase tracking-wider">
+                      "{speaker.bio || 'Pioneering strategic innovations across food and agriculture.'}"
+                   </p>
+               </div>
+               
+               <div className="pt-3 border-t border-slate-100 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="text-[9px] font-black text-slate-300 uppercase tracking-[0.3em]">Speaker Bio</span>
+                  <div className="w-8 h-8 rounded-lg bg-blue/5 text-blue flex items-center justify-center group-hover:bg-blue group-hover:text-white transition-all shadow-sm"><ArrowRight className="w-3.5 h-3.5" /></div>
                </div>
             </div>
         </div>

@@ -9,13 +9,14 @@ import { toast } from 'sonner';
 
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [settings] = useState<any>({
-    contact_email: 'contact@foodagriexpo.com',
-    contact_phone: '+91 91542 54625',
-    office_hours: 'Mon-Fri, 09:00 - 18:00 IST',
+  const [settings, setSettings] = useState<any>({
+    contact_email: 'contact@asfaa2026.com',
+    support_email: 'info@asfaa2026.com',
+    contact_phone: '+65 6123 4567',
+    office_hours: 'Mon - Fri: 09:00 - 18:00 (SGT)',
     contact_address: 'Singapore'
   });
-
+  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -25,30 +26,65 @@ export default function ContactPage() {
   });
 
   useEffect(() => {
-    // Static mode
+    fetch(`${import.meta.env.VITE_API_URL}/api/site/settings`)
+      .then(res => res.json())
+      .then(data => {
+        if (data) setSettings(data);
+      })
+      .catch(err => console.error('Contact Settings Sync Error:', err))
+      .finally(() => setLoading(false));
   }, []);
+
+  if (loading) return (
+    <PageLayout title="Contact" subtitle="Loading Contact...">
+      <div className="flex flex-col items-center justify-center py-40 space-y-6">
+        <div className="w-12 h-12 border-4 border-blue border-t-transparent rounded-full animate-spin" />
+        <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em] animate-pulse">Wait a moment...</p>
+      </div>
+    </PageLayout>
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setTimeout(() => {
-      toast.success('Your message has been sent! We will get back to you soon.');
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/submissions/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: `${formData.firstName} ${formData.lastName}`,
+          email: formData.emailAddress,
+          subject: formData.subject,
+          message: formData.message
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to send message');
+      }
+
+      toast.success('Your message has been sent! Check your email for confirmation.');
       setFormData({
         firstName: '', lastName: '', emailAddress: '', subject: '', message: ''
       });
+    } catch (error: any) {
+      console.error('Contact error:', error);
+      toast.error(error.message || 'Connection failed.');
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
 
   const contactItems = [
-    { icon: Mail, label: 'Email', values: [settings?.contact_email || 'contact@foodagriexpo.com'] },
-    { icon: Phone, label: 'Phone', values: [settings?.contact_phone || '+91 91542 54625', settings?.office_hours || 'Mon-Fri, 09:00 - 18:00 IST'] },
-    { icon: MapPin, label: 'Location', values: [settings?.contact_address || 'Singapore'] },
+    { icon: Mail, label: 'Email', values: [settings?.contact_email, settings?.support_email] },
+    { icon: Phone, label: 'Phone', values: [settings?.contact_phone, settings?.office_hours] },
+    { icon: MapPin, label: 'Venue', values: [settings?.contact_address] },
   ];
 
   return (
-    <PageLayout 
-      title="Contact" 
+    <PageLayout
+      title="Contact"
       subtitle="Get in touch with our team for help."
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-16 space-y-12 py-10 font-outfit">
@@ -61,7 +97,7 @@ export default function ContactPage() {
                 Support for all speakers and attendees.
               </p>
             </div>
-            
+
             <div className="space-y-6">
               {contactItems.map((item, i) => (
                 <div key={i} className="flex items-start gap-4 group">
@@ -85,57 +121,57 @@ export default function ContactPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <Label className="text-[8px] font-black text-slate-300 uppercase tracking-widest">First Name</Label>
-                  <Input 
+                  <Input
                     className="h-10 bg-slate-50 border-transparent rounded-lg text-[10px] font-black uppercase tracking-tight focus:bg-white focus:border-blue transition-all"
-                    placeholder="John" 
-                    required 
+                    placeholder="John"
+                    required
                     value={formData.firstName}
-                    onChange={(e) => setFormData({...formData, firstName: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                   />
                 </div>
                 <div className="space-y-1.5">
                   <Label className="text-[8px] font-black text-slate-300 uppercase tracking-widest">Last Name</Label>
-                  <Input 
+                  <Input
                     className="h-10 bg-slate-50 border-transparent rounded-lg text-[10px] font-black uppercase tracking-tight focus:bg-white focus:border-blue transition-all"
-                    placeholder="Doe" 
-                    required 
+                    placeholder="Doe"
+                    required
                     value={formData.lastName}
-                    onChange={(e) => setFormData({...formData, lastName: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                   />
                 </div>
               </div>
-              
+
               <div className="space-y-1.5">
                 <Label className="text-[8px] font-black text-slate-300 uppercase tracking-widest">Email Address</Label>
-                <Input 
+                <Input
                   className="h-10 bg-slate-50 border-transparent rounded-lg text-[10px] font-black uppercase tracking-tight focus:bg-white focus:border-blue transition-all"
-                  type="email" 
-                  placeholder="your@email.com" 
-                  required 
+                  type="email"
+                  placeholder="your@email.com"
+                  required
                   value={formData.emailAddress}
-                  onChange={(e) => setFormData({...formData, emailAddress: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, emailAddress: e.target.value })}
                 />
               </div>
 
               <div className="space-y-1.5">
                 <Label className="text-[8px] font-black text-slate-300 uppercase tracking-widest">Subject</Label>
-                <Input 
+                <Input
                   className="h-10 bg-slate-50 border-transparent rounded-lg text-[10px] font-black uppercase tracking-tight focus:bg-white focus:border-blue transition-all"
-                  placeholder="General Question" 
-                  required 
+                  placeholder="General Question"
+                  required
                   value={formData.subject}
-                  onChange={(e) => setFormData({...formData, subject: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                 />
               </div>
 
               <div className="space-y-1.5">
                 <Label className="text-[8px] font-black text-slate-300 uppercase tracking-widest">Message</Label>
-                <Textarea 
+                <Textarea
                   className="bg-slate-50 border-transparent rounded-lg text-[10px] font-black uppercase tracking-tight focus:bg-white focus:border-blue transition-all min-h-[100px] italic opacity-70"
-                  placeholder="How can we help you?" 
-                  required 
+                  placeholder="How can we help you?"
+                  required
                   value={formData.message}
-                  onChange={(e) => setFormData({...formData, message: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 />
               </div>
 

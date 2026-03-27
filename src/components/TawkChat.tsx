@@ -41,7 +41,7 @@ const TawkChat = () => {
           localStorage.setItem('tawk_auto_opened', 'true');
         }
         
-        if (user) {
+        if (user && user.email && user.email.includes('@')) {
           window.Tawk_API.setAttributes({
             'name': user.name,
             'email': user.email

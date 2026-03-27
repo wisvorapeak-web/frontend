@@ -4,15 +4,8 @@ import AdminLayout from './AdminLayout';
 import { 
   Tag,
   Plus,
-  Trash2,
   Edit3,
-  DollarSign,
-  CheckCircle2,
-  XCircle,
-  Layers,
-  Package,
-  ListPlus,
-  Save,
+  Trash2,
   Loader2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -25,10 +18,10 @@ import {
   TableHeader, 
   TableRow  
 } from '@/components/ui/table';
-import { Card, CardContent } from '@/components/ui/card';
 import { 
   Dialog, 
   DialogContent, 
+  DialogDescription,
   DialogHeader, 
   DialogTitle, 
   DialogTrigger,
@@ -112,14 +105,14 @@ export default function AdminPricing() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to remove this financial tier?')) return;
+    if (!confirm('Are you sure you want to remove this tier?')) return;
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/pricing/${id}`, {
         method: 'DELETE',
         credentials: 'include'
       });
       if (res.ok) {
-        toast.success('Tier removed from registry.');
+        toast.success('Tier removed');
         fetchPricing();
       }
     } catch (err) {
@@ -150,49 +143,51 @@ export default function AdminPricing() {
     setIsDialogOpen(true);
   };
 
-  if (loading) return <AdminLayout><div className="p-12 text-slate-400 font-bold flex items-center gap-3"><Loader2 className="w-5 h-5 animate-spin" /> Loading pricing...</div></AdminLayout>;
+  if (loading) return <AdminLayout><div className="text-xs font-bold text-slate-400 p-12">Loading...</div></AdminLayout>;
 
   return (
     <AdminLayout>
-      <div className="space-y-12 animate-in fade-in slide-in-from-bottom-5 duration-700 pb-20 font-outfit">
+      <div className="space-y-6 font-inter">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="flex items-center justify-between pb-6 border-b border-slate-200">
           <div>
-            <h1 className="text-3xl font-black text-slate-900 mb-2 tracking-tight">Pricing</h1>
-            <p className="text-slate-500 font-medium">Add and edit tickets and sponsorship packages.</p>
+            <h1 className="text-2xl font-bold text-slate-900">Tickets & Packages</h1>
+            <p className="text-sm text-slate-500 mt-1">Manage prices for tickets, sponsorships, and booths.</p>
           </div>
           
           <Dialog open={isDialogOpen} onOpenChange={(open) => { setIsDialogOpen(open); if(!open) resetForm(); }}>
             <DialogTrigger asChild>
-              <Button className="h-16 rounded- [2rem] bg-blue hover:bg-navy text-white font-black px-10 shadow-2xl shadow-blue/20 transition-all flex items-center gap-3">
-                 <Plus className="w-5 h-5" /> Add Pricing
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold h-10 px-6 transition-none flex items-center gap-2 rounded shadow-sm">
+                 <Plus className="w-4 h-4" /> Add New Item
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[600px] rounded-[3rem] p-10 border-none">
-              <DialogHeader className="mb-6">
-                <DialogTitle className="text-2xl font-black flex items-center gap-3 font-outfit">
-                  <Package className="w-6 h-6 text-blue" />
-                  {editingTier ? 'Edit Pricing' : 'Add Pricing'}
+            <DialogContent className="sm:max-w-[500px] p-0 border-none rounded-lg overflow-hidden shadow-2xl">
+              <DialogHeader className="p-6 border-b border-slate-200">
+                <DialogTitle className="text-sm font-bold text-slate-900 uppercase tracking-widest">
+                  {editingTier ? 'Edit Pricing' : 'Add New Item'}
                 </DialogTitle>
+                <DialogDescription className="sr-only">
+                  Manage prices and features for attendees and sponsors.
+                </DialogDescription>
               </DialogHeader>
-              <form onSubmit={handleSave} className="space-y-6">
-                 <div className="grid grid-cols-2 gap-6">
-                    <div className="space-y-3">
-                       <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Name</Label>
+              <form onSubmit={handleSave} className="p-6 space-y-5">
+                 <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                       <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Name</Label>
                        <Input 
                         value={formData.name}
                         onChange={e => setFormData({...formData, name: e.target.value})}
-                        className="h-14 bg-slate-50 border-none rounded-2xl font-bold px-6 focus-visible:ring-blue/10 font-outfit" 
-                        placeholder="e.g. Early Bird Platinum" required
+                        className="h-10 bg-slate-50 border-slate-200 rounded text-sm focus:ring-4 focus:ring-blue-600/5 transition-none font-bold" 
+                        placeholder="Early Bird, Platinum, etc." required
                        />
                     </div>
-                    <div className="space-y-3">
-                       <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Category</Label>
+                    <div className="space-y-1.5">
+                       <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Category</Label>
                        <select 
                         value={formData.category}
                         onChange={e => setFormData({...formData, category: e.target.value})}
-                        className="w-full h-14 bg-slate-50 border-none rounded-2xl font-bold px-6 focus:ring-2 focus:ring-blue/10 outline-none font-outfit"
+                        className="w-full h-10 bg-slate-50 border border-slate-200 rounded px-3 text-sm focus:ring-4 focus:ring-blue-600/5 outline-none font-medium appearance-none"
                        >
                           {['Registration', 'Sponsorship', 'Exhibition', 'Accommodation', 'Other'].map(c => (
                             <option key={c} value={c}>{c}</option>
@@ -201,68 +196,63 @@ export default function AdminPricing() {
                     </div>
                  </div>
 
-                 <div className="grid grid-cols-2 gap-6">
-                    <div className="space-y-3">
-                       <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Price</Label>
+                 <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                       <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Price</Label>
                        <Input 
                         type="number"
                         value={formData.amount}
                         onChange={e => setFormData({...formData, amount: Number(e.target.value)})}
-                        className="h-14 bg-slate-50 border-none rounded-2xl font-bold px-6 focus-visible:ring-blue/10 font-outfit" 
+                        className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none font-bold" 
                         placeholder="0.00" required
                        />
                     </div>
-                    <div className="space-y-3">
-                       <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Currency</Label>
+                    <div className="space-y-1.5">
+                       <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Currency</Label>
                        <Input 
                         value={formData.currency}
                         onChange={e => setFormData({...formData, currency: e.target.value.toUpperCase()})}
-                        className="h-14 bg-slate-50 border-none rounded-2xl font-bold px-6 focus-visible:ring-blue/10 font-outfit" 
-                        placeholder="USD/INR" required
+                        className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none font-bold" 
+                        placeholder="USD" required
                        />
                     </div>
                  </div>
 
-                 <div className="space-y-3">
-                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Description</Label>
+                 <div className="space-y-1.5">
+                    <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Description</Label>
                     <textarea 
                       value={formData.description}
                       onChange={e => setFormData({...formData, description: e.target.value})}
-                      className="w-full h-24 bg-slate-50 border-none rounded-2xl font-bold px-6 py-4 focus:ring-2 focus:ring-blue/10 outline-none resize-none font-outfit"
-                      placeholder="Brief overview of what this tier entails..."
+                      className="w-full h-20 bg-slate-50 border border-slate-200 rounded p-3 text-sm focus:ring-4 focus:ring-blue-600/5 outline-none resize-none font-medium"
+                      placeholder="What customers will see..."
                     />
                  </div>
 
-                 <div className="space-y-3">
-                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Features (Comma Separated)</Label>
+                 <div className="space-y-1.5">
+                    <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Features (Comma separated)</Label>
                     <Input 
                       value={formData.features}
                       onChange={e => setFormData({...formData, features: e.target.value})}
-                      className="h-14 bg-slate-50 border-none rounded-2xl font-bold px-6 focus-visible:ring-blue/10 font-outfit" 
-                      placeholder="Access to all halls, Tea & Snacks, E-certificate..."
+                      className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none" 
+                      placeholder="Access to all halls, Tea & Snacks..."
                     />
                  </div>
 
-                 <div className="flex items-center gap-6 pt-4 border-t border-slate-50">
-                    <label className="flex items-center gap-3 cursor-pointer group">
-                       <div className={`w-12 h-6 rounded-full transition-all relative ${formData.is_active ? 'bg-blue' : 'bg-slate-200'}`}>
-                          <input 
-                            type="checkbox" 
-                            className="hidden" 
-                            checked={formData.is_active}
-                            onChange={e => setFormData({...formData, is_active: e.target.checked})}
-                          />
-                          <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${formData.is_active ? 'left-7' : 'left-1'}`} />
-                       </div>
-                       <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Active on website</span>
-                    </label>
+                 <div className="flex items-center gap-3 pt-2">
+                    <input 
+                      type="checkbox" 
+                      id="is_active"
+                      className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-600 transition-none" 
+                      checked={formData.is_active}
+                      onChange={e => setFormData({...formData, is_active: e.target.checked})}
+                    />
+                    <Label htmlFor="is_active" className="text-xs font-bold text-slate-600 cursor-pointer">Show on website</Label>
                  </div>
 
-                 <DialogFooter className="pt-6 gap-3 sm:justify-end">
-                    <Button type="button" variant="ghost" className="rounded-xl h-14 font-black text-xs uppercase tracking-widest" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
-                    <Button disabled={isSaving} className="rounded-xl h-14 bg-blue text-white px-10 font-black text-xs uppercase tracking-widest shadow-xl shadow-blue/20">
-                       {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4 mr-2" />} 
-                       {editingTier ? 'Save' : 'Add Pricing'}
+                 <DialogFooter className="pt-4 gap-3 bg-slate-50 -mx-6 -mb-6 p-6">
+                    <Button type="button" variant="outline" className="h-10 border-slate-200 text-slate-500 font-bold text-[10px] uppercase tracking-widest transition-none px-6 rounded" onClick={() => setIsDialogOpen(false)}>Discard</Button>
+                    <Button disabled={isSaving} className="h-10 bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest transition-none px-8 rounded shadow-sm">
+                       {isSaving ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : 'Save Item'}
                     </Button>
                  </DialogFooter>
               </form>
@@ -270,121 +260,104 @@ export default function AdminPricing() {
           </Dialog>
         </div>
 
-        {/* Categories Analysis */}
+        {/* Category Overview */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-           {['Registration', 'Sponsorship', 'Exhibition', 'Other'].map((cat, i) => {
+           {['Registration', 'Accommodation', 'Sponsorship', 'Exhibition'].map((cat, i) => {
              const count = tiers.filter(t => t.category === cat).length;
              return (
-               <Card key={i} className="border-none shadow-xl shadow-slate-200/30 rounded-[2.5rem] bg-white p-2 group hover:shadow-2xl transition-all border border-transparent">
-                  <CardContent className="p-8">
-                     <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center justify-between">
-                        {cat}
-                        <span className="w-6 h-6 rounded-full bg-blue/5 text-blue flex items-center justify-center font-black">{count}</span>
-                     </p>
-                     <div className="flex items-center gap-4">
-                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${i === 0 ? 'bg-blue/5 text-blue' : i === 1? 'bg-emerald-50 text-emerald-500' : 'bg-amber-50 text-amber-500'}`}>
-                           {i === 0 ? <Plus className="w-5 h-5" /> : i === 1 ? <CheckCircle2 className="w-5 h-5" /> : <Layers className="w-5 h-5" />}
-                        </div>
-                        <div>
-                           <h4 className="text-xl font-black text-slate-900 tracking-tight leading-none mb-1">
-                             {tiers.filter(t => t.category === cat).reduce((s, t) => s + (Number(t.amount) || 0), 0).toLocaleString()}
-                             <span className="text-[10px] text-slate-400 ml-1">AVG.VAL</span>
-                           </h4>
-                           <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest opacity-60">Revenue Potential</p>
-                        </div>
-                     </div>
-                  </CardContent>
-               </Card>
+               <div key={i} className="bg-white border border-slate-200 rounded-lg p-6 shadow-sm">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{cat}</p>
+                    <span className="text-[10px] font-bold bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded text-slate-500">{count} items</span>
+                  </div>
+                  <div className="flex items-baseline gap-1">
+                     <span className="text-xl font-bold text-slate-900">
+                       {tiers.filter(t => t.category === cat).reduce((s, t) => s + (Number(t.amount) || 0), 0).toLocaleString()}
+                     </span>
+                     <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Total</span>
+                  </div>
+               </div>
              );
            })}
         </div>
 
-        {/* Pricing Registry Table */}
-        <div className="bg-white rounded-[3.5rem] shadow-xl shadow-slate-200/30 border border-slate-50 overflow-hidden relative">
-           <div className="p-10 border-b border-slate-50 flex flex-col md:flex-row items-center justify-between gap-6 bg-slate-50/20">
-              <div>
-                <h2 className="text-2xl font-black text-slate-900 tracking-tight leading-none mb-2 font-outfit">Pricing</h2>
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">View and edit all pricing tiers.</p>
-              </div>
-              <div className="flex items-center gap-3">
-                 <Button variant="outline" className="h-14 rounded-2xl border-slate-100 bg-white text-slate-400 font-bold px-8 shadow-sm">
-                    Reorder Display <ListPlus className="w-4 h-4 ml-3" />
-                 </Button>
+        {/* Pricing List Table */}
+        <div className="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
+           <div className="p-6 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+              <h2 className="text-sm font-bold text-slate-900 uppercase tracking-widest">Pricing List</h2>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Active items: {tiers.filter(t => t.is_active).length}</span>
               </div>
            </div>
 
-           <div className="overflow-x-auto p-6">
+           <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
-                  <TableRow className="border-none hover:bg-transparent">
-                    <TableHead className="py-8 pl-10 text-[10px] font-black text-slate-400 uppercase tracking-widest">Tier Name</TableHead>
-                    <TableHead className="py-8 text-[10px] font-black text-slate-400 uppercase tracking-widest">Price</TableHead>
-                    <TableHead className="py-8 text-[10px] font-black text-slate-400 uppercase tracking-widest">Features Included</TableHead>
-                    <TableHead className="py-8 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Actions</TableHead>
+                  <TableRow className="bg-slate-50/30 border-b border-slate-100 divide-x divide-slate-100">
+                    <TableHead className="py-4 pl-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Name & Type</TableHead>
+                    <TableHead className="py-4 text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest">Price</TableHead>
+                    <TableHead className="py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Features</TableHead>
+                    <TableHead className="py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">Status</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {tiers.map((tier) => (
-                    <TableRow key={tier.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-all group">
-                       <TableCell className="py-8 pl-10">
-                          <div className="flex items-center gap-6">
-                             <div className={`w-14 h-14 rounded-[1.5rem] flex items-center justify-center shadow-lg group-hover:scale-105 transition-all
-                                ${tier.category === 'Registration' ? 'bg-blue text-white' : tier.category === 'Sponsorship' ? 'bg-navy text-white' : 'bg-slate-100 text-slate-400'}`}>
-                                <Tag className="w-6 h-6" />
+                {tiers.map((tier) => (
+                    <TableRow key={tier.id} className="border-b border-slate-100 divide-x divide-slate-100 hover:bg-slate-50/30 transition-none group">
+                       <TableCell className="py-4 pl-6">
+                          <div className="flex items-center gap-4">
+                             <div className={`w-10 h-10 rounded shrink-0 flex items-center justify-center border border-slate-100
+                                ${tier.category === 'Registration' ? 'bg-blue-600 text-white' : 
+                                  tier.category === 'Accommodation' ? 'bg-emerald-600 text-white' : 
+                                  tier.category === 'Sponsorship' ? 'bg-slate-900 text-white' : 'bg-slate-50 text-slate-300'}`}>
+                                <Tag className="w-4 h-4" />
                              </div>
                              <div>
-                                <div className="flex items-center gap-3 mb-1">
-                                   <p className="text-base font-black text-slate-800">{tier.name}</p>
-                                   {!tier.is_active && <XCircle className="w-3 h-3 text-rose-500" />}
-                                </div>
-                                <div className="flex items-center gap-3 text-[9px] font-bold text-slate-300 uppercase tracking-widest">
-                                   <Layers className="w-3 h-3" /> {tier.category}
-                                   <span className="w-1 h-1 rounded-full bg-slate-200" />
-                                   <CheckCircle2 className="w-3 h-3" /> {tier.is_active ? 'Published' : 'Draft'}
-                                </div>
+                                <p className="text-sm font-bold text-slate-900">{tier.name}</p>
+                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{tier.category}</p>
                              </div>
                           </div>
                        </TableCell>
-                       <TableCell>
-                          <div className="flex items-baseline gap-1">
-                             <span className="text-[10px] font-black text-blue mb-1">{tier.currency}</span>
-                             <span className="text-2xl font-black text-slate-800 tracking-tighter">{Number(tier.amount).toLocaleString()}</span>
+                       <TableCell className="py-4 text-center">
+                          <div className="flex items-baseline justify-center gap-1">
+                             <span className="text-[10px] font-bold text-blue-600 mb-1">{tier.currency}</span>
+                             <span className="text-xl font-bold text-slate-900 tracking-tight">{Number(tier.amount).toLocaleString()}</span>
                           </div>
                        </TableCell>
-                       <TableCell>
-                          <div className="space-x-1">
-                             {Array.isArray(tier.features) && tier.features.slice(0, 2).map((f: string, idx: number) => (
-                               <span key={idx} className="inline-flex text-[9px] font-black bg-slate-50 text-slate-400 px-3 py-1 rounded-lg uppercase tracking-widest border border-slate-100">
+                       <TableCell className="py-4">
+                          <div className="flex flex-wrap gap-1 max-w-sm">
+                             {Array.isArray(tier.features) && tier.features.slice(0, 3).map((f: string, idx: number) => (
+                               <span key={idx} className="inline-flex text-[9px] font-bold bg-slate-50 text-slate-400 px-2 py-0.5 rounded border border-slate-200 truncate max-w-[120px]">
                                  {f}
                                </span>
                              ))}
-                             {tier.features.length > 2 && <span className="text-[9px] font-bold text-slate-300">+{tier.features.length - 2} More</span>}
+                             {tier.features.length > 3 && <span className="text-[9px] font-bold text-blue-400 px-1">+{tier.features.length - 3}</span>}
                           </div>
                        </TableCell>
-                       <TableCell>
-                          <div className="flex items-center justify-center gap-3">
-                             <Button 
-                              onClick={() => handleEdit(tier)}
-                              variant="ghost" size="icon" className="w-10 h-10 rounded-xl text-slate-300 hover:text-blue hover:bg-white shadow-sm border border-transparent hover:border-slate-100">
-                                <Edit3 className="w-4 h-4" />
-                             </Button>
-                             <Button 
-                              onClick={() => handleDelete(tier.id)}
-                              variant="ghost" size="icon" className="w-10 h-10 rounded-xl text-rose-100 hover:text-rose-500 hover:bg-rose-50 transition-all border border-transparent hover:border-rose-100">
-                                <Trash2 className="w-4 h-4" />
-                             </Button>
+                       <TableCell className="py-4 pr-6">
+                          <div className="flex items-center justify-end gap-3 h-full">
+                             <div className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded border italic ${tier.is_active ? 'border-emerald-200 bg-emerald-50 text-emerald-600' : 'border-rose-200 bg-rose-50 text-rose-600'}`}>
+                                {tier.is_active ? 'Live' : 'Hidden'}
+                             </div>
+                             <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-none">
+                                <Button 
+                                  onClick={() => handleEdit(tier)}
+                                  variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-blue-600 transition-none rounded">
+                                    <Edit3 className="w-3.5 h-3.5" />
+                                </Button>
+                                <Button 
+                                  onClick={() => handleDelete(tier.id)}
+                                  variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-rose-600 transition-none rounded">
+                                    <Trash2 className="w-3.5 h-3.5" />
+                                </Button>
+                             </div>
                           </div>
                        </TableCell>
                     </TableRow>
                   ))}
                   {tiers.length === 0 && (
                     <TableRow>
-                       <TableCell colSpan={4} className="py-32 text-center bg-slate-50/20">
-                          <div className="w-20 h-20 bg-white rounded- [2.5rem] flex items-center justify-center mx-auto text-slate-200 mb-6 border-2 border-dashed border-slate-100 relative">
-                             <DollarSign className="w-10 h-10" />
-                          </div>
-                          <h4 className="text-2xl font-black text-slate-800 font-outfit mb-2 tracking-tight">No pricing tiers yet</h4>
-                          <p className="text-xs text-slate-400 font-bold max-w-sm mx-auto leading-relaxed uppercase tracking-widest opacity-60">Add your first ticket or sponsorship package to get started.</p>
+                       <TableCell colSpan={4} className="py-20 text-center text-xs font-bold text-slate-400 uppercase tracking-widest">
+                          The pricing registry is empty.
                        </TableCell>
                     </TableRow>
                   )}

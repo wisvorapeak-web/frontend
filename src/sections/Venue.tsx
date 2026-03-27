@@ -40,7 +40,7 @@ export default function Venue() {
       {/* Background Visuals */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue/5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
       
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 space-y-10">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 space-y-6">
         
         {/* Section Header */}
         <div className="text-center space-y-1">

@@ -15,12 +15,12 @@ export default function ChairsBanner() {
         <div className="text-center space-y-3 max-w-2xl mx-auto">
            <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue/5 border border-blue/10 rounded-full text-blue">
               <ShieldCheck className="w-3.5 h-3.5" />
-              <span className="text-[9px] font-black uppercase tracking-widest leading-none">Scientific Excellence</span>
+               <span className="text-[9px] font-black uppercase tracking-widest leading-none">Our Experts</span>
            </div>
-           <h2 className="text-2xl lg:text-3xl font-bold text-navy leading-none uppercase tracking-tight">Summit <span className="text-blue">Leadership</span></h2>
-           <p className="text-slate-400 text-xs font-medium leading-relaxed">
-              Directed by a committee of scholars and industry pioneers.
-           </p>
+            <h2 className="text-2xl lg:text-3xl font-bold text-navy leading-none uppercase tracking-tight">Event <span className="text-blue">Leaders</span></h2>
+            <p className="text-slate-400 text-xs font-medium leading-relaxed">
+               Our team is made up of top experts and researchers.
+            </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -34,16 +34,16 @@ export default function ChairsBanner() {
                     <h4 className="text-xl font-bold text-navy leading-none uppercase tracking-tight">To Be Announced</h4>
                  </div>
                  <div className="p-3 bg-white/40 rounded-xl border border-white/40 w-full">
-                    <p className="text-[10px] font-bold text-slate-400">Global Academic Institution</p>
+                     <p className="text-[10px] font-bold text-slate-400">University or Organization</p>
                  </div>
              </div>
            ))}
         </div>
 
          <div className="flex justify-center pt-4">
-            <Link to="/chairs" className="h-12 px-10 bg-navy text-white rounded-xl flex items-center justify-center text-[10px] font-black uppercase tracking-widest shadow-xl shadow-navy/20 hover:bg-blue transition-all active:scale-95 text-decoration-none">
-               Meet the Full Committee
-            </Link>
+             <Link to="/chairs" className="h-12 px-10 bg-navy text-white rounded-xl flex items-center justify-center text-[10px] font-black uppercase tracking-widest shadow-xl shadow-navy/20 hover:bg-blue transition-all active:scale-95 text-decoration-none">
+                Meet the Team
+             </Link>
          </div>
 
       </div>

@@ -50,31 +50,29 @@ const AnimatedCounter = ({
 
 export default function TrustStrip() {
   const [isVisible, setIsVisible] = useState(false);
-  const [metrics] = useState<any[]>([
-    { label: 'Keynote Speakers', value: '45+', icon_name: 'Mic2' },
-    { label: 'Global Attendees', value: '4000+', icon_name: 'Users' },
-    { label: 'Research Papers', value: '850+', icon_name: 'BookOpen' },
-    { label: 'Representing Countries', value: '32+', icon_name: 'Globe' }
-  ]);
-  const [partners] = useState<any[]>([
-    { name: 'FAO', logo_url: 'https://api.dicebear.com/7.x/initials/svg?seed=FAO' },
-    { name: 'CGIAR', logo_url: 'https://api.dicebear.com/7.x/initials/svg?seed=CGIAR' },
-    { name: 'WFP', logo_url: 'https://api.dicebear.com/7.x/initials/svg?seed=WFP' },
-    { name: 'WHO', logo_url: 'https://api.dicebear.com/7.x/initials/svg?seed=WHO' },
-    { name: 'NUS', logo_url: 'https://api.dicebear.com/7.x/initials/svg?seed=NUS' }
-  ]);
-  const [loading] = useState(false);
+  const [metrics, setMetrics] = useState<any[]>([]);
+  const [partners, setPartners] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    Promise.all([
+      fetch(`${import.meta.env.VITE_API_URL}/api/site/metrics`).then(res => res.json()),
+      fetch(`${import.meta.env.VITE_API_URL}/api/site/sponsors`).then(res => res.json())
+    ]).then(([m, p]) => {
+      setMetrics(m || []);
+      setPartners(p || []);
+    }).finally(() => setLoading(false));
+
     const observer = new IntersectionObserver(([e]) => e.isIntersecting && setIsVisible(true), { threshold: 0.1 });
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
 
+
   return (
     <section ref={sectionRef} className="relative py-12 bg-white overflow-hidden border-y border-slate-50 font-outfit">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 space-y-10">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 space-y-6">
         
         {loading ? (
           <div className="flex justify-center py-6">
@@ -102,7 +100,7 @@ export default function TrustStrip() {
         )}
 
         {/* Partners Section */}
-        <div className="space-y-8 pt-10 border-t border-slate-50">
+        <div className="space-y-5 pt-10 border-t border-slate-50">
            <div className="flex items-center gap-6">
                <div className="flex-shrink-0 flex items-center gap-3 text-blue">
                    <Sparkles className="w-3 h-3" />
@@ -125,7 +123,7 @@ export default function TrustStrip() {
                   </div>
                 ))}
                 {partners.length === 0 && (
-                  <span className="text-slate-300 text-[8px] font-black uppercase tracking-widest italic opacity-50">Consortium forming...</span>
+                  <span className="text-slate-300 text-[8px] font-black uppercase tracking-widest italic opacity-50">Partners coming soon...</span>
                 )}
               </div>
            </div>

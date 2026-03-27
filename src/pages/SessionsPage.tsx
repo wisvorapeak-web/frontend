@@ -1,51 +1,31 @@
 import PageLayout from './PageLayout';
 import { 
-  Zap, 
-  FlaskConical, 
-  Settings, 
-  Rocket, 
-  ShieldCheck, 
-  Microscope,
-  Leaf 
+  Globe, Zap, Database, CloudSun, Droplets, Dna, Sprout, HeartPulse, 
+  Beef, Apple, Factory, Tablet, Cpu, Building2, Truck, 
+  QrCode, Briefcase, Rocket, Gavel
 } from 'lucide-react';
 
 const sessions = [
-  { 
-    title: 'Crop Science & Genetics', 
-    id: 'T1', 
-    desc: 'New ways to improve crop yield and resist diseases through genetic research.',
-    icon: FlaskConical 
-  },
-  { 
-    title: 'Food Safety & Quality', 
-    id: 'T2', 
-    desc: 'Ensuring food is safe, healthy, and high-quality for everyone.',
-    icon: ShieldCheck 
-  },
-  { 
-    title: 'Sustainable Farming', 
-    id: 'T3', 
-    desc: 'Using eco-friendly methods and soil health to grow food for the future.',
-    icon: Leaf 
-  },
-  { 
-    title: 'Animal Health & Nutrition', 
-    id: 'T4', 
-    desc: 'Better care, medical treatment, and feeding for livestock and poultry.',
-    icon: Microscope 
-  },
-  { 
-    title: 'Agri-IoT & Automation', 
-    id: 'T5', 
-    desc: 'Using smart sensors, drones, and robots to manage farms more efficiently.',
-    icon: Settings 
-  },
-  { 
-    title: 'Bio-resource Engineering', 
-    id: 'T6', 
-    desc: 'Designing systems to use natural resources like water and biomass efficiently.',
-    icon: Rocket 
-  },
+  { title: 'Future of Food Systems & Global Food Security', id: 'T1', desc: 'Ensuring access to safe, nutritious, and sustainable food for all.', icon: Globe },
+  { title: 'Smart & Precision Agriculture', id: 'T2', desc: 'Leveraging data and technology to optimize crop yields.', icon: Zap },
+  { title: 'AI, Big Data & Digital Agriculture', id: 'T3', desc: 'Harnessing the power of AI and data analytics in farming.', icon: Database },
+  { title: 'Climate-Smart & Regenerative Farming', id: 'T4', desc: 'Building resilient ecosystems through sustainable practices.', icon: CloudSun },
+  { title: 'Soil Health, Water & Resource Management', id: 'T5', desc: 'Optimizing resource use for healthy soil and water cycles.', icon: Droplets },
+  { title: 'Crop Innovation, Genetics & Biotechnology', id: 'T6', desc: 'Advancing crop resilience through genetic research.', icon: Dna },
+  { title: 'Sustainable & Resilient Farming Systems', id: 'T7', desc: 'Developing adaptive farming techniques for future challenges.', icon: Sprout },
+  { title: 'Animal Health, Welfare & Veterinary Science', id: 'T8', desc: 'Prioritizing livestock care and disease prevention.', icon: HeartPulse },
+  { title: 'Livestock Production & Smart Animal Farming', id: 'T9', desc: 'Next-gen animal husbandry and monitoring technologies.', icon: Beef },
+  { title: 'Alternative Proteins & Future Foods', id: 'T10', desc: 'Exploring plant-based meats and lab-grown alternatives.', icon: Apple },
+  { title: 'Food Safety, Nutrition & Functional Foods', id: 'T11', desc: 'Ensuring nutritional quality and safety across the food chain.', icon: Apple },
+  { title: 'Food Processing, Packaging & Value Addition', id: 'T12', desc: 'Innovations in industrial food production and shelf-life.', icon: Factory },
+  { title: 'Digital Transformation in Agriculture', id: 'T13', desc: 'Modernizing traditions with cutting-edge digital tools.', icon: Tablet },
+  { title: 'Robotics, Automation & Farm Mechanization', id: 'T14', desc: 'Autonomous machinery and robots in the field.', icon: Cpu },
+  { title: 'Vertical Farming & Urban Agriculture', id: 'T15', desc: 'Cultivating crops in controlled indoor environments.', icon: Building2 },
+  { title: 'Agri Supply Chain, Logistics & Trade', id: 'T16', desc: 'Optimizing the journey from farm gate to dinner plate.', icon: Truck },
+  { title: 'Blockchain, Traceability & Food Transparency', id: 'T17', desc: 'Securing the food chain with decentralized technology.', icon: QrCode },
+  { title: 'Agribusiness, Industry Integration & Markets', id: 'T18', desc: 'Connecting farming with industry and global markets.', icon: Briefcase },
+  { title: 'Startups, Innovation & Agri-Investment', id: 'T19', desc: 'Accelerating growth for next-gen agri-innovators.', icon: Rocket },
+  { title: 'Policy, Sustainability & Global Governance', id: 'T20', desc: 'Shaping international standards for food security.', icon: Gavel }
 ];
 
 export default function SessionsPage() {

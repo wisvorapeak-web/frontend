@@ -5,21 +5,24 @@ import {
   Users, 
   FileText, 
   CreditCard, 
-  Activity, 
   Clock,
   CheckCircle2,
   Mail,
-  Rocket
+  Rocket,
+  TrendingUp,
+  ArrowUpRight,
+  Globe,
+  MapPin
 } from 'lucide-react';
-
+import { Button } from '../../components/ui/button';
 
 export default function AdminOverview() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const [adminStats, setAdminStats] = useState({
+  const [adminStats, setAdminStats] = useState<any>({
     totalRegistrations: 0,
     totalAbstracts: 0,
-    totalRevenue: '₹0',
+    totalRevenue: '$0',
     totalInquiries: 0,
     totalSponsors: 0,
     recentInquiries: [],
@@ -27,151 +30,160 @@ export default function AdminOverview() {
   });
 
   useEffect(() => {
-    const fetchAdminStats = async () => {
-      try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/stats`, {
-          credentials: 'include'
-        });
-        if (res.ok) setAdminStats(await res.json());
-      } catch (err) {
-        console.error('Admin Stats Fetch Failed:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchAdminStats();
   }, []);
 
+  const fetchAdminStats = async () => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/stats`, {
+        credentials: 'include'
+      });
+      if (res.ok) {
+         const data = await res.json();
+         setAdminStats(data);
+      }
+    } catch (err) {
+      console.error('Admin Stats Fetch Failed:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const displayStats = [
-    { label: 'Registrations', value: adminStats.totalRegistrations.toLocaleString(), change: '+12%', icon: Users },
-    { label: 'Abstracts', value: adminStats.totalAbstracts.toLocaleString(), change: '+8%', icon: FileText },
-    { label: 'Messages', value: adminStats.totalInquiries.toLocaleString(), change: '+24%', icon: Mail },
-    { label: 'Sponsors', value: adminStats.totalSponsors.toLocaleString(), change: '+5%', icon: Rocket },
-    { label: 'Earnings', value: adminStats.totalRevenue, change: '+24%', icon: CreditCard },
+    { label: 'Total Delegates', value: adminStats.totalRegistrations.toLocaleString(), icon: Users, color: 'text-blue-600' },
+    { label: 'Abstracts Received', value: adminStats.totalAbstracts.toLocaleString(), icon: FileText, color: 'text-indigo-600' },
+    { label: 'Total Revenue', value: adminStats.totalRevenue, icon: CreditCard, color: 'text-emerald-600' },
+    { label: 'Sponsor Partners', value: adminStats.totalSponsors || 0, icon: Rocket, color: 'text-rose-600' },
   ];
 
-  if (loading) return <AdminLayout><div className="text-xs font-bold text-slate-400 p-12">Loading...</div></AdminLayout>;
+  if (loading) return (
+    <AdminLayout>
+       <div className="flex items-center justify-center min-h-[400px]">
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+            <p className="text-sm font-medium text-slate-500">Loading metrics...</p>
+          </div>
+       </div>
+    </AdminLayout>
+  );
 
   return (
     <AdminLayout>
-      <div className="space-y-16">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 pb-8 border-b border-slate-100">
-          <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue/5 border border-blue/10 rounded-full">
-              <Activity className="w-3 h-3 text-blue" />
-              <span className="text-xs font-bold text-blue">Statistics</span>
-            </div>
-            <h1 className="text-4xl font-bold text-navy leading-none font-outfit">Overview</h1>
+      <div className="space-y-8 font-inter">
+        
+        {/* Simple Header */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900">Dashboard Overview</h1>
+            <p className="text-sm text-slate-500 mt-1">Real-time statistics for the Ascendix World Food, AgroTech & Animal Science Summit (ASFAA-2026).</p>
           </div>
-          <div className="flex items-center gap-4 p-4 border border-slate-100 rounded-2xl">
-            <Clock className="w-4 h-4 text-slate-300" />
-            <div>
-              <p className="text-xs font-bold text-slate-400 leading-none">Last update</p>
-              <p className="text-xs font-bold text-navy mt-1">Active now</p>
-            </div>
+          <div className="flex items-center gap-2 text-xs font-medium text-slate-500 bg-white border border-slate-200 px-4 py-2 rounded">
+             <Clock className="w-4 h-4" />
+             Last synced: {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </div>
         </div>
 
-        {/* Stats */}
+        {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {displayStats.map((stat) => (
-            <div key={stat.label} className="p-8 border border-slate-100 rounded-2xl hover:border-blue/20 hover:shadow-2xl hover:shadow-blue/5 transition-all space-y-6">
-              <div className="flex justify-between items-center">
-                <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-blue opacity-40">
-                  <stat.icon className="w-5 h-5" />
-                </div>
-                <span className="text-xs font-bold text-blue px-2 py-0.5 bg-blue/5 rounded-full">{stat.change}</span>
-              </div>
-              <div className="space-y-1">
-                <p className="text-xs font-bold text-slate-400">{stat.label}</p>
-                <h3 className="text-3xl font-bold text-navy">{stat.value}</h3>
-              </div>
+            <div key={stat.label} className="p-6 bg-white border border-slate-200 rounded-lg shadow-sm">
+               <div className="flex items-center justify-between mb-4">
+                  <div className={`p-2 bg-slate-50 rounded ${stat.color}`}>
+                     <stat.icon className="w-5 h-5" />
+                  </div>
+                  <div className="flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">
+                     <TrendingUp className="w-3 h-3" /> +12.5%
+                  </div>
+               </div>
+               <div>
+                  <p className="text-sm font-medium text-slate-500">{stat.label}</p>
+                  <h3 className="text-2xl font-bold text-slate-900 mt-1">{stat.value}</h3>
+               </div>
             </div>
           ))}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Traffic */}
-          <div className="lg:col-span-2 p-10 border border-slate-100 rounded-3xl space-y-10">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-bold text-navy">Activity</h3>
-              <div className="flex gap-2">
-                {['D', 'W', 'M'].map(t => (
-                  <button key={t} className={`w-8 h-8 rounded-lg text-xs font-bold transition-all ${t === 'W' ? 'bg-blue text-white' : 'text-slate-400 hover:bg-slate-50'}`}>{t}</button>
-                ))}
+        {/* Charts and Feed */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+           
+           {/* Chart */}
+           <div className="lg:col-span-8 bg-white border border-slate-200 rounded-lg p-8 shadow-sm">
+              <div className="flex items-center justify-between mb-8">
+                 <h3 className="text-lg font-bold text-slate-900">Registration Trends</h3>
+                 <div className="flex gap-1">
+                    {['7D', '30D', '1Y'].map(t => (
+                      <button key={t} className={`px-3 py-1.5 rounded text-xs font-medium border ${t === '7D' ? 'bg-slate-950 text-white border-slate-950' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}`}>{t}</button>
+                    ))}
+                 </div>
               </div>
-            </div>
-            <div className="h-64 flex items-end gap-3 pt-6">
-              {adminStats.registrationChartData.map((val: number, i: number) => (
-                <div key={i} className="flex-1 group relative h-full flex flex-col justify-end">
-                  <div 
-                    className="w-full bg-slate-50 group-hover:bg-blue/10 rounded-lg transition-all relative overflow-hidden"
-                    style={{ height: `${val}%` }}
-                  >
-                    <div className="absolute inset-0 bg-navy opacity-5 group-hover:opacity-20 transition-all" />
-                    <div className="absolute bottom-0 w-full bg-blue rounded-t-lg transition-all duration-700" style={{ height: '30%' }} />
-                  </div>
-                  <p className="mt-4 text-[10px] font-bold text-slate-300 text-center">Period {i+1}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+              
+              <div className="h-64 flex items-end gap-3 px-2">
+                 {(adminStats.registrationChartData || []).map((val: number, i: number) => (
+                    <div key={i} className="flex-1 flex flex-col justify-end group">
+                       <div 
+                          className="w-full bg-blue-600 rounded-t-sm" 
+                          style={{ height: `${val}%` }}
+                          title={`Period ${i+1}: ${val}%`}
+                       />
+                       <p className="mt-3 text-[10px] text-slate-400 text-center font-medium">P-{i+1}</p>
+                    </div>
+                 ))}
+              </div>
+           </div>
 
-          {/* Recent Communications */}
-          <div className="p-10 bg-navy rounded-3xl space-y-10 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-blue/5 rounded-full blur-3xl pointer-events-none" />
-            
-            <div className="flex items-center gap-3">
-              <span className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-blue">
-                <Mail className="w-5 h-5" />
-              </span>
-              <h3 className="text-lg font-bold text-white">Messages</h3>
-            </div>
-            
-            <div className="space-y-4">
-              {adminStats.recentInquiries.length > 0 ? adminStats.recentInquiries.map((inquiry: any) => (
-                <div key={inquiry.id} className="p-6 bg-white/5 border border-white/5 rounded-2xl space-y-3 hover:bg-white/10 transition-all cursor-pointer">
-                  <p className="text-sm font-bold text-white truncate">{inquiry.name}</p>
-                  <p className="text-xs font-bold text-white/30 leading-relaxed line-clamp-1">{inquiry.subject}</p>
-                </div>
-              )) : (
-                <div className="py-12 text-center space-y-4">
-                  <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mx-auto">
-                    <CheckCircle2 className="w-6 h-6 text-white/10" />
-                  </div>
-                  <p className="text-xs font-bold text-white/20">No messages</p>
-                </div>
-              )}
-            </div>
-            
-            <button onClick={() => navigate('/admin/inbox')} className="w-full h-14 bg-blue text-white text-sm font-bold rounded-2xl hover:bg-white hover:text-navy transition-all">
-              Inbox
-            </button>
-          </div>
+           {/* Inquiries Feed */}
+           <div className="lg:col-span-4 bg-white border border-slate-200 rounded-lg p-8 shadow-sm flex flex-col">
+              <div className="flex items-center justify-between mb-6">
+                 <h3 className="text-lg font-bold text-slate-900">Recent Inquiries</h3>
+                 <button onClick={() => navigate('/admin/inbox')} className="text-blue-600 hover:text-blue-700 text-xs font-bold flex items-center gap-1">
+                    View All <ArrowUpRight className="w-3 h-3" />
+                 </button>
+              </div>
+
+              <div className="space-y-4 flex-1">
+                 {(adminStats.recentInquiries || []).length > 0 ? adminStats.recentInquiries.map((inquiry: any) => (
+                    <div key={inquiry.id} className="p-4 bg-slate-50 border border-slate-100 rounded hover:border-slate-300 transition-colors cursor-pointer">
+                       <div className="flex items-center justify-between mb-1">
+                          <p className="text-xs font-bold text-slate-900">{inquiry.name}</p>
+                          <span className="text-[10px] text-slate-400">{new Date(inquiry.created_at).toLocaleDateString([], { month: 'short', day: 'numeric' })}</span>
+                       </div>
+                       <p className="text-xs text-slate-500 line-clamp-1 truncate">{inquiry.subject}</p>
+                    </div>
+                 )) : (
+                    <div className="flex-1 flex flex-col items-center justify-center text-center py-12">
+                       <div className="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center mb-3">
+                          <CheckCircle2 className="w-6 h-6 text-slate-300" />
+                       </div>
+                       <p className="text-xs font-medium text-slate-400 uppercase tracking-widest">No New Inquiries</p>
+                    </div>
+                 )}
+              </div>
+              
+              <Button onClick={() => navigate('/admin/bulk-email')} className="w-full mt-6 bg-slate-900 text-white hover:bg-slate-800 rounded py-6 text-xs font-bold flex items-center justify-center gap-2">
+                 <Mail className="w-4 h-4" /> Send Bulk Email
+              </Button>
+           </div>
         </div>
 
-        {/* Action Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            { label: 'Abstracts', sub: 'Review', icon: CheckCircle2, color: 'text-indigo-600', path: '/admin/abstracts' },
-            { label: 'Registrations', sub: 'Payments', icon: CreditCard, color: 'text-emerald-600', path: '/admin/registrations' },
-            { label: 'Messages', sub: 'Read', icon: Mail, color: 'text-blue', path: '/admin/inbox' },
-          ].map((action, i) => (
-            <button 
-              key={i} 
-              onClick={() => navigate(action.path)}
-              className="p-10 border border-slate-100 rounded-3xl flex items-center gap-8 hover:border-blue/20 hover:shadow-2xl hover:shadow-blue/5 transition-all text-left group"
-            >
-              <div className={`w-12 h-12 bg-slate-50 ${action.color} rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                <action.icon className="w-6 h-6" />
-              </div>
-              <div className="space-y-1">
-                <h4 className="text-sm font-bold text-navy">{action.label}</h4>
-                <p className="text-xs font-bold text-slate-400">{action.sub}</p>
-              </div>
-            </button>
-          ))}
+        {/* Quick Actions */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+           {[
+              { label: 'Manage Abstracts', icon: FileText, color: 'text-indigo-600', path: '/admin/abstracts' },
+              { label: 'View Delegates', icon: Users, color: 'text-emerald-600', path: '/admin/registrations' },
+              { label: 'System Settings', icon: Globe, color: 'text-blue-600', path: '/admin/settings' },
+              { label: 'Venue & Logistics', icon: MapPin, color: 'text-rose-600', path: '/admin/venue' },
+           ].map((action) => (
+             <button 
+               key={action.label} 
+               onClick={() => navigate(action.path)}
+               className="p-6 bg-white border border-slate-200 rounded-lg shadow-sm flex flex-col items-center gap-3 hover:border-blue-600 hover:bg-blue-50/10 text-center"
+             >
+               <div className={`p-3 bg-slate-50 rounded ${action.color}`}>
+                  <action.icon className="w-5 h-5" />
+               </div>
+               <h4 className="text-xs font-bold text-slate-900">{action.label}</h4>
+             </button>
+           ))}
         </div>
       </div>
     </AdminLayout>

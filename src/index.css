@@ -38,11 +38,11 @@
     @apply font-outfit tracking-tight text-navy;
   }
   
-  h1 { @apply text-3xl lg:text-5xl font-black uppercase tracking-tight; }
-  h2 { @apply text-2xl lg:text-3xl font-black uppercase tracking-tight; }
-  h3 { @apply text-xl lg:text-2xl font-black uppercase tracking-tight; }
+  h1 { @apply text-2xl lg:text-4xl font-black uppercase tracking-tight; }
+  h2 { @apply text-xl lg:text-2xl font-black uppercase tracking-tight; }
+  h3 { @apply text-lg lg:text-xl font-black uppercase tracking-tight; }
   
-  p { @apply text-[11px] lg:text-xs leading-relaxed text-slate-500 font-bold font-outfit uppercase tracking-tight; }
+  p { @apply text-[10px] lg:text-[11px] leading-relaxed text-slate-500 font-bold font-outfit uppercase tracking-tight; }
   
   button, .btn { @apply font-black font-outfit uppercase tracking-widest text-[9px]; }
 }
@@ -188,5 +188,5 @@
 
 /* Section transitions */
 .section-divider {
-  @apply w-full h-px bg-gradient-to-r from-transparent via-slate-100 to-transparent my-6 lg:my-8 opacity-40;
+  @apply w-full h-px bg-gradient-to-r from-transparent via-slate-100 to-transparent my-2 lg:my-3 opacity-40;
 }

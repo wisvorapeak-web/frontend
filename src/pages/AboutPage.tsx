@@ -10,13 +10,20 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function AboutPage() {
-  const [settings] = useState<any>({
-    site_tagline: "Better farming and food for the future.",
-    about_image_url: "/venue-image-1.jpg"
+  const [settings, setSettings] = useState<any>({
+    site_tagline: "Advancing the future of sustainable food and agri-innovation.",
+    about_image_url: "/food_processing_factory_1774551627831.png"
   });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Static mode
+    fetch(`${import.meta.env.VITE_API_URL}/api/site/settings`)
+      .then(res => res.json())
+      .then(data => {
+        if (data) setSettings(data);
+      })
+      .catch(err => console.error('Site Settings Fetch Failed:', err))
+      .finally(() => setLoading(false));
   }, []);
 
   const stats = [
@@ -25,6 +32,15 @@ export default function AboutPage() {
     { icon: Globe, label: 'Countries', count: '45+' },
     { icon: FileText, label: 'Abstracts', count: '850+' },
   ];
+
+  if (loading) return (
+    <PageLayout title="About" subtitle="Loading Summit Details...">
+        <div className="flex flex-col items-center justify-center py-32 space-y-6">
+            <div className="w-12 h-12 border-4 border-blue border-t-transparent rounded-full animate-spin" />
+            <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em] animate-pulse">Syncing Site Context...</p>
+        </div>
+    </PageLayout>
+  );
 
   return (
     <PageLayout 
@@ -40,23 +56,19 @@ export default function AboutPage() {
                 <span className="text-[8px] font-black uppercase tracking-widest text-blue leading-none">Singapore</span>
              </div>
              
-             <h2 className="text-xl lg:text-2xl font-black text-navy leading-none uppercase tracking-tight">
-                <span className="text-blue">Innovation</span>
+             <h2 className="text-xl lg:text-3xl font-black text-navy leading-none uppercase tracking-tight">
+                {settings?.about_title || "Better farming and food for the future."}
              </h2>
-
+ 
              <div className="text-slate-500 text-[11px] font-bold leading-relaxed whitespace-pre-wrap italic opacity-80 uppercase tracking-tight">
-                Our global meeting for leaders in food and agriculture.
+                {settings?.about_content || "Our global meeting for leaders in food and agriculture."}
              </div>
-             
-             <p className="text-slate-400 text-[9px] font-black uppercase tracking-widest leading-relaxed italic opacity-70 border-l-2 border-blue/10 pl-4 py-2">
-                We focus on ways to grow food sustainably and protect our planet.
-             </p>
           </div>
 
           <div className="relative">
              <div className="rounded-2xl overflow-hidden border-2 border-slate- family rotate-1 group transition-transform duration-1000 hover:rotate-0 shadow-2xl">
                 <img 
-                   src={settings?.about_image_url || "/venue-image-1.jpg"} 
+                   src={settings?.about_image_url || "/food_processing_factory_1774551627831.png"} 
                    alt="Research" 
                    className="w-full h-[280px] object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
                 />
@@ -76,9 +88,9 @@ export default function AboutPage() {
 
         {/* Highlights */}
         <section className="bg-white p-6 border border-slate-50 rounded-2xl space-y-4">
-           <h3 className="text-sm font-black text-navy uppercase tracking-tight text-center">Our Approach</h3>
+           <h3 className="text-sm font-black text-navy uppercase tracking-tight text-center">{settings?.about_approach_title || "Our Approach"}</h3>
            <p className="text-[10px] font-bold text-slate-500 leading-relaxed uppercase tracking-widest text-center max-w-2xl mx-auto italic opacity-70">
-              We connect research and business to create better food systems.
+              {settings?.about_approach_desc || "We connect research and business to create better food systems."}
            </p>
         </section>
 

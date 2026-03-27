@@ -43,19 +43,19 @@ const navLinks = [
     href: '/speakers',
     subItems: [
         { label: 'Speakers', href: '/speakers', icon: Mic2 },
-        { label: 'Program', href: '/program', icon: Monitor },
-        { label: 'Sessions', href: '/sessions', icon: Zap },
+        { label: 'Schedule', href: '/program', icon: Monitor },
+        { label: 'Events', href: '/sessions', icon: Zap },
         { label: 'Workshops', href: '/workshops', icon: Rocket },
     ]
   },
   { 
-    label: 'Partners', 
+    label: 'Sponsors', 
     href: '/sponsorship',
     subItems: [
-        { label: 'Sponsorship', href: '/sponsorship', icon: Trophy },
+        { label: 'Packages', href: '/sponsorship', icon: Trophy },
         { label: 'Exhibitors', href: '/sponsorship#exhibitors', icon: Building2 },
         { label: 'Journals', href: '/journals', icon: FileText },
-        { label: 'Guides', href: '/brochure', icon: Rocket },
+        { label: 'Info', href: '/brochure', icon: Rocket },
     ]
   },
   { label: 'Contact', href: '/contact' },
@@ -192,7 +192,7 @@ export default function Navigation() {
              </button>
           </div>
           
-          <div className="flex-1 overflow-y-auto p-6 space-y-8 scrollbar-none">
+          <div className="flex-1 overflow-y-auto p-6 space-y-5 scrollbar-none">
             <div className="space-y-4">
               {navLinks.map((link) => (
                 <div key={link.label} className="space-y-2">

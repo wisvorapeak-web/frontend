@@ -4,7 +4,10 @@ import {
   Briefcase, 
   FlaskConical, 
   ArrowRight,
-  Loader2
+  Loader2,
+  Sparkles,
+  Zap,
+  ShieldCheck
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -42,57 +45,73 @@ export default function WhyAttend() {
   };
 
   return (
-    <section ref={sectionRef} id="why-attend" className="relative py-12 bg-white overflow-hidden font-outfit">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16">
-        <div className="text-center mb-10 space-y-1">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue/5 border border-blue/10 mb-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-blue" />
-            <span className="text-[8px] font-black text-blue uppercase tracking-widest leading-none">Why Come?</span>
+    <section ref={sectionRef} id="why-attend" className="relative py-16 bg-white overflow-hidden font-outfit">
+      {/* Aesthetic Background Accents */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue/5 blur-[120px] rounded-full translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-slate-100/50 blur-[120px] rounded-full -translate-x-1/2 translate-y-1/2" />
+
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 relative z-10">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-10">
+          <div className="space-y-4 max-w-2xl">
+            <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-blue/5 border border-blue/10 backdrop-blur-xl">
+              <Zap className="w-3.5 h-3.5 text-blue animate-pulse" />
+              <span className="text-[10px] font-black text-blue uppercase tracking-[0.3em] leading-none">Why Attend</span>
+            </div>
+            <h2 className="text-4xl lg:text-6xl font-black text-navy tracking-tight leading-tight uppercase">
+              Building the <span className="text-blue">Future</span> of Food & Science
+            </h2>
           </div>
-          <h2 className="text-2xl font-black text-navy tracking-tight uppercase">For Everyone</h2>
-          <p className="text-slate-400 text-[9px] font-black uppercase tracking-widest italic opacity-80 decoration-blue/20 decoration-1 underline-offset-4">
-            Designed for researchers, students, and industry experts.
-          </p>
+          <div className="lg:text-right">
+             <p className="text-slate-400 text-xs font-bold uppercase tracking-[0.2em] italic max-w-sm ml-auto opacity-70">
+                A major event for researchers, industry leaders, and innovators from around the world.
+             </p>
+          </div>
         </div>
 
         {loading ? (
-          <div className="py-20 flex flex-col items-center gap-4">
-            <Loader2 className="w-8 h-8 text-blue animate-spin" />
-            <p className="text-slate-300 font-bold uppercase tracking-widest text-[8px]">Orchestrating Experience...</p>
+          <div className="py-16 flex flex-col items-center gap-6">
+            <Loader2 className="w-12 h-12 text-blue animate-spin" />
+            <p className="text-slate-300 font-black uppercase tracking-[0.4em] text-[10px] animate-pulse">Loading Details...</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {audiences.map((a, i) => {
               const Icon = icons[a.icon_name] || Briefcase;
               return (
-                <div key={i} className={`group bg-slate-50 p-6 rounded-3xl border border-transparent hover:border-slate-100 hover:bg-white hover:shadow-xl hover:shadow-navy/10 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`} style={{ transitionDelay: `${i * 50}ms` }}>
-                  <div className={`w-10 h-10 rounded-xl bg-white flex items-center justify-center text-blue shadow-sm mb-5 group-hover:scale-110 transition-transform`}>
-                    <Icon className="w-4 h-4" />
+                <div key={i} className={`group relative bg-white p-10 rounded-[3rem] border border-slate-50 hover:border-blue/20 hover:shadow-3xl hover:shadow-navy/10 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`} style={{ transitionDelay: `${i * 150}ms` }}>
+                  {/* Card Glow */}
+                  <div className="absolute inset-0 bg-blue/5 opacity-0 group-hover:opacity-100 blur-3xl transition-opacity duration-1000 rounded-[3rem] -z-10" />
+                  
+                  <div className="flex items-start justify-between mb-10">
+                    <div className="w-16 h-16 rounded-2xl bg-blue/5 flex items-center justify-center text-blue group-hover:bg-blue group-hover:text-white group-hover:rotate-12 group-hover:scale-110 transition-all duration-700 shadow-sm border border-blue/10">
+                      <Icon className="w-6 h-6" />
+                    </div>
+                    <Sparkles className="w-5 h-5 text-blue/10 group-hover:text-blue/40 transition-colors duration-1000" />
                   </div>
                   
-                  <div className="space-y-2">
+                  <div className="space-y-6">
                     <div>
-                      <p className="text-blue text-[8px] font-black uppercase tracking-widest mb-0.5">{a.subtitle}</p>
-                      <h3 className="text-lg font-black text-navy uppercase tracking-tight">{a.title}</h3>
+                      <p className="text-blue text-[10px] font-black uppercase tracking-[0.3em] mb-2 opacity-60 group-hover:opacity-100 transition-opacity">{a.subtitle}</p>
+                      <h3 className="text-2xl font-black text-navy uppercase tracking-tighter leading-tight group-hover:text-blue transition-colors duration-500">{a.title}</h3>
                     </div>
                     
-                    <p className="text-slate-500 text-[10px] font-bold leading-relaxed opacity-70 italic line-clamp-2">
+                    <p className="text-slate-500 text-xs font-bold leading-relaxed opacity-60 italic group-hover:opacity-100 transition-opacity duration-700">
                       {a.description}
                     </p>
 
-                    <ul className="space-y-1.5 pt-2">
+                    <ul className="space-y-4 pt-4 border-t border-slate-50">
                       {(a.benefits || []).map((b: string, j: number) => (
-                        <li key={j} className="flex items-center gap-2 text-[9px] font-black text-navy/60 uppercase tracking-tight">
-                          <div className="w-1 h-1 rounded-full bg-blue/40" />
-                          {b}
+                        <li key={j} className="flex items-center gap-4 text-[10px] font-black text-navy/70 uppercase tracking-tight group/item">
+                          <div className="w-1.5 h-1.5 rounded-full bg-blue/20 group-hover/item:bg-blue group-hover/item:scale-150 transition-all" />
+                          <span className="group-hover/item:translate-x-1 transition-transform">{b}</span>
                         </li>
                       ))}
                     </ul>
 
-                    <div className="pt-3">
+                    <div className="pt-8">
                         <Link to={a.link_path || '#'}>
-                            <Button variant="ghost" className="p-0 h-auto text-[9px] font-black uppercase tracking-widest text-navy hover:text-blue hover:bg-transparent">
-                                Discover More <ArrowRight className="w-3 h-3 ml-2" />
+                            <Button variant="ghost" className="h-14 px-10 border-2 border-slate-50 text-[10px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-blue hover:text-white hover:border-blue transition-all w-full flex items-center justify-between group/btn active:scale-95 shadow-lg shadow-slate-900/5">
+                                Learn More <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-2 transition-transform" />
                             </Button>
                         </Link>
                     </div>
@@ -103,15 +122,20 @@ export default function WhyAttend() {
           </div>
         )}
 
-        <div className={`mt-12 pt-6 border-t border-slate-50 grid grid-cols-3 gap-6 transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+        <div className={`mt-24 pt-12 border-t border-slate-50 grid grid-cols-1 md:grid-cols-3 gap-12 transition-all duration-1000 delay-700 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
           {[
-            { value: '95%', label: 'Satisfied' },
-            { value: '88%', label: 'Returning' },
-            { value: '4.9/5', label: 'Star Rating' },
+            { value: '2500+', label: 'Expected Participants', icon: GraduationCap },
+            { value: '50+', label: 'Main Discussions', icon: ShieldCheck },
+            { value: '500k', label: 'Funding Options', icon: Zap },
           ].map((s, i) => (
-             <div key={i} className="text-center">
-              <p className="text-lg font-black text-navy uppercase tracking-tighter">{s.value}</p>
-              <p className="text-[7px] font-black text-slate-300 uppercase tracking-widest leading-none mt-1">{s.label}</p>
+             <div key={i} className="flex items-center gap-6 p-6 rounded-3xl hover:bg-slate-50 transition-colors group">
+              <div className="w-12 h-12 rounded-xl bg-blue/5 flex items-center justify-center text-blue/40 group-hover:text-blue group-hover:scale-110 transition-all duration-500">
+                <s.icon className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="text-2xl font-black text-navy uppercase tracking-tighter leading-none">{s.value}</p>
+                <p className="text-[9px] font-black text-slate-300 uppercase tracking-[0.3em] leading-none mt-2 group-hover:text-blue/60 transition-colors">{s.label}</p>
+              </div>
             </div>
           ))}
         </div>
