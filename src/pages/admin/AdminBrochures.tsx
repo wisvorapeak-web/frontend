@@ -66,11 +66,11 @@ export default function AdminBrochures() {
     e.preventDefault();
     setIsSaving(true);
     try {
-      const url = editingBrochure 
-        ? `${import.meta.env.VITE_API_URL}/api/admin/brochures/${editingBrochure.id}`
+      const url = editingBrochure?._id 
+        ? `${import.meta.env.VITE_API_URL}/api/admin/brochures/${editingBrochure._id}`
         : `${import.meta.env.VITE_API_URL}/api/admin/brochures`;
       
-      const method = editingBrochure ? 'PATCH' : 'POST';
+      const method = editingBrochure?._id ? 'PATCH' : 'POST';
       
       const res = await fetch(url, {
         method,
@@ -162,7 +162,7 @@ export default function AdminBrochures() {
             <DialogContent className="sm:max-w-[500px] border border-slate-200 p-0 overflow-hidden rounded-lg">
               <DialogHeader className="p-6 border-b border-slate-100 bg-slate-50">
                 <DialogTitle className="text-sm font-bold text-slate-900 uppercase tracking-widest">
-                  {editingBrochure ? 'Edit Resource' : 'New Resource'}
+                  {editingBrochure?._id ? 'Edit Resource' : 'New Resource'}
                 </DialogTitle>
                 <DialogDescription className="sr-only">
                   Upload and manage PDF guides, maps and other downloadable assets for summit participants.
@@ -293,7 +293,7 @@ export default function AdminBrochures() {
                 </TableHeader>
                 <TableBody>
                   {brochures.map((item) => (
-                    <TableRow key={item.id} className="border-b border-slate-100 divide-x divide-slate-100 hover:bg-slate-50/30 transition-none group">
+                    <TableRow key={item._id} className="border-b border-slate-100 divide-x divide-slate-100 hover:bg-slate-50/30 transition-none group">
                        <TableCell className="py-4 pl-6">
                           <div className="flex items-center gap-4">
                              <div className="w-10 h-10 bg-slate-50 text-slate-300 border border-slate-100 flex items-center justify-center rounded transition-none">
@@ -319,7 +319,7 @@ export default function AdminBrochures() {
                                 <Edit3 className="w-3.5 h-3.5" />
                              </Button>
                              <Button 
-                              onClick={() => handleDelete(item.id)}
+                              onClick={() => handleDelete(item._id)}
                               variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-red-600 transition-none rounded">
                                 <Trash2 className="w-3.5 h-3.5" />
                              </Button>

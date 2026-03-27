@@ -82,8 +82,9 @@ export default function AdminContent() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    const method = currentItem.id ? 'PATCH' : 'POST';
-    const url = currentItem.id ? `${import.meta.env.VITE_API_URL}/api/admin/${tableConfig[activeTab].endpoint}/${currentItem.id}` : `${import.meta.env.VITE_API_URL}/api/admin/${tableConfig[activeTab].endpoint}`;
+    const itemId = currentItem._id || currentItem.id;
+    const method = itemId ? 'PATCH' : 'POST';
+    const url = itemId ? `${import.meta.env.VITE_API_URL}/api/admin/${tableConfig[activeTab].endpoint}/${itemId}` : `${import.meta.env.VITE_API_URL}/api/admin/${tableConfig[activeTab].endpoint}`;
     try {
       const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify(currentItem) });
       if (res.ok) { toast.success('Changes saved'); setIsEditing(false); fetchData(); } else { throw new Error(); }
@@ -194,7 +195,7 @@ export default function AdminContent() {
                     ) : (data || []).length === 0 ? (
                       <tr><td colSpan={3} className="px-6 py-20 text-center uppercase tracking-widest text-slate-300 font-bold text-[10px]">No items found</td></tr>
                     ) : data.map((item) => (
-                      <tr key={item.id} className="group hover:bg-slate-50 transition-none divide-x divide-slate-100">
+                      <tr key={item._id || item.id} className="group hover:bg-slate-50 transition-none divide-x divide-slate-100">
                         <td className="px-6 py-4">
                           <div className="space-y-0.5">
                             <p className="text-sm font-bold text-slate-900 tracking-tight">{item[tableConfig[tabKey].fields[0].name]}</p>
@@ -209,7 +210,7 @@ export default function AdminContent() {
                             <Button variant="ghost" size="icon" onClick={() => { setCurrentItem(item); setIsEditing(true); }} className="h-8 w-8 text-slate-400 hover:text-blue-600 transition-none rounded">
                               <Edit2 className="w-3.5 h-3.5" />
                             </Button>
-                            <Button variant="ghost" size="icon" onClick={() => handleDelete(item.id)} className="h-8 w-8 text-slate-400 hover:text-red-600 transition-none rounded">
+                            <Button variant="ghost" size="icon" onClick={() => handleDelete(item._id || item.id)} className="h-8 w-8 text-slate-400 hover:text-red-600 transition-none rounded">
                               <Trash2 className="w-3.5 h-3.5" />
                             </Button>
                           </div>

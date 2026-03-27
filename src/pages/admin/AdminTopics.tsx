@@ -39,9 +39,9 @@ export default function AdminTopics() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    const method = currentTopic.id ? 'PATCH' : 'POST';
-    const url = currentTopic.id 
-      ? `${import.meta.env.VITE_API_URL}/api/admin/topics/${currentTopic.id}`
+    const method = currentTopic._id ? 'PATCH' : 'POST';
+    const url = currentTopic._id 
+      ? `${import.meta.env.VITE_API_URL}/api/admin/topics/${currentTopic._id}`
       : `${import.meta.env.VITE_API_URL}/api/admin/topics`;
 
     try {
@@ -55,7 +55,7 @@ export default function AdminTopics() {
       });
 
       if (res.ok) {
-        toast.success(currentTopic.id ? 'Topic updated' : 'Topic created');
+        toast.success(currentTopic._id ? 'Topic updated' : 'Topic created');
         setIsEditing(false);
         fetchTopics();
       } else {
@@ -133,7 +133,7 @@ export default function AdminTopics() {
                   </thead>
                   <tbody className="divide-y divide-slate-100 italic">
                     {filteredTopics.map((topic) => (
-                      <tr key={topic.id} className="hover:bg-slate-50 transition-none group divide-x divide-slate-100">
+                      <tr key={topic._id} className="hover:bg-slate-50 transition-none group divide-x divide-slate-100">
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-4">
                             {topic.image_url && (
@@ -166,7 +166,7 @@ export default function AdminTopics() {
                             </Button>
                             <Button 
                               variant="ghost" size="icon"
-                              onClick={() => handleDelete(topic.id)}
+                              onClick={() => handleDelete(topic._id)}
                               className="h-8 w-8 text-slate-400 hover:text-red-600 hover:bg-red-50 transition-none"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
@@ -209,7 +209,7 @@ export default function AdminTopics() {
             <div className="relative w-full max-w-xl bg-white rounded border border-slate-200 shadow-2xl overflow-hidden transition-none">
               <div className="px-6 py-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
                 <h3 className="text-sm font-bold text-slate-900 uppercase tracking-widest">
-                  {currentTopic.id ? 'Edit Topic' : 'New Topic'}
+                  {currentTopic?._id ? 'Edit Topic' : 'New Topic'}
                 </h3>
                 <Button variant="ghost" size="icon" onClick={() => setIsEditing(false)} className="h-8 w-8 text-slate-400 hover:text-slate-900 transition-none">
                   <X className="w-4 h-4" />

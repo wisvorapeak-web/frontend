@@ -30,6 +30,8 @@ const LegalPage = lazy(() => import('./pages/LegalPage'));
 // Lazy load Auth Pages
 const Login = lazy(() => import('./pages/auth/Login'));
 const ForgotPassword = lazy(() => import('./pages/auth/ForgotPassword'));
+const ResetPassword = lazy(() => import('./pages/auth/ResetPassword'));
+const RegisterInvitation = lazy(() => import('./pages/auth/RegisterInvitation'));
 
 // Lazy load Admin Pages
 const AdminOverview = lazy(() => import('./pages/admin/AdminOverview'));
@@ -46,6 +48,7 @@ const AdminBrochures = lazy(() => import('./pages/admin/AdminBrochures'));
 const AdminTopics = lazy(() => import('./pages/admin/AdminTopics'));
 const AdminContent = lazy(() => import('./pages/admin/AdminContent'));
 const BulkEmail = lazy(() => import('./pages/admin/BulkEmail'));
+const AdminUsers = lazy(() => import('./pages/admin/AdminUsers'));
 const SetupPage = lazy(() => import('./pages/SetupPage'));
 
 // Loading Fallback Component
@@ -96,6 +99,8 @@ function App() {
           {/* Auth Routes moved to Admin */}
           <Route path="/admin/login" element={<Login />} />
           <Route path="/admin/forgot-password" element={<ForgotPassword />} />
+          <Route path="/admin/reset-password" element={<ResetPassword />} />
+          <Route path="/register-invitation" element={<RegisterInvitation />} />
           
           {/* Admin Routes (PROTECTED) */}
           <Route path="/admin" element={
@@ -171,6 +176,11 @@ function App() {
           <Route path="/admin/bulk-email" element={
             <ProtectedRoute requireAdmin>
               <BulkEmail />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/users" element={
+            <ProtectedRoute requireAdmin>
+              <AdminUsers />
             </ProtectedRoute>
           } />
         </Routes>

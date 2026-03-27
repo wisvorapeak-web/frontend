@@ -17,7 +17,8 @@ import {
   FileText,
   LayoutDashboard,
   ChevronRight,
-  Send
+  Send,
+  Users
 } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 import { Avatar, AvatarFallback } from '../../components/ui/avatar';
@@ -42,6 +43,7 @@ const adminNavItems = [
   { icon: MapPin, label: 'Venue', path: '/admin/venue' },
   { icon: Calendar, label: 'Schedule', path: '/admin/events' },
   { icon: Settings, label: 'Settings', path: '/admin/settings' },
+  { icon: Users, label: 'Team', path: '/admin/users' },
 ];
 
 export default function AdminLayout({ children }: AdminLayoutProps) {

@@ -56,9 +56,9 @@ export default function AdminSponsors() {
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsUpdating(true);
-    const method = editingSponsor.id ? 'PATCH' : 'POST';
-    const url = editingSponsor.id 
-      ? `${import.meta.env.VITE_API_URL}/api/admin/sponsors/${editingSponsor.id}`
+    const method = editingSponsor._id ? 'PATCH' : 'POST';
+    const url = editingSponsor._id 
+      ? `${import.meta.env.VITE_API_URL}/api/admin/sponsors/${editingSponsor._id}`
       : `${import.meta.env.VITE_API_URL}/api/admin/sponsors`;
 
     try {
@@ -71,7 +71,7 @@ export default function AdminSponsors() {
         body: JSON.stringify(editingSponsor)
       });
       if (res.ok) {
-        toast.success(editingSponsor.id ? 'Partner updated' : 'New partner added');
+        toast.success(editingSponsor._id ? 'Partner updated' : 'New partner added');
         setIsModalOpen(false);
         fetchSponsors();
       }
@@ -121,7 +121,7 @@ export default function AdminSponsors() {
         {/* Sponsors Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
            {sponsors.map((sponsor) => (
-             <div key={sponsor.id} className="bg-white rounded-lg border border-slate-200 p-6 flex flex-col items-center text-center shadow-sm">
+             <div key={sponsor._id} className="bg-white rounded-lg border border-slate-200 p-6 flex flex-col items-center text-center shadow-sm">
                 <div className="mb-6 w-full aspect-video flex items-center justify-center bg-slate-50 rounded border border-slate-100 p-4">
                    <img 
                     src={sponsor.logo_url || 'https://via.placeholder.com/150'} 
@@ -150,7 +150,7 @@ export default function AdminSponsors() {
                    <Button 
                      variant="outline" 
                      size="sm" 
-                     onClick={() => handleDelete(sponsor.id)}
+                     onClick={() => handleDelete(sponsor._id)}
                      className="h-8 border-slate-200 text-rose-600 hover:bg-rose-50 transition-none"
                    >
                       <Trash2 className="w-3 h-3" />
@@ -170,7 +170,7 @@ export default function AdminSponsors() {
           <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/50 backdrop-blur-sm">
              <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden">
                 <div className="p-6 border-b border-slate-200 flex items-center justify-between">
-                   <h2 className="text-lg font-bold text-slate-900">{editingSponsor.id ? 'Edit Partner' : 'Add New Partner'}</h2>
+                   <h2 className="text-lg font-bold text-slate-900">{editingSponsor._id ? 'Edit Partner' : 'Add New Partner'}</h2>
                    <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-slate-600 transition-none">
                       <X className="w-5 h-5" />
                    </button>

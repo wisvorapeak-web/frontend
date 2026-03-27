@@ -45,9 +45,9 @@ export default function AdminEvents() {
   const handleSaveSession = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsUpdating(true);
-    const method = editingSession.id ? 'PATCH' : 'POST';
-    const url = editingSession.id 
-      ? `${import.meta.env.VITE_API_URL}/api/admin/program/${editingSession.id}`
+    const method = editingSession._id ? 'PATCH' : 'POST';
+    const url = editingSession._id 
+      ? `${import.meta.env.VITE_API_URL}/api/admin/program/${editingSession._id}`
       : `${import.meta.env.VITE_API_URL}/api/admin/program`;
 
     try {
@@ -60,7 +60,7 @@ export default function AdminEvents() {
         body: JSON.stringify(editingSession)
       });
       if (res.ok) {
-        toast.success(editingSession.id ? 'Session updated' : 'Session added');
+        toast.success(editingSession._id ? 'Session updated' : 'Session added');
         setEditingSession(null);
         fetchData();
       }
@@ -74,9 +74,9 @@ export default function AdminEvents() {
   const handleSaveDate = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsUpdating(true);
-    const method = editingDate.id ? 'PATCH' : 'POST';
-    const url = editingDate.id 
-      ? `${import.meta.env.VITE_API_URL}/api/admin/dates/${editingDate.id}`
+    const method = editingDate._id ? 'PATCH' : 'POST';
+    const url = editingDate._id 
+      ? `${import.meta.env.VITE_API_URL}/api/admin/dates/${editingDate._id}`
       : `${import.meta.env.VITE_API_URL}/api/admin/dates`;
 
     try {
@@ -89,7 +89,7 @@ export default function AdminEvents() {
         body: JSON.stringify(editingDate)
       });
       if (res.ok) {
-        toast.success(editingDate.id ? 'Date updated' : 'Date added');
+        toast.success(editingDate._id ? 'Date updated' : 'Date added');
         setEditingDate(null);
         fetchData();
       }
@@ -100,10 +100,10 @@ export default function AdminEvents() {
     }
   };
 
-  const handleDeleteSession = async (id: string) => {
+  const handleDeleteSession = async (_id: string) => {
     if (!confirm('Delete this session?')) return;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/program/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/program/${_id}`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -116,10 +116,10 @@ export default function AdminEvents() {
     }
   };
 
-  const handleDeleteDate = async (id: string) => {
+  const handleDeleteDate = async (_id: string) => {
     if (!confirm('Delete this date?')) return;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/dates/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/dates/${_id}`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -165,7 +165,7 @@ export default function AdminEvents() {
 
              <div className="space-y-3">
                 {program.map((session) => (
-                   <div key={session.id} className="p-5 bg-white border border-slate-200 rounded shadow-sm flex items-start justify-between group">
+                   <div key={session._id} className="p-5 bg-white border border-slate-200 rounded shadow-sm flex items-start justify-between group">
                       <div className="space-y-3">
                          <div className="flex items-center gap-2">
                             <span className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded text-[9px] font-bold uppercase border border-blue-100 italic">
@@ -190,7 +190,7 @@ export default function AdminEvents() {
                          <Button variant="ghost" size="icon" onClick={() => setEditingSession(session)} className="h-8 w-8 text-slate-400 hover:text-blue-600 transition-none">
                             <Edit3 className="w-3.5 h-3.5" />
                          </Button>
-                         <Button variant="ghost" size="icon" onClick={() => handleDeleteSession(session.id)} className="h-8 w-8 text-slate-400 hover:text-red-600 transition-none">
+                         <Button variant="ghost" size="icon" onClick={() => handleDeleteSession(session._id)} className="h-8 w-8 text-slate-400 hover:text-red-600 transition-none">
                             <Trash2 className="w-3.5 h-3.5" />
                          </Button>
                       </div>
@@ -213,7 +213,7 @@ export default function AdminEvents() {
 
              <div className="space-y-3">
                 {dates.map((date) => (
-                   <div key={date.id} className="p-5 bg-white border border-slate-200 rounded shadow-sm group">
+                   <div key={date._id} className="p-5 bg-white border border-slate-200 rounded shadow-sm group">
                       <div className="flex justify-between items-start">
                          <div className="space-y-1">
                             <p className="text-[10px] font-bold text-blue-600 uppercase tracking-widest bg-blue-50 w-fit px-2 rounded mb-1 border border-blue-100 italic">
@@ -228,7 +228,7 @@ export default function AdminEvents() {
                             <Button variant="ghost" size="icon" onClick={() => setEditingDate(date)} className="h-8 w-8 text-slate-400 hover:text-blue-600 transition-none">
                                <Edit3 className="w-3.5 h-3.5" />
                             </Button>
-                            <Button variant="ghost" size="icon" onClick={() => handleDeleteDate(date.id)} className="h-8 w-8 text-slate-400 hover:text-red-600 transition-none">
+                            <Button variant="ghost" size="icon" onClick={() => handleDeleteDate(date._id)} className="h-8 w-8 text-slate-400 hover:text-red-600 transition-none">
                                <Trash2 className="w-3.5 h-3.5" />
                             </Button>
                          </div>

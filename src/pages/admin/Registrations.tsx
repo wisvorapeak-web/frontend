@@ -43,9 +43,9 @@ export default function Registrations() {
     }
   };
 
-  const handleUpdateStatus = async (id: string, newStatus: string) => {
+  const handleUpdateStatus = async (_id: string, newStatus: string) => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/registrations/${id}/status`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/registrations/${_id}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -66,8 +66,9 @@ export default function Registrations() {
   }, 0);
 
   const filteredRegs = registrations.filter(r => {
+    const regId = r._id || r.id;
     const matchesSearch = 
-      r.id?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      regId?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       r.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       r.email?.toLowerCase().includes(searchQuery.toLowerCase());
     
@@ -144,12 +145,12 @@ export default function Registrations() {
               </TableHeader>
               <TableBody>
                 {filteredRegs.map((reg) => (
-                  <TableRow key={reg.id} className="border-b border-slate-100 divide-x divide-slate-100 hover:bg-slate-50/30 transition-none">
+                  <TableRow key={reg._id || reg.id} className="border-b border-slate-100 divide-x divide-slate-100 hover:bg-slate-50/30 transition-none">
                     <TableCell className="py-4 pl-6">
                        <div className="space-y-0.5">
                           <p className="text-sm font-bold text-slate-900">{reg.name}</p>
                           <p className="text-xs text-slate-500 font-medium">{reg.email}</p>
-                          <p className="text-[9px] text-slate-300 font-mono tracking-tighter">{reg.id}</p>
+                          <p className="text-[9px] text-slate-300 font-mono tracking-tighter">{reg._id || reg.id}</p>
                        </div>
                     </TableCell>
                     <TableCell className="text-center">
@@ -169,10 +170,10 @@ export default function Registrations() {
                        <div className="flex items-center justify-end gap-3">
                          {reg.payment_status !== 'Paid' && (
                            <button 
-                             onClick={() => handleUpdateStatus(reg.id, 'Paid')}
+                             onClick={() => handleUpdateStatus(reg._id || reg.id, 'Paid')}
                              className="text-[10px] font-bold text-blue-600 hover:underline uppercase tracking-widest"
                            >
-                              Confirm Payment
+                               Confirm Payment
                            </button>
                          )}
                          <Button variant="outline" size="sm" className="h-8 w-8 p-0 border-slate-200 text-slate-400 hover:text-slate-900 transition-none rounded">

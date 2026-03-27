@@ -61,9 +61,9 @@ export default function AdminSpeakers() {
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsUpdating(true);
-    const method = editingSpeaker.id ? 'PATCH' : 'POST';
-    const url = editingSpeaker.id 
-      ? `${import.meta.env.VITE_API_URL}/api/admin/speakers/${editingSpeaker.id}`
+    const method = editingSpeaker._id ? 'PATCH' : 'POST';
+    const url = editingSpeaker._id 
+      ? `${import.meta.env.VITE_API_URL}/api/admin/speakers/${editingSpeaker._id}`
       : `${import.meta.env.VITE_API_URL}/api/admin/speakers`;
 
     try {
@@ -76,7 +76,7 @@ export default function AdminSpeakers() {
         body: JSON.stringify(editingSpeaker)
       });
       if (res.ok) {
-        toast.success(editingSpeaker.id ? 'Speaker updated' : 'New speaker added');
+        toast.success(editingSpeaker._id ? 'Speaker updated' : 'New speaker added');
         setIsModalOpen(false);
         fetchSpeakers();
       }
@@ -182,7 +182,7 @@ export default function AdminSpeakers() {
                          <Button 
                            variant="outline" 
                            size="sm" 
-                           onClick={() => handleDelete(speaker.id)}
+                           onClick={() => handleDelete(speaker._id)}
                            className="h-8 border-slate-200 text-rose-600 hover:bg-rose-50 transition-none"
                          >
                             <Trash2 className="w-3 h-3" />
@@ -204,7 +204,7 @@ export default function AdminSpeakers() {
           <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/50 backdrop-blur-sm">
              <div className="bg-white rounded-lg shadow-xl w-full max-w-lg overflow-hidden">
                 <div className="p-6 border-b border-slate-200 flex items-center justify-between">
-                   <h2 className="text-lg font-bold text-slate-900">{editingSpeaker.id ? 'Edit Speaker' : 'Add New Speaker'}</h2>
+                   <h2 className="text-lg font-bold text-slate-900">{editingSpeaker?._id ? 'Edit Speaker' : 'Add New Speaker'}</h2>
                    <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-slate-600 transition-none">
                       <X className="w-5 h-5" />
                    </button>

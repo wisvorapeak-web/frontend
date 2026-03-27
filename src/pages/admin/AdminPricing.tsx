@@ -68,8 +68,8 @@ export default function AdminPricing() {
     e.preventDefault();
     setIsSaving(true);
     try {
-      const url = editingTier 
-        ? `${import.meta.env.VITE_API_URL}/api/admin/pricing/${editingTier.id}`
+      const url = editingTier?._id 
+        ? `${import.meta.env.VITE_API_URL}/api/admin/pricing/${editingTier._id}`
         : `${import.meta.env.VITE_API_URL}/api/admin/pricing`;
       
       const method = editingTier ? 'PATCH' : 'POST';
@@ -89,7 +89,7 @@ export default function AdminPricing() {
       });
 
       if (res.ok) {
-        toast.success(`Pricing tier ${editingTier ? 'updated' : 'created'} successfully.`);
+        toast.success(`Pricing tier ${editingTier?._id ? 'updated' : 'created'} successfully.`);
         setIsDialogOpen(false);
         fetchPricing();
         resetForm();
@@ -165,7 +165,7 @@ export default function AdminPricing() {
             <DialogContent className="sm:max-w-[500px] p-0 border-none rounded-lg overflow-hidden shadow-2xl">
               <DialogHeader className="p-6 border-b border-slate-200">
                 <DialogTitle className="text-sm font-bold text-slate-900 uppercase tracking-widest">
-                  {editingTier ? 'Edit Pricing' : 'Add New Item'}
+                  {editingTier?._id ? 'Edit Pricing' : 'Add New Item'}
                 </DialogTitle>
                 <DialogDescription className="sr-only">
                   Manage prices and features for attendees and sponsors.
@@ -302,7 +302,7 @@ export default function AdminPricing() {
                 </TableHeader>
                 <TableBody>
                 {tiers.map((tier) => (
-                    <TableRow key={tier.id} className="border-b border-slate-100 divide-x divide-slate-100 hover:bg-slate-50/30 transition-none group">
+                    <TableRow key={tier._id} className="border-b border-slate-100 divide-x divide-slate-100 hover:bg-slate-50/30 transition-none group">
                        <TableCell className="py-4 pl-6">
                           <div className="flex items-center gap-4">
                              <div className={`w-10 h-10 rounded shrink-0 flex items-center justify-center border border-slate-100
@@ -345,7 +345,7 @@ export default function AdminPricing() {
                                     <Edit3 className="w-3.5 h-3.5" />
                                 </Button>
                                 <Button 
-                                  onClick={() => handleDelete(tier.id)}
+                                  onClick={() => handleDelete(tier._id)}
                                   variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-rose-600 transition-none rounded">
                                     <Trash2 className="w-3.5 h-3.5" />
                                 </Button>
