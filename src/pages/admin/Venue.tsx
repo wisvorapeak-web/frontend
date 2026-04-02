@@ -60,14 +60,15 @@ export default function AdminVenue() {
         credentials: 'include',
         body: JSON.stringify(settings)
       });
+      const data = await res.json();
       if (res.ok) {
           toast.success('Venue configuration updated.');
-          await fetchVenueData(); // Refresh to get any server-side defaults
+          await fetchVenueData(); 
       } else {
-          throw new Error();
+          toast.error(data.error || 'Update failed.');
       }
-    } catch (err) {
-      toast.error('Update failed: Check your connection or permissions.');
+    } catch (err: any) {
+      toast.error(err.message || 'Update failed.');
     } finally {
       setIsUpdating(false);
     }
@@ -84,15 +85,16 @@ export default function AdminVenue() {
         credentials: 'include',
         body: JSON.stringify(newImage)
       });
+      const data = await res.json();
       if (res.ok) {
         toast.success('Gallery entry added.');
         setNewImage({ image_url: '', caption: '', category: 'venue' });
         fetchVenueData();
       } else {
-          throw new Error();
+        toast.error(data.error || 'Failed to add gallery entry.');
       }
-    } catch (err) {
-      toast.error('Add failed: Could not register gallery entry.');
+    } catch (err: any) {
+      toast.error(err.message || 'Could not register gallery entry.');
     }
   };
 
@@ -104,7 +106,6 @@ export default function AdminVenue() {
       });
       if (res.ok) {
         toast.success('Gallery entry removed.');
-        setGallery(gallery.filter(img => img.id !== id || img._id !== id));
         fetchVenueData(); // Sync full state
       }
     } catch (err) {

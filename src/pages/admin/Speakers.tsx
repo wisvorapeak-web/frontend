@@ -75,13 +75,16 @@ export default function AdminSpeakers() {
         credentials: 'include',
         body: JSON.stringify(editingSpeaker)
       });
+      const data = await res.json();
       if (res.ok) {
         toast.success(editingSpeaker._id ? 'Speaker updated' : 'New speaker added');
         setIsModalOpen(false);
         fetchSpeakers();
+      } else {
+        toast.error(data.error || 'Operation failed');
       }
-    } catch (err) {
-      toast.error('Operation failed');
+    } catch (err: any) {
+      toast.error(err.message || 'Operation failed');
     } finally {
       setIsUpdating(false);
     }

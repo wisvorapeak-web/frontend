@@ -33,7 +33,7 @@ const icons: any = {
   QrCode, Briefcase, Rocket, Gavel
 };
 
-export default function Topics() {
+export default function Topics({ mobileLimit }: { mobileLimit?: number }) {
   const [topics, setTopics] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
@@ -88,7 +88,7 @@ export default function Topics() {
             {topics.map((topic, index) => {
               const Icon = icons[topic.icon_name] || Globe;
               return (
-                <div key={index} className="group relative flex flex-col">
+                <div key={index} className={`group relative flex flex-col ${mobileLimit && index >= mobileLimit ? 'hidden md:flex' : 'flex'}`}>
                   {/* Glass Card */}
                   <div className={`flex flex-col h-full bg-white rounded-[2.5rem] border border-slate-100 overflow-hidden hover:border-blue/20 hover:shadow-3xl hover:shadow-navy/10 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
                     style={{ transitionDelay: `${index * 100}ms` }}
@@ -144,7 +144,18 @@ export default function Topics() {
           <div className="py-20 text-center">
             <p className="text-slate-300 font-bold uppercase tracking-widest text-[10px]">No topics yet.</p>
           </div>
-        ) }
+        )}
+
+        {mobileLimit && topics.length > mobileLimit && (
+          <div className="mt-12 flex justify-center md:hidden">
+             <Link 
+               to="/topics" 
+               className="h-14 px-10 rounded-2xl bg-white border border-slate-200 text-blue font-black text-[10px] uppercase tracking-widest hover:bg-blue hover:text-white transition-all shadow-xl shadow-blue/5 flex items-center gap-3 decoration-none"
+             >
+                View All Topics <ArrowUpRight className="w-4 h-4" />
+             </Link>
+          </div>
+        )}
 
         <div className={`mt-24 text-center border-t border-slate-100 pt-12 transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <div className="inline-flex flex-col sm:flex-row items-center gap-6 sm:gap-12 bg-white px-8 sm:px-10 py-8 sm:py-6 rounded-[2rem] sm:rounded-[2.5rem] border border-slate-50 shadow-xl shadow-slate-900/5 w-full sm:w-auto">

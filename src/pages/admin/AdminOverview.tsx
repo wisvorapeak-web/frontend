@@ -8,7 +8,7 @@ import {
   Clock,
   CheckCircle2,
   Mail,
-  Rocket,
+  AlertCircle,
   TrendingUp,
   ArrowUpRight,
   Globe,
@@ -53,7 +53,7 @@ export default function AdminOverview() {
     { label: 'Total Delegates', value: adminStats.totalRegistrations.toLocaleString(), icon: Users, color: 'text-blue-600' },
     { label: 'Abstracts Received', value: adminStats.totalAbstracts.toLocaleString(), icon: FileText, color: 'text-indigo-600' },
     { label: 'Total Revenue', value: adminStats.totalRevenue, icon: CreditCard, color: 'text-emerald-600' },
-    { label: 'Sponsor Partners', value: adminStats.totalSponsors || 0, icon: Rocket, color: 'text-rose-600' },
+    { label: 'Payment Failures', value: adminStats.failedPayments || 0, icon: AlertCircle, color: 'text-rose-600' },
   ];
 
   if (loading) return (

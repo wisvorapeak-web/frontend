@@ -38,7 +38,7 @@ export default function Home() {
         <Suspense fallback={<SectionLoader />}>
           <Reveal width="100%"><About /></Reveal>
           <div className="section-divider" />
-          <Reveal width="100%"><Topics /></Reveal>
+          <Reveal width="100%"><Topics mobileLimit={3} /></Reveal>
           <div className="section-divider" />
           <Reveal width="100%"><VenueGallery /></Reveal>
           <div className="section-divider" />
