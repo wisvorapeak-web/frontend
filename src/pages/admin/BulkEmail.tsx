@@ -29,6 +29,18 @@ interface SendResult {
 }
 
 export default function BulkEmail() {
+  const senderEmails = [
+    'asfaa-2026@foodagriexpo.com',
+    'info@foodagriexpo.com',
+    'secretary@foodagriexpo.com',
+    'contact@foodagriexpo.com',
+    'asfaa2026@foodagriexpo.com',
+    'nova.grace@foodagriexpo.com',
+    'novagrace@foodagriexpo.com',
+    'enquiry@foodagriexpo.com'
+  ];
+
+  const [fromEmail, setFromEmail] = useState(senderEmails[0]);
   const [subject, setSubject] = useState('');
   const [content, setContent] = useState('');
   const [csvFile, setCsvFile] = useState<File | null>(null);
@@ -95,6 +107,7 @@ export default function BulkEmail() {
       formData.append('csv', csvFile);
       formData.append('subject', subject);
       formData.append('content', content);
+      formData.append('fromEmail', fromEmail);
 
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/bulk-email`, {
         method: 'POST',
@@ -127,6 +140,7 @@ export default function BulkEmail() {
   };
 
   const handleReset = () => {
+    setFromEmail(senderEmails[0]);
     setSubject('');
     setContent('');
     setCsvFile(null);
@@ -251,6 +265,19 @@ export default function BulkEmail() {
 
               <div className="space-y-6">
                 <div className="space-y-2">
+                  <Label className="text-xs font-bold text-slate-600">Sender Email</Label>
+                  <select
+                    value={fromEmail}
+                    onChange={(e) => setFromEmail(e.target.value)}
+                    className="w-full h-11 border border-slate-200 rounded bg-slate-50/50 focus:bg-white text-sm font-medium px-3 outline-none"
+                  >
+                    {senderEmails.map(email => (
+                      <option key={email} value={email}>{email}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="space-y-2">
                   <Label className="text-xs font-bold text-slate-600">Email Subject</Label>
                   <Input
                     value={subject}
@@ -310,7 +337,7 @@ export default function BulkEmail() {
                 <div className="space-y-2">
                   <div className="flex gap-2">
                     <span className="text-[10px] font-bold text-slate-400 w-12 uppercase">From</span>
-                    <span className="text-xs font-bold text-slate-900">info@foodagriexpo.com</span>
+                    <span className="text-xs font-bold text-slate-900">{fromEmail}</span>
                   </div>
                   <div className="flex gap-2">
                     <span className="text-[10px] font-bold text-slate-400 w-12 uppercase">To</span>
@@ -398,7 +425,7 @@ export default function BulkEmail() {
                 </div>
                 <div className="flex items-center justify-between border-t border-slate-100 pt-4">
                   <span className="text-xs font-medium text-slate-500">Sender Identity</span>
-                  <span className="text-xs font-bold text-blue-600">info@foodagriexpo.com</span>
+                  <span className="text-xs font-bold text-blue-600">{fromEmail}</span>
                 </div>
               </div>
             </div>
