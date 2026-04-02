@@ -7,8 +7,8 @@ export default function About() {
   const [isVisible, setIsVisible] = useState(false);
 
   const [settings, setSettings] = useState<any>({
-    about_title: 'Global Event: Food, AgriTech & Animal Systems',
-    about_content: 'ASFAA-2026 brings together experts from around the world to find new ways to improve food and animal farming systems.',
+    about_title: 'The Food & Farming Event',
+    about_content: 'ASFAA 2026 brings together experts to find better ways to grow food and farm animals.',
     about_image_url: '/venue-image-1.jpg'
   });
   const sectionRef = useRef<HTMLElement>(null);
@@ -44,7 +44,7 @@ export default function About() {
               <div className="relative rounded-[3rem] overflow-hidden shadow-3xl shadow-navy/20 border-8 border-white group/img transition-transform duration-1000">
                 <img 
                     src={settings.about_image_url || "/venue-image-1.jpg"} 
-                    alt="Innovation Hub" 
+                    alt="Event Center" 
                     className="w-full h-[380px] object-cover transition-transform duration-1000 group-hover:scale-110" 
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-navy/40 to-transparent opacity-60 group-hover:opacity-20 transition-opacity" />
@@ -85,7 +85,7 @@ export default function About() {
             <div className="space-y-6">
                <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-blue/5 border border-blue/10 backdrop-blur-xl">
                   <div className="w-1.5 h-1.5 rounded-full bg-blue animate-ping" />
-                  <span className="text-[10px] font-black text-blue uppercase tracking-[0.4em]">Who We Are</span>
+                  <span className="text-[10px] font-black text-blue uppercase tracking-[0.4em]">About Us</span>
                </div>
 
                <h2 className="text-3xl lg:text-3xl font-black text-navy leading-[1.1] tracking-tighter uppercase group">
@@ -107,7 +107,7 @@ export default function About() {
                   <div className="w-10 h-10 border-2 border-slate-50 rounded-xl flex items-center justify-center group-hover:border-blue/20 group-hover:text-blue transition-all duration-700 bg-white shadow-sm shadow-slate-900/5 rotate-3 group-hover:rotate-0">
                     <Target className="w-5 h-5" />
                   </div>
-                  World-Class Standards
+                  Top Quality
                </div>
             </div>
           </div>

@@ -7,11 +7,12 @@ import { Mic2, Star, UserCheck, Zap, Laptop, Rocket, Globe2, Linkedin } from 'lu
 import { Link } from 'react-router-dom';
 
 const speakerCategories = [
-  { id: 'plenary', label: 'Plenary', icon: Star, color: 'text-amber-500 bg-amber-50' },
-  { id: 'keynote', label: 'Keynote', icon: Mic2, color: 'text-indigo-500 bg-indigo-50' },
-  { id: 'invited', label: 'Invited', icon: UserCheck, color: 'text-emerald-500 bg-emerald-50' },
-  { id: 'young-research', label: 'Young Research', icon: Zap, color: 'text-rose-500 bg-rose-50' },
-  { id: 'posters', label: 'Posters', icon: Laptop, color: 'text-blue-500 bg-blue-50' },
+  { id: 'Plenary', label: 'Plenary', icon: Star, color: 'text-amber-500 bg-amber-50' },
+  { id: 'Keynote', label: 'Keynote', icon: Mic2, color: 'text-indigo-500 bg-indigo-50' },
+  { id: 'Invited', label: 'Invited', icon: UserCheck, color: 'text-emerald-500 bg-emerald-50' },
+  { id: 'New Researchers', label: 'New Researchers', icon: Zap, color: 'text-rose-500 bg-rose-50' },
+  { id: 'Poster Displays', label: 'Poster Displays', icon: Laptop, color: 'text-blue-500 bg-blue-50' },
+  { id: 'Regular', label: 'Featured', icon: UserCheck, color: 'text-slate-500 bg-slate-50' },
 ];
 
 interface Speaker {
@@ -42,10 +43,10 @@ export default function SpeakersPage() {
   return (
     <PageLayout 
       title="Speakers" 
-      subtitle="Meet the global experts leading the future of sustainable food systems."
+      subtitle="Meet the experts leading the future of food and farming."
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 py-12 space-y-24 pb-32">
-        <Tabs defaultValue="plenary" className="w-full">
+        <Tabs defaultValue="Plenary" className="w-full">
            <div className="bg-slate-50 p-1 rounded-full mb-10 border border-slate-100 overflow-x-auto scrollbar-none flex justify-center h-16 items-center">
               <TabsList className="bg-transparent h-full flex gap-2 px-4">
                  {speakerCategories.map((cat) => (
@@ -87,7 +88,7 @@ export default function SpeakersPage() {
                                     </div>
 
                                     <div className="w-full p-4 bg-slate-50 rounded-2xl border border-slate-100/50 group-hover:bg-indigo-50/50 transition-all flex flex-col items-center justify-center min-h-[80px] mb-6">
-                                       <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-2">University</p>
+                                       <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-2">School / Work</p>
                                        <p className="text-[11px] font-bold text-slate-700 leading-relaxed max-w-[180px]">{speaker.university || 'Global Hub'}</p>
                                     </div>
 
@@ -114,10 +115,10 @@ export default function SpeakersPage() {
                               <cat.icon className="w-12 h-12 group-hover:rotate-12 transition-transform" />
                            </div>
                            <div className="space-y-4">
-                              <h3 className="text-3xl font-black font-outfit text-navy tracking-tight">Speakers Coming Soon</h3>
+                              <h3 className="text-3xl font-black font-outfit text-navy tracking-tight">Coming Soon</h3>
                               <p className="text-slate-400 text-xs font-bold max-w-sm mx-auto leading-loose uppercase tracking-[0.2em]">
-                                 We are finalizing the speakers for this session. 
-                                 <br /> <span className="text-indigo-400">Applications are being reviewed.</span>
+                                 We are picking the speakers now. 
+                                 <br /> <span className="text-indigo-400">We are checking the applications.</span>
                               </p>
                            </div>
                         </div>
@@ -138,18 +139,18 @@ export default function SpeakersPage() {
             </div>
 
             <div className="space-y-4 relative z-10">
-               <h2 className="text-3xl lg:text-5xl font-black font-outfit leading-[1.1] tracking-tight">Become an <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue to-indigo-400">Honoured Speaker</span></h2>
+               <h2 className="text-3xl lg:text-5xl font-black font-outfit leading-[1.1] tracking-tight">Join Us as a <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue to-indigo-400">Speaker</span></h2>
                <p className="max-w-xl mx-auto text-indigo-200/60 text-base lg:text-lg font-medium leading-relaxed">
-                  Join a world-class lineup of pioneers and share your research with a global audience of innovators.
+                  Join our top speakers and share your work with the world.
                </p>
             </div>
             
             <div className="flex flex-wrap justify-center gap-5 pt-4 relative z-10">
                <Link to="/abstract-submission" className="h-14 px-10 bg-white text-indigo-950 rounded-xl flex items-center justify-center text-[10px] font-black uppercase tracking-[0.2em] shadow-2xl hover:bg-slate-50 transition-all active:scale-95 text-decoration-none group-hover:shadow-[0_20px_50px_-10px_rgba(255,255,255,0.2)]">
-                  Apply to Speak <Mic2 className="w-3.5 h-3.5 ml-3 opacity-50" />
+                  Send Research <Mic2 className="w-3.5 h-3.5 ml-3 opacity-50" />
                </Link>
                <Link to="/sessions" className="h-14 px-10 border-2 border-white/10 text-white rounded-xl flex items-center justify-center text-[10px] font-black uppercase tracking-[0.2em] hover:bg-white/5 transition-all text-decoration-none bg-white/5 backdrop-blur-sm">
-                  View Sessions
+                  See Talks
                </Link>
             </div>
         </section>

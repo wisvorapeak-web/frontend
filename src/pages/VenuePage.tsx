@@ -15,7 +15,7 @@ export default function VenuePage() {
     virtual_tour_url: '#'
   });
   const [settings, setSettings] = useState<any>({
-    site_tagline: 'Experience the culture of Singapore during the summit.'
+    site_tagline: 'See the culture of Singapore during the event.'
   });
   const [loading, setLoading] = useState(true);
 
@@ -31,7 +31,7 @@ export default function VenuePage() {
   }, []);
 
   if (loading) return (
-     <PageLayout title="Venue" subtitle="Loading Venue...">
+     <PageLayout title="Venue" subtitle="Loading...">
          <div className="flex flex-col items-center justify-center py-32 space-y-6">
             <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
             <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em] animate-pulse">Wait a moment...</p>
@@ -87,7 +87,7 @@ export default function VenuePage() {
                  />
               </div>
               <div className="rounded-3xl overflow-hidden shadow-2xl translate-y-8 bg-slate-50">
-                 <img src="/venue-image-2.jpg" className="w-full h-full object-cover" alt="Singapore Skyline" />
+                 <img src="https://images.unsplash.com/photo-1525624941314-9602a0b833f1?w=800&q=80" className="w-full h-full object-cover" alt="Singapore Skyline" />
               </div>
            </div>
         </section>
@@ -105,25 +105,25 @@ export default function VenuePage() {
                    We have partnered with hotels in Singapore to offer you special rates.
                 </p>
                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {['Official Hotels', 'Special Rates', 'Luxury Rooms', 'Walking Distance'].map((t, i) => (
+                  {['Partner Hotels', 'Low Rates', 'Top Rooms', 'Near Venue'].map((t, i) => (
                     <li key={i} className="flex items-center gap-2 text-[9px] font-black text-navy opacity-60 uppercase tracking-tight">
                        <CheckCircle2 className="w-3.5 h-3.5 text-blue" /> {t}
                     </li>
                   ))}
                </ul>
                <Link to="/registration" className="inline-block h-12 px-10 bg-blue text-white rounded-xl flex items-center justify-center text-[9px] font-black uppercase tracking-widest shadow-xl shadow-blue/20 hover:bg-navy transition-all active:scale-95 text-decoration-none">
-                  Book Now
+                  Book Hotel
                </Link>
             </div>
             <div className="grid grid-cols-2 gap-4 h-[300px]">
                <div className="bg-white p-3 rounded-2xl shadow-xl shadow-slate-200/50 -rotate-2 hover:rotate-0 transition-all duration-700">
                   <div className="w-full h-full rounded-xl overflow-hidden">
-                     <img src="/venue-image-3.jpg" className="w-full h-full object-cover" alt="Hotel Interior" />
+                     <img src="https://images.unsplash.com/photo-1540575861501-7ce0e220beff?w=800&q=80" className="w-full h-full object-cover" alt="Conference Center" />
                   </div>
                </div>
                <div className="bg-white p-3 rounded-2xl shadow-xl shadow-slate-200/50 rotate-2 translate-y-8 hover:rotate-0 transition-all duration-700">
                   <div className="w-full h-full rounded-xl overflow-hidden">
-                     <img src="/venue-image-4.jpg" className="w-full h-full object-cover" alt="Hotel Exterior" />
+                     <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80" className="w-full h-full object-cover" alt="Hotel Interior" />
                   </div>
                </div>
             </div>
@@ -166,9 +166,9 @@ export default function VenuePage() {
                 <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center text-blue mx-auto animate-bounce">
                    <Globe className="w-6 h-6" />
                 </div>
-                <h2 className="text-3xl lg:text-4xl font-black text-white leading-none uppercase tracking-tight">Travel & <span className="text-blue">Visa</span></h2>
+                <h2 className="text-3xl lg:text-4xl font-black text-white leading-none uppercase tracking-tight">Travel & <span className="text-blue">Entry</span></h2>
                 <p className="text-white/40 text-[9px] font-black uppercase tracking-widest max-w-xl mx-auto italic">
-                   To support visa processing, an official invitation letter will be issued to speakers/delegates who have completed registration and confirmed accommodation.
+                   We will send you an invite letter after you register and book a room. Use this for your visa.
                 </p>
             </div>
             

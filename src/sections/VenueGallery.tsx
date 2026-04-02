@@ -4,16 +4,16 @@ import { Maximize2, Loader2 } from 'lucide-react';
 const venueImagesFallback = [
   {
     image_url: '/venue-image-1.jpg',
-    caption: 'Pragati Maidan Exterior',
+    caption: 'Conference Exterior',
     category: 'Venue'
   },
   {
-    image_url: '/venue-image-2.jpg',
+    image_url: 'https://images.unsplash.com/photo-1540575861501-7ce0e220beff?w=800&q=80',
     caption: 'Grand Conference Hall',
     category: 'Venue'
   },
   {
-    image_url: '/venue-image-3.jpg',
+    image_url: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80',
     caption: 'Networking Lounge',
     category: 'Lobby'
   },

@@ -58,12 +58,12 @@ export default function WhyAttend() {
               <span className="text-[10px] font-black text-blue uppercase tracking-[0.3em] leading-none">Why Attend</span>
             </div>
             <h2 className="text-4xl lg:text-6xl font-black text-navy tracking-tight leading-tight uppercase">
-              Building the <span className="text-blue">Future</span> of Food & Science
+              Building the <span className="text-blue">Future</span> of Food
             </h2>
           </div>
           <div className="lg:text-right">
              <p className="text-slate-400 text-xs font-bold uppercase tracking-[0.2em] italic max-w-sm ml-auto opacity-70">
-                A major event for researchers, industry leaders, and innovators from around the world.
+                A big event for experts and leaders in food and farming.
              </p>
           </div>
         </div>
@@ -71,7 +71,7 @@ export default function WhyAttend() {
         {loading ? (
           <div className="py-16 flex flex-col items-center gap-6">
             <Loader2 className="w-12 h-12 text-blue animate-spin" />
-            <p className="text-slate-300 font-black uppercase tracking-[0.4em] text-[10px] animate-pulse">Loading Details...</p>
+            <p className="text-slate-300 font-black uppercase tracking-[0.4em] text-[10px] animate-pulse">Loading...</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -124,9 +124,9 @@ export default function WhyAttend() {
 
         <div className={`mt-24 pt-12 border-t border-slate-50 grid grid-cols-1 md:grid-cols-3 gap-12 transition-all duration-1000 delay-700 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
           {[
-            { value: '2500+', label: 'Expected Participants', icon: GraduationCap },
-            { value: '50+', label: 'Main Discussions', icon: ShieldCheck },
-            { value: '500k', label: 'Funding Options', icon: Zap },
+            { value: '2500+', label: 'People Coming', icon: GraduationCap },
+            { value: '50+', label: 'Main Talks', icon: ShieldCheck },
+            { value: '500k', label: 'Money for Research', icon: Zap },
           ].map((s, i) => (
              <div key={i} className="flex items-center gap-6 p-6 rounded-3xl hover:bg-slate-50 transition-colors group">
               <div className="w-12 h-12 rounded-xl bg-blue/5 flex items-center justify-center text-blue/40 group-hover:text-blue group-hover:scale-110 transition-all duration-500">

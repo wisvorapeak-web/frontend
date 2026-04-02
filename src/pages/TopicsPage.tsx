@@ -7,7 +7,7 @@ export default function TopicsPage() {
   return (
     <PageLayout 
       title="Topics" 
-      subtitle="Explore the key themes of our summit."
+      subtitle="See the main topics of our event."
     >
       <Topics />
       <About />

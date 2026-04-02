@@ -29,8 +29,8 @@ export default function DatesPage() {
   
   return (
     <PageLayout 
-      title="Dates" 
-      subtitle="See all important dates for the summit in Singapore."
+      title="Key Dates" 
+      subtitle="See all the important dates for our event."
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 py-12 space-y-16 pb-20">
         
@@ -40,11 +40,11 @@ export default function DatesPage() {
             <div className="relative z-10 space-y-8">
                <div className="flex items-center gap-4 text-blue">
                   <Clock className="w-8 h-8" />
-                  <span className="text-xs font-black uppercase tracking-[0.4em]">Dates</span>
+                  <span className="text-xs font-black uppercase tracking-[0.4em]">Key Dates</span>
                </div>
-               <h2 className="text-2xl lg:text-4xl font-black text-white leading-tight tracking-tight uppercase">Event <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue to-indigo-400">Dates</span></h2>
+               <h2 className="text-2xl lg:text-4xl font-black text-white leading-tight tracking-tight uppercase">Key <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue to-indigo-400">Dates</span></h2>
                <p className="max-w-2xl text-white/40 text-[11px] font-bold uppercase tracking-widest leading-relaxed italic">
-                  Important dates for your research and registration.
+                  Important dates for sending research and registration.
                </p>
             </div>
         </div>
@@ -81,7 +81,7 @@ export default function DatesPage() {
                       <p className="text-slate-400 font-medium text-base leading-relaxed max-w-2xl px-4 md:px-0">
                          {milestone.description}
                          <br />
-                         <span className="text-[10px] uppercase font-black tracking-widest text-slate-300 mt-4 block opacity-60">Final deadlines set by the team.</span>
+                         <span className="text-[10px] uppercase font-black tracking-widest text-slate-300 mt-4 block opacity-60">The team has set these dates.</span>
                       </p>
                    </div>
                 </div>

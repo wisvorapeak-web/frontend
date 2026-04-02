@@ -77,7 +77,7 @@ export default function RegistrationPage() {
   return (
     <PageLayout 
       title="Registration" 
-      subtitle="Select a package for the ASFAA 2026 Summit."
+      subtitle="Choose your registration for the event."
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-16 pb-32 font-outfit animate-in fade-in slide-in-from-bottom-5 duration-1000">
         
@@ -85,11 +85,11 @@ export default function RegistrationPage() {
             <div className={`inline-flex items-center gap-2 px-6 py-2 rounded-full border ${isEarlyBird ? 'bg-emerald-50 border-emerald-100 text-emerald-600' : 'bg-blue/5 border-blue/10 text-blue'}`}>
                 <div className={`w-2 h-2 rounded-full ${isEarlyBird ? 'bg-emerald-500' : 'bg-blue'} animate-pulse`} />
                 <span className="text-[10px] font-black uppercase tracking-widest">
-                    {isEarlyBird ? 'Early Bird Prices Active' : 'Regular Registration Active'}
+                    {isEarlyBird ? 'Early Bird Prices Now!' : 'Standard Price Now!'}
                 </span>
             </div>
-            <h2 className="text-4xl font-black text-navy tracking-tight uppercase"><span className="text-blue">Registration</span> Packages</h2>
-            <p className="text-slate-400 text-sm font-bold uppercase tracking-widest max-w-xl mx-auto leading-relaxed">Choose a category below to go to our secure payment page.</p>
+            <h2 className="text-4xl font-black text-navy tracking-tight uppercase"><span className="text-blue">Registration</span> Plans</h2>
+            <p className="text-slate-400 text-sm font-bold uppercase tracking-widest max-w-xl mx-auto leading-relaxed">Choose a plan to register.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -120,7 +120,7 @@ export default function RegistrationPage() {
                         </div>
 
                         <div className="pt-4 flex items-center gap-4 text-slate-300 group-hover:text-blue transition-colors">
-                            <span className="text-[9px] font-black uppercase tracking-widest">Book Now</span>
+                            <span className="text-[9px] font-black uppercase tracking-widest">Register</span>
                             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-2 transition-transform" />
                         </div>
                     </div>
@@ -136,10 +136,10 @@ export default function RegistrationPage() {
         <div className="mt-20 pt-12 border-t border-slate-50 flex flex-col md:flex-row items-center justify-between gap-8 opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
             <div className="flex items-center gap-4">
                 <CheckCircle2 className="w-5 h-5 text-blue" />
-                <span className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">Secure Payment Gateway</span>
+                <span className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">Secure Payments</span>
             </div>
             <div className="flex items-center gap-8">
-                <div className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">Accepted Payment Methods</div>
+                <div className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">We Accept</div>
                 <div className="flex gap-4 items-center">
                     <div className="w-8 h-8 bg-slate-100 rounded-lg" />
                     <div className="w-8 h-8 bg-slate-100 rounded-lg" />

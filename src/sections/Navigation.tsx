@@ -32,8 +32,8 @@ const navLinks = [
     href: '/about',
     subItems: [
         { label: 'About', href: '/about', icon: Info },
-        { label: 'Organizers', href: '/organizers', icon: Users },
-        { label: 'Team', href: '/chairs', icon: Award },
+        { label: 'Our Team', href: '/organizers', icon: Users },
+        { label: 'Our Leaders', href: '/chairs', icon: Award },
         { label: 'Dates', href: '/dates', icon: Calendar },
         { label: 'Venue', href: '/venue', icon: MapPin },
     ]
@@ -44,18 +44,18 @@ const navLinks = [
     subItems: [
         { label: 'Speakers', href: '/speakers', icon: Mic2 },
         { label: 'Schedule', href: '/program', icon: Monitor },
-        { label: 'Events', href: '/sessions', icon: Zap },
-        { label: 'Workshops', href: '/workshops', icon: Rocket },
+        { label: 'Talks', href: '/sessions', icon: Zap },
+        { label: 'Classes', href: '/workshops', icon: Rocket },
     ]
   },
   { 
     label: 'Sponsors', 
     href: '/sponsorship',
     subItems: [
-        { label: 'Packages', href: '/sponsorship', icon: Trophy },
-        { label: 'Exhibitors', href: '/sponsorship#exhibitors', icon: Building2 },
-        { label: 'Journals', href: '/journals', icon: FileText },
-        { label: 'Info', href: '/brochure', icon: Rocket },
+        { label: 'Partner Plans', href: '/sponsorship', icon: Trophy },
+        { label: 'Booth Info', href: '/sponsorship#exhibitors', icon: Building2 },
+        { label: 'Research Papers', href: '/journals', icon: FileText },
+        { label: 'More Info', href: '/brochure', icon: Rocket },
     ]
   },
   { label: 'Contact', href: '/contact' },
@@ -151,7 +151,7 @@ export default function Navigation() {
                 <NavItem key={link.label} link={link} scrolled={isScrolled} home={isHomePage} />
               ))}
               <Button asChild className="bg-blue hover:bg-blue-600 text-white h-9 px-5 rounded-lg text-[9px] font-black uppercase tracking-widest shadow-lg shadow-blue/20">
-                <Link to="/registration" className="text-decoration-none">Register Now</Link>
+                <Link to="/registration" className="text-decoration-none">Register</Link>
               </Button>
             </div>
 
@@ -236,7 +236,7 @@ export default function Navigation() {
 
             <div className="pt-4">
               <Button asChild className="w-full h-14 bg-blue hover:bg-navy text-white font-bold rounded-2xl shadow-xl shadow-blue/20" onClick={() => setIsMobileMenuOpen(false)}>
-                <Link to="/registration">Register Now</Link>
+                <Link to="/registration">Register</Link>
               </Button>
             </div>
           </div>

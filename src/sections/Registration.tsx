@@ -72,7 +72,7 @@ export default function Registration() {
             <span className="text-[9px] font-black uppercase tracking-[0.3em] text-blue">Pricing Plans</span>
           </div>
 
-          <h2 className="text-2xl lg:text-3xl font-black text-navy tracking-tighter leading-tight uppercase">Get Your <span className="text-blue">Ticket</span></h2>
+          <h2 className="text-2xl lg:text-3xl font-black text-navy tracking-tighter leading-tight uppercase">Get your <span className="text-blue">Registration</span></h2>
           <p className="text-slate-400 text-[10px] font-bold max-w-xl mx-auto uppercase tracking-[0.2em] opacity-80 italic">
             Book your spot and join global experts in food and agriculture.
           </p>

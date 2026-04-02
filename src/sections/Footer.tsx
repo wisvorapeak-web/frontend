@@ -23,18 +23,18 @@ const quickLinks = [
 ];
 
 const resources = [
-  { label: 'Submit Abstract', href: '/abstract-submission' },
-  { label: 'Program', href: '/program' },
+  { label: 'Send Research', href: '/abstract-submission' },
+  { label: 'Schedule', href: '/program' },
   { label: 'Speakers', href: '/speakers' },
-  { label: 'Brochures', href: '/brochures' },
-  { label: 'Sponsorship', href: '/sponsorship' },
+  { label: 'Downloads', href: '/brochures' },
+  { label: 'Partners', href: '/sponsorship' },
 ];
 
 export default function Footer() {
   const location = useLocation();
   const [settings, setSettings] = useState<any>({
-    site_tagline: 'Leading the future of food, agriculture and animal systems.',
-    site_title: 'ASFAA-2026',
+    site_tagline: 'Leading the future of food and farming.',
+    site_title: 'ASFAA 2026',
     contact_email: 'contact@foodagriexpo.com',
     contact_phone: '+65 6123 4567',
     contact_address: 'Singapore Innovation Hub',
@@ -76,7 +76,7 @@ export default function Footer() {
                />
             </Link>
             <p className="text-[10px] font-bold text-white/40 leading-relaxed uppercase tracking-widest italic">
-              Empowering global innovation in food, agriculture, and animal science through research and partnership.
+              Helping the world grow better food and farm animals through research.
             </p>
             
             {/* Contact Info */}
@@ -95,7 +95,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-[9px] font-black text-blue mb-5 uppercase tracking-[0.4em]">Navigation</h4>
+            <h4 className="text-[9px] font-black text-blue mb-5 uppercase tracking-[0.4em]">Links</h4>
             <ul className="space-y-2.5">
               {quickLinks.map((l) => (
                 <li key={l.label}>
@@ -133,11 +133,11 @@ export default function Footer() {
             </div>
             
             <div className="space-y-2 pt-2">
-              <Link to="/legal/privacy" className="flex items-center gap-2 text-[9px] font-bold text-white/20 hover:text-blue transition-colors uppercase tracking-wider">
+              <Link to="/privacy-policy" className="flex items-center gap-2 text-[9px] font-bold text-white/20 hover:text-blue transition-colors uppercase tracking-wider">
                 <ShieldCheck className="w-3 h-3 opacity-40" /> Privacy Policy
               </Link>
-              <Link to="/legal/terms" className="flex items-center gap-2 text-[9px] font-bold text-white/20 hover:text-blue transition-colors uppercase tracking-wider">
-                <Scale className="w-3 h-3 opacity-40" /> Terms of Service
+              <Link to="/terms-conditions" className="flex items-center gap-2 text-[9px] font-bold text-white/20 hover:text-blue transition-colors uppercase tracking-wider">
+                <Scale className="w-3" /> Terms & Conditions
               </Link>
             </div>
           </div>

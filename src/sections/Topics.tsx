@@ -49,7 +49,9 @@ export default function Topics() {
       })
       .finally(() => setLoading(false));
 
-    const observer = new IntersectionObserver(([e]) => e.isIntersecting && setIsVisible(true), { threshold: 0.1 });
+    const observer = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) setIsVisible(true);
+    }, { threshold: 0.05, rootMargin: "50px" });
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
@@ -65,23 +67,23 @@ export default function Topics() {
         <div className="text-center mb-10 space-y-4">
           <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-blue/5 border border-blue/10 backdrop-blur-xl">
             <BookOpen className="w-3.5 h-3.5 text-blue animate-pulse" />
-            <span className="text-[10px] font-black text-blue uppercase tracking-[0.4em] leading-none">Main Topics</span>
+            <span className="text-[10px] font-black text-blue uppercase tracking-[0.4em] leading-none">Event Topics</span>
           </div>
 
           <h2 className="text-3xl lg:text-4xl font-black text-navy tracking-tight uppercase leading-tight">
-            Summit <span className="text-blue">Themes</span>
+            Main <span className="text-blue">Topics</span>
           </h2>
           <p className="text-slate-400 text-xs font-bold uppercase tracking-[0.2em] italic opacity-70 max-w-2xl mx-auto line-relaxed">
-            Explore the main research areas of the food, agritech, and animal sections.
+            Read about our key topics in food and farming.
           </p>
         </div>
 
         {loading ? (
           <div className="py-16 flex flex-col items-center gap-6">
             <Loader2 className="w-12 h-12 text-blue animate-spin" />
-            <p className="text-slate-300 font-black uppercase tracking-[0.4em] text-[10px] animate-pulse">Loading Topics...</p>
+            <p className="text-slate-300 font-black uppercase tracking-[0.4em] text-[10px] animate-pulse">Loading...</p>
           </div>
-        ) : (
+        ) : topics.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {topics.map((topic, index) => {
               const Icon = icons[topic.icon_name] || Globe;
@@ -94,7 +96,7 @@ export default function Topics() {
                     <div className="aspect-[4/3] w-full relative overflow-hidden bg-slate-100 p-3 pb-0">
                       <div className="w-full h-full rounded-[2rem] overflow-hidden relative shadow-inner">
                         <img 
-                          src={topic.image_url || `https://api.dicebear.com/7.x/shapes/svg?seed=${topic.title}`} 
+                          src={topic.image_url || `https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?w=800&q=80&auto=format&fit=crop&seed=${topic.title}`} 
                           alt={topic.title}
                           className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-90 group-hover:opacity-100"
                         />
@@ -113,7 +115,7 @@ export default function Topics() {
                       <div className="space-y-1">
                         <div className="flex items-center gap-2 mb-2">
                            <div className={`w-1.5 h-1.5 rounded-full bg-blue opacity-40 group-hover:opacity-100 transition-opacity`} />
-                           <span className="text-[9px] font-black text-blue uppercase tracking-widest opacity-80 decoration-blue/20 underline decoration-1 underline-offset-4">Theme {index + 1}</span>
+                           <span className="text-[9px] font-black text-blue uppercase tracking-widest opacity-80 decoration-blue/20 underline decoration-1 underline-offset-4">Topic {index + 1}</span>
                         </div>
                         <h3 className="text-lg font-black text-navy group-hover:text-blue transition-colors duration-500 uppercase tracking-tighter leading-snug">
                           {topic.title}
@@ -138,22 +140,26 @@ export default function Topics() {
               );
             })}
           </div>
-        )}
+        ) : (
+          <div className="py-20 text-center">
+            <p className="text-slate-300 font-bold uppercase tracking-widest text-[10px]">No topics yet.</p>
+          </div>
+        ) }
 
         <div className={`mt-24 text-center border-t border-slate-100 pt-12 transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="inline-flex items-center gap-12 bg-white px-10 py-6 rounded-[2.5rem] border border-slate-50 shadow-xl shadow-slate-900/5">
-            <div className="text-left space-y-1">
+          <div className="inline-flex flex-col sm:flex-row items-center gap-6 sm:gap-12 bg-white px-8 sm:px-10 py-8 sm:py-6 rounded-[2rem] sm:rounded-[2.5rem] border border-slate-50 shadow-xl shadow-slate-900/5 w-full sm:w-auto">
+             <div className="text-center sm:text-left space-y-1">
                <p className="text-2xl font-black text-navy tracking-tighter leading-none">200+</p>
-               <p className="text-[9px] font-black text-slate-300 uppercase tracking-[0.2em] leading-none">Sub-Topics</p>
+               <p className="text-[9px] font-black text-slate-300 uppercase tracking-[0.2em] leading-none">Small Topics</p>
             </div>
-            <div className="w-px h-10 bg-slate-100" />
-            <div className="text-left space-y-1">
+            <div className="hidden sm:block w-px h-10 bg-slate-100" />
+            <div className="text-center sm:text-left space-y-1">
                <p className="text-2xl font-black text-navy tracking-tighter leading-none">15+</p>
-               <p className="text-[9px] font-black text-slate-300 uppercase tracking-[0.2em] leading-none">Panels</p>
+               <p className="text-[9px] font-black text-slate-300 uppercase tracking-[0.2em] leading-none">Groups</p>
             </div>
-            <div className="w-px h-10 bg-slate-100" />
+            <div className="hidden sm:block w-px h-10 bg-slate-100" />
             <Link to="/abstract-submission" className="group/cta flex items-center gap-4 text-decoration-none">
-               <p className="text-[11px] font-black text-blue uppercase tracking-widest group-hover/cta:text-navy transition-colors">Submit Your Abstract</p>
+               <p className="text-[11px] font-black text-blue uppercase tracking-widest group-hover/cta:text-navy transition-colors">Send Your Research</p>
                <div className="w-10 h-10 rounded-xl bg-blue/5 flex items-center justify-center text-blue group-hover/cta:bg-blue group-hover/cta:text-white transition-all shadow-sm">
                  <ArrowUpRight className="w-4 h-4" />
                </div>

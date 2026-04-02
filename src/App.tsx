@@ -25,7 +25,11 @@ const ChairsPage = lazy(() => import('./pages/ChairsPage'));
 const WorkshopsPage = lazy(() => import('./pages/WorkshopsPage'));
 const JournalsPage = lazy(() => import('./pages/JournalsPage'));
 const PaymentPage = lazy(() => import('./pages/PaymentPage'));
+const PaymentSuccessPage = lazy(() => import('./pages/PaymentSuccessPage'));
 const LegalPage = lazy(() => import('./pages/LegalPage'));
+const ReceiptPage = lazy(() => import('./pages/ReceiptPage'));
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
+const TermsConditions = lazy(() => import('./pages/TermsConditions'));
 
 // Lazy load Auth Pages
 const Login = lazy(() => import('./pages/auth/Login'));
@@ -49,6 +53,7 @@ const AdminTopics = lazy(() => import('./pages/admin/AdminTopics'));
 const AdminContent = lazy(() => import('./pages/admin/AdminContent'));
 const BulkEmail = lazy(() => import('./pages/admin/BulkEmail'));
 const AdminUsers = lazy(() => import('./pages/admin/AdminUsers'));
+const FailedPayments = lazy(() => import('./pages/admin/FailedPayments'));
 const SetupPage = lazy(() => import('./pages/SetupPage'));
 
 // Loading Fallback Component
@@ -92,9 +97,13 @@ function App() {
           <Route path="/workshops" element={<WorkshopsPage />} />
           <Route path="/journals" element={<JournalsPage />} />
           <Route path="/payment/:type/:slug" element={<PaymentPage />} />
+          <Route path="/payment/success" element={<PaymentSuccessPage />} />
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/legal/:slug" element={<LegalPage />} />
+          <Route path="/receipt/:id" element={<ReceiptPage />} />
           <Route path="/setup" element={<SetupPage />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-conditions" element={<TermsConditions />} />
           
           {/* Auth Routes moved to Admin */}
           <Route path="/admin/login" element={<Login />} />
@@ -181,6 +190,11 @@ function App() {
           <Route path="/admin/users" element={
             <ProtectedRoute requireAdmin>
               <AdminUsers />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/failed-payments" element={
+            <ProtectedRoute requireAdmin>
+              <FailedPayments />
             </ProtectedRoute>
           } />
         </Routes>

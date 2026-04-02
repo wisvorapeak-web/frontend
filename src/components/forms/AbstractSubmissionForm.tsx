@@ -25,6 +25,7 @@ export default function AbstractSubmissionForm() {
     email: '',
     institution: '',
     topic: '',
+    category: '',
     title: '',
     abstract: ''
   });
@@ -32,8 +33,8 @@ export default function AbstractSubmissionForm() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
-      if (selectedFile.size > 10 * 1024 * 1024) {
-        toast.error('File too large. Max 10MB allowed.');
+      if (selectedFile.size > 30 * 1024 * 1024) {
+        toast.error('File too large. Max 30MB allowed.');
         return;
       }
       setFile(selectedFile);
@@ -70,6 +71,7 @@ export default function AbstractSubmissionForm() {
         email: '',
         institution: '',
         topic: '',
+        category: '',
         title: '',
         abstract: ''
       });
@@ -178,6 +180,20 @@ export default function AbstractSubmissionForm() {
            </div>
 
            <div className="space-y-3">
+              <Label className="text-xs font-black text-slate-500 ml-1 uppercase tracking-widest">Presentation Category</Label>
+              <Select onValueChange={(val) => setFormData({...formData, category: val})} value={formData.category}>
+                <SelectTrigger className="h-14 rounded-2xl bg-slate-50 border-none focus:ring-4 focus:ring-indigo-500/5 font-bold">
+                  <SelectValue placeholder="Select category" />
+                </SelectTrigger>
+                <SelectContent className="bg-white border-slate-100 rounded-2xl shadow-2xl">
+                   {['Plenary', 'Keynote', 'Invited', 'New Researchers', 'Poster Displays'].map(c => (
+                      <SelectItem key={c} value={c} className="font-bold text-navy focus:bg-indigo-50 focus:text-indigo-600 py-3">{c}</SelectItem>
+                   ))}
+                </SelectContent>
+              </Select>
+           </div>
+
+           <div className="space-y-3">
               <Label className="text-xs font-black text-slate-500 ml-1 uppercase tracking-widest">Title of Abstract</Label>
               <Input 
                 placeholder="e.g. Impacts of Climate Change on Tropical Agriculture" 
@@ -231,7 +247,7 @@ export default function AbstractSubmissionForm() {
                         <div className="w-16 h-16 bg-white text-slate-300 rounded-3xl flex items-center justify-center shadow-sm border border-slate-50 group-hover:text-blue group-hover:scale-110 transition-all"><Upload className="w-8 h-8" /></div>
                         <div className="text-center group-hover:scale-105 transition-transform">
                            <p className="text-sm font-black text-navy uppercase tracking-tight">Click to upload document</p>
-                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">PDF or DOCX (Max 10MB)</p>
+                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">PDF or DOCX (Max 30MB)</p>
                         </div>
                       </>
                     )}

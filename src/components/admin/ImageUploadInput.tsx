@@ -33,9 +33,9 @@ export const ImageUploadInput: React.FC<ImageUploadInputProps> = ({
         return;
     }
 
-    // Check size (10MB)
-    if (file.size > 10 * 1024 * 1024) {
-        toast.error('Image size must be less than 10MB');
+    // Check size (30MB)
+    if (file.size > 30 * 1024 * 1024) {
+        toast.error('Image size must be less than 30MB');
         return;
     }
 
@@ -50,14 +50,17 @@ export const ImageUploadInput: React.FC<ImageUploadInputProps> = ({
             credentials: 'include'
         });
 
-        if (!res.ok) throw new Error('Upload failed');
+        if (!res.ok) {
+            const errorData = await res.json().catch(() => ({}));
+            throw new Error(errorData.error || 'Upload failed');
+        }
 
         const data = await res.json();
         onChange(data.url);
         toast.success('Asset uploaded');
-    } catch (err) {
-        toast.error('Upload error');
-        console.error(err);
+    } catch (err: any) {
+        toast.error(err.message || 'Upload error');
+        console.error('Frontend Upload Crash:', err);
     } finally {
         setIsUploading(false);
         if (fileInputRef.current) fileInputRef.current.value = '';

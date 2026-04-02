@@ -6,7 +6,7 @@ export default function JournalsPage() {
   return (
     <PageLayout 
       title="Journals" 
-      subtitle="Publish your research in high-impact journals."
+      subtitle="Publish your research in top journals."
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-16 py-12 space-y-16 font-outfit">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">

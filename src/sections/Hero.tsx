@@ -6,9 +6,9 @@ import { toast } from 'sonner';
 
 export default function Hero() {
   const [settings, setSettings] = useState<any>({
-    site_title: 'Ascendix World Food, AgroTech & Animal Science',
-    hero_title: 'Ascendix World Food, AgroTech & Animal Science',
-    hero_tagline: 'ASFAA-2026: Led by the future of sustainable food systems and agri-innovation.',
+    site_title: 'ASFAA 2026: Food & Farming Summit',
+    hero_title: 'ASFAA 2026: Food & Farming Summit',
+    hero_tagline: 'ASFAA 2026: The future of food and farming.',
     hero_image_url: '/ai_digital_agri_dashboard_1774551431773.png',
     event_dates: 'November 18-20, 2026',
     global_reach: '50+ Countries',
@@ -39,8 +39,8 @@ export default function Hero() {
         const name = names[Math.floor(Math.random() * names.length)];
         const country = countries[Math.floor(Math.random() * countries.length)];
         
-        toast.success(`${name} from ${country} just registered!`, {
-            description: 'Join them at ASFAA-2026 in Singapore.',
+        toast.success(`${name} from ${country} just signed up!`, {
+            description: 'Come join us in Singapore!',
             duration: 4000,
             icon: <Sparkles className="w-4 h-4 text-blue" />
         });
@@ -83,7 +83,7 @@ export default function Hero() {
         <img
           src={settings.hero_image_url || "/hero.png"}
           alt="Event Background"
-          className="w-full h-full object-cover opacity-60 scale-110 transition-transform duration-[10000ms]"
+          className="w-full h-full object-cover opacity-60 scale-110 transition-transform duration-10000"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-navy/80 via-navy/40 to-navy pointer-events-none" />
       </div>
@@ -94,7 +94,7 @@ export default function Hero() {
           <div className="space-y-4 flex flex-col items-center">
             <div className="inline-flex items-center gap-3 px-5 py-2 bg-white/5 border border-white/10 rounded-full backdrop-blur-2xl mb-2 group hover:bg-white/10 transition-all cursor-default shadow-2xl">
               <Sparkles className="w-4 h-4 text-blue animate-pulse" />
-              <span className="text-[10px] font-black text-white uppercase tracking-[0.4em] leading-none">Global Event 2026</span>
+              <span className="text-[10px] font-black text-white uppercase tracking-[0.4em] leading-none">Big Event 2026</span>
             </div>
 
             <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white leading-[0.95] tracking-tighter text-balance uppercase drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]">
@@ -149,7 +149,7 @@ export default function Hero() {
                 <Globe2 className="w-5 h-5" />
               </div>
               <div className="space-y-1">
-                <p className="text-[8px] text-white/30 font-black leading-none uppercase tracking-[0.3em]">Global Reach</p>
+                <p className="text-[8px] text-white/30 font-black leading-none uppercase tracking-[0.3em]">Around the World</p>
                 <p className="font-black text-[12px] text-white tracking-tight uppercase">{settings.global_reach || '50+ Countries'}</p>
               </div>
             </div>
@@ -163,7 +163,7 @@ export default function Hero() {
             </Link>
             <Link to="/abstract-submission" className="w-full sm:w-auto text-decoration-none">
               <Button variant="ghost" className="w-full h-12 px-10 border-2 border-white/10 text-white font-black text-[10px] uppercase tracking-[0.4em] rounded-xl hover:bg-white/5 transition-all active:scale-95 bg-white/5 backdrop-blur-3xl text-decoration-none flex items-center justify-center gap-3">
-                <Mic2 className="w-5 h-5 opacity-40 group-hover:opacity-100" /> Submit Abstract
+                <Mic2 className="w-5 h-5 opacity-40 group-hover:opacity-100" /> Send Your Research
               </Button>
             </Link>
           </div>

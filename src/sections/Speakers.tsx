@@ -102,7 +102,7 @@ function SpeakerCard({ speaker, index }: { speaker: Speaker, index: number }) {
                 <img 
                     src={speaker.image_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${speaker.name}`} 
                     alt={speaker.name} 
-                    className="w-full h-full object-cover transition-transform duration-[3000ms] group-hover:scale-110 grayscale group-hover:grayscale-0" 
+                    className="w-full h-full object-cover transition-transform duration-3000 group-hover:scale-110 grayscale group-hover:grayscale-0" 
                 />
                 
                 <div className="absolute top-4 left-4 z-20">

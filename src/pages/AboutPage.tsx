@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 
 export default function AboutPage() {
   const [settings, setSettings] = useState<any>({
-    site_tagline: "Advancing the future of sustainable food and agri-innovation.",
+    site_tagline: "Better farming and food for the future.",
     about_image_url: "/food_processing_factory_1774551627831.png"
   });
   const [loading, setLoading] = useState(true);
@@ -27,17 +27,17 @@ export default function AboutPage() {
   }, []);
 
   const stats = [
-    { icon: Users, label: 'Attendees', count: '4,200+' },
+    { icon: Users, label: 'Visitors', count: '4,200+' },
     { icon: Mic2, label: 'Speakers', count: '120+' },
     { icon: Globe, label: 'Countries', count: '45+' },
-    { icon: FileText, label: 'Abstracts', count: '850+' },
+    { icon: FileText, label: 'Research', count: '850+' },
   ];
 
   if (loading) return (
     <PageLayout title="About" subtitle="Loading Summit Details...">
         <div className="flex flex-col items-center justify-center py-32 space-y-6">
             <div className="w-12 h-12 border-4 border-blue border-t-transparent rounded-full animate-spin" />
-            <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em] animate-pulse">Syncing Site Context...</p>
+            <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em] animate-pulse">Loading Info...</p>
         </div>
     </PageLayout>
   );
@@ -97,9 +97,9 @@ export default function AboutPage() {
         {/* Focus areas */}
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-12">
            {[
-             { title: 'Global Reach', desc: 'Working together in Singapore to share new ideas.', icon: Globe },
-             { title: 'Growth', desc: 'Connecting research with top companies.', icon: Rocket },
-             { title: 'Opportunities', desc: 'A place for startups and investors to connect.', icon: Users }
+             { title: 'Around the World', desc: 'Working together to share ideas in Singapore.', icon: Globe },
+             { title: 'Growth', desc: 'Sharing research with big companies.', icon: Rocket },
+             { title: 'New Ideas', desc: 'A place for new teams and business leaders to meet.', icon: Users }
            ].map((obj, i) => (
              <div key={i} className="p-6 border border-slate-50 rounded-2xl hover:border-blue/10 hover:shadow-xl hover:shadow-blue/5 transition-all space-y-3 bg-white">
                 <div className="w-9 h-9 bg-slate-50 rounded-lg flex items-center justify-center text-blue opacity-40">
@@ -117,12 +117,12 @@ export default function AboutPage() {
             <div className="flex flex-wrap justify-center gap-4">
                 <Link to="/registration">
                     <button className="h-12 px-10 bg-navy text-white rounded-xl font-black text-[9px] uppercase tracking-widest hover:bg-white hover:text-navy transition-all shadow-xl active:scale-95">
-                        Register Now
+                        Register
                     </button>
                 </Link>
                 <Link to="/topics">
                     <button className="h-12 px-10 border border-white/20 text-white rounded-xl font-black text-[9px] uppercase tracking-widest hover:bg-white/10 transition-all active:scale-95">
-                        View Topics
+                        See Themes
                     </button>
                 </Link>
             </div>

@@ -36,7 +36,7 @@ export default function ContactPage() {
   }, []);
 
   if (loading) return (
-    <PageLayout title="Contact" subtitle="Loading Contact...">
+    <PageLayout title="Contact" subtitle="Loading...">
       <div className="flex flex-col items-center justify-center py-40 space-y-6">
         <div className="w-12 h-12 border-4 border-blue border-t-transparent rounded-full animate-spin" />
         <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em] animate-pulse">Wait a moment...</p>
@@ -94,7 +94,7 @@ export default function ContactPage() {
             <div className="space-y-2">
               <h2 className="text-2xl font-black text-navy uppercase tracking-tight leading-none">Get in <span className="text-blue">Touch</span></h2>
               <p className="text-slate-400 text-[9px] font-black uppercase tracking-widest italic opacity-80 decoration-blue/20 decoration-1 underline-offset-4">
-                Support for all speakers and attendees.
+                Support for all speakers and visitors.
               </p>
             </div>
 
@@ -168,7 +168,7 @@ export default function ContactPage() {
                 <Label className="text-[8px] font-black text-slate-300 uppercase tracking-widest">Message</Label>
                 <Textarea
                   className="bg-slate-50 border-transparent rounded-lg text-[10px] font-black uppercase tracking-tight focus:bg-white focus:border-blue transition-all min-h-[100px] italic opacity-70"
-                  placeholder="How can we help you?"
+                  placeholder="What do you need help with?"
                   required
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}

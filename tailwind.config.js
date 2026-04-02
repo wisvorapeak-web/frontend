@@ -104,6 +104,11 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
         "caret-blink": "caret-blink 1.25s ease-out infinite",
       },
+      transitionDuration: {
+        '2000': '2000ms',
+        '3000': '3000ms',
+        '10000': '10000ms',
+      },
       fontFamily: {
         roboto: ['Roboto', 'sans-serif'],
         aptos: ['"Aptos Display"', 'Outfit', 'Inter', 'sans-serif'],

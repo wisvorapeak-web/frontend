@@ -19,17 +19,17 @@ export default function OrganizersPage() {
   }, []);
 
   if (loading) return (
-     <PageLayout title="Team" subtitle="Loading Scientific Committee...">
+     <PageLayout title="Our Team" subtitle="Loading...">
          <div className="flex flex-col items-center justify-center py-40 space-y-6">
             <div className="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
-            <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em] animate-pulse">Syncing Committee Members...</p>
+            <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em] animate-pulse">Loading team members...</p>
          </div>
      </PageLayout>
   );
   return (
     <PageLayout 
-      title="Team" 
-      subtitle="The leaders and experts behind the summit."
+      title="Our Team" 
+      subtitle="The people leading our event."
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 py-12 space-y-16">
         {/* Management Team */}

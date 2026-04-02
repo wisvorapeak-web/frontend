@@ -28,9 +28,9 @@ const icons: any = {
 
 export default function BrochurePage() {
   const [brochures] = useState<any[]>([
-    { title: 'Event Brochure 2026', category: 'General', file_size: '4.2 MB', icon_name: 'BookOpen', file_url: '/brochure.pdf' },
-    { title: 'Technical Program', category: 'Schedule', file_size: '2.1 MB', icon_name: 'FileText', file_url: '/program.pdf' },
-    { title: 'Venue Map', category: 'Location', file_size: '1.5 MB', icon_name: 'Map', file_url: '/map.pdf' }
+    { title: 'Event Guide', category: 'General', file_size: '4.2 MB', icon_name: 'BookOpen', file_url: '/brochure.pdf' },
+    { title: 'Event Schedule', category: 'Schedule', file_size: '2.1 MB', icon_name: 'FileText', file_url: '/program.pdf' },
+    { title: 'Event Map', category: 'Location', file_size: '1.5 MB', icon_name: 'Map', file_url: '/map.pdf' }
   ]);
   const [loading] = useState(false);
 
@@ -46,13 +46,13 @@ export default function BrochurePage() {
   return (
     <PageLayout 
       title="Guides" 
-      subtitle="Get event guides, program details, and maps."
+      subtitle="Get our event guides, help, and maps."
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 py-12 space-y-16">
         {loading ? (
           <div className="py-32 flex flex-col items-center gap-4">
             <Loader2 className="w-10 h-10 text-indigo-600 animate-spin" />
-            <p className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Accessing Repository...</p>
+            <p className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Loading...</p>
           </div>
         ) : (
           <>
@@ -79,7 +79,7 @@ export default function BrochurePage() {
                         className="w-full mt-4 h-12 rounded-xl bg-slate-950 text-white hover:bg-slate-900 font-black text-[9px] uppercase tracking-widest transition-all shadow-xl shadow-slate-900/10 flex items-center justify-center gap-3 active:scale-95 group-hover:bg-indigo-600"
                         onClick={() => handleDownload(seg)}
                     >
-                        Download Resource <FileDown className="w-3.5 h-3.5 opacity-50" />
+                        Get Guide <FileDown className="w-3.5 h-3.5 opacity-50" />
                     </button>
                   </div>
                 );
@@ -87,7 +87,7 @@ export default function BrochurePage() {
               {brochures.length === 0 && (
                 <div className="col-span-full py-20 text-center bg-slate-50 rounded-3xl border border-dashed border-slate-200">
                   <FileText className="w-12 h-12 text-slate-200 mx-auto mb-4" />
-                  <p className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">No guides available at the moment.</p>
+                  <p className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">No guides yet.</p>
                 </div>
               )}
             </section>
@@ -96,20 +96,20 @@ export default function BrochurePage() {
             <section className="bg-slate-950 p-10 lg:p-12 rounded-3xl text-white flex flex-col lg:grid lg:grid-cols-2 gap-12 relative overflow-hidden items-center">
               <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_100%_0%,rgba(99,102,241,0.08),transparent)] pointer-events-none" />
               <div className="space-y-6 relative z-10 text-center lg:text-left w-full">
-                  <h2 className="text-2xl lg:text-3xl font-bold font-outfit uppercase tracking-tight leading-tight">Can't find what you're looking for?</h2>
+                  <h2 className="text-2xl lg:text-3xl font-bold font-outfit uppercase tracking-tight leading-tight">Need help?</h2>
                   <p className="text-slate-400 text-sm font-medium leading-relaxed max-w-xl italic">
-                      Our team can provide custom guides for your group.
+                      Our team can send you a guide for your group.
                   </p>
                   <button className="h-12 px-10 rounded-xl bg-indigo-600 hover:bg-indigo-700 font-black text-[10px] uppercase tracking-widest shadow-lg active:scale-95 transition-all">
-                      Get Help
+                      Contact Us
                   </button>
               </div>
               
               <div className="space-y-4 relative z-10 w-full max-w-sm">
                   {[
-                    { t: 'Updated Weekly', i: Calendar },
-                    { t: 'Mobile Optimized', i: CheckCircle2 },
-                    { t: 'Guides in Many Languages', i: Users },
+                    { t: 'Updated Every Week', i: Calendar },
+                    { t: 'Works on Phones', i: CheckCircle2 },
+                    { t: 'Guides in Other Languages', i: Users },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-4 p-5 bg-white/5 border border-white/5 rounded-2xl group hover:bg-white/10 transition-colors">
                       <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-indigo-400 group-hover:scale-110 transition-transform"><item.i className="w-5 h-5" /></div>

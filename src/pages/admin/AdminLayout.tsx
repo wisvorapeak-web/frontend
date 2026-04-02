@@ -18,7 +18,8 @@ import {
   LayoutDashboard,
   ChevronRight,
   Send,
-  Users
+  Users,
+  AlertTriangle
 } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 import { Avatar, AvatarFallback } from '../../components/ui/avatar';
@@ -33,6 +34,7 @@ const adminNavItems = [
   { icon: FileCheck, label: 'Abstracts', path: '/admin/abstracts' },
   { icon: Mic2, label: 'Speakers', path: '/admin/speakers' },
   { icon: CreditCard, label: 'Registrations', path: '/admin/registrations' },
+  { icon: AlertTriangle, label: 'Failed Payments', path: '/admin/failed-payments' },
   { icon: Tag, label: 'Pricing', path: '/admin/pricing' },
   { icon: BookOpen, label: 'Brochures', path: '/admin/brochures' },
   { icon: Mail, label: 'Inbox', path: '/admin/inbox' },

@@ -106,7 +106,7 @@ export default function AdminSpeakers() {
           </div>
           <Button 
             onClick={() => {
-              setEditingSpeaker({ name: '', university: '', country: '', bio: '', image_url: '', linkedin_url: '' });
+              setEditingSpeaker({ name: '', university: '', country: '', bio: '', image_url: '', linkedin_url: '', category: 'Regular' });
               setIsModalOpen(true);
             }}
             className="bg-blue-600 hover:bg-blue-700 text-white font-bold h-10 px-6 transition-none"
@@ -231,26 +231,40 @@ export default function AdminSpeakers() {
                       </div>
                    </div>
 
-                   <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-1.5">
-                         <Label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Country</Label>
-                         <Input 
-                           value={editingSpeaker.country} 
-                           onChange={(e) => setEditingSpeaker({ ...editingSpeaker, country: e.target.value })}
-                           className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none" 
-                           required 
-                         />
-                      </div>
-                      <div className="space-y-1.5">
-                         <Label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">LinkedIn URL</Label>
-                         <Input 
-                           value={editingSpeaker.linkedin_url || ''} 
-                           onChange={(e) => setEditingSpeaker({ ...editingSpeaker, linkedin_url: e.target.value })}
-                           className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none" 
-                           placeholder="https://linkedin.com/in/..."
-                         />
-                      </div>
-                   </div>
+                    <div className="grid grid-cols-2 gap-4">
+                       <div className="space-y-1.5">
+                          <Label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Country</Label>
+                          <Input 
+                            value={editingSpeaker.country} 
+                            onChange={(e) => setEditingSpeaker({ ...editingSpeaker, country: e.target.value })}
+                            className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none" 
+                            required 
+                          />
+                       </div>
+                       <div className="space-y-1.5">
+                          <Label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Speaker Category</Label>
+                          <select 
+                            value={editingSpeaker.category || 'Regular'} 
+                            onChange={(e) => setEditingSpeaker({ ...editingSpeaker, category: e.target.value })}
+                            className="w-full h-10 bg-slate-50 border border-slate-200 rounded text-sm transition-none px-3 font-medium outline-none focus:ring-4 focus:ring-blue-600/5 appearance-none"
+                            required
+                          >
+                             {['Plenary', 'Keynote', 'Invited', 'New Researchers', 'Poster Displays', 'Regular'].map(t => (
+                               <option key={t} value={t}>{t}</option>
+                             ))}
+                          </select>
+                       </div>
+                    </div>
+
+                    <div className="space-y-1.5">
+                       <Label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">LinkedIn URL</Label>
+                       <Input 
+                         value={editingSpeaker.linkedin_url || ''} 
+                         onChange={(e) => setEditingSpeaker({ ...editingSpeaker, linkedin_url: e.target.value })}
+                         className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none" 
+                         placeholder="https://linkedin.com/in/..."
+                       />
+                    </div>
 
                    <div className="space-y-1.5 pt-2">
                       <ImageUploadInput label="Profile Photo Asset" value={editingSpeaker.image_url || ''} onChange={v => setEditingSpeaker({ ...editingSpeaker, image_url: v })} />

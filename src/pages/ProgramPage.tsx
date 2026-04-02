@@ -23,23 +23,23 @@ export default function ProgramPage() {
     {
       day: 'Day 1',
       sessions: [
-        { title: 'Opening Ceremony', start_time: '09:00', end_time: '10:00', location: 'Main Hall', session_type: 'Opening', description: 'Kickoff for the Ascendix Summit 2026.' },
-        { title: 'Food Security Session', start_time: '10:30', end_time: '12:30', location: 'Hall A', session_type: 'Session', description: 'Sustainable solutions for global food supply.' },
-        { title: 'Lunch Break', start_time: '12:30', end_time: '14:00', location: 'Dining Area', session_type: 'Break', description: 'Networking lunch.' }
+        { title: 'Opening Event', start_time: '09:00', end_time: '10:00', location: 'Main Hall', session_type: 'Opening', description: 'Kickoff for our event.' },
+        { title: 'Food Safety Talk', start_time: '10:30', end_time: '12:30', location: 'Hall A', session_type: 'Session', description: 'New ways to grow food.' },
+        { title: 'Lunch Break', start_time: '12:30', end_time: '14:00', location: 'Dining Area', session_type: 'Break', description: 'Lunch and networking.' }
       ]
     },
     {
       day: 'Day 2',
       sessions: [
-        { title: 'Agri-Tech Workshop', start_time: '09:30', end_time: '11:30', location: 'Lab 1', session_type: 'Workshop', description: 'Precision farming and digital agriculture.' },
-        { title: 'Keynote Speech', start_time: '14:00', end_time: '15:30', location: 'Auditorium', session_type: 'Keynote', description: 'The future of biotechnology.' }
+        { title: 'Farming Tech Class', start_time: '09:30', end_time: '11:30', location: 'Lab 1', session_type: 'Workshop', description: 'New tech for farming.' },
+        { title: 'Main Talk', start_time: '14:00', end_time: '15:30', location: 'Auditorium', session_type: 'Keynote', description: 'The future of science.' }
       ]
     },
     {
       day: 'Day 3',
       sessions: [
-        { title: 'Animal Science Panel', start_time: '10:00', end_time: '12:00', location: 'Hall B', session_type: 'Panel', description: 'Advances in livestock and veterinary science.' },
-        { title: 'Closing Awards', start_time: '16:00', end_time: '17:30', location: 'Main Hall', session_type: 'Closing', description: 'Recognition of top research contributions.' }
+        { title: 'Animal Research Discussion', start_time: '10:00', end_time: '12:00', location: 'Hall B', session_type: 'Panel', description: 'Advances in farm animals.' },
+        { title: 'Closing & Awards', start_time: '16:00', end_time: '17:30', location: 'Main Hall', session_type: 'Closing', description: 'Giving awards for top research.' }
       ]
     }
   ]);
@@ -51,7 +51,7 @@ export default function ProgramPage() {
   return (
     <PageLayout 
       title="Program" 
-      subtitle="The full schedule for ASFAA 2026."
+      subtitle="The full schedule for our event."
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 py-12 space-y-16 pb-20 font-outfit">
         
@@ -64,11 +64,11 @@ export default function ProgramPage() {
                <div className="space-y-6">
                   <div className="inline-flex items-center gap-3 px-4 py-1.5 bg-white/5 border border-white/10 rounded-full backdrop-blur-md">
                      <span className="w-2 h-2 rounded-full bg-blue animate-pulse" />
-                     <span className="text-[9px] font-black text-white uppercase tracking-widest">Summit Schedule</span>
+                     <span className="text-[9px] font-black text-white uppercase tracking-widest">Daily Plan</span>
                   </div>
-                  <h2 className="text-3xl lg:text-5xl font-black text-white leading-tight tracking-tight uppercase">Program <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue to-indigo-400">Overview</span></h2>
+                  <h2 className="text-3xl lg:text-5xl font-black text-white leading-tight tracking-tight uppercase">The <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue to-indigo-400">Schedule</span></h2>
                   <p className="max-w-2xl text-white/40 text-[11px] font-bold uppercase tracking-widest leading-relaxed italic">
-                     Check the full schedule for the summit across {schedule.length} technical days.
+                     See the full plan for our {schedule.length} day event.
                   </p>
                </div>
                <div className="hidden lg:flex justify-end pr-10">
@@ -132,7 +132,7 @@ export default function ProgramPage() {
                                                 
                                                 <div className="space-y-2">
                                                     <h3 className="text-xl font-bold text-navy leading-tight uppercase tracking-tight group-hover:text-blue transition-colors">{session.title}</h3>
-                                                    <p className="text-slate-500 font-medium text-xs leading-relaxed max-w-2xl opacity-80">{session.description || 'Program details will be updated soon.'}</p>
+                                                    <p className="text-slate-500 font-medium text-xs leading-relaxed max-w-2xl opacity-80">{session.description || 'We will update the details soon.'}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -150,8 +150,8 @@ export default function ProgramPage() {
                   <Zap className="w-10 h-10 group-hover:scale-110 transition-transform" />
                </div>
                <div className="space-y-4">
-                  <h3 className="text-3xl font-black font-outfit text-navy tracking-tight">Schedule Coming Soon</h3>
-                  <p className="text-slate-400 text-xs font-bold max-w-sm mx-auto leading-loose uppercase tracking-[0.2em]">The team is finishing the technical program.</p>
+                  <h3 className="text-3xl font-black font-outfit text-navy tracking-tight">Plan Coming Soon</h3>
+                  <p className="text-slate-400 text-xs font-bold max-w-sm mx-auto leading-loose uppercase tracking-[0.2em]">Our team is finishing the plan.</p>
                </div>
             </div>
         )}
@@ -162,9 +162,9 @@ export default function ProgramPage() {
             <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-500/5 blur-[100px] rounded-full translate-y-1/2 -translate-x-1/2" />
             
             <div className="space-y-4 relative z-10">
-               <h2 className="text-3xl lg:text-5xl font-black uppercase tracking-tight leading-tight">Connect with the <span className="text-blue">Future</span></h2>
+               <h2 className="text-3xl lg:text-5xl font-black uppercase tracking-tight leading-tight">Join the <span className="text-blue">Future</span></h2>
                <p className="text-white/40 text-base lg:text-lg font-medium max-w-2xl mx-auto italic">
-                  Join researchers and industry experts for three days of discovery in Singapore.
+                  Join experts for three days of learning in Singapore.
                </p>
             </div>
             

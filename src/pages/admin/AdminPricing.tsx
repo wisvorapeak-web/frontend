@@ -152,8 +152,8 @@ export default function AdminPricing() {
         {/* Header */}
         <div className="flex items-center justify-between pb-6 border-b border-slate-200">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Tickets & Packages</h1>
-            <p className="text-sm text-slate-500 mt-1">Manage prices for tickets, sponsorships, and booths.</p>
+            <h1 className="text-2xl font-bold text-slate-900">Registration & Packages</h1>
+            <p className="text-sm text-slate-500 mt-1">Manage prices for registration, sponsorships, and booths.</p>
           </div>
           
           <Dialog open={isDialogOpen} onOpenChange={(open) => { setIsDialogOpen(open); if(!open) resetForm(); }}>

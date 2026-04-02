@@ -144,6 +144,11 @@ export default function AbstractReview() {
                     {abs.status}
                   </div>
                 </div>
+                <div className="flex items-center gap-2">
+                   <div className="px-2 py-0.5 bg-blue/10 text-blue rounded-[4px] text-[9px] font-bold uppercase tracking-wider border border-blue/10">
+                      {abs.category || 'N/A'}
+                   </div>
+                </div>
 
                 <div>
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mb-1">{abs.id}</p>
@@ -184,6 +189,10 @@ export default function AbstractReview() {
                               <div className="flex items-center gap-2 mt-2">
                                 <span className="text-xs font-bold text-slate-600">{selectedAbs.name}</span>
                                 <span className="text-xs text-slate-400 font-medium italic">({selectedAbs.email})</span>
+                              </div>
+                              <div className="flex items-center gap-2 mt-2">
+                                 <span className="text-[10px] font-black text-blue uppercase tracking-[0.2em] px-2 py-1 bg-blue/5 border border-blue/10 rounded">Category: {selectedAbs.category || 'N/A'}</span>
+                                 <span className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.2em] px-2 py-1 bg-indigo-50 border border-indigo-100 rounded">Topic: {selectedAbs.topic || 'N/A'}</span>
                               </div>
                             </div>
                             <a href={selectedAbs.file_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-bold text-blue-600 hover:underline">
