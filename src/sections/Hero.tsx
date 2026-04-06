@@ -6,10 +6,10 @@ import { toast } from 'sonner';
 
 export default function Hero() {
   const [settings, setSettings] = useState<any>({
-    site_title: 'ASFAA 2026: Food & Farming Summit',
-    hero_title: 'ASFAA 2026: Food & Farming Summit',
-    hero_tagline: 'ASFAA 2026: The future of food and farming.',
-    hero_image_url: '/ai_digital_agri_dashboard_1774551431773.png',
+    site_title: 'Ascendix Summit: Food, AgriTech & Animal Science',
+    hero_title: 'Ascendix Summit: Food, AgriTech & Animal Science',
+    hero_tagline: 'ASFAA-2026: Led by the future of sustainable food systems and agri-innovation.',
+    hero_image_url: '/hero.png',
     event_dates: 'November 18-20, 2026',
     global_reach: '50+ Countries',
     city: 'Singapore'

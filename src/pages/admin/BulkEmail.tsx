@@ -54,9 +54,36 @@ export default function BulkEmail() {
   const [csvFile, setCsvFile] = useState<File | null>(null);
   const [csvPreview, setCsvPreview] = useState<{ name: string; email: string }[]>([]);
   const [isSending, setIsSending] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [sentCount, setSentCount] = useState(0);
+  const [isCoolingDown, setIsCoolingDown] = useState(false);
+  const [cooldownRemaining, setCooldownRemaining] = useState(0);
   const [result, setResult] = useState<SendResult | null>(null);
   const [showPreview, setShowPreview] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const startCooldown = () => {
+    setIsCoolingDown(true);
+    setCooldownRemaining(5 * 60);
+    const endTime = Date.now() + 5 * 60 * 1000;
+    
+    const interval = setInterval(() => {
+      const remaining = Math.round((endTime - Date.now()) / 1000);
+      if (remaining <= 0) {
+        clearInterval(interval);
+        setIsCoolingDown(false);
+        setCooldownRemaining(0);
+      } else {
+        setCooldownRemaining(remaining);
+      }
+    }, 1000);
+  };
+
+  const formatTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m}:${s.toString().padStart(2, '0')}`;
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -108,6 +135,8 @@ export default function BulkEmail() {
     if (!content.trim()) return toast.error('Email content is required.');
 
     setIsSending(true);
+    setProgress(0);
+    setSentCount(0);
     setResult(null);
 
     try {
@@ -123,37 +152,80 @@ export default function BulkEmail() {
         body: formData
       });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        toast.error(data.error || 'Failed to send emails');
-        if (data.details) {
-          setResult({ ...data, sent: 0, failed: 0, total: 0, failedEmails: [], skipped: data.details.length, skippedDetails: data.details });
+      const contentType = res.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const data = await res.json();
+        if (!res.ok) {
+          toast.error(data.error || 'Failed to send emails');
+          if (data.details) {
+            setResult({ ...data, sent: 0, failed: 0, total: 0, failedEmails: [], skipped: data.details.length, skippedDetails: data.details });
+          }
         }
+        setIsSending(false);
         return;
       }
 
-      setResult(data);
-      
-      if (data.failed === 0) {
-        toast.success(`All ${data.sent} emails sent successfully!`);
-      } else {
-        toast.warning(`${data.sent} sent, ${data.failed} failed`);
+      const reader = res.body?.getReader();
+      if (!reader) {
+        toast.error('Failed to read response stream');
+        setIsSending(false);
+        return;
+      }
+
+      const decoder = new TextDecoder('utf-8');
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        
+        const lines = buffer.split('\n\n');
+        buffer = lines.pop() || '';
+        
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const dataStr = line.slice(6);
+            if (!dataStr) continue;
+            try {
+              const data = JSON.parse(dataStr);
+              if (data.type === 'progress') {
+                setProgress(data.progress);
+                setSentCount(data.sent);
+              } else if (data.type === 'complete') {
+                setResult(data);
+                if (data.failed === 0) {
+                  toast.success(`All ${data.sent} emails sent successfully!`);
+                } else {
+                  toast.warning(`${data.sent} sent, ${data.failed} failed`);
+                }
+                setIsSending(false);
+                startCooldown();
+              } else if (data.type === 'error') {
+                toast.error(data.error || 'Error occurred during processing.');
+              }
+            } catch (err) {
+              console.error('Failed to parse SSE', err);
+            }
+          }
+        }
       }
     } catch (err) {
       toast.error('Network error. Check your connection.');
-    } finally {
       setIsSending(false);
     }
   };
 
   const handleReset = () => {
+    if (isSending) return;
     setFromEmail(senderEmails[0]);
     setSubject('');
     setContent('');
     setCsvFile(null);
     setCsvPreview([]);
     setResult(null);
+    setProgress(0);
+    setSentCount(0);
     setShowPreview(false);
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
@@ -316,13 +388,17 @@ export default function BulkEmail() {
             {/* Step 3: Dispatch */}
             <Button
               onClick={handleSend}
-              disabled={isSending || !csvFile || !subject || !content}
+              disabled={isSending || !csvFile || !subject || !content || isCoolingDown}
               className="w-full h-14 bg-slate-950 text-white hover:bg-slate-800 rounded-lg font-bold text-sm flex items-center justify-center gap-3 shadow-lg shadow-slate-950/10 disabled:opacity-50"
             >
               {isSending ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" /> 
-                  Sending in progress...
+                  Sending... {progress}% ({sentCount} sent)
+                </>
+              ) : isCoolingDown ? (
+                <>
+                  Cooldown: {formatTime(cooldownRemaining)}
                 </>
               ) : (
                 <>
@@ -331,6 +407,24 @@ export default function BulkEmail() {
                 </>
               )}
             </Button>
+            
+            {isSending && (
+              <div className="mt-6">
+                <div className="flex justify-between text-xs font-bold text-slate-600 mb-2">
+                  <span>Dispatching Emails...</span>
+                  <span className="text-blue-600">{progress}%</span>
+                </div>
+                <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                  <div 
+                    className="bg-blue-600 h-2.5 rounded-full transition-all duration-300 ease-out" 
+                    style={{ width: `${progress}%` }}
+                  ></div>
+                </div>
+                <p className="text-[10px] text-slate-500 font-medium text-center mt-2">
+                  Please keep this page open until completion.
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Right: Results & Meta */}
