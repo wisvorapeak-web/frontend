@@ -37,7 +37,15 @@ export default function BulkEmail() {
     'asfaa2026@foodagriexpo.com',
     'nova.grace@foodagriexpo.com',
     'novagrace@foodagriexpo.com',
-    'enquiry@foodagriexpo.com'
+    'enquiry@foodagriexpo.com',
+    'conference@foodagriexpo.com',
+    'foodtech@foodagriexpo.com',
+    'agritech@foodagriexpo.com',
+    'animalscience@foodagriexpo.com',
+    'gracenova@foodagriexpo.com',
+    'grace.nova@foodagriexpo.com',
+    'grace@foodagriexpo.com',
+    'nova@foodagriexpo.com'
   ];
 
   const [fromEmail, setFromEmail] = useState(senderEmails[0]);
