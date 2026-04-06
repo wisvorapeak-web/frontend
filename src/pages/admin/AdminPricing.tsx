@@ -30,11 +30,22 @@ import {
 import { Label } from '@/components/ui/label';
 
 export default function AdminPricing() {
+  const [activeTab, setActiveTab] = useState('pricing');
   const [tiers, setTiers] = useState<any[]>([]);
+  const [offers, setOffers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingTier, setEditingTier] = useState<any>(null);
+
+  const [isOfferDialogOpen, setIsOfferDialogOpen] = useState(false);
+  const [offerFormData, setOfferFormData] = useState({
+    email: '',
+    tierId: '',
+    amount: '',
+    currency: 'USD',
+    expiresAt: ''
+  });
 
   const [formData, setFormData] = useState({
     name: '',
@@ -49,19 +60,21 @@ export default function AdminPricing() {
 
   useEffect(() => {
     fetchPricing();
+    fetchOffers();
   }, []);
 
   const fetchPricing = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/pricing`, {
-        credentials: 'include'
-      });
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/pricing`, { credentials: 'include' });
       if (res.ok) setTiers(await res.json());
-    } catch (err) {
-      console.error('Failed to fetch pricing:', err);
-    } finally {
-      setLoading(false);
-    }
+    } catch (err) { console.error('Failed to fetch pricing:', err); } finally { setLoading(false); }
+  };
+
+  const fetchOffers = async () => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/offers`, { credentials: 'include' });
+      if (res.ok) setOffers(await res.json());
+    } catch (err) { console.error('Failed to fetch offers:', err); }
   };
 
   const handleSave = async (e: React.FormEvent) => {
@@ -120,6 +133,36 @@ export default function AdminPricing() {
     }
   };
 
+  const handleCreateOffer = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSaving(true);
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/offers`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(offerFormData)
+      });
+      if (res.ok) {
+        toast.success('Offer link created and emailed.');
+        setIsOfferDialogOpen(false);
+        fetchOffers();
+        setOfferFormData({ email: '', tierId: '', amount: '', currency: 'USD', expiresAt: '' });
+      } else {
+        const err = await res.json();
+        toast.error(err.error || 'Failed to create offer');
+      }
+    } catch (err) { toast.error('Connection failed'); } finally { setIsSaving(false); }
+  };
+
+  const handleDeleteOffer = async (id: string) => {
+    if (!confirm('Are you sure you want to revoke this offer?')) return;
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/offers/${id}`, { method: 'DELETE', credentials: 'include' });
+      if (res.ok) { toast.success('Offer removed'); fetchOffers(); }
+    } catch (err) { toast.error('Action failed'); }
+  };
+
   const resetForm = () => {
     setFormData({
       name: '',
@@ -156,12 +199,13 @@ export default function AdminPricing() {
             <p className="text-sm text-slate-500 mt-1">Manage prices for registration, sponsorships, and booths.</p>
           </div>
           
-          <Dialog open={isDialogOpen} onOpenChange={(open) => { setIsDialogOpen(open); if(!open) resetForm(); }}>
-            <DialogTrigger asChild>
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold h-10 px-6 transition-none flex items-center gap-2 rounded shadow-sm">
-                 <Plus className="w-4 h-4" /> Add New Item
-              </Button>
-            </DialogTrigger>
+          {activeTab === 'pricing' ? (
+            <Dialog open={isDialogOpen} onOpenChange={(open) => { setIsDialogOpen(open); if(!open) resetForm(); }}>
+              <DialogTrigger asChild>
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold h-10 px-6 transition-none flex items-center gap-2 rounded shadow-sm">
+                   <Plus className="w-4 h-4" /> Add New Item
+                </Button>
+              </DialogTrigger>
             <DialogContent className="sm:max-w-[500px] p-0 border-none rounded-lg overflow-hidden shadow-2xl">
               <DialogHeader className="p-6 border-b border-slate-200">
                 <DialogTitle className="text-sm font-bold text-slate-900 uppercase tracking-widest">
@@ -258,10 +302,61 @@ export default function AdminPricing() {
               </form>
             </DialogContent>
           </Dialog>
+         ) : (
+            <Dialog open={isOfferDialogOpen} onOpenChange={setIsOfferDialogOpen}>
+              <DialogTrigger asChild>
+                <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold h-10 px-6 transition-none flex items-center gap-2 rounded shadow-sm">
+                   <Plus className="w-4 h-4" /> Create Custom Offer
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[400px] p-0 border-none rounded-lg overflow-hidden shadow-2xl">
+                <DialogHeader className="p-6 border-b border-slate-200 bg-slate-50">
+                  <DialogTitle className="text-sm font-bold text-slate-900 uppercase tracking-widest">New Payment Offer</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleCreateOffer} className="p-6 space-y-4">
+                   <div className="space-y-1.5">
+                      <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Recipient Email</Label>
+                      <Input type="email" required value={offerFormData.email} onChange={e => setOfferFormData({...offerFormData, email: e.target.value})} className="h-10 text-sm" placeholder="user@example.com" />
+                   </div>
+                   <div className="space-y-1.5">
+                      <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Source Package</Label>
+                      <select required value={offerFormData.tierId} onChange={e => {
+                        const tier = tiers.find(t => t._id === e.target.value);
+                        setOfferFormData({...offerFormData, tierId: e.target.value, amount: tier?.amount.toString() || '', currency: tier?.currency || 'USD'});
+                      }} className="w-full h-10 border rounded px-3 text-sm">
+                         <option value="">Select a package...</option>
+                         {tiers.filter(t => t.is_active).map(t => <option key={t._id} value={t._id}>{t.name} ({t.amount} {t.currency})</option>)}
+                      </select>
+                   </div>
+                   <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-1.5">
+                         <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Offer Price</Label>
+                         <Input type="number" required value={offerFormData.amount} onChange={e => setOfferFormData({...offerFormData, amount: e.target.value})} className="h-10" />
+                      </div>
+                      <div className="space-y-1.5">
+                         <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Expiration Date</Label>
+                         <Input type="date" required value={offerFormData.expiresAt} onChange={e => setOfferFormData({...offerFormData, expiresAt: e.target.value})} className="h-10" />
+                      </div>
+                   </div>
+                   <Button disabled={isSaving} className="w-full h-10 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs mt-4">
+                     {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Send Offer Link'}
+                   </Button>
+                </form>
+              </DialogContent>
+            </Dialog>
+         )}
         </div>
 
-        {/* Category Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        {/* Tab Selection */}
+        <div className="flex bg-slate-100 p-1 rounded w-fit border border-slate-200 gap-1 mb-8">
+           <button onClick={() => setActiveTab('pricing')} className={`px-5 py-2.5 text-[10px] font-bold uppercase tracking-widest rounded transition-none ${activeTab === 'pricing' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-500 hover:text-slate-900'}`}>Standard Pricing</button>
+           <button onClick={() => setActiveTab('offers')} className={`px-5 py-2.5 text-[10px] font-bold uppercase tracking-widest rounded transition-none flex items-center gap-2 ${activeTab === 'offers' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-500 hover:text-slate-900'}`}>Special Offers <span className="px-1.5 py-0.5 bg-slate-200 rounded text-slate-700 text-[8px]">{offers.length}</span></button>
+        </div>
+
+        {activeTab === 'pricing' && (
+          <>
+            {/* Category Overview */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
            {['Registration', 'Accommodation', 'Sponsorship', 'Exhibition'].map((cat, i) => {
              const count = tiers.filter(t => t.category === cat).length;
              return (
@@ -365,6 +460,76 @@ export default function AdminPricing() {
               </Table>
            </div>
         </div>
+        </>
+        )}
+
+        {activeTab === 'offers' && (
+           <div className="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden mt-6">
+             <div className="p-6 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                <h2 className="text-sm font-bold text-slate-900 uppercase tracking-widest">Active Special Offers</h2>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Total Offers: {offers.length}</span>
+                </div>
+             </div>
+             
+             <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-slate-50/30 border-b border-slate-100">
+                      <TableHead className="py-4 pl-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Recipient</TableHead>
+                      <TableHead className="py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Base Package</TableHead>
+                      <TableHead className="py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Offer Amount</TableHead>
+                      <TableHead className="py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Expiration</TableHead>
+                      <TableHead className="py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">Status</TableHead>
+                      <TableHead className="py-4"></TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                  {offers.map((offer) => (
+                      <TableRow key={offer._id} className="border-b border-slate-100 hover:bg-slate-50/30 transition-none group">
+                         <TableCell className="py-4 pl-6 font-medium text-slate-900 text-sm">
+                            {offer.email}
+                         </TableCell>
+                         <TableCell className="py-4 text-xs font-bold text-slate-600">
+                            {offer.tierId?.name || 'Deleted Package'}
+                         </TableCell>
+                         <TableCell className="py-4">
+                            <span className="text-[10px] font-bold text-blue-600 mb-1 mr-1">{offer.currency}</span>
+                            <span className="text-sm font-bold text-slate-900">{Number(offer.amount).toLocaleString()}</span>
+                         </TableCell>
+                         <TableCell className="py-4">
+                            <span className="text-xs font-medium text-amber-600">{new Date(offer.expiresAt).toLocaleDateString()}</span>
+                         </TableCell>
+                         <TableCell className="py-4 text-center">
+                            <div className={`inline-flex text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded border ${
+                              offer.status === 'Paid' ? 'border-emerald-200 bg-emerald-50 text-emerald-600' :
+                              offer.status === 'Expired' || new Date(offer.expiresAt) < new Date() ? 'border-rose-200 bg-rose-50 text-rose-600' :
+                              'border-amber-200 bg-amber-50 text-amber-600'
+                            }`}>
+                               {new Date(offer.expiresAt) < new Date() && offer.status !== 'Paid' ? 'Expired' : offer.status}
+                            </div>
+                         </TableCell>
+                         <TableCell className="py-4 pr-6 text-right">
+                            <Button 
+                              onClick={() => handleDeleteOffer(offer._id)}
+                              variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-rose-600 transition-none rounded opacity-0 group-hover:opacity-100">
+                                <Trash2 className="w-3.5 h-3.5" />
+                            </Button>
+                         </TableCell>
+                      </TableRow>
+                    ))}
+                    {offers.length === 0 && (
+                      <TableRow>
+                         <TableCell colSpan={6} className="py-20 text-center text-xs font-bold text-slate-400 uppercase tracking-widest">
+                            No special offers created.
+                         </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+             </div>
+           </div>
+        )}
 
       </div>
     </AdminLayout>

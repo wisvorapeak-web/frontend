@@ -25,6 +25,7 @@ const ChairsPage = lazy(() => import('./pages/ChairsPage'));
 const WorkshopsPage = lazy(() => import('./pages/WorkshopsPage'));
 const JournalsPage = lazy(() => import('./pages/JournalsPage'));
 const PaymentPage = lazy(() => import('./pages/PaymentPage'));
+const OfferPaymentPage = lazy(() => import('./pages/OfferPaymentPage')); // Newly added module
 const PaymentSuccessPage = lazy(() => import('./pages/PaymentSuccessPage'));
 const LegalPage = lazy(() => import('./pages/LegalPage'));
 const ReceiptPage = lazy(() => import('./pages/ReceiptPage'));
@@ -97,6 +98,7 @@ function App() {
           <Route path="/workshops" element={<WorkshopsPage />} />
           <Route path="/journals" element={<JournalsPage />} />
           <Route path="/payment/:type/:slug" element={<PaymentPage />} />
+          <Route path="/payment/offer/:token" element={<OfferPaymentPage />} />
           <Route path="/payment/success" element={<PaymentSuccessPage />} />
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/legal/:slug" element={<LegalPage />} />

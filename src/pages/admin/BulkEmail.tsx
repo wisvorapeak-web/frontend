@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import AdminLayout from './AdminLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -62,10 +62,43 @@ export default function BulkEmail() {
   const [showPreview, setShowPreview] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const COOKIE_NAME = 'bulkEmailCooldownEnd';
+
+  useEffect(() => {
+    const match = document.cookie.match(new RegExp('(^| )' + COOKIE_NAME + '=([^;]+)'));
+    if (match && match[2]) {
+      const endTime = parseInt(match[2], 10);
+      const remaining = Math.round((endTime - Date.now()) / 1000);
+      
+      if (remaining > 0) {
+        setIsCoolingDown(true);
+        setCooldownRemaining(remaining);
+        
+        const interval = setInterval(() => {
+          const currentRemaining = Math.round((endTime - Date.now()) / 1000);
+          if (currentRemaining <= 0) {
+            clearInterval(interval);
+            setIsCoolingDown(false);
+            setCooldownRemaining(0);
+            document.cookie = `${COOKIE_NAME}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+          } else {
+            setCooldownRemaining(currentRemaining);
+          }
+        }, 1000);
+        return () => clearInterval(interval);
+      }
+    }
+  }, []);
+
   const startCooldown = () => {
     setIsCoolingDown(true);
-    setCooldownRemaining(5 * 60);
-    const endTime = Date.now() + 5 * 60 * 1000;
+    const duration = 5 * 60; // 5 minutes
+    setCooldownRemaining(duration);
+    const endTime = Date.now() + duration * 1000;
+    
+    // Set cookie
+    const expires = new Date(endTime).toUTCString();
+    document.cookie = `${COOKIE_NAME}=${endTime}; expires=${expires}; path=/; SameSite=Strict`;
     
     const interval = setInterval(() => {
       const remaining = Math.round((endTime - Date.now()) / 1000);
@@ -73,6 +106,7 @@ export default function BulkEmail() {
         clearInterval(interval);
         setIsCoolingDown(false);
         setCooldownRemaining(0);
+        document.cookie = `${COOKIE_NAME}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
       } else {
         setCooldownRemaining(remaining);
       }
@@ -122,6 +156,12 @@ export default function BulkEmail() {
         const cols = line.split(',').map(c => c.trim());
         return { name: cols[nameIdx] || '', email: cols[emailIdx] || '' };
       }).filter(r => r.name && r.email);
+
+      if (rows.length > 300) {
+        toast.error(`Maximum 300 recipients allowed per batch. This CSV has ${rows.length} valid rows.`);
+        setCsvFile(null);
+        return;
+      }
 
       setCsvPreview(rows);
       toast.success(`${rows.length} recipients loaded from CSV`);
