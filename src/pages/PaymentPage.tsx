@@ -29,6 +29,10 @@ interface Tier {
   features: string[];
 }
 
+const TAX_RATE = 0.05;
+const GUEST_ADDON_PRICE_INR = 299;
+const GUEST_ADDON_PRICE_USD = 25;
+
 export default function PaymentPage() {
   const { type, slug } = useParams();
   const navigate = useNavigate();
@@ -126,16 +130,23 @@ export default function PaymentPage() {
     }
   }, [type, slug, tiers]);
 
-  const guestAddonPrice = tiers.find(t => t.name.toLowerCase().includes('guest'))?.amount || 299;
-
-  const calculateFinalTotal = () => {
-    if (!selectedTier) return 0;
-    let total = selectedTier.amount;
+  const calculatePricing = () => {
+    if (!selectedTier) return { subtotal: 0, tax: 0, total: 0 };
+    
+    let subtotal = selectedTier.amount;
     const accomm = tiers.find(t => t.id === selectedAccomm);
-    if (accomm) total += accomm.amount;
-    if (guestAddon) total += guestAddonPrice;
-    return total;
+    if (accomm) subtotal += accomm.amount;
+    
+    const guestAddonPrice = selectedTier.currency === '₹' ? GUEST_ADDON_PRICE_INR : GUEST_ADDON_PRICE_USD;
+    if (guestAddon) subtotal += guestAddonPrice;
+    
+    const tax = subtotal * TAX_RATE;
+    const total = subtotal + tax;
+    
+    return { subtotal, tax, total };
   };
+
+  const calculateFinalTotal = () => calculatePricing().total;
 
   // Helper to report a payment failure to the backend
   const reportFailure = async (failureData: {
@@ -159,7 +170,8 @@ export default function PaymentPage() {
           institution: formData.institution,
           country: formData.country,
           tier_name: selectedTier?.name,
-          amount: calculateFinalTotal(),
+          amount: calculatePricing().total,
+          tax: calculatePricing().tax,
           currency: selectedTier?.currency,
           registration_id: regId,
           ...failureData
@@ -233,7 +245,8 @@ export default function PaymentPage() {
                   body: JSON.stringify({
                     registration_id: regId,
                     payment_id: response.razorpay_payment_id,
-                    amount: totalAmount,
+                    amount: calculatePricing().total,
+                    tax: calculatePricing().tax,
                     currency: selectedTier.currency,
                     status: 'Completed',
                     method: 'razorpay',
@@ -410,18 +423,26 @@ export default function PaymentPage() {
                      </div>
                   </div>
 
-                  <div className="py-8 border-y border-slate-100 relative z-10">
-                     <div className="flex items-baseline justify-between mb-2">
-                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total Price</span>
-                        <div className="flex items-baseline gap-2">
-                           <span className="text-xs font-black text-blue">{selectedTier.currency}</span>
-                           <span className="text-4xl font-black text-navy tracking-tighter">{calculateFinalTotal().toLocaleString()}</span>
-                        </div>
-                     </div>
-                     <p className="text-[10px] text-emerald-500 font-bold uppercase tracking-widest flex items-center gap-2">
-                        <ShieldCheck className="w-4 h-4" /> Your payment is secure
-                     </p>
-                  </div>
+                  <div className="py-8 border-y border-slate-100 relative z-10 space-y-4">
+                      <div className="flex items-center justify-between text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                         <span>Subtotal</span>
+                         <span>{selectedTier.currency} {calculatePricing().subtotal.toLocaleString()}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-[10px] font-black text-blue uppercase tracking-widest">
+                         <span>Tax (5%)</span>
+                         <span>{selectedTier.currency} {calculatePricing().tax.toLocaleString()}</span>
+                      </div>
+                      <div className="flex items-baseline justify-between pt-4 border-t border-slate-50">
+                         <span className="text-[10px] font-black text-navy uppercase tracking-widest">Grand Total</span>
+                         <div className="flex items-baseline gap-2">
+                            <span className="text-xs font-black text-blue">{selectedTier.currency}</span>
+                            <span className="text-4xl font-black text-navy tracking-tighter">{calculatePricing().total.toLocaleString()}</span>
+                         </div>
+                      </div>
+                      <p className="text-[10px] text-emerald-500 font-bold uppercase tracking-widest flex items-center gap-2 pt-2">
+                         <ShieldCheck className="w-4 h-4" /> Your payment is secure
+                      </p>
+                   </div>
 
                   <div className="space-y-4 relative z-10">
                      <h4 className="text-[10px] font-black text-navy uppercase tracking-[0.4em] mb-4">What's Included</h4>
@@ -521,7 +542,7 @@ export default function PaymentPage() {
                                     </div>
                                     <span className="text-[10px] font-black text-navy uppercase tracking-widest">Add a Guest</span>
                                  </div>
-                                 <span className="text-xs font-black text-blue">{selectedTier.currency}{guestAddonPrice}</span>
+                                 <span className="text-xs font-black text-blue">{selectedTier.currency}{selectedTier.currency === '₹' ? GUEST_ADDON_PRICE_INR : GUEST_ADDON_PRICE_USD}</span>
                               </div>
                            </div>
                         </div>
@@ -616,10 +637,7 @@ export default function PaymentPage() {
                                          const params = new URLSearchParams(location.search);
                                          const regId = params.get('regId');
                                          
-                                         // Record original source values for bookkeeping if needed, but here we record what was paid
-                                         const normCurr = normalizeCurrency(selectedTier?.currency || 'USD');
-                                         const totalAmt = calculateFinalTotal();
-                                         const paypalAmount = normCurr === 'INR' ? Math.ceil(totalAmt / 83) : totalAmt;
+                                         // Record what was paid
 
                                          await fetch(`${import.meta.env.VITE_API_URL}/api/payments/record`, {
                                              method: 'POST',
@@ -627,7 +645,8 @@ export default function PaymentPage() {
                                              body: JSON.stringify({
                                                  registration_id: regId,
                                                  payment_id: data.orderID,
-                                                 amount: paypalAmount,
+                                                 amount: calculatePricing().total,
+                                                 tax: calculatePricing().tax,
                                                  currency: 'USD',
                                                  status: 'Completed',
                                                  method: 'paypal',

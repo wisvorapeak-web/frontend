@@ -14,6 +14,8 @@ import {
 import { PayPalButtons, usePayPalScriptReducer, DISPATCH_ACTION } from "@paypal/react-paypal-js";
 import { toast } from 'sonner';
 
+const TAX_RATE = 0.05;
+
 export default function OfferPaymentPage() {
   const { token } = useParams();
   const navigate = useNavigate();
@@ -83,13 +85,22 @@ export default function OfferPaymentPage() {
           institution: formData.institution,
           country: formData.country,
           tier_name: offer?.tierId?.name || 'Custom Offer',
-          amount: offer?.amount,
+          amount: calculatePricing().total,
+          tax: calculatePricing().tax,
           currency: offer?.currency,
           offer_token: token,
           ...failureData
         })
       });
     } catch (e) { console.error('Failed to report payment failure:', e); }
+  };
+
+  const calculatePricing = () => {
+    if (!offer) return { subtotal: 0, tax: 0, total: 0 };
+    const subtotal = offer.amount;
+    const tax = subtotal * TAX_RATE;
+    const total = subtotal + tax;
+    return { subtotal, tax, total };
   };
 
   const syncOfferStatus = async () => {
@@ -105,7 +116,8 @@ export default function OfferPaymentPage() {
          headers: { 'Content-Type': 'application/json' },
          body: JSON.stringify({
              payment_id: `offer_${token}`,
-             amount: offer.amount,
+             amount: calculatePricing().total,
+             tax: calculatePricing().tax,
              currency: offer.currency,
              status: 'Completed',
              method: method,
@@ -129,7 +141,7 @@ export default function OfferPaymentPage() {
         const orderRes = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/razorpay/order`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ amount: offer.amount, currency: offer.currency })
+          body: JSON.stringify({ amount: calculatePricing().total, currency: offer.currency })
         });
 
         const orderData = await orderRes.json();
@@ -211,11 +223,23 @@ export default function OfferPaymentPage() {
                      <h3 className="text-xl font-black text-slate-900">{offer.tierId?.name || 'Special Access'}</h3>
                   </div>
                </div>
-               <div className="text-right">
-                  <p className="text-[10px] font-bold tracking-widest uppercase text-slate-400 mb-1">Total Due</p>
-                  <div className="flex items-baseline gap-1">
-                     <span className="text-sm font-black text-blue">{offer.currency}</span>
-                     <span className="text-4xl font-black text-slate-900 tracking-tighter">{offer.amount.toLocaleString()}</span>
+               <div className="text-right space-y-2">
+                  <div className="flex items-center justify-end gap-10">
+                     <div className="text-right">
+                        <p className="text-[9px] font-black tracking-widest uppercase text-slate-400">Subtotal</p>
+                        <p className="text-sm font-black text-slate-600">{offer.currency}{offer.amount.toLocaleString()}</p>
+                     </div>
+                     <div className="text-right">
+                        <p className="text-[9px] font-black tracking-widest uppercase text-blue">Tax (5%)</p>
+                        <p className="text-sm font-black text-blue">{offer.currency}{calculatePricing().tax.toLocaleString()}</p>
+                     </div>
+                  </div>
+                  <div className="pt-2 border-t border-slate-200">
+                     <p className="text-[10px] font-bold tracking-widest uppercase text-slate-400 mb-1">Grand Total Due</p>
+                     <div className="flex items-baseline justify-end gap-1">
+                        <span className="text-sm font-black text-blue">{offer.currency}</span>
+                        <span className="text-4xl font-black text-slate-900 tracking-tighter">{calculatePricing().total.toLocaleString()}</span>
+                     </div>
                   </div>
                </div>
             </div>
@@ -271,12 +295,13 @@ export default function OfferPaymentPage() {
                    <div className="pt-6">
                         {method === 'paypal' ? (
                              <PayPalButtons 
-                               forceReRender={[offer.amount]}
+                               forceReRender={[calculatePricing().total]}
                                style={{ layout: "vertical", shape: "pill", color: "blue", label: "pay" }}
                                createOrder={async () => {
                                  // Convert to USD If necessary for PayPal (it doesn't support domestic INR)
                                  const normCurr = normalizeCurrency(offer.currency);
-                                 const paypalAmount = normCurr === 'INR' ? Math.ceil(offer.amount / 83) : offer.amount;
+                                 const totalAmt = calculatePricing().total;
+                                 const paypalAmount = normCurr === 'INR' ? Math.ceil(totalAmt / 83) : totalAmt;
                                  const paypalCurrency = 'USD'; // Force USD for international acceptance
 
                                  const res = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/paypal/order`, {
