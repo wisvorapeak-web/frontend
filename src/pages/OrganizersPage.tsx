@@ -1,7 +1,5 @@
 import PageLayout from './PageLayout';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Link } from 'react-router-dom';
-import { Linkedin } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 
@@ -44,24 +42,12 @@ export default function OrganizersPage() {
              
              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {committee.filter(m => (m.category || 'Scientific Committee') === category).map((member, i) => (
-                  <div key={member.id || i} className="p-6 bg-white rounded-3xl shadow-xl shadow-indigo-100/50 border border-slate-50 relative group transition-all duration-700 hover:-translate-y-1">
+                  <div key={member.id || i} className="p-5 bg-white rounded-[2rem] shadow-xl shadow-indigo-100/20 border border-slate-50 relative group transition-all duration-700 hover:-translate-y-1">
                       <div className="flex flex-col items-center text-center">
-                          <Avatar className="w-20 h-20 mb-4 border-[4px] border-slate-50 group-hover:border-indigo-50 shadow-lg transition-all duration-700 relative">
-                             <AvatarImage src={member.image} />
-                             <AvatarFallback>{member.name[0]}</AvatarFallback>
-                             {member.linkedin_url && (
-                               <a 
-                                 href={member.linkedin_url} 
-                                 target="_blank" 
-                                 rel="noopener noreferrer" 
-                                 className="absolute -bottom-1 -right-1 w-7 h-7 bg-white rounded-full shadow-md border border-slate-100 flex items-center justify-center text-blue-600 hover:text-blue-700 hover:scale-110 transition-all z-10"
-                               >
-                                 <Linkedin className="w-3.5 h-3.5" />
-                               </a>
-                             )}
-                          </Avatar>
-                          <h3 className="text-lg font-extrabold text-slate-900 font-outfit leading-tight mb-0.5 uppercase tracking-tight">{member.name}</h3>
-                          <p className="text-[10px] font-black text-indigo-500 mb-4 uppercase tracking-widest">{member.role}</p>
+                          <div className="w-44 h-44 mb-5 border-[6px] border-slate-50 group-hover:border-indigo-50 shadow-xl transition-all duration-700 relative overflow-hidden rounded-3xl">
+                             <img src={member.image} alt={member.name} className="w-full h-full object-cover transition-all duration-700 scale-110 group-hover:scale-100" />
+                          </div>
+                          <h3 className="text-lg font-black text-slate-900 font-outfit leading-tight mb-4 uppercase tracking-tight">{member.name}</h3>
                           <div className="bg-slate-50 w-full p-4 rounded-2xl border border-slate-100/50 group-hover:bg-indigo-50 transition-colors">
                              <p className="text-[10px] font-black text-slate-600 mb-1 uppercase tracking-tight">{member.affiliation}</p>
                              <div className="flex items-center justify-center gap-1.5 mt-2">
