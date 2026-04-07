@@ -55,6 +55,7 @@ const AdminTopics = lazy(() => import('./pages/admin/AdminTopics'));
 const AdminContent = lazy(() => import('./pages/admin/AdminContent'));
 const BulkEmail = lazy(() => import('./pages/admin/BulkEmail'));
 const AdminUsers = lazy(() => import('./pages/admin/AdminUsers'));
+const AdminOrganizers = lazy(() => import('./pages/admin/Organizers'));
 const FailedPayments = lazy(() => import('./pages/admin/FailedPayments'));
 const SetupPage = lazy(() => import('./pages/SetupPage'));
 
@@ -198,6 +199,11 @@ function App() {
               <Route path="/admin/users" element={
                 <ProtectedRoute requireAdmin>
                   <AdminUsers />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/organizers" element={
+                <ProtectedRoute requireAdmin>
+                  <AdminOrganizers />
                 </ProtectedRoute>
               } />
               <Route path="/admin/failed-payments" element={

@@ -26,38 +26,45 @@ export default function OrganizersPage() {
          </div>
      </PageLayout>
   );
+  const categories = [...new Set(committee.map(m => m.category || 'Scientific Committee'))];
+
   return (
     <PageLayout 
       title="Our Team" 
       subtitle="The people leading our event."
     >
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 py-12 space-y-16">
-        {/* Management Team */}
-        <section className="space-y-10">
-           <div className="text-center max-w-2xl mx-auto space-y-3">
-              <h2 className="text-2xl font-bold text-slate-900 font-outfit uppercase tracking-tight">Scientific Team</h2>
-              <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest italic">Global experts leading our event.</p>
-           </div>
-           
-           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {committee.map((member, i) => (
-                <div key={i} className="p-6 bg-white rounded-3xl shadow-xl shadow-indigo-100/50 border border-slate-50 relative group transition-all duration-700 hover:-translate-y-1">
-                    <div className="flex flex-col items-center text-center">
-                        <Avatar className="w-20 h-20 mb-4 border-[4px] border-slate-50 group-hover:border-indigo-50 shadow-lg transition-all duration-700">
-                           <AvatarImage src={member.image} />
-                           <AvatarFallback>{member.name[0]}</AvatarFallback>
-                        </Avatar>
-                        <h3 className="text-lg font-bold text-slate-900 font-outfit leading-tight mb-0.5 uppercase tracking-tight">{member.name}</h3>
-                        <p className="text-[9px] font-black text-indigo-500 mb-4 uppercase tracking-widest">{member.role}</p>
-                        <div className="bg-slate-50 w-full p-4 rounded-xl border border-slate-100/50 group-hover:bg-indigo-50 transition-colors">
-                           <p className="text-[10px] font-black text-slate-600 mb-1 uppercase tracking-tight">{member.affiliation}</p>
-                           <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{member.location}</p>
-                        </div>
-                    </div>
-                </div>
-              ))}
-           </div>
-        </section>
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 py-12 space-y-24">
+        {categories.map((category) => (
+          <section key={category} className="space-y-12">
+             <div className="text-center max-w-2xl mx-auto space-y-3">
+                <h2 className="text-2xl font-bold text-slate-900 font-outfit uppercase tracking-tight">{category}</h2>
+                <div className="w-12 h-1 bg-indigo-600 mx-auto rounded-full" />
+             </div>
+             
+             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {committee.filter(m => (m.category || 'Scientific Committee') === category).map((member, i) => (
+                  <div key={member.id || i} className="p-6 bg-white rounded-3xl shadow-xl shadow-indigo-100/50 border border-slate-50 relative group transition-all duration-700 hover:-translate-y-1">
+                      <div className="flex flex-col items-center text-center">
+                          <Avatar className="w-20 h-20 mb-4 border-[4px] border-slate-50 group-hover:border-indigo-50 shadow-lg transition-all duration-700">
+                             <AvatarImage src={member.image} />
+                             <AvatarFallback>{member.name[0]}</AvatarFallback>
+                          </Avatar>
+                          <h3 className="text-lg font-extrabold text-slate-900 font-outfit leading-tight mb-0.5 uppercase tracking-tight">{member.name}</h3>
+                          <p className="text-[10px] font-black text-indigo-500 mb-4 uppercase tracking-widest">{member.role}</p>
+                          <div className="bg-slate-50 w-full p-4 rounded-2xl border border-slate-100/50 group-hover:bg-indigo-50 transition-colors">
+                             <p className="text-[10px] font-black text-slate-600 mb-1 uppercase tracking-tight">{member.affiliation}</p>
+                             <div className="flex items-center justify-center gap-1.5 mt-2">
+                                <div className="w-1 h-1 bg-slate-300 rounded-full" />
+                                <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">{member.location}</p>
+                                <div className="w-1 h-1 bg-slate-300 rounded-full" />
+                             </div>
+                          </div>
+                      </div>
+                  </div>
+                ))}
+             </div>
+          </section>
+        ))}
 
 
 
