@@ -6,7 +6,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { 
   CheckCircle2, 
-  CreditCard, 
   ShieldCheck, 
   ArrowLeft, 
   Globe, 
@@ -44,7 +43,7 @@ export default function PaymentPage() {
   const [selectedAccomm, setSelectedAccomm] = useState<string>('');
   const [guestAddon, setGuestAddon] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [method, setMethod] = useState<'stripe' | 'razorpay' | 'paypal'>('stripe');
+  const [method, setMethod] = useState<'razorpay' | 'paypal'>('razorpay');
 
   // 1. Initial Data Fetch
   useEffect(() => {
@@ -163,32 +162,7 @@ export default function PaymentPage() {
         registration_id: regId
       };
 
-      if (method === 'stripe') {
-         const res = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/stripe/checkout-session`, {
-           method: 'POST',
-           headers: { 'Content-Type': 'application/json' },
-           body: JSON.stringify({
-             amount: totalAmount,
-             currency: selectedTier.currency,
-             metadata: billingMetadata,
-             success_url: `${window.location.origin}/payment/success?method=stripe&regId=${regId || ''}`,
-             cancel_url: window.location.href
-           })
-         });
-         const data = await res.json();
-         if (data.url) {
-             window.location.href = data.url;
-             return;
-         }
-         const stripeError = data.error || 'Stripe initialization failed';
-         await reportFailure({
-           method: 'stripe',
-           error_description: stripeError,
-           error_source: 'gateway',
-           error_step: 'checkout_session_creation'
-         });
-         throw new Error(stripeError);
-      }
+      /* Removed Stripe implementation as requested. Using Razorpay/PayPal only. */
 
       if (method === 'razorpay') {
         let orderId = '';
@@ -531,9 +505,8 @@ export default function PaymentPage() {
                              </div>
                           </div>
                           
-                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                              {[
-                               { id: 'stripe', name: 'Global Card (Stripe)', icon: CreditCard, badge: 'PCI-DSS' },
                                { id: 'razorpay', name: 'India (Razorpay)', icon: ShieldCheck, badge: 'UPI/NET' },
                                { id: 'paypal', name: 'International (PayPal)', icon: Globe, badge: 'SECURE' }
                              ].map((m) => (
@@ -661,7 +634,7 @@ export default function PaymentPage() {
                                </div>
                             ) : (
                                <div className="flex items-center gap-3">
-                                  {method === 'stripe' ? 'Pay with Card' : 'Pay with UPI / Bank'} 
+                                  {method === 'razorpay' ? 'Pay with UPI / Bank' : 'Pay with PayPal'} 
                                   <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
                                 </div>
                             )}

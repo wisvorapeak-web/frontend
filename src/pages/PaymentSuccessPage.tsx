@@ -20,40 +20,16 @@ export default function PaymentSuccessPage() {
   const [regId, setRegId] = useState<string | null>(null);
 
   useEffect(() => {
-    const sessionId = searchParams.get('session_id');
-    const method = searchParams.get('method');
     const existingRegId = searchParams.get('regId');
 
     const verifyPayment = async () => {
       try {
-        if (sessionId && method === 'stripe') {
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/record`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    payment_id: sessionId,
-                    registration_id: existingRegId,
-                    status: 'Completed',
-                    method: 'stripe',
-                    metadata: { stripe_session_id: sessionId }
-                })
-            });
-            const data = await res.json();
-            if (res.ok) {
-                setRegId(data.registration_id);
-                setStatus('success');
-                // Auto-redirect to receipt
-                setTimeout(() => navigate(`/receipt/${data.registration_id}`), 2000);
-            } else {
-                setStatus('error');
-            }
-        } else {
-            setStatus('success');
-            const finalId = existingRegId || searchParams.get('regId');
-            if (finalId) {
-                setRegId(finalId);
-                setTimeout(() => navigate(`/receipt/${finalId}`), 2000);
-            }
+        /* Removed Stripe verification. Proceeding with standard completion. */
+        setStatus('success');
+        const finalId = existingRegId || searchParams.get('regId');
+        if (finalId) {
+            setRegId(finalId);
+            setTimeout(() => navigate(`/receipt/${finalId}`), 2000);
         }
       } catch (err) {
         console.error('Success Verification Error:', err);

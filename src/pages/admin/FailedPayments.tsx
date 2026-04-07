@@ -215,7 +215,6 @@ export default function FailedPayments() {
                 className="pl-9 pr-8 py-2.5 border border-slate-200 rounded-lg text-sm bg-white outline-none appearance-none cursor-pointer font-medium"
               >
                 <option value="all">All Methods</option>
-                <option value="stripe">Stripe</option>
                 <option value="razorpay">Razorpay</option>
                 <option value="paypal">PayPal</option>
               </select>

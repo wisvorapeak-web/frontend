@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { 
-  CreditCard, 
   ShieldCheck, 
   Globe, 
   Loader2, 
@@ -25,7 +24,7 @@ export default function OfferPaymentPage() {
   
   const [formData, setFormData] = useState({ name: '', email: '', institution: '', country: '' });
   const [isProcessing, setIsProcessing] = useState(false);
-  const [method, setMethod] = useState<'stripe' | 'razorpay' | 'paypal'>('stripe');
+  const [method, setMethod] = useState<'razorpay' | 'paypal'>('razorpay');
 
   useEffect(() => {
     const fetchOffer = async () => {
@@ -69,6 +68,12 @@ export default function OfferPaymentPage() {
 
   const syncOfferStatus = async () => {
      try {
+       const billingMetadata = {
+         ...formData,
+         tier_name: offer.tierId?.name,
+         offer_token: token
+       };
+
        await fetch(`${import.meta.env.VITE_API_URL}/api/payments/record`, {
          method: 'POST',
          headers: { 'Content-Type': 'application/json' },
@@ -78,7 +83,7 @@ export default function OfferPaymentPage() {
              currency: offer.currency,
              status: 'Completed',
              method: method,
-             billing_details: { ...formData, offer_token: token, type: 'special_offer' }
+             billing_details: billingMetadata
          })
        });
        
@@ -92,31 +97,7 @@ export default function OfferPaymentPage() {
     
     setIsProcessing(true);
     try {
-      const billingMetadata = {
-        ...formData,
-        tier_name: offer.tierId?.name,
-        offer_token: token
-      };
-
-      if (method === 'stripe') {
-         const res = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/stripe/checkout-session`, {
-           method: 'POST',
-           headers: { 'Content-Type': 'application/json' },
-           body: JSON.stringify({
-             amount: offer.amount,
-             currency: offer.currency,
-             metadata: billingMetadata,
-             success_url: `${window.location.origin}/payment/success?method=stripe&offer=${token}`,
-             cancel_url: window.location.href
-           })
-         });
-         const data = await res.json();
-         if (data.url) {
-             window.location.href = data.url;
-             return;
-         }
-         throw new Error(data.error || 'Stripe initialization failed');
-      }
+      /* Removed Stripe implementation as requested. Using Razorpay/PayPal only. */
 
       if (method === 'razorpay') {
         const orderRes = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/razorpay/order`, {
@@ -239,9 +220,8 @@ export default function OfferPaymentPage() {
 
                    <div className="space-y-6">
                       <h4 className="text-xs font-black uppercase tracking-widest text-slate-400">Payment Method</h4>
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                          {[
-                           { id: 'stripe', name: 'Global Card', icon: CreditCard },
                            { id: 'razorpay', name: 'UPI/Netbank', icon: ShieldCheck },
                            { id: 'paypal', name: 'PayPal', icon: Globe }
                          ].map((m) => (
