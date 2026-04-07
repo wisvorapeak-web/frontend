@@ -265,6 +265,16 @@ export default function AdminOrganizers() {
                 </div>
 
                 <div className="space-y-1.5">
+                  <Label className="text-[10px] text-slate-400 uppercase tracking-widest ml-1">LinkedIn URL</Label>
+                  <Input 
+                    value={editingOrganizer.linkedin_url || ''} 
+                    onChange={e => setEditingOrganizer({...editingOrganizer, linkedin_url: e.target.value})}
+                    className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none font-bold shadow-none" 
+                    placeholder="https://linkedin.com/in/..."
+                  />
+                </div>
+
+                <div className="space-y-1.5">
                   <ImageUploadInput 
                     label="Profile Photo" 
                     value={editingOrganizer.image_url} 
