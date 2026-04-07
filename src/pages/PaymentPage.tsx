@@ -53,11 +53,10 @@ export default function PaymentPage() {
     return normalized.length >= 3 ? normalized.slice(0, 3).toUpperCase() : 'USD';
   };
 
-  // Sync PayPal SDK currency with selected Tier
+  // Sync PayPal SDK currency (Fixed to USD for international acceptance and to avoid INR limitations)
   useEffect(() => {
-    if (selectedTier && method === 'paypal') {
-        const scriptCurrency = normalizeCurrency(selectedTier.currency);
-        // Important: PayPal SDK needs exact match during popup initialization
+    if (method === 'paypal') {
+        const scriptCurrency = 'USD';
         if (options.currency !== scriptCurrency) {
             dispatch({
                 type: DISPATCH_ACTION.RESET_OPTIONS,
@@ -68,7 +67,7 @@ export default function PaymentPage() {
             });
         }
     }
-  }, [selectedTier, method, options.currency, dispatch]);
+  }, [method, options.currency, dispatch]);
 
 
   // 1. Initial Data Fetch
@@ -572,12 +571,18 @@ export default function PaymentPage() {
                                  forceReRender={[calculateFinalTotal()]}
                                  style={{ layout: "vertical", shape: "pill", color: "blue", label: "pay" }}
                                  createOrder={async () => {
+                                     // Convert to USD If necessary for PayPal (it doesn't support domestic INR)
+                                     const normCurr = normalizeCurrency(selectedTier?.currency || 'USD');
+                                     const totalAmt = calculateFinalTotal();
+                                     const paypalAmount = normCurr === 'INR' ? Math.ceil(totalAmt / 83) : totalAmt;
+                                     const paypalCurrency = 'USD'; // Force USD for international acceptance
+
                                      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/paypal/order`, {
                                          method: 'POST',
                                          headers: { 'Content-Type': 'application/json' },
                                          body: JSON.stringify({
-                                             amount: calculateFinalTotal(),
-                                             currency: selectedTier.currency
+                                             amount: paypalAmount,
+                                             currency: paypalCurrency
                                          })
                                      });
                                      const order = await res.json();
@@ -598,21 +603,26 @@ export default function PaymentPage() {
                                          const params = new URLSearchParams(location.search);
                                          const regId = params.get('regId');
                                          
+                                         // Record original source values for bookkeeping if needed, but here we record what was paid
+                                         const normCurr = normalizeCurrency(selectedTier?.currency || 'USD');
+                                         const totalAmt = calculateFinalTotal();
+                                         const paypalAmount = normCurr === 'INR' ? Math.ceil(totalAmt / 83) : totalAmt;
+
                                          await fetch(`${import.meta.env.VITE_API_URL}/api/payments/record`, {
                                              method: 'POST',
                                              headers: { 'Content-Type': 'application/json' },
                                              body: JSON.stringify({
                                                  registration_id: regId,
                                                  payment_id: data.orderID,
-                                                 amount: calculateFinalTotal(),
-                                                 currency: selectedTier.currency,
+                                                 amount: paypalAmount,
+                                                 currency: 'USD',
                                                  status: 'Completed',
                                                  method: 'paypal',
                                                  billing_details: {
                                                     ...formData,
                                                     accommodation_tier: selectedAccomm,
                                                     guest_addon: guestAddon,
-                                                    tier_name: selectedTier.name,
+                                                    tier_name: selectedTier?.name,
                                                     registration_id: regId
                                                  }
                                              })

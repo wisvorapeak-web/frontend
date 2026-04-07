@@ -34,10 +34,10 @@ export default function OfferPaymentPage() {
     return normalized.length >= 3 ? normalized.slice(0, 3).toUpperCase() : 'USD';
   };
 
-  // Sync PayPal SDK currency with Offer selection
+  // Sync PayPal SDK currency (Fixed to USD to match forced PayPal flow)
   useEffect(() => {
-    if (offer && method === 'paypal') {
-        const scriptCurrency = normalizeCurrency(offer.currency);
+    if (method === 'paypal') {
+        const scriptCurrency = 'USD';
         if (options.currency !== scriptCurrency) {
             dispatch({
                 type: DISPATCH_ACTION.RESET_OPTIONS,
@@ -48,7 +48,7 @@ export default function OfferPaymentPage() {
             });
         }
     }
-  }, [offer, method, options.currency, dispatch]);
+  }, [method, options.currency, dispatch]);
 
   useEffect(() => {
     const fetchOffer = async () => {
@@ -262,14 +262,19 @@ export default function OfferPaymentPage() {
 
                    <div className="pt-6">
                         {method === 'paypal' ? (
-                           <PayPalButtons 
-                             forceReRender={[offer.amount]}
-                             style={{ layout: "vertical", shape: "pill", color: "blue", label: "pay" }}
-                             createOrder={async () => {
+                             <PayPalButtons 
+                               forceReRender={[offer.amount]}
+                               style={{ layout: "vertical", shape: "pill", color: "blue", label: "pay" }}
+                               createOrder={async () => {
+                                 // Convert to USD If necessary for PayPal (it doesn't support domestic INR)
+                                 const normCurr = normalizeCurrency(offer.currency);
+                                 const paypalAmount = normCurr === 'INR' ? Math.ceil(offer.amount / 83) : offer.amount;
+                                 const paypalCurrency = 'USD'; // Force USD for international acceptance
+
                                  const res = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/paypal/order`, {
                                      method: 'POST',
                                      headers: { 'Content-Type': 'application/json' },
-                                     body: JSON.stringify({ amount: offer.amount, currency: offer.currency })
+                                     body: JSON.stringify({ amount: paypalAmount, currency: paypalCurrency })
                                  });
                                  const data = await res.json();
                                  return data.id;
