@@ -16,7 +16,7 @@ import {
   Check,
   ArrowRight
 } from 'lucide-react';
-import { PayPalButtons } from "@paypal/react-paypal-js";
+import { PayPalButtons, usePayPalScriptReducer, DISPATCH_ACTION } from "@paypal/react-paypal-js";
 import { toast } from 'sonner';
 
 interface Tier {
@@ -44,6 +44,32 @@ export default function PaymentPage() {
   const [guestAddon, setGuestAddon] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [method, setMethod] = useState<'razorpay' | 'paypal'>('razorpay');
+  const [{ options }, dispatch] = usePayPalScriptReducer();
+
+  const normalizeCurrency = (curr: string) => {
+    const map: Record<string, string> = { '$': 'USD', '₹': 'INR', '£': 'GBP', '€': 'EUR', 'S$': 'SGD' };
+    if (!curr) return 'USD';
+    const normalized = map[curr] || curr;
+    return normalized.length >= 3 ? normalized.slice(0, 3).toUpperCase() : 'USD';
+  };
+
+  // Sync PayPal SDK currency with selected Tier
+  useEffect(() => {
+    if (selectedTier && method === 'paypal') {
+        const scriptCurrency = normalizeCurrency(selectedTier.currency);
+        // Important: PayPal SDK needs exact match during popup initialization
+        if (options.currency !== scriptCurrency) {
+            dispatch({
+                type: DISPATCH_ACTION.RESET_OPTIONS,
+                value: {
+                    ...options,
+                    currency: scriptCurrency,
+                },
+            });
+        }
+    }
+  }, [selectedTier, method, options.currency, dispatch]);
+
 
   // 1. Initial Data Fetch
   useEffect(() => {
