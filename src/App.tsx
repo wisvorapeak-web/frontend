@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Toaster } from '@/components/ui/sonner';
 import ScrollToTop from './components/ScrollToTop';
 import { AuthProvider } from './context/AuthContext';
@@ -71,6 +71,20 @@ const PageLoader = () => (
 
 import ProtectedRoute from './components/auth/ProtectedRoute';
 
+const ConditionalWidgets = () => {
+  const location = useLocation();
+  const isAdminPath = location.pathname.startsWith('/admin');
+  
+  if (isAdminPath) return null;
+  
+  return (
+    <>
+      <TawkChat />
+      <FloatingWidgets />
+    </>
+  );
+};
+
 function App() {
   return (
     <AuthProvider>
@@ -82,8 +96,7 @@ function App() {
         <Router>
           <ScrollToTop />
           <Toaster position="top-center" richColors />
-          <TawkChat /> {/* Tawk.to live chat global integration */}
-          <FloatingWidgets /> {/* Floating contact & chat widgets */}
+          <ConditionalWidgets />
           <Suspense fallback={<PageLoader />}>
             <Routes>
               {/* ... (existing routes) */}
