@@ -6,6 +6,7 @@ import { AuthProvider } from './context/AuthContext';
 import TawkChat from './components/TawkChat';
 import FloatingWidgets from './components/FloatingWidgets';
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { FullPageLoader } from './components/ui/Loader';
 
 // Lazy load Main Website Pages
 const Home = lazy(() => import('./pages/Home'));
@@ -60,14 +61,7 @@ const FailedPayments = lazy(() => import('./pages/admin/FailedPayments'));
 const SetupPage = lazy(() => import('./pages/SetupPage'));
 
 // Loading Fallback Component
-const PageLoader = () => (
-  <div className="h-screen w-full flex items-center justify-center bg-white">
-    <div className="flex flex-col items-center gap-4">
-      <div className="w-12 h-12 border-4 border-blue border-t-transparent rounded-full animate-spin" />
-      <p className="text-navy text-sm font-bold animate-pulse uppercase tracking-widest">Loading...</p>
-    </div>
-  </div>
-);
+const PageLoader = () => <FullPageLoader message="Initializing Conference Portal..." />;
 
 import ProtectedRoute from './components/auth/ProtectedRoute';
 

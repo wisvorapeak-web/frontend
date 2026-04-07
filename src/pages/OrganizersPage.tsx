@@ -1,6 +1,7 @@
 import PageLayout from './PageLayout';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import Loader from '@/components/ui/Loader';
 
 
 export default function OrganizersPage() {
@@ -20,7 +21,7 @@ export default function OrganizersPage() {
   if (loading) return (
      <PageLayout title="Our Team" subtitle="Loading...">
          <div className="flex flex-col items-center justify-center py-40 space-y-6">
-            <div className="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+            <Loader />
             <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em] animate-pulse">Loading team members...</p>
          </div>
      </PageLayout>
