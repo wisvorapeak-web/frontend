@@ -61,6 +61,8 @@ export default function OfferPaymentPage() {
         const data = await res.json();
         setOffer(data);
         setFormData(prev => ({ ...prev, email: data.email }));
+        // Auto-set payment method
+        setMethod(data.currency === '₹' ? 'razorpay' : 'paypal');
       } catch (err: any) {
         setErrorDesc(err.message);
       } finally {
@@ -246,9 +248,15 @@ export default function OfferPaymentPage() {
                       <h4 className="text-xs font-black uppercase tracking-widest text-slate-400">Payment Method</h4>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                          {[
-                           { id: 'razorpay', name: 'UPI/Netbank', icon: ShieldCheck },
-                           { id: 'paypal', name: 'PayPal', icon: Globe }
-                         ].map((m) => (
+                           { id: 'razorpay', name: 'India (Razorpay)', icon: ShieldCheck, badge: 'UPI/NET' },
+                           { id: 'paypal', name: 'International (PayPal)', icon: Globe, badge: 'SECURE' }
+                         ]
+                         .filter(m => {
+                            const tierCurr = offer?.currency || '₹';
+                            if (tierCurr === '₹') return m.id === 'razorpay';
+                            return m.id === 'paypal';
+                         })
+                         .map((m) => (
                            <label key={m.id} className="cursor-pointer group relative">
                              <input type="radio" name="paymentMethod" className="hidden peer" checked={method === m.id} onChange={() => setMethod(m.id as any)} />
                              <div className="p-6 border border-slate-100 rounded-2xl bg-white peer-checked:border-blue peer-checked:bg-blue/5 hover:border-slate-200 transition-all flex flex-col items-center gap-3">

@@ -72,7 +72,7 @@ export default function PaymentPage() {
 
   // 1. Initial Data Fetch
   useEffect(() => {
-    const init = async () => {
+  const init = async () => {
       try {
         const pricingRes = await fetch(`${import.meta.env.VITE_API_URL}/api/site/pricing`);
         const pricingData = await pricingRes.json();
@@ -97,7 +97,11 @@ export default function PaymentPage() {
                         t.name.toLowerCase().includes(regData.tier.toLowerCase()) || 
                         regData.tier.toLowerCase().includes(t.name.toLowerCase())
                     );
-                    if (matched) setSelectedTier(matched);
+                    if (matched) {
+                        setSelectedTier(matched);
+                        // Auto-set the appropriate payment method
+                        setMethod(matched.currency === '₹' ? 'razorpay' : 'paypal');
+                    }
                 }
                 toast.success(`Registration detected: ${regData.registrationId}`);
             }
@@ -372,7 +376,10 @@ export default function PaymentPage() {
                         </div>
                      </div>
                      <Button 
-                        onClick={() => setSelectedTier(t)}
+                        onClick={() => {
+                           setSelectedTier(t);
+                           setMethod(t.currency === '₹' ? 'razorpay' : 'paypal');
+                        }}
                         className="w-full h-14 bg-slate-50 hover:bg-blue hover:text-white text-blue font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl transition-all mt-10 relative z-10 shadow-sm"
                       >
                         Pick This <ChevronRight className="w-4 h-4 ml-2" />
@@ -534,7 +541,13 @@ export default function PaymentPage() {
                              {[
                                { id: 'razorpay', name: 'India (Razorpay)', icon: ShieldCheck, badge: 'UPI/NET' },
                                { id: 'paypal', name: 'International (PayPal)', icon: Globe, badge: 'SECURE' }
-                             ].map((m) => (
+                             ]
+                             .filter(m => {
+                                const tierCurr = selectedTier?.currency || '₹';
+                                if (tierCurr === '₹') return m.id === 'razorpay';
+                                return m.id === 'paypal';
+                             })
+                             .map((m) => (
                                <label key={m.id} className="cursor-pointer group relative">
                                  <input 
                                     type="radio" 
