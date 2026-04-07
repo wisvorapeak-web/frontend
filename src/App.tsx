@@ -5,6 +5,7 @@ import ScrollToTop from './components/ScrollToTop';
 import { AuthProvider } from './context/AuthContext';
 import TawkChat from './components/TawkChat';
 import FloatingWidgets from './components/FloatingWidgets';
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 // Lazy load Main Website Pages
 const Home = lazy(() => import('./pages/Home'));
@@ -72,137 +73,143 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 function App() {
   return (
     <AuthProvider>
-      <Router>
-      <ScrollToTop />
-      <Toaster position="top-center" richColors />
-      <TawkChat /> {/* Tawk.to live chat global integration */}
-      <FloatingWidgets /> {/* Floating contact & chat widgets */}
-      <Suspense fallback={<PageLoader />}>
-        <Routes>
-          {/* Main Website Routes */}
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/topics" element={<TopicsPage />} />
-          <Route path="/dates" element={<DatesPage />} />
-          <Route path="/organizers" element={<OrganizersPage />} />
-          <Route path="/speakers" element={<SpeakersPage />} />
-          <Route path="/program" element={<ProgramPage />} />
-          <Route path="/sponsorship" element={<SponsorshipPage />} />
-          <Route path="/sessions" element={<SessionsPage />} />
-          <Route path="/abstract-submission" element={<AbstractSubmissionPage />} />
-          <Route path="/brochure" element={<BrochurePage />} />
-          <Route path="/venue" element={<VenuePage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/registration" element={<RegistrationPage />} />
-          <Route path="/chairs" element={<ChairsPage />} />
-          <Route path="/workshops" element={<WorkshopsPage />} />
-          <Route path="/journals" element={<JournalsPage />} />
-          <Route path="/payment/:type/:slug" element={<PaymentPage />} />
-          <Route path="/payment/offer/:token" element={<OfferPaymentPage />} />
-          <Route path="/payment/success" element={<PaymentSuccessPage />} />
-          <Route path="/payment" element={<PaymentPage />} />
-          <Route path="/legal/:slug" element={<LegalPage />} />
-          <Route path="/receipt/:id" element={<ReceiptPage />} />
-          <Route path="/setup" element={<SetupPage />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/terms-conditions" element={<TermsConditions />} />
-          
-          {/* Auth Routes moved to Admin */}
-          <Route path="/admin/login" element={<Login />} />
-          <Route path="/admin/forgot-password" element={<ForgotPassword />} />
-          <Route path="/admin/reset-password" element={<ResetPassword />} />
-          <Route path="/register-invitation" element={<RegisterInvitation />} />
-          
-          {/* Admin Routes (PROTECTED) */}
-          <Route path="/admin" element={
-            <ProtectedRoute requireAdmin>
-              <AdminOverview />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/overview" element={
-            <ProtectedRoute requireAdmin>
-              <AdminOverview />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/abstracts" element={
-            <ProtectedRoute requireAdmin>
-              <AbstractReview />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/registrations" element={
-            <ProtectedRoute requireAdmin>
-              <AdminRegistrations />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/pricing" element={
-            <ProtectedRoute requireAdmin>
-              <AdminPricing />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/inbox" element={
-            <ProtectedRoute requireAdmin>
-              <Inbox />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/events" element={
-            <ProtectedRoute requireAdmin>
-              <AdminEvents />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/sponsors" element={
-            <ProtectedRoute requireAdmin>
-              <AdminSponsors />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/venue" element={
-            <ProtectedRoute requireAdmin>
-              <AdminVenue />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/speakers" element={
-            <ProtectedRoute requireAdmin>
-              <AdminSpeakers />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/brochures" element={
-            <ProtectedRoute requireAdmin>
-              <AdminBrochures />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/topics" element={
-            <ProtectedRoute requireAdmin>
-              <AdminTopics />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/content" element={
-            <ProtectedRoute requireAdmin>
-              <AdminContent />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/settings" element={
-            <ProtectedRoute requireAdmin>
-              <SiteSettings />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/bulk-email" element={
-            <ProtectedRoute requireAdmin>
-              <BulkEmail />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/users" element={
-            <ProtectedRoute requireAdmin>
-              <AdminUsers />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/failed-payments" element={
-            <ProtectedRoute requireAdmin>
-              <FailedPayments />
-            </ProtectedRoute>
-          } />
-        </Routes>
-      </Suspense>
-    </Router>
-  </AuthProvider>
+      <PayPalScriptProvider options={{ 
+        clientId: import.meta.env.VITE_PAYPAL_CLIENT_ID,
+        currency: "USD", // Default or dynamic if needed, but usually USD for Intl
+        intent: "capture"
+      }}>
+        <Router>
+          <ScrollToTop />
+          <Toaster position="top-center" richColors />
+          <TawkChat /> {/* Tawk.to live chat global integration */}
+          <FloatingWidgets /> {/* Floating contact & chat widgets */}
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              {/* ... (existing routes) */}
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/topics" element={<TopicsPage />} />
+              <Route path="/dates" element={<DatesPage />} />
+              <Route path="/organizers" element={<OrganizersPage />} />
+              <Route path="/speakers" element={<SpeakersPage />} />
+              <Route path="/program" element={<ProgramPage />} />
+              <Route path="/sponsorship" element={<SponsorshipPage />} />
+              <Route path="/sessions" element={<SessionsPage />} />
+              <Route path="/abstract-submission" element={<AbstractSubmissionPage />} />
+              <Route path="/brochure" element={<BrochurePage />} />
+              <Route path="/venue" element={<VenuePage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/registration" element={<RegistrationPage />} />
+              <Route path="/chairs" element={<ChairsPage />} />
+              <Route path="/workshops" element={<WorkshopsPage />} />
+              <Route path="/journals" element={<JournalsPage />} />
+              <Route path="/payment/:type/:slug" element={<PaymentPage />} />
+              <Route path="/payment/offer/:token" element={<OfferPaymentPage />} />
+              <Route path="/payment/success" element={<PaymentSuccessPage />} />
+              <Route path="/payment" element={<PaymentPage />} />
+              <Route path="/legal/:slug" element={<LegalPage />} />
+              <Route path="/receipt/:id" element={<ReceiptPage />} />
+              <Route path="/setup" element={<SetupPage />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-conditions" element={<TermsConditions />} />
+              
+              {/* Auth Routes moved to Admin */}
+              <Route path="/admin/login" element={<Login />} />
+              <Route path="/admin/forgot-password" element={<ForgotPassword />} />
+              <Route path="/admin/reset-password" element={<ResetPassword />} />
+              <Route path="/register-invitation" element={<RegisterInvitation />} />
+              
+              {/* Admin Routes (PROTECTED) */}
+              <Route path="/admin" element={
+                <ProtectedRoute requireAdmin>
+                  <AdminOverview />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/overview" element={
+                <ProtectedRoute requireAdmin>
+                  <AdminOverview />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/abstracts" element={
+                <ProtectedRoute requireAdmin>
+                  <AbstractReview />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/registrations" element={
+                <ProtectedRoute requireAdmin>
+                  <AdminRegistrations />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/pricing" element={
+                <ProtectedRoute requireAdmin>
+                  <AdminPricing />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/inbox" element={
+                <ProtectedRoute requireAdmin>
+                  <Inbox />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/events" element={
+                <ProtectedRoute requireAdmin>
+                  <AdminEvents />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/sponsors" element={
+                <ProtectedRoute requireAdmin>
+                  <AdminSponsors />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/venue" element={
+                <ProtectedRoute requireAdmin>
+                  <AdminVenue />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/speakers" element={
+                <ProtectedRoute requireAdmin>
+                  <AdminSpeakers />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/brochures" element={
+                <ProtectedRoute requireAdmin>
+                  <AdminBrochures />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/topics" element={
+                <ProtectedRoute requireAdmin>
+                  <AdminTopics />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/content" element={
+                <ProtectedRoute requireAdmin>
+                  <AdminContent />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/settings" element={
+                <ProtectedRoute requireAdmin>
+                  <SiteSettings />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/bulk-email" element={
+                <ProtectedRoute requireAdmin>
+                  <BulkEmail />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/users" element={
+                <ProtectedRoute requireAdmin>
+                  <AdminUsers />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/failed-payments" element={
+                <ProtectedRoute requireAdmin>
+                  <FailedPayments />
+                </ProtectedRoute>
+              } />
+            </Routes>
+          </Suspense>
+        </Router>
+      </PayPalScriptProvider>
+    </AuthProvider>
 );
 }
 

@@ -17,7 +17,7 @@ import {
   Check,
   ArrowRight
 } from 'lucide-react';
-import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { PayPalButtons } from "@paypal/react-paypal-js";
 import { toast } from 'sonner';
 
 interface Tier {
@@ -568,91 +568,90 @@ export default function PaymentPage() {
                                    <p className="text-[9px] font-bold text-slate-500 uppercase tracking-tight italic opacity-70">Use PayPal below to pay.</p>
                                 </div>
                              </div>
-                             <PayPalScriptProvider options={{ clientId: import.meta.env.VITE_PAYPAL_CLIENT_ID }}>
-                               <div className="px-10">
-                                 <PayPalButtons 
-                                   style={{ layout: "vertical", shape: "pill", color: "blue", label: "pay" }}
-                                   createOrder={async () => {
-                                       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/paypal/order`, {
-                                           method: 'POST',
-                                           headers: { 'Content-Type': 'application/json' },
-                                           body: JSON.stringify({
-                                               amount: calculateFinalTotal(),
-                                               currency: selectedTier.currency
-                                           })
-                                       });
-                                       const order = await res.json();
-                                        if (!order.id) {
-                                          await reportFailure({ method: 'paypal', error_description: 'Failed to create PayPal order', error_source: 'gateway', error_step: 'order_creation' });
-                                          throw new Error('Failed to create PayPal order');
-                                        }
-                                       return order.id;
-                                   }}
-                                   onApprove={async (data) => {
-                                       const captureRes = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/paypal/capture`, {
-                                           method: 'POST',
-                                           headers: { 'Content-Type': 'application/json' },
-                                           body: JSON.stringify({ orderID: data.orderID })
-                                       });
-                                       
-                                       if (captureRes.ok) {
-                                           const params = new URLSearchParams(location.search);
-                                           const regId = params.get('regId');
-                                           
-                                           await fetch(`${import.meta.env.VITE_API_URL}/api/payments/record`, {
-                                               method: 'POST',
-                                               headers: { 'Content-Type': 'application/json' },
-                                               body: JSON.stringify({
-                                                   registration_id: regId,
-                                                   payment_id: data.orderID,
-                                                   amount: calculateFinalTotal(),
-                                                   currency: selectedTier.currency,
-                                                   status: 'Completed',
-                                                   method: 'paypal',
-                                                   billing_details: {
-                                                      ...formData,
-                                                      accommodation_tier: selectedAccomm,
-                                                      guest_addon: guestAddon,
-                                                      tier_name: selectedTier.name,
-                                                      registration_id: regId
-                                                   }
-                                               })
-                                           });
+                             <div className="px-10">
+                               <PayPalButtons 
+                                 forceReRender={[calculateFinalTotal()]}
+                                 style={{ layout: "vertical", shape: "pill", color: "blue", label: "pay" }}
+                                 createOrder={async () => {
+                                     const res = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/paypal/order`, {
+                                         method: 'POST',
+                                         headers: { 'Content-Type': 'application/json' },
+                                         body: JSON.stringify({
+                                             amount: calculateFinalTotal(),
+                                             currency: selectedTier.currency
+                                         })
+                                     });
+                                     const order = await res.json();
+                                      if (!order.id) {
+                                        await reportFailure({ method: 'paypal', error_description: 'Failed to create PayPal order', error_source: 'gateway', error_step: 'order_creation' });
+                                        throw new Error('Failed to create PayPal order');
+                                      }
+                                     return order.id;
+                                 }}
+                                 onApprove={async (data) => {
+                                     const captureRes = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/paypal/capture`, {
+                                         method: 'POST',
+                                         headers: { 'Content-Type': 'application/json' },
+                                         body: JSON.stringify({ orderID: data.orderID })
+                                     });
+                                     
+                                     if (captureRes.ok) {
+                                         const params = new URLSearchParams(location.search);
+                                         const regId = params.get('regId');
+                                         
+                                         await fetch(`${import.meta.env.VITE_API_URL}/api/payments/record`, {
+                                             method: 'POST',
+                                             headers: { 'Content-Type': 'application/json' },
+                                             body: JSON.stringify({
+                                                 registration_id: regId,
+                                                 payment_id: data.orderID,
+                                                 amount: calculateFinalTotal(),
+                                                 currency: selectedTier.currency,
+                                                 status: 'Completed',
+                                                 method: 'paypal',
+                                                 billing_details: {
+                                                    ...formData,
+                                                    accommodation_tier: selectedAccomm,
+                                                    guest_addon: guestAddon,
+                                                    tier_name: selectedTier.name,
+                                                    registration_id: regId
+                                                 }
+                                             })
+                                         });
 
-                                           toast.success("PayPal Payment Verified and Recorded!");
-                                           navigate(`/payment/success?method=paypal&regId=${regId || ''}`);
-                                       } else {
-                                            await reportFailure({
-                                              method: 'paypal',
-                                              error_description: 'PayPal payment capture failed',
-                                              error_source: 'gateway',
-                                              error_step: 'payment_capture',
-                                              gateway_order_id: data.orderID
-                                            });
-                                            toast.error("Payment capture failed. Our team has been notified.");
-                                        }
-                                   }}
-                                    onError={async (err: any) => {
-                                        await reportFailure({
-                                          method: 'paypal',
-                                          error_description: err?.message || 'PayPal checkout error',
-                                          error_source: 'gateway',
-                                          error_step: 'checkout'
-                                        });
-                                        toast.error("PayPal payment failed. Our team will contact you.");
-                                    }}
-                                    onCancel={async () => {
-                                        await reportFailure({
-                                          method: 'paypal',
-                                          error_description: 'User cancelled PayPal payment',
-                                          error_source: 'user',
-                                          error_step: 'checkout'
-                                        });
-                                        toast.error("Payment cancelled. Our team can help if you need assistance.");
-                                    }}
-                                 />
-                               </div>
-                             </PayPalScriptProvider>
+                                         toast.success("PayPal Payment Verified and Recorded!");
+                                         navigate(`/payment/success?method=paypal&regId=${regId || ''}`);
+                                     } else {
+                                          await reportFailure({
+                                            method: 'paypal',
+                                            error_description: 'PayPal payment capture failed',
+                                            error_source: 'gateway',
+                                            error_step: 'payment_capture',
+                                            gateway_order_id: data.orderID
+                                          });
+                                          toast.error("Payment capture failed. Our team has been notified.");
+                                      }
+                                 }}
+                                  onError={async (err: any) => {
+                                      await reportFailure({
+                                        method: 'paypal',
+                                        error_description: err?.message || 'PayPal checkout error',
+                                        error_source: 'gateway',
+                                        error_step: 'checkout'
+                                      });
+                                      toast.error("PayPal payment failed. Our team will contact you.");
+                                  }}
+                                  onCancel={async () => {
+                                      await reportFailure({
+                                        method: 'paypal',
+                                        error_description: 'User cancelled PayPal payment',
+                                        error_source: 'user',
+                                        error_step: 'checkout'
+                                      });
+                                      toast.error("Payment cancelled. Our team can help if you need assistance.");
+                                  }}
+                               />
+                             </div>
                           </div>
                         ) : (
                           <Button disabled={isProcessing} className="w-full h-16 bg-blue hover:bg-navy text-white text-xs font-black uppercase tracking-[0.3em] rounded-2xl transition-all shadow-2xl shadow-blue/20 active:scale-95 group overflow-hidden">

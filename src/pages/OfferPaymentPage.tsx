@@ -12,7 +12,7 @@ import {
   Clock,
   Tag
 } from 'lucide-react';
-import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { PayPalButtons } from "@paypal/react-paypal-js";
 import { toast } from 'sonner';
 
 export default function OfferPaymentPage() {
@@ -258,32 +258,31 @@ export default function OfferPaymentPage() {
 
                    <div className="pt-6">
                         {method === 'paypal' ? (
-                           <PayPalScriptProvider options={{ clientId: import.meta.env.VITE_PAYPAL_CLIENT_ID }}>
-                             <PayPalButtons 
-                               style={{ layout: "vertical", shape: "pill", color: "blue", label: "pay" }}
-                               createOrder={async () => {
-                                   const res = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/paypal/order`, {
-                                       method: 'POST',
-                                       headers: { 'Content-Type': 'application/json' },
-                                       body: JSON.stringify({ amount: offer.amount, currency: offer.currency })
-                                   });
-                                   const data = await res.json();
-                                   return data.id;
-                               }}
-                               onApprove={async (data) => {
-                                   const captureRes = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/paypal/capture`, {
-                                       method: 'POST',
-                                       headers: { 'Content-Type': 'application/json' },
-                                       body: JSON.stringify({ orderID: data.orderID })
-                                   });
-                                   if (captureRes.ok) {
-                                       await syncOfferStatus();
-                                       toast.success("Payment Received!");
-                                       navigate(`/payment/success?method=paypal&offer=${token}`);
-                                   }
-                               }}
-                             />
-                           </PayPalScriptProvider>
+                           <PayPalButtons 
+                             forceReRender={[offer.amount]}
+                             style={{ layout: "vertical", shape: "pill", color: "blue", label: "pay" }}
+                             createOrder={async () => {
+                                 const res = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/paypal/order`, {
+                                     method: 'POST',
+                                     headers: { 'Content-Type': 'application/json' },
+                                     body: JSON.stringify({ amount: offer.amount, currency: offer.currency })
+                                 });
+                                 const data = await res.json();
+                                 return data.id;
+                             }}
+                             onApprove={async (data) => {
+                                 const captureRes = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/paypal/capture`, {
+                                     method: 'POST',
+                                     headers: { 'Content-Type': 'application/json' },
+                                     body: JSON.stringify({ orderID: data.orderID })
+                                 });
+                                 if (captureRes.ok) {
+                                     await syncOfferStatus();
+                                     toast.success("Payment Received!");
+                                     navigate(`/payment/success?method=paypal&offer=${token}`);
+                                 }
+                             }}
+                           />
                         ) : (
                           <Button disabled={isProcessing} className="w-full h-14 bg-blue hover:bg-navy text-white text-xs font-black uppercase tracking-[0.2em] rounded-xl transition-all shadow-xl shadow-blue/20">
                             {isProcessing ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : 'Complete Secure Payment'}
