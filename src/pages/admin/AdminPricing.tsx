@@ -6,7 +6,9 @@ import {
   Plus,
   Edit3,
   Trash2,
-  Loader2
+  Loader2,
+  Copy,
+  CheckCheck
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -161,6 +163,14 @@ export default function AdminPricing() {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/offers/${id}`, { method: 'DELETE', credentials: 'include' });
       if (res.ok) { toast.success('Offer removed'); fetchOffers(); }
     } catch (err) { toast.error('Action failed'); }
+  };
+
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const copyToClipboard = (text: string, id: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedId(id);
+    toast.success('Link copied to clipboard');
+    setTimeout(() => setCopiedId(null), 2000);
   };
 
   const resetForm = () => {
@@ -322,7 +332,9 @@ export default function AdminPricing() {
                       <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Source Package</Label>
                       <select required value={offerFormData.tierId} onChange={e => {
                         const tier = tiers.find(t => t._id === e.target.value);
-                        setOfferFormData({...offerFormData, tierId: e.target.value, amount: tier?.amount.toString() || '', currency: tier?.currency || 'USD'});
+                        let curr = tier?.currency || 'USD';
+                        if (curr === '₹' || curr === 'inr') curr = 'INR';
+                        setOfferFormData({...offerFormData, tierId: e.target.value, amount: tier?.amount.toString() || '', currency: curr});
                       }} className="w-full h-10 border rounded px-3 text-sm">
                          <option value="">Select a package...</option>
                          {tiers.filter(t => t.is_active).map(t => <option key={t._id} value={t._id}>{t.name} ({t.amount} {t.currency})</option>)}
@@ -334,9 +346,16 @@ export default function AdminPricing() {
                          <Input type="number" required value={offerFormData.amount} onChange={e => setOfferFormData({...offerFormData, amount: e.target.value})} className="h-10" />
                       </div>
                       <div className="space-y-1.5">
-                         <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Expiration Date</Label>
-                         <Input type="date" required value={offerFormData.expiresAt} onChange={e => setOfferFormData({...offerFormData, expiresAt: e.target.value})} className="h-10" />
+                         <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Currency</Label>
+                         <select value={offerFormData.currency} onChange={e => setOfferFormData({...offerFormData, currency: e.target.value})} className="w-full h-10 border rounded px-3 text-sm">
+                            <option value="USD">USD ($)</option>
+                            <option value="INR">INR (₹)</option>
+                         </select>
                       </div>
+                   </div>
+                   <div className="space-y-1.5">
+                      <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Expiration Date</Label>
+                      <Input type="date" required value={offerFormData.expiresAt} onChange={e => setOfferFormData({...offerFormData, expiresAt: e.target.value})} className="h-10" />
                    </div>
                    <Button disabled={isSaving} className="w-full h-10 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs mt-4">
                      {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Send Offer Link'}
@@ -510,11 +529,18 @@ export default function AdminPricing() {
                             </div>
                          </TableCell>
                          <TableCell className="py-4 pr-6 text-right">
-                            <Button 
-                              onClick={() => handleDeleteOffer(offer._id)}
-                              variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-rose-600 transition-none rounded opacity-0 group-hover:opacity-100">
-                                <Trash2 className="w-3.5 h-3.5" />
-                            </Button>
+                            <div className="flex items-center justify-end gap-2">
+                               <Button 
+                                 onClick={() => copyToClipboard(`${window.location.origin}/payment/offer/${offer.token}`, offer._id)}
+                                 variant="ghost" size="icon" className={`h-8 w-8 transition-none rounded ${copiedId === offer._id ? 'text-emerald-500' : 'text-slate-400 hover:text-blue-600'}`}>
+                                   {copiedId === offer._id ? <CheckCheck className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                               </Button>
+                               <Button 
+                                 onClick={() => handleDeleteOffer(offer._id)}
+                                 variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-rose-600 transition-none rounded opacity-0 group-hover:opacity-100">
+                                   <Trash2 className="w-3.5 h-3.5" />
+                               </Button>
+                            </div>
                          </TableCell>
                       </TableRow>
                     ))}

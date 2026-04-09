@@ -104,7 +104,7 @@ export default function PaymentPage() {
                     if (matched) {
                         setSelectedTier(matched);
                         // Auto-set the appropriate payment method
-                        setMethod(matched.currency === '₹' ? 'razorpay' : 'paypal');
+                        setMethod((matched.currency === '₹' || matched.currency === 'INR') ? 'razorpay' : 'paypal');
                     }
                 }
                 toast.success(`Registration detected: ${regData.registrationId}`);
@@ -565,8 +565,8 @@ export default function PaymentPage() {
                              ]
                              .filter(m => {
                                 const tierCurr = selectedTier?.currency || '₹';
-                                if (tierCurr === '₹') return m.id === 'razorpay';
-                                return m.id === 'paypal';
+                                if (tierCurr === '₹' || tierCurr === 'INR') return m.id === 'razorpay';
+                                return true; // Show both for USD/international as both are supported
                              })
                              .map((m) => (
                                <label key={m.id} className="cursor-pointer group relative">

@@ -64,7 +64,7 @@ export default function OfferPaymentPage() {
         setOffer(data);
         setFormData(prev => ({ ...prev, email: data.email }));
         // Auto-set payment method
-        setMethod(data.currency === '₹' ? 'razorpay' : 'paypal');
+        setMethod((data.currency === '₹' || data.currency === 'INR') ? 'razorpay' : 'paypal');
       } catch (err: any) {
         setErrorDesc(err.message);
       } finally {
@@ -277,8 +277,8 @@ export default function OfferPaymentPage() {
                          ]
                          .filter(m => {
                             const tierCurr = offer?.currency || '₹';
-                            if (tierCurr === '₹') return m.id === 'razorpay';
-                            return m.id === 'paypal';
+                            if (tierCurr === '₹' || tierCurr === 'INR') return m.id === 'razorpay';
+                            return true; // Show both for USD/international as both are supported
                          })
                          .map((m) => (
                            <label key={m.id} className="cursor-pointer group relative">

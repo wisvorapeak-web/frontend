@@ -11,7 +11,9 @@ import {
   Building2,
   Hash,
   Activity,
-  CreditCard
+  CreditCard,
+  Receipt,
+  ExternalLink
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { 
@@ -233,6 +235,15 @@ export default function Registrations() {
                          <Button 
                             variant="outline" 
                             size="sm" 
+                            title="View Receipt"
+                            onClick={() => window.open(`/receipt/${reg.registrationId || reg._id}`, '_blank')}
+                            className="h-8 border-slate-200 text-blue-600 hover:bg-blue-50 transition-none rounded px-2"
+                          >
+                             <Receipt className="w-3.5 h-3.5 mr-1.5" /> <span className="text-[9px] uppercase font-black">Receipt</span>
+                         </Button>
+                         <Button 
+                            variant="outline" 
+                            size="sm" 
                             onClick={() => setSelectedReg(reg)}
                             className="h-8 w-8 p-0 border-slate-200 text-slate-400 hover:text-slate-900 transition-none rounded"
                           >
@@ -337,7 +348,16 @@ export default function Registrations() {
                         <span className="text-xs font-bold text-blue-600"> — {selectedReg?.amount} {selectedReg?.currency || 'USD'}</span>
                     </div>
                 </div>
-                <Button onClick={() => setSelectedReg(null)} className="h-10 px-8 bg-navy text-white font-bold text-[10px] uppercase tracking-widest rounded transition-all">Close Pipeline</Button>
+                <div className="flex gap-3">
+                    <Button 
+                        variant="outline"
+                        onClick={() => window.open(`/receipt/${selectedReg?.registrationId || selectedReg?._id}`, '_blank')}
+                        className="h-10 px-6 border-slate-200 text-blue-600 font-bold text-[10px] uppercase tracking-widest rounded transition-all flex items-center gap-2"
+                    >
+                        <ExternalLink className="w-3.5 h-3.5" /> Official Transcript
+                    </Button>
+                    <Button onClick={() => setSelectedReg(null)} className="h-10 px-8 bg-navy text-white font-bold text-[10px] uppercase tracking-widest rounded transition-all">Close Pipeline</Button>
+                </div>
             </div>
           </DialogContent>
       </Dialog>

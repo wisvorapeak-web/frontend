@@ -183,18 +183,27 @@ export default function ReceiptPage() {
                             <span className="inline-block px-3 py-1 bg-navy text-white text-[9px] font-black uppercase tracking-widest rounded-full">{data.tier}</span>
                         </div>
                         
-                        <div className="p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-4">
+                        <div className="p-8 bg-slate-50/50 rounded-3xl border border-slate-100 space-y-6">
                             <div className="flex justify-between items-center text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                                <span>Registration Price</span>
-                                <span>$ {data.amount || '0'}</span>
+                                <span>Base Price ({data.currency || 'USD'})</span>
+                                <span>{(Number(data.amount) - Number(data.tax || 0)).toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between items-center text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                                <span>Add-ons / Guests</span>
-                                <span>$ {data.guest_addon ? '50' : '0'}</span>
+                                <span>Tax (5%)</span>
+                                <span>{Number(data.tax || 0).toLocaleString()}</span>
                             </div>
-                            <div className="pt-4 border-t border-slate-200 flex justify-between items-center">
-                                <span className="text-[10px] font-black text-navy uppercase tracking-widest">Total Total</span>
-                                <span className="text-lg font-black text-blue tracking-tighter italic">$ {data.amount || '0'}</span>
+                            {data.guest_addon && (
+                                <div className="flex justify-between items-center text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                    <span>Guest Add-on</span>
+                                    <span>Included</span>
+                                </div>
+                            )}
+                            <div className="pt-6 border-t border-slate-200 flex justify-between items-center">
+                                <span className="text-[10px] font-black text-navy uppercase tracking-[0.2em]">Total Amount Paied</span>
+                                <div className="flex items-baseline gap-2">
+                                    <span className="text-xs font-black text-blue">{data.currency || 'USD'}</span>
+                                    <span className="text-3xl font-black text-navy tracking-tighter">{Number(data.amount).toLocaleString()}</span>
+                                </div>
                             </div>
                         </div>
 
