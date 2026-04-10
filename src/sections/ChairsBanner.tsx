@@ -1,11 +1,35 @@
-import { Award, ShieldCheck } from 'lucide-react';
+import { Award, ShieldCheck, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+
+const colorPalette = [
+  'text-indigo-600 bg-indigo-50 border-indigo-100',
+  'text-rose-600 bg-rose-50 border-rose-100',
+  'text-emerald-600 bg-emerald-50 border-emerald-100',
+  'text-amber-600 bg-amber-50 border-amber-100',
+  'text-cyan-600 bg-cyan-50 border-cyan-100',
+];
 
 export default function ChairsBanner() {
-  const chairs = [
-    { role: 'Conference Chair', icon: Award, color: 'text-indigo-600 bg-indigo-50 border-indigo-100' },
-    { role: 'Local Organizing Chair', icon: MapPin, color: 'text-rose-600 bg-rose-50 border-rose-100' },
-    { role: 'Scientific Committee Chair', icon: ShieldCheck, color: 'text-emerald-600 bg-emerald-50 border-emerald-100' },
+  const [chairs, setChairs] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/api/site/chairs`)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          const chairMembers = data.filter(m => m.category === 'Chairs');
+          setChairs(chairMembers.length > 0 ? chairMembers.slice(0, 3) : []);
+        }
+      })
+      .catch(err => console.error('ChairsBanner fetch error:', err));
+  }, []);
+
+  // Fallback to static placeholders if no chairs in DB yet
+  const displayChairs = chairs.length > 0 ? chairs : [
+    { role: 'Conference Chair', name: 'To Be Announced', affiliation: 'University or Organization' },
+    { role: 'Local Organizing Chair', name: 'To Be Announced', affiliation: 'University or Organization' },
+    { role: 'Scientific Committee Chair', name: 'To Be Announced', affiliation: 'University or Organization' },
   ];
 
   return (
@@ -24,17 +48,23 @@ export default function ChairsBanner() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-           {chairs.map((chair, i) => (
-             <div key={i} className={`p-8 border rounded-3xl transition-all duration-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/50 flex flex-col items-center text-center space-y-6 ${chair.color}`}>
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center border-2 border-white/20 shadow-lg shadow-current/10`}>
-                   <chair.icon className="w-6 h-6" />
-                </div>
+           {displayChairs.map((chair: any, i: number) => (
+             <div key={chair.id || i} className={`p-8 border rounded-3xl transition-all duration-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/50 flex flex-col items-center text-center space-y-6 ${colorPalette[i % colorPalette.length]}`}>
+                {chair.image ? (
+                  <div className="w-16 h-16 rounded-2xl overflow-hidden border-2 border-white/30 shadow-lg">
+                    <img src={chair.image} alt={chair.name} className="w-full h-full object-cover" />
+                  </div>
+                ) : (
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center border-2 border-white/20 shadow-lg shadow-current/10`}>
+                    <Award className="w-6 h-6" />
+                  </div>
+                )}
                  <div className="space-y-1.5">
-                    <h3 className="text-[9px] font-black opacity-60 leading-none uppercase tracking-widest">{chair.role}</h3>
-                    <h4 className="text-xl font-bold text-navy leading-none uppercase tracking-tight">To Be Announced</h4>
+                    <h3 className="text-[9px] font-black opacity-60 leading-none uppercase tracking-widest">{chair.role || 'Chair'}</h3>
+                    <h4 className="text-xl font-bold text-navy leading-none uppercase tracking-tight">{chair.name}</h4>
                  </div>
                  <div className="p-3 bg-white/40 rounded-xl border border-white/40 w-full">
-                     <p className="text-[10px] font-bold text-slate-400">University or Organization</p>
+                     <p className="text-[10px] font-bold text-slate-400">{chair.affiliation || 'University or Organization'}</p>
                  </div>
              </div>
            ))}
@@ -50,5 +80,3 @@ export default function ChairsBanner() {
     </section>
   );
 }
-
-import { MapPin } from 'lucide-react'; // Fix missing import

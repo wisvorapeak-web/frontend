@@ -15,7 +15,8 @@ import {
   Users,
   Eye,
   X,
-  Download
+  Download,
+  Columns
 } from 'lucide-react';
 
 interface SendResult {
@@ -28,6 +29,54 @@ interface SendResult {
   skippedDetails: string[];
 }
 
+/**
+ * Simple CSV line parser that handles quoted fields with commas inside.
+ */
+function parseCSVLine(line: string): string[] {
+  const result: string[] = [];
+  let current = '';
+  let inQuotes = false;
+
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+    if (char === '"') {
+      if (inQuotes && line[i + 1] === '"') {
+        current += '"';
+        i++;
+      } else {
+        inQuotes = !inQuotes;
+      }
+    } else if (char === ',' && !inQuotes) {
+      result.push(current.trim());
+      current = '';
+    } else {
+      current += char;
+    }
+  }
+  result.push(current.trim());
+  return result;
+}
+
+/**
+ * Parse full CSV text into { headers, rows } where rows is array of Record<string, string>
+ */
+function parseCSV(text: string): { headers: string[]; rows: Record<string, string>[] } {
+  const lines = text.split(/\r?\n/).filter(l => l.trim());
+  if (lines.length === 0) return { headers: [], rows: [] };
+
+  const headers = parseCSVLine(lines[0]);
+  const rows = lines.slice(1).map(line => {
+    const values = parseCSVLine(line);
+    const obj: Record<string, string> = {};
+    headers.forEach((h, idx) => {
+      obj[h] = values[idx] || '';
+    });
+    return obj;
+  });
+
+  return { headers, rows };
+}
+
 export default function BulkEmail() {
   const senderEmails = [
     'asfaa-2026@foodagriexpo.com',
@@ -38,85 +87,37 @@ export default function BulkEmail() {
     'nova.grace@foodagriexpo.com',
     'novagrace@foodagriexpo.com',
     'enquiry@foodagriexpo.com',
-    'conference@foodagriexpo.com',
-    'foodtech@foodagriexpo.com',
-    'agritech@foodagriexpo.com',
-    'animalscience@foodagriexpo.com',
-    'gracenova@foodagriexpo.com',
-    'grace.nova@foodagriexpo.com',
-    'grace@foodagriexpo.com',
-    'nova@foodagriexpo.com'
+    'foodagriexpo@ascendixsummits.com'
   ];
 
   const [fromEmail, setFromEmail] = useState(senderEmails[0]);
+  const [fromName, setFromName] = useState('Ascendix World Food, AgroTech & Animal Science');
   const [subject, setSubject] = useState('');
   const [content, setContent] = useState('');
   const [csvFile, setCsvFile] = useState<File | null>(null);
-  const [csvPreview, setCsvPreview] = useState<{ name: string; email: string }[]>([]);
+
+  // CSV parsed data
+  const [csvHeaders, setCsvHeaders] = useState<string[]>([]);
+  const [csvRows, setCsvRows] = useState<Record<string, string>[]>([]);
+  const [nameColumn, setNameColumn] = useState('');
+  const [emailColumn, setEmailColumn] = useState('');
+
   const [isSending, setIsSending] = useState(false);
   const [progress, setProgress] = useState(0);
   const [sentCount, setSentCount] = useState(0);
-  const [isCoolingDown, setIsCoolingDown] = useState(false);
-  const [cooldownRemaining, setCooldownRemaining] = useState(0);
   const [result, setResult] = useState<SendResult | null>(null);
   const [showPreview, setShowPreview] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const COOKIE_NAME = 'bulkEmailCooldownEnd';
+  // Derived: mapped preview rows
+  const mappedRows = (nameColumn && emailColumn)
+    ? csvRows.map(r => ({ name: r[nameColumn] || '', email: r[emailColumn] || '' })).filter(r => r.name && r.email)
+    : [];
 
-  useEffect(() => {
-    const match = document.cookie.match(new RegExp('(^| )' + COOKIE_NAME + '=([^;]+)'));
-    if (match && match[2]) {
-      const endTime = parseInt(match[2], 10);
-      const remaining = Math.round((endTime - Date.now()) / 1000);
-      
-      if (remaining > 0) {
-        setIsCoolingDown(true);
-        setCooldownRemaining(remaining);
-        
-        const interval = setInterval(() => {
-          const currentRemaining = Math.round((endTime - Date.now()) / 1000);
-          if (currentRemaining <= 0) {
-            clearInterval(interval);
-            setIsCoolingDown(false);
-            setCooldownRemaining(0);
-            document.cookie = `${COOKIE_NAME}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-          } else {
-            setCooldownRemaining(currentRemaining);
-          }
-        }, 1000);
-        return () => clearInterval(interval);
-      }
-    }
-  }, []);
-
-  const startCooldown = () => {
-    setIsCoolingDown(true);
-    const duration = 5 * 60; // 5 minutes
-    setCooldownRemaining(duration);
-    const endTime = Date.now() + duration * 1000;
-    
-    // Set cookie
-    const expires = new Date(endTime).toUTCString();
-    document.cookie = `${COOKIE_NAME}=${endTime}; expires=${expires}; path=/; SameSite=Strict`;
-    
-    const interval = setInterval(() => {
-      const remaining = Math.round((endTime - Date.now()) / 1000);
-      if (remaining <= 0) {
-        clearInterval(interval);
-        setIsCoolingDown(false);
-        setCooldownRemaining(0);
-        document.cookie = `${COOKIE_NAME}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-      } else {
-        setCooldownRemaining(remaining);
-      }
-    }, 1000);
-  };
-
-  const formatTime = (seconds: number) => {
-    const m = Math.floor(seconds / 60);
-    const s = seconds % 60;
-    return `${m}:${s.toString().padStart(2, '0')}`;
+  // --- Auto-guess a column by checking common header names (case-insensitive) ---
+  const guessColumn = (headers: string[], candidates: string[]): string => {
+    const lower = candidates.map(c => c.toLowerCase());
+    return headers.find(h => lower.includes(h.toLowerCase())) || '';
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -131,48 +132,52 @@ export default function BulkEmail() {
     setCsvFile(file);
     setResult(null);
 
-    // Parse preview
     const reader = new FileReader();
     reader.onload = (event) => {
       const text = event.target?.result as string;
-      const lines = text.split('\n').filter(l => l.trim());
-      if (lines.length < 2) {
+      const { headers, rows } = parseCSV(text);
+
+      if (headers.length === 0 || rows.length === 0) {
         toast.error('CSV file must have a header row and at least one data row.');
         setCsvFile(null);
         return;
       }
 
-      const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
-      const nameIdx = headers.indexOf('name');
-      const emailIdx = headers.indexOf('email');
-
-      if (nameIdx === -1 || emailIdx === -1) {
-        toast.error('CSV must contain "name" and "email" columns');
+      if (rows.length > 3000) {
+        toast.error(`Maximum 3000 recipients allowed. This CSV has ${rows.length} rows.`);
         setCsvFile(null);
         return;
       }
 
-      const rows = lines.slice(1).map(line => {
-        const cols = line.split(',').map(c => c.trim());
-        return { name: cols[nameIdx] || '', email: cols[emailIdx] || '' };
-      }).filter(r => r.name && r.email);
+      setCsvHeaders(headers);
+      setCsvRows(rows);
 
-      if (rows.length > 300) {
-        toast.error(`Maximum 300 recipients allowed per batch. This CSV has ${rows.length} valid rows.`);
-        setCsvFile(null);
-        return;
+      // Auto-guess mappings
+      const guessedName = guessColumn(headers, ['name', 'Name', 'Full Name', 'Fullname', 'full_name', 'FirstName', 'First Name', 'recipient_name']);
+      const guessedEmail = guessColumn(headers, ['email', 'Email', 'Email Address', 'email_address', 'Mail', 'E-mail', 'EmailAddress']);
+
+      setNameColumn(guessedName);
+      setEmailColumn(guessedEmail);
+
+      if (guessedName && guessedEmail) {
+        toast.success(`${rows.length} recipients loaded. Columns auto-mapped: "${guessedName}" → Name, "${guessedEmail}" → Email`);
+      } else {
+        toast.warning(`${rows.length} rows loaded. Please map the Name and Email columns manually.`);
       }
-
-      setCsvPreview(rows);
-      toast.success(`${rows.length} recipients loaded from CSV`);
     };
     reader.readAsText(file);
   };
 
   const handleSend = async () => {
     if (!csvFile) return toast.error('Please upload a CSV file.');
+    if (!nameColumn || !emailColumn) return toast.error('Please map both Name and Email columns from the dropdowns.');
+    if (nameColumn === emailColumn) return toast.error('Name and Email columns must be different.');
     if (!subject.trim()) return toast.error('Subject is required.');
     if (!content.trim()) return toast.error('Email content is required.');
+
+    if (mappedRows.length === 0) {
+      return toast.error('No valid rows found with the selected column mapping.');
+    }
 
     setIsSending(true);
     setProgress(0);
@@ -185,6 +190,9 @@ export default function BulkEmail() {
       formData.append('subject', subject);
       formData.append('content', content);
       formData.append('fromEmail', fromEmail);
+      formData.append('fromName', fromName);
+      formData.append('nameColumn', nameColumn);
+      formData.append('emailColumn', emailColumn);
 
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/bulk-email`, {
         method: 'POST',
@@ -198,15 +206,15 @@ export default function BulkEmail() {
         if (!res.ok) {
           toast.error(data.error || 'Failed to send emails');
           if (data.details) {
-            setResult({ ...data, sent: 0, failed: 0, total: 0, failedEmails: [], skipped: data.details.length, skippedDetails: data.details });
+            setResult({ ...data, sent: 0, failed: 0, total: 0, failedEmails: [], skipped: data.details.length, skippedDetails: Array.isArray(data.details) ? data.details : [data.details] });
           }
         }
         setIsSending(false);
         return;
       }
 
-      const reader = res.body?.getReader();
-      if (!reader) {
+      const streamReader = res.body?.getReader();
+      if (!streamReader) {
         toast.error('Failed to read response stream');
         setIsSending(false);
         return;
@@ -216,7 +224,7 @@ export default function BulkEmail() {
       let buffer = '';
 
       while (true) {
-        const { done, value } = await reader.read();
+        const { done, value } = await streamReader.read();
         if (done) break;
         buffer += decoder.decode(value, { stream: true });
         
@@ -240,7 +248,6 @@ export default function BulkEmail() {
                   toast.warning(`${data.sent} sent, ${data.failed} failed`);
                 }
                 setIsSending(false);
-                startCooldown();
               } else if (data.type === 'error') {
                 toast.error(data.error || 'Error occurred during processing.');
               }
@@ -259,10 +266,14 @@ export default function BulkEmail() {
   const handleReset = () => {
     if (isSending) return;
     setFromEmail(senderEmails[0]);
+    setFromName('Ascendix World Food, AgroTech & Animal Science');
     setSubject('');
     setContent('');
     setCsvFile(null);
-    setCsvPreview([]);
+    setCsvHeaders([]);
+    setCsvRows([]);
+    setNameColumn('');
+    setEmailColumn('');
     setResult(null);
     setProgress(0);
     setSentCount(0);
@@ -325,7 +336,7 @@ export default function BulkEmail() {
                   <div className="space-y-3">
                     <CheckCircle2 className="w-10 h-10 text-emerald-500 mx-auto" />
                     <p className="text-sm font-bold text-slate-900">{csvFile.name}</p>
-                    <p className="text-xs text-emerald-600 font-medium">{csvPreview.length} records detected • Click to replace</p>
+                    <p className="text-xs text-emerald-600 font-medium">{csvRows.length} rows • {csvHeaders.length} columns • Click to replace</p>
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -336,32 +347,74 @@ export default function BulkEmail() {
                 )}
               </div>
 
+              {/* Column Mapping */}
+              {csvHeaders.length > 0 && (
+                <div className="mt-6 bg-slate-50 border border-slate-200 rounded-lg p-5">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Columns className="w-4 h-4 text-blue-600" />
+                    <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">Column Mapping</span>
+                    {nameColumn && emailColumn && (
+                      <span className="ml-auto text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">✓ Mapped</span>
+                    )}
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-bold text-slate-500 uppercase">Name Column</label>
+                      <select 
+                        className="w-full text-xs border border-slate-200 rounded-md px-3 py-2 bg-white focus:ring-2 focus:ring-blue-100 outline-none"
+                        value={nameColumn}
+                        onChange={(e) => setNameColumn(e.target.value)}
+                      >
+                        <option value="">— Select column —</option>
+                        {csvHeaders.map(h => <option key={h} value={h}>{h}</option>)}
+                      </select>
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-bold text-slate-500 uppercase">Email Column</label>
+                      <select 
+                        className="w-full text-xs border border-slate-200 rounded-md px-3 py-2 bg-white focus:ring-2 focus:ring-blue-100 outline-none"
+                        value={emailColumn}
+                        onChange={(e) => setEmailColumn(e.target.value)}
+                      >
+                        <option value="">— Select column —</option>
+                        {csvHeaders.map(h => <option key={h} value={h}>{h}</option>)}
+                      </select>
+                    </div>
+                  </div>
+                  {nameColumn && emailColumn && (
+                    <p className="text-[10px] text-slate-500 mt-3">
+                      ✓ {mappedRows.length} valid recipients found using "{nameColumn}" and "{emailColumn}"
+                    </p>
+                  )}
+                </div>
+              )}
+
               <div className="mt-4 flex items-center justify-between">
                 <button onClick={downloadSampleCSV} className="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1.5">
                   <Download className="w-3.5 h-3.5" /> Sample CSV
                 </button>
-                {csvPreview.length > 0 && (
+                {mappedRows.length > 0 && (
                   <button 
                     onClick={() => setShowPreview(!showPreview)} 
                     className="text-xs font-bold text-slate-600 hover:text-slate-900 flex items-center gap-1.5"
                   >
-                    <Eye className="w-3.5 h-3.5" /> {showPreview ? 'Hide List' : 'Preview List'} ({csvPreview.length})
+                    <Eye className="w-3.5 h-3.5" /> {showPreview ? 'Hide List' : 'Preview List'} ({mappedRows.length})
                   </button>
                 )}
               </div>
 
-              {showPreview && csvPreview.length > 0 && (
+              {showPreview && mappedRows.length > 0 && (
                 <div className="mt-6 border border-slate-200 rounded overflow-hidden max-h-60 overflow-y-auto">
                   <table className="w-full text-xs">
                     <thead className="bg-slate-50 border-b border-slate-200">
                       <tr>
                         <th className="text-left p-3 font-bold text-slate-500 uppercase tracking-tighter">#</th>
-                        <th className="text-left p-3 font-bold text-slate-500 uppercase tracking-tighter">Full Name</th>
-                        <th className="text-left p-3 font-bold text-slate-500 uppercase tracking-tighter">Email Address</th>
+                        <th className="text-left p-3 font-bold text-slate-500 uppercase tracking-tighter">{nameColumn}</th>
+                        <th className="text-left p-3 font-bold text-slate-500 uppercase tracking-tighter">{emailColumn}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
-                      {csvPreview.slice(0, 100).map((r, i) => (
+                      {mappedRows.slice(0, 100).map((r, i) => (
                         <tr key={i} className="hover:bg-slate-50">
                           <td className="p-3 text-slate-400">{i + 1}</td>
                           <td className="p-3 font-medium text-slate-900">{r.name}</td>
@@ -384,17 +437,28 @@ export default function BulkEmail() {
               </div>
 
               <div className="space-y-6">
-                <div className="space-y-2">
-                  <Label className="text-xs font-bold text-slate-600">Sender Email</Label>
-                  <select
-                    value={fromEmail}
-                    onChange={(e) => setFromEmail(e.target.value)}
-                    className="w-full h-11 border border-slate-200 rounded bg-slate-50/50 focus:bg-white text-sm font-medium px-3 outline-none"
-                  >
-                    {senderEmails.map(email => (
-                      <option key={email} value={email}>{email}</option>
-                    ))}
-                  </select>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label className="text-xs font-bold text-slate-600">Sender Name</Label>
+                    <Input
+                      value={fromName}
+                      onChange={(e) => setFromName(e.target.value)}
+                      placeholder="e.g., ASFAA-2026 Summit"
+                      className="h-11 border-slate-200 rounded bg-slate-50/50 focus:bg-white text-sm font-medium"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs font-bold text-slate-600">Sender Email</Label>
+                    <select
+                      value={fromEmail}
+                      onChange={(e) => setFromEmail(e.target.value)}
+                      className="w-full h-11 border border-slate-200 rounded bg-slate-50/50 focus:bg-white text-sm font-medium px-3 outline-none"
+                    >
+                      {senderEmails.map(email => (
+                        <option key={email} value={email}>{email}</option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
 
                 <div className="space-y-2">
@@ -428,7 +492,7 @@ export default function BulkEmail() {
             {/* Step 3: Dispatch */}
             <Button
               onClick={handleSend}
-              disabled={isSending || !csvFile || !subject || !content || isCoolingDown}
+              disabled={isSending || !csvFile || !nameColumn || !emailColumn || !subject || !content}
               className="w-full h-14 bg-slate-950 text-white hover:bg-slate-800 rounded-lg font-bold text-sm flex items-center justify-center gap-3 shadow-lg shadow-slate-950/10 disabled:opacity-50"
             >
               {isSending ? (
@@ -436,14 +500,10 @@ export default function BulkEmail() {
                   <Loader2 className="w-5 h-5 animate-spin" /> 
                   Sending... {progress}% ({sentCount} sent)
                 </>
-              ) : isCoolingDown ? (
-                <>
-                  Cooldown: {formatTime(cooldownRemaining)}
-                </>
               ) : (
                 <>
                   <Send className="w-4 h-4" /> 
-                  Dispatch to {csvPreview.length || 'recipients'}
+                  Dispatch to {mappedRows.length || 'recipients'}
                 </>
               )}
             </Button>
@@ -483,7 +543,7 @@ export default function BulkEmail() {
                   </div>
                   <div className="flex gap-2">
                     <span className="text-[10px] font-bold text-slate-400 w-12 uppercase">To</span>
-                    <span className="text-xs font-medium text-slate-600">{csvPreview.length > 0 ? csvPreview[0].email : 'recipient@example.com'}</span>
+                    <span className="text-xs font-medium text-slate-600">{mappedRows.length > 0 ? mappedRows[0].email : 'recipient@example.com'}</span>
                   </div>
                   <div className="flex gap-2">
                     <span className="text-[10px] font-bold text-slate-400 w-12 uppercase">Subject</span>
@@ -492,10 +552,10 @@ export default function BulkEmail() {
                 </div>
 
                 <div className="mt-6 p-4 bg-slate-50 border border-slate-100 rounded min-h-[200px]">
-                  <p className="text-xs text-slate-800 font-medium mb-4">Dear {csvPreview.length > 0 ? csvPreview[0].name : 'Delegate'},</p>
+                  <p className="text-xs text-slate-800 font-medium mb-4">Dear {mappedRows.length > 0 ? mappedRows[0].name : 'Delegate'},</p>
                   <div className="text-xs text-slate-600 whitespace-pre-line leading-relaxed italic">
                     {(content || 'Message content preview will appear here...')
-                      .replace(/\{\{name\}\}/gi, csvPreview.length > 0 ? csvPreview[0].name : '...')
+                      .replace(/\{\{name\}\}/gi, mappedRows.length > 0 ? mappedRows[0].name : '...')
                     }
                   </div>
                 </div>
@@ -558,8 +618,16 @@ export default function BulkEmail() {
               </div>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-medium text-slate-500">Recipients Loaded</span>
-                  <span className="text-xs font-bold text-slate-900">{csvPreview.length}</span>
+                  <span className="text-xs font-medium text-slate-500">CSV Rows</span>
+                  <span className="text-xs font-bold text-slate-900">{csvRows.length}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-medium text-slate-500">Valid Recipients</span>
+                  <span className={`text-xs font-bold ${mappedRows.length > 0 ? 'text-emerald-600' : 'text-slate-400'}`}>{mappedRows.length}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-medium text-slate-500">Column Mapping</span>
+                  <span className={`text-xs font-bold ${nameColumn && emailColumn ? 'text-emerald-600' : 'text-amber-600'}`}>{nameColumn && emailColumn ? 'Ready' : 'Needs setup'}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-medium text-slate-500">Subject Status</span>

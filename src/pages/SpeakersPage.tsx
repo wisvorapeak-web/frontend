@@ -3,10 +3,11 @@ import { useEffect, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Mic2, Star, UserCheck, Zap, Laptop, Rocket, Globe2, Linkedin } from 'lucide-react';
+import { Mic2, Star, UserCheck, Zap, Laptop, Rocket, Globe2, Linkedin, LayoutGrid } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const speakerCategories = [
+  { id: 'All', label: 'All', icon: LayoutGrid, color: 'text-slate-500 bg-slate-50' },
   { id: 'Plenary', label: 'Plenary', icon: Star, color: 'text-amber-500 bg-amber-50' },
   { id: 'Keynote', label: 'Keynote', icon: Mic2, color: 'text-indigo-500 bg-indigo-50' },
   { id: 'Invited', label: 'Invited', icon: UserCheck, color: 'text-emerald-500 bg-emerald-50' },
@@ -46,7 +47,7 @@ export default function SpeakersPage() {
       subtitle="Meet the experts leading the future of food and farming."
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 py-12 space-y-24 pb-32">
-        <Tabs defaultValue="Plenary" className="w-full">
+        <Tabs defaultValue="All" className="w-full">
            <div className="bg-slate-50 p-1 rounded-full mb-10 border border-slate-100 overflow-x-auto scrollbar-none flex justify-center h-16 items-center">
               <TabsList className="bg-transparent h-full flex gap-2 px-4">
                  {speakerCategories.map((cat) => (
@@ -63,51 +64,34 @@ export default function SpeakersPage() {
 
            {speakerCategories.map((cat) => (
               <TabsContent key={cat.id} value={cat.id} className="animate-in fade-in slide-in-from-bottom-8 duration-1000">
-                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {loading ? (
-                        Array.from({ length: 4 }).map((_, i) => (
-                            <div key={i} className="h-[450px] bg-slate-50 rounded-[3.5rem] animate-pulse" />
+                        Array.from({ length: 3 }).map((_, i) => (
+                            <div key={i} className="h-[380px] bg-slate-50 rounded-[2rem] animate-pulse" />
                         ))
-                    ) : speakers.filter(s => s.category === cat.id).length > 0 ? (
-                        speakers.filter(s => s.category === cat.id).map((speaker, i) => (
-                            <Card key={i} className="border-none shadow-xl shadow-slate-200/50 rounded-3xl bg-white group overflow-hidden transition-all duration-700 hover:-translate-y-2 relative flex flex-col h-full">
-                                <CardContent className="p-6 flex flex-col items-center text-center flex-1">
-                                    <div className="relative mb-6 w-full flex justify-center">
-                                        <div className="absolute inset-0 bg-indigo-500 rounded-full blur-[40px] scale-75 opacity-0 group-hover:opacity-20 transition-opacity duration-1000" />
-                                        <Avatar className="w-24 h-24 border-[4px] border-slate-50 group-hover:border-white shadow-xl group-hover:scale-105 transition-all duration-1000 relative z-10">
-                                            <AvatarImage src={speaker.image_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${speaker.name}`} className="object-cover" />
-                                            <AvatarFallback className="font-bold text-slate-200">{speaker.name?.[0] || 'S'}</AvatarFallback>
-                                        </Avatar>
+                    ) : (cat.id === 'All' ? speakers : speakers.filter(s => s.category === cat.id)).length > 0 ? (
+                        (cat.id === 'All' ? speakers : speakers.filter(s => s.category === cat.id)).map((speaker, i) => (
+                            <div key={i} className="p-5 bg-white rounded-[2rem] shadow-xl shadow-indigo-100/20 border border-slate-50 relative group transition-all duration-700 hover:-translate-y-1">
+                                <div className="flex flex-col items-center text-center">
+                                    <div className="w-44 h-44 mb-5 border-[6px] border-slate-50 group-hover:border-indigo-50 shadow-xl transition-all duration-700 relative overflow-hidden rounded-3xl">
+                                       <img src={speaker.image_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${speaker.name}`} alt={speaker.name} className="w-full h-full object-cover transition-all duration-700 scale-110 group-hover:scale-100" />
                                     </div>
-                                    
-                                    <div className="space-y-2 mb-8">
-                                       <h3 className="text-xl font-black text-slate-800 tracking-tight leading-tight group-hover:text-indigo-600 transition-colors">{speaker.name}</h3>
-                                       <div className="flex items-center justify-center gap-2 text-[10px] font-black text-indigo-500 uppercase tracking-widest bg-indigo-50 px-4 py-1.5 rounded-full inline-flex">
-                                          <Globe2 className="w-3 h-3" /> {speaker.country || 'International'}
+                                    <h3 className="text-lg font-black text-slate-900 font-outfit leading-tight mb-4 uppercase tracking-tight group-hover:text-indigo-600 transition-colors">{speaker.name}</h3>
+                                    <div className="bg-slate-50 w-full p-4 rounded-2xl border border-slate-100/50 group-hover:bg-indigo-50 transition-colors mb-3">
+                                       <p className="text-[10px] font-black text-slate-600 mb-1 uppercase tracking-tight">{speaker.university || 'Global Hub'}</p>
+                                       <div className="flex items-center justify-center gap-1.5 mt-2">
+                                          <div className="w-1 h-1 bg-slate-300 rounded-full" />
+                                          <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">{speaker.country || 'International'}</p>
+                                          <div className="w-1 h-1 bg-slate-300 rounded-full" />
                                        </div>
                                     </div>
-
-                                    <div className="w-full p-4 bg-slate-50 rounded-2xl border border-slate-100/50 group-hover:bg-indigo-50/50 transition-all flex flex-col items-center justify-center min-h-[80px] mb-6">
-                                       <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-2">School / Work</p>
-                                       <p className="text-[11px] font-bold text-slate-700 leading-relaxed max-w-[180px]">{speaker.university || 'Global Hub'}</p>
-                                    </div>
-
-                                    <p className="text-xs font-medium text-slate-400 leading-relaxed line-clamp-3 px-2 mb-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 h-10">
-                                       {speaker.bio || 'Expert in food and agriculture research.'}
-                                    </p>
-
-                                    <div className="mt-auto pt-4 border-t border-slate-50 w-full flex items-center justify-center gap-2">
-                                       {speaker.linkedin_url && (
-                                         <a href={speaker.linkedin_url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-xl bg-slate-50 text-slate-400 hover:text-blue hover:bg-white hover:shadow-xl transition-all flex items-center justify-center group/btn">
-                                            <Linkedin className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
-                                         </a>
-                                       )}
-                                       <button className="h-10 px-4 rounded-xl bg-slate-50 text-slate-400 font-bold text-[9px] uppercase tracking-widest hover:bg-slate-900 hover:text-white transition-all">
-                                          View Profile
-                                       </button>
-                                    </div>
-                                </CardContent>
-                            </Card>
+                                    {speaker.linkedin_url && (
+                                      <a href={speaker.linkedin_url} target="_blank" rel="noopener noreferrer" className="mt-2 w-10 h-10 rounded-xl bg-slate-50 text-slate-400 hover:text-blue hover:bg-white hover:shadow-xl transition-all flex items-center justify-center">
+                                         <Linkedin className="w-4 h-4" />
+                                      </a>
+                                    )}
+                                </div>
+                            </div>
                         ))
                     ) : (
                         <div className="col-span-full py-32 text-center space-y-8 animate-in fade-in duration-1000">

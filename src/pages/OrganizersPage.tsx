@@ -12,7 +12,7 @@ export default function OrganizersPage() {
     fetch(`${import.meta.env.VITE_API_URL}/api/site/chairs`)
       .then(res => res.json())
       .then(data => {
-        if (Array.isArray(data)) setCommittee(data);
+        if (Array.isArray(data)) setCommittee(data.filter(m => m.category !== 'Chairs'));
       })
       .catch(err => console.error('Chairs Sync Error:', err))
       .finally(() => setLoading(false));

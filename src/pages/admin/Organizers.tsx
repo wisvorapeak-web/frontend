@@ -8,7 +8,10 @@ import {
   MapPin, 
   Building2,
   X,
-  Loader2
+  Loader2,
+  Award,
+  ShieldCheck,
+  Users2
 } from 'lucide-react';
 import AdminLayout from './AdminLayout';
 import { Button } from '@/components/ui/button';
@@ -16,13 +19,19 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ImageUploadInput } from '@/components/admin/ImageUploadInput';
 
+type TabType = 'organizers' | 'chairs';
+
+const ORGANIZER_CATEGORIES = ['Scientific Committee', 'Organizing Committee', 'Advisory Board', 'Technical Committee'];
+const CHAIR_CATEGORY = 'Chairs';
+
 export default function AdminOrganizers() {
-  const [organizers, setOrganizers] = useState<any[]>([]);
+  const [allMembers, setAllMembers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [editingOrganizer, setEditingOrganizer] = useState<any>(null);
+  const [activeTab, setActiveTab] = useState<TabType>('organizers');
 
   useEffect(() => {
     fetchOrganizers();
@@ -33,7 +42,7 @@ export default function AdminOrganizers() {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/organizers`, {
         credentials: 'include'
       });
-      if (res.ok) setOrganizers(await res.json());
+      if (res.ok) setAllMembers(await res.json());
     } catch (err) {
       console.error('Failed to fetch organizers:', err);
     } finally {
@@ -53,7 +62,7 @@ export default function AdminOrganizers() {
         fetchOrganizers();
       }
     } catch (err) {
-      toast.error('Failed to delete organizer');
+      toast.error('Failed to delete member');
     }
   };
 
@@ -89,12 +98,42 @@ export default function AdminOrganizers() {
     }
   };
 
-  const filteredOrganizers = organizers.filter(o => 
-            o.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            o.role?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            o.affiliation?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            o.category?.toLowerCase().includes(searchQuery.toLowerCase())
-          );
+  // Split data based on active tab
+  const isChairsTab = activeTab === 'chairs';
+  const tabMembers = allMembers.filter(o => 
+    isChairsTab ? o.category === CHAIR_CATEGORY : o.category !== CHAIR_CATEGORY
+  );
+
+  const filteredMembers = tabMembers.filter(o => 
+    o.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    o.role?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    o.affiliation?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    o.category?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const chairsCount = allMembers.filter(o => o.category === CHAIR_CATEGORY).length;
+  const organizersCount = allMembers.filter(o => o.category !== CHAIR_CATEGORY).length;
+
+  // Default new member values based on active tab
+  const openAddModal = () => {
+    if (isChairsTab) {
+      setEditingOrganizer({ 
+        name: '', role: '', affiliation: '', location: '', image_url: '', 
+        category: CHAIR_CATEGORY, 
+        display_order: chairsCount + 1 
+      });
+    } else {
+      setEditingOrganizer({ 
+        name: '', role: '', affiliation: '', location: '', image_url: '', 
+        category: 'Scientific Committee', 
+        display_order: organizersCount + 1 
+      });
+    }
+    setIsModalOpen(true);
+  };
+
+  // Category options based on active tab
+  const categoryOptions = isChairsTab ? [CHAIR_CATEGORY] : ORGANIZER_CATEGORIES;
 
   if (loading) return <AdminLayout><div className="text-xs font-bold text-slate-400 p-12">Loading team members...</div></AdminLayout>;
 
@@ -105,17 +144,46 @@ export default function AdminOrganizers() {
         <div className="flex items-center justify-between pb-6 border-b border-slate-200">
           <div>
             <h1 className="text-2xl font-bold text-slate-900">Our Team / Organizers</h1>
-            <p className="text-sm text-slate-500 mt-1 uppercase tracking-tight font-bold opacity-70">Manage committee members and event organizers</p>
+            <p className="text-sm text-slate-500 mt-1 uppercase tracking-tight font-bold opacity-70">Manage committee members and event chairs</p>
           </div>
           <Button 
-            onClick={() => {
-              setEditingOrganizer({ name: '', role: '', affiliation: '', location: '', image_url: '', display_order: organizers.length + 1 });
-              setIsModalOpen(true);
-            }}
+            onClick={openAddModal}
             className="bg-blue-600 hover:bg-blue-700 text-white font-bold h-10 px-6 transition-none gap-2 rounded"
           >
-            <Plus className="w-4 h-4" /> Add Member
+            <Plus className="w-4 h-4" /> {isChairsTab ? 'Add Chair' : 'Add Member'}
           </Button>
+        </div>
+
+        {/* Tabs */}
+        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg w-fit">
+          <button
+            onClick={() => { setActiveTab('organizers'); setSearchQuery(''); }}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-md text-xs font-bold uppercase tracking-wider transition-all ${
+              activeTab === 'organizers'
+                ? 'bg-white text-slate-900 shadow-sm'
+                : 'text-slate-400 hover:text-slate-600'
+            }`}
+          >
+            <Users2 className="w-3.5 h-3.5" />
+            Organizers
+            <span className={`ml-1 text-[10px] font-black px-1.5 py-0.5 rounded-full ${
+              activeTab === 'organizers' ? 'bg-blue-50 text-blue-600' : 'bg-slate-200 text-slate-400'
+            }`}>{organizersCount}</span>
+          </button>
+          <button
+            onClick={() => { setActiveTab('chairs'); setSearchQuery(''); }}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-md text-xs font-bold uppercase tracking-wider transition-all ${
+              activeTab === 'chairs'
+                ? 'bg-white text-slate-900 shadow-sm'
+                : 'text-slate-400 hover:text-slate-600'
+            }`}
+          >
+            <Award className="w-3.5 h-3.5" />
+            Chairs
+            <span className={`ml-1 text-[10px] font-black px-1.5 py-0.5 rounded-full ${
+              activeTab === 'chairs' ? 'bg-amber-50 text-amber-600' : 'bg-slate-200 text-slate-400'
+            }`}>{chairsCount}</span>
+          </button>
         </div>
 
         {/* Search */}
@@ -124,24 +192,39 @@ export default function AdminOrganizers() {
           <input 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by name, role or affiliation..."
+            placeholder={isChairsTab ? 'Search chairs by name or role...' : 'Search by name, role or affiliation...'}
             className="w-full h-12 pl-12 pr-6 bg-white border border-slate-200 rounded shadow-sm font-medium text-sm focus:ring-4 focus:ring-blue-600/5 focus:border-blue-600 outline-none transition-all"
           />
         </div>
 
         {/* List */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {filteredOrganizers.map((org) => (
-            <div key={org._id} className="bg-white rounded-xl border border-slate-200 p-6 flex flex-col shadow-sm group hover:border-blue-200 transition-all">
+          {filteredMembers.map((org) => (
+            <div key={org._id} className={`bg-white rounded-xl border p-6 flex flex-col shadow-sm group transition-all ${
+              isChairsTab 
+                ? 'border-amber-100 hover:border-amber-300' 
+                : 'border-slate-200 hover:border-blue-200'
+            }`}>
               <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-slate-100 flex-shrink-0 bg-slate-50 group-hover:border-blue-100 transition-all">
+                <div className={`w-16 h-16 rounded-full overflow-hidden border-2 flex-shrink-0 bg-slate-50 transition-all ${
+                  isChairsTab 
+                    ? 'border-amber-100 group-hover:border-amber-200' 
+                    : 'border-slate-100 group-hover:border-blue-100'
+                }`}>
                   <img src={org.image_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${org.name}`} alt={org.name} className="w-full h-full object-cover" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="text-base font-extrabold text-slate-900 truncate uppercase tracking-tight">{org.name}</h3>
-                  <div className="text-[10px] font-black text-blue-600 uppercase tracking-widest">
+                  <div className={`text-[10px] font-black uppercase tracking-widest ${
+                    isChairsTab ? 'text-amber-600' : 'text-blue-600'
+                  }`}>
                     {org.role}
                   </div>
+                  {!isChairsTab && (
+                    <span className="inline-block mt-1.5 text-[8px] font-black uppercase tracking-[0.15em] px-2 py-0.5 rounded-full bg-slate-50 text-slate-400 border border-slate-100">
+                      {org.category || 'Scientific Committee'}
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -180,9 +263,21 @@ export default function AdminOrganizers() {
               </div>
             </div>
           ))}
-          {filteredOrganizers.length === 0 && !loading && (
+          {filteredMembers.length === 0 && !loading && (
             <div className="col-span-full py-20 text-center bg-slate-50 rounded-xl border border-dashed border-slate-200">
-               <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.3em]">No team members found matched your search</p>
+               <div className="flex flex-col items-center gap-3">
+                 {isChairsTab ? <Award className="w-8 h-8 text-slate-200" /> : <Users2 className="w-8 h-8 text-slate-200" />}
+                 <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.3em]">
+                   {searchQuery 
+                     ? `No ${isChairsTab ? 'chairs' : 'organizers'} matched your search` 
+                     : `No ${isChairsTab ? 'chairs' : 'organizers'} added yet`}
+                 </p>
+                 {!searchQuery && (
+                   <Button onClick={openAddModal} variant="outline" className="mt-2 h-9 px-5 text-[10px] font-black uppercase tracking-widest rounded border-slate-200 text-slate-500 hover:text-blue-600 hover:border-blue-200 transition-none">
+                     <Plus className="w-3.5 h-3.5 mr-2" /> Add {isChairsTab ? 'Chair' : 'Member'}
+                   </Button>
+                 )}
+               </div>
             </div>
           )}
         </div>
@@ -191,10 +286,21 @@ export default function AdminOrganizers() {
         {isModalOpen && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/40 backdrop-blur-sm transition-none">
             <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden border border-slate-200">
-              <div className="px-6 py-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
-                <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest">
-                  {editingOrganizer?._id ? 'Edit Team Member' : 'Add Team Member'}
-                </h3>
+              <div className={`px-6 py-4 border-b flex items-center justify-between ${
+                editingOrganizer?.category === CHAIR_CATEGORY 
+                  ? 'bg-amber-50 border-amber-100' 
+                  : 'bg-slate-50 border-slate-100'
+              }`}>
+                <div className="flex items-center gap-2">
+                  {editingOrganizer?.category === CHAIR_CATEGORY 
+                    ? <Award className="w-4 h-4 text-amber-500" /> 
+                    : <ShieldCheck className="w-4 h-4 text-slate-400" />}
+                  <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest">
+                    {editingOrganizer?._id 
+                      ? `Edit ${editingOrganizer?.category === CHAIR_CATEGORY ? 'Chair' : 'Team Member'}` 
+                      : `Add ${editingOrganizer?.category === CHAIR_CATEGORY ? 'Chair' : 'Team Member'}`}
+                  </h3>
+                </div>
                 <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-slate-900 transition-none">
                   <X className="w-5 h-5" />
                 </button>
@@ -218,17 +324,18 @@ export default function AdminOrganizers() {
                       required
                       value={editingOrganizer.role} 
                       onChange={e => setEditingOrganizer({...editingOrganizer, role: e.target.value})}
+                      placeholder={isChairsTab ? 'e.g. Conference Chair' : 'e.g. Committee Member'}
                       className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none font-bold shadow-none" 
                     />
                   </div>
                   <div className="space-y-1.5">
                     <Label className="text-[10px] text-slate-400 uppercase tracking-widest ml-1">Category</Label>
                     <select 
-                      value={editingOrganizer.category || 'Scientific Committee'} 
+                      value={editingOrganizer.category || (isChairsTab ? CHAIR_CATEGORY : 'Scientific Committee')} 
                       onChange={e => setEditingOrganizer({...editingOrganizer, category: e.target.value})}
                       className="w-full h-10 bg-slate-50 border border-slate-200 rounded text-sm px-3 font-bold outline-none"
                     >
-                      {['Scientific Committee', 'Organizing Committee', 'Advisory Board', 'Technical Committee'].map(c => (
+                      {[CHAIR_CATEGORY, ...ORGANIZER_CATEGORIES].map(c => (
                         <option key={c} value={c}>{c}</option>
                       ))}
                     </select>
@@ -274,8 +381,12 @@ export default function AdminOrganizers() {
 
                 <div className="flex justify-end gap-3 pt-6 border-t border-slate-50">
                   <Button type="button" variant="outline" onClick={() => setIsModalOpen(false)} className="h-10 border-slate-200 text-slate-500 font-bold uppercase text-[10px] tracking-widest transition-none px-6 rounded">Discard</Button>
-                  <Button type="submit" disabled={isUpdating} className="h-10 bg-blue-600 hover:bg-blue-700 text-white font-bold uppercase text-[10px] tracking-widest transition-none px-8 rounded shadow-sm">
-                    {isUpdating ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Save Member'}
+                  <Button type="submit" disabled={isUpdating} className={`h-10 text-white font-bold uppercase text-[10px] tracking-widest transition-none px-8 rounded shadow-sm ${
+                    editingOrganizer?.category === CHAIR_CATEGORY 
+                      ? 'bg-amber-600 hover:bg-amber-700' 
+                      : 'bg-blue-600 hover:bg-blue-700'
+                  }`}>
+                    {isUpdating ? <Loader2 className="w-4 h-4 animate-spin" /> : (editingOrganizer?.category === CHAIR_CATEGORY ? 'Save Chair' : 'Save Member')}
                   </Button>
                 </div>
               </form>
