@@ -1,5 +1,4 @@
 import PageLayout from './PageLayout';
-import { Award } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Loader from '@/components/ui/Loader';
 

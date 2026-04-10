@@ -1,9 +1,7 @@
 import PageLayout from './PageLayout';
 import { useEffect, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Mic2, Star, UserCheck, Zap, Laptop, Rocket, Globe2, Linkedin, LayoutGrid } from 'lucide-react';
+import { Mic2, Star, UserCheck, Zap, Laptop, Rocket, Linkedin, LayoutGrid } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const speakerCategories = [

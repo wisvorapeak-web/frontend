@@ -132,9 +132,6 @@ export default function AdminOrganizers() {
     setIsModalOpen(true);
   };
 
-  // Category options based on active tab
-  const categoryOptions = isChairsTab ? [CHAIR_CATEGORY] : ORGANIZER_CATEGORIES;
-
   if (loading) return <AdminLayout><div className="text-xs font-bold text-slate-400 p-12">Loading team members...</div></AdminLayout>;
 
   return (

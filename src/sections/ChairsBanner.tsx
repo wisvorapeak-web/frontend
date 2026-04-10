@@ -1,4 +1,4 @@
-import { Award, ShieldCheck, MapPin } from 'lucide-react';
+import { Award, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
