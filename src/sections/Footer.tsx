@@ -36,6 +36,11 @@ export default function Footer() {
     site_tagline: 'Leading the future of food and farming.',
     site_title: 'ASFAA 2026',
     contact_email: 'contact@foodagriexpo.com',
+    support_emails: [
+      'conference@foodagriexpo.com',
+      'foodtech@foodagriexpo.com',
+      'agritech@foodagriexpo.com'
+    ],
     contact_phone: '+65 6123 4567',
     contact_address: 'Singapore Innovation Hub',
   });

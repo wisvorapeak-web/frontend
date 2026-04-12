@@ -51,12 +51,12 @@ export default function ChairsBanner() {
            {displayChairs.map((chair: any, i: number) => (
              <div key={chair.id || i} className={`p-8 border rounded-3xl transition-all duration-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/50 flex flex-col items-center text-center space-y-6 ${colorPalette[i % colorPalette.length]}`}>
                 {chair.image ? (
-                  <div className="w-16 h-16 rounded-2xl overflow-hidden border-2 border-white/30 shadow-lg">
+                  <div className="w-44 h-44 rounded-3xl overflow-hidden border-[6px] border-white/30 shadow-xl">
                     <img src={chair.image} alt={chair.name} className="w-full h-full object-cover" />
                   </div>
                 ) : (
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center border-2 border-white/20 shadow-lg shadow-current/10`}>
-                    <Award className="w-6 h-6" />
+                  <div className={`w-20 h-20 rounded-2xl flex items-center justify-center border-2 border-white/20 shadow-lg shadow-current/10`}>
+                    <Award className="w-8 h-8" />
                   </div>
                 )}
                  <div className="space-y-1.5">

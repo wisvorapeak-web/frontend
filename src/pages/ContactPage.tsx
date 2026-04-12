@@ -77,7 +77,17 @@ export default function ContactPage() {
   };
 
   const contactItems = [
-    { icon: Mail, label: 'Email', values: [settings?.contact_email, settings?.support_email] },
+    { 
+      icon: Mail, 
+      label: 'Email', 
+      values: [
+        settings?.contact_email || 'contact@foodagriexpo.com',
+        'conference@foodagriexpo.com',
+        'foodtech@foodagriexpo.com',
+        'agritech@foodagriexpo.com',
+        'animalscience@foodagriexpo.com'
+      ] 
+    },
     { icon: Phone, label: 'Phone', values: [settings?.contact_phone, settings?.office_hours] },
     { icon: MapPin, label: 'Venue', values: [settings?.contact_address] },
   ];

@@ -70,7 +70,7 @@ export default function OrganizersPage() {
         <section className="bg-indigo-600 p-6 rounded-2xl flex flex-col md:flex-row items-center justify-between text-white shadow-xl shadow-indigo-600/10">
            <div className="text-center md:text-left mb-4 md:mb-0">
              <h4 className="text-lg font-bold font-outfit mb-0.5 uppercase tracking-tight">Want to join us?</h4>
-             <p className="text-indigo-200 text-[10px] font-black uppercase tracking-widest">contact@foodagriexpo.com</p>
+             <p className="text-indigo-200 text-[10px] font-black uppercase tracking-widest">conference@foodagriexpo.com</p>
            </div>
            <Link to="/contact">
              <button className="bg-white text-indigo-600 h-10 px-8 rounded-xl font-black text-[9px] uppercase tracking-widest shadow-lg hover:bg-slate-50 transition-all active:scale-95">
