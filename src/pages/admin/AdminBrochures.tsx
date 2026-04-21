@@ -34,13 +34,13 @@ export default function AdminBrochures() {
   const [isSaving, setIsSaving] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingBrochure, setEditingBrochure] = useState<any>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const [formData, setFormData] = useState({
     title: '',
     category: 'Overview',
     icon_name: 'FileDown',
     file_url: '',
-    file_size: '',
     type: 'Guide',
     display_order: 0
   });
@@ -72,13 +72,19 @@ export default function AdminBrochures() {
       
       const method = editingBrochure?._id ? 'PATCH' : 'POST';
       
+      const formDataToSend = new FormData();
+      Object.entries(formData).forEach(([key, value]) => {
+        formDataToSend.append(key, value.toString());
+      });
+      
+      if (selectedFile) {
+        formDataToSend.append('file', selectedFile);
+      }
+      
       const res = await fetch(url, {
         method,
-        headers: { 
-          'Content-Type': 'application/json'
-        },
         credentials: 'include',
-        body: JSON.stringify(formData)
+        body: formDataToSend
       });
 
       if (res.ok) {
@@ -119,11 +125,11 @@ export default function AdminBrochures() {
       category: 'Overview',
       icon_name: 'FileDown',
       file_url: '',
-      file_size: '',
       type: 'Guide',
       display_order: 0
     });
     setEditingBrochure(null);
+    setSelectedFile(null);
   };
 
   const handleEdit = (brochure: any) => {
@@ -133,7 +139,6 @@ export default function AdminBrochures() {
       category: brochure.category,
       icon_name: brochure.icon_name || 'FileDown',
       file_url: brochure.file_url,
-      file_size: brochure.file_size,
       type: brochure.type || 'Guide',
       display_order: brochure.display_order || 0
     });
@@ -190,53 +195,56 @@ export default function AdminBrochures() {
                     </div>
                  </div>
 
-                 <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                       <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Category</Label>
-                       <select 
-                        value={formData.category}
-                        onChange={e => setFormData({...formData, category: e.target.value})}
-                        className="w-full h-10 bg-slate-50 border border-slate-200 rounded text-sm px-3 appearance-none outline-none focus:ring-4 focus:ring-blue-600/5 transition-none font-medium"
-                       >
-                          {['Overview', 'Sponsors', 'Sessions', 'Map', 'Visa', 'Other'].map(c => (
-                            <option key={c} value={c}>{c}</option>
-                          ))}
-                       </select>
-                    </div>
-                    <div className="space-y-1.5">
-                       <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">File Size</Label>
-                       <Input 
-                        value={formData.file_size}
-                        onChange={e => setFormData({...formData, file_size: e.target.value})}
-                        className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none" 
-                        placeholder="2.4 MB..." required
-                       />
-                    </div>
-                 </div>
+                  <div className="grid grid-cols-2 gap-4">
+                     <div className="space-y-1.5">
+                        <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Category</Label>
+                        <select 
+                         value={formData.category}
+                         onChange={e => setFormData({...formData, category: e.target.value})}
+                         className="w-full h-10 bg-slate-50 border border-slate-200 rounded text-sm px-3 appearance-none outline-none focus:ring-4 focus:ring-blue-600/5 transition-none font-medium"
+                        >
+                           {['Overview', 'Sponsors', 'Sessions', 'Map', 'Visa', 'Other'].map(c => (
+                             <option key={c} value={c}>{c}</option>
+                           ))}
+                        </select>
+                     </div>
+                     <div className="space-y-1.5">
+                        <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Icon</Label>
+                        <select 
+                         value={formData.icon_name}
+                         onChange={e => setFormData({...formData, icon_name: e.target.value})}
+                         className="w-full h-10 bg-slate-50 border border-slate-200 rounded text-sm px-3 appearance-none outline-none focus:ring-4 focus:ring-blue-600/5 transition-none font-medium"
+                        >
+                           {['FileDown', 'BookOpen', 'FileText', 'Calendar', 'Smartphone', 'ShieldCheck'].map(ic => (
+                             <option key={ic} value={ic}>{ic}</option>
+                           ))}
+                        </select>
+                     </div>
+                  </div>
 
-                 <div className="space-y-1.5">
-                    <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">File Link (URL)</Label>
-                    <Input 
-                      value={formData.file_url}
-                      onChange={e => setFormData({...formData, file_url: e.target.value})}
-                      className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none" 
-                      placeholder="https://storage.googleapis.com/..." required
-                    />
-                 </div>
-
-                 <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                       <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Icon</Label>
-                       <select 
-                        value={formData.icon_name}
-                        onChange={e => setFormData({...formData, icon_name: e.target.value})}
-                        className="w-full h-10 bg-slate-50 border border-slate-200 rounded text-sm px-3 appearance-none outline-none focus:ring-4 focus:ring-blue-600/5 transition-none font-medium"
-                       >
-                          {['FileDown', 'BookOpen', 'FileText', 'Calendar', 'Smartphone', 'ShieldCheck'].map(ic => (
-                            <option key={ic} value={ic}>{ic}</option>
-                          ))}
-                       </select>
+                        <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">File Link (URL)</Label>
+                        <Input 
+                          value={formData.file_url}
+                          onChange={e => setFormData({...formData, file_url: e.target.value})}
+                          className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none" 
+                          placeholder="https://..." 
+                          required={!selectedFile && !editingBrochure}
+                        />
                     </div>
+                    <div className="space-y-1.5">
+                        <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Upload File</Label>
+                        <Input 
+                          type="file"
+                          onChange={e => setSelectedFile(e.target.files?.[0] || null)}
+                          className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" 
+                          accept=".pdf,.jpg,.jpeg,.png"
+                        />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1.5">
                        <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Sort Order</Label>
                        <Input 
@@ -246,7 +254,7 @@ export default function AdminBrochures() {
                         className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none" 
                        />
                     </div>
-                 </div>
+                  </div>
 
                  <div className="pt-4 flex items-center justify-end gap-3 border-t border-slate-50">
                     <Button type="button" variant="outline" className="h-10 border-slate-200 text-slate-500 font-bold uppercase text-[10px] tracking-widest transition-none px-6 rounded" onClick={() => setIsDialogOpen(false)}>Discard</Button>

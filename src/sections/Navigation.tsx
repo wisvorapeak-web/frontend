@@ -150,6 +150,9 @@ export default function Navigation() {
               {navLinks.map((link) => (
                 <NavItem key={link.label} link={link} scrolled={isScrolled} home={isHomePage} />
               ))}
+              <Button asChild className={`h-9 px-5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${isScrolled || !isHomePage ? 'bg-navy hover:bg-navy/90 text-white' : 'bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-md'}`}>
+                <a href="/ASCENDIX SUMMIT.pdf" target="_blank" rel="noopener noreferrer">Brochure</a>
+              </Button>
               <Button asChild className="bg-blue hover:bg-blue-600 text-white h-9 px-5 rounded-lg text-[9px] font-black uppercase tracking-widest shadow-lg shadow-blue/20">
                 <Link to="/registration" className="text-decoration-none">Register</Link>
               </Button>
@@ -234,7 +237,10 @@ export default function Navigation() {
               ))}
             </div>
 
-            <div className="pt-4">
+            <div className="pt-4 space-y-3">
+              <Button asChild className="w-full h-14 bg-navy hover:bg-navy/90 text-white font-bold rounded-2xl shadow-xl shadow-navy/20" onClick={() => setIsMobileMenuOpen(false)}>
+                <a href="/ASCENDIX SUMMIT.pdf" target="_blank" rel="noopener noreferrer">Brochure</a>
+              </Button>
               <Button asChild className="w-full h-14 bg-blue hover:bg-navy text-white font-bold rounded-2xl shadow-xl shadow-blue/20" onClick={() => setIsMobileMenuOpen(false)}>
                 <Link to="/registration">Register</Link>
               </Button>
