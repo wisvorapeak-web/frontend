@@ -79,23 +79,25 @@ function parseCSV(text: string): { headers: string[]; rows: Record<string, strin
 
 export default function BulkEmail() {
   const senderEmails = [
-    'asfaa-2026@foodagriexpo.com',
-    'conference@foodagriexpo.com',
-    'foodtech@foodagriexpo.com',
-    'agritech@foodagriexpo.com',
-    'animalscience@foodagriexpo.com',
-    'info@foodagriexpo.com',
-    'secretary@foodagriexpo.com',
-    'contact@foodagriexpo.com',
-    'asfaa2026@foodagriexpo.com',
-    'grace.nova@foodagriexpo.com',
-    'nova.grace@foodagriexpo.com',
-    'gracenova@foodagriexpo.com',
-    'novagrace@foodagriexpo.com',
-    'grace@foodagriexpo.com',
-    'nova@foodagriexpo.com',
-    'enquiry@foodagriexpo.com',
-    'foodagriexpo@ascendixsummits.com'
+   // 'asfaa-2026@foodagriexpo.com',
+    //'conference@foodagriexpo.com',
+   // 'foodtech@foodagriexpo.com',
+   // 'agritech@foodagriexpo.com',
+   // 'animalscience@foodagriexpo.com',
+   // 'info@foodagriexpo.com',
+   // 'secretary@foodagriexpo.com',
+   // 'contact@foodagriexpo.com',
+   // 'asfaa2026@foodagriexpo.com',
+    //'grace.nova@foodagriexpo.com',
+   // 'nova.grace@foodagriexpo.com',
+   // 'gracenova@foodagriexpo.com',
+  //  'novagrace@foodagriexpo.com',
+  //  'grace@foodagriexpo.com',
+  //  'nova@foodagriexpo.com',
+   // 'enquiry@foodagriexpo.com',
+    'foodagriexpo@ascendixsummits.com',
+    'agrifood@ascendixsummits.com',
+    'asfaa-2026@ascendixsummits.com'
   ];
 
   const [fromEmail, setFromEmail] = useState(senderEmails[0]);
