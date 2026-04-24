@@ -147,7 +147,9 @@ export default function AdminOverview() {
                           <p className="text-xs font-bold text-slate-900">{inquiry.name}</p>
                           <span className="text-[10px] text-slate-400">{new Date(inquiry.created_at).toLocaleDateString([], { month: 'short', day: 'numeric' })}</span>
                        </div>
-                       <p className="text-xs text-slate-500 line-clamp-1 truncate">{inquiry.subject}</p>
+                       <p className="text-xs text-slate-500 line-clamp-1 truncate">
+                          {inquiry.type === 'brochure' ? 'Brochure Download Request' : inquiry.subject}
+                       </p>
                     </div>
                  )) : (
                     <div className="flex-1 flex flex-col items-center justify-center text-center py-12">

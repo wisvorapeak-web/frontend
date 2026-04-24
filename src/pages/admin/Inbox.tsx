@@ -74,7 +74,7 @@ export default function Inbox() {
         <div className="flex items-center justify-between pb-6 border-b border-slate-200">
           <div>
             <h1 className="text-2xl font-bold text-slate-900">Communications Inbox</h1>
-            <p className="text-sm text-slate-500 mt-1">Review and manage inquiries from the contact portal.</p>
+            <p className="text-sm text-slate-500 mt-1">Review and manage inquiries from the contact portal and brochure download requests.</p>
           </div>
           <div className="flex bg-slate-100 p-1 rounded border border-slate-200">
             <button className="px-5 py-1.5 text-xs font-bold bg-white text-blue-600 rounded shadow-sm">Inbox</button>
@@ -117,8 +117,14 @@ export default function Inbox() {
                     <span className="text-[10px] font-bold text-slate-400">{formatTime(msg.createdAt)}</span>
                   </div>
                   
-                  <h4 className="text-xs font-bold text-slate-600 line-clamp-1">{msg.subject}</h4>
-                  <p className="text-[11px] text-slate-400 line-clamp-2 leading-relaxed font-medium">{msg.message}</p>
+                  <h4 className="text-xs font-bold text-slate-600 line-clamp-1">
+                    {msg.type === 'brochure' ? 'Brochure Download Request' : msg.subject}
+                  </h4>
+                  <p className="text-[11px] text-slate-400 line-clamp-2 leading-relaxed font-medium">
+                    {msg.type === 'brochure' 
+                      ? `Visitor requested brochure access. Institution: ${msg.institution || 'N/A'}` 
+                      : msg.message}
+                  </p>
                   
                   <div className="flex items-center gap-2 mt-2">
                      <span className="text-[10px] font-bold px-2 py-0.5 bg-slate-100 text-slate-500 rounded border border-slate-200">{msg.type}</span>
@@ -165,9 +171,27 @@ export default function Inbox() {
                            <span className="text-[10px] font-bold text-blue-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded-full uppercase">Message Details</span>
                            <div className="text-[10px] text-slate-400 font-bold">Received: {formatTime(selectedMsg.createdAt)}</div>
                         </div>
-                        <h2 className="text-2xl font-bold text-slate-900 leading-tight">{selectedMsg.subject}</h2>
+                        <h2 className="text-2xl font-bold text-slate-900 leading-tight">
+                          {selectedMsg.type === 'brochure' ? 'Brochure Download Request' : selectedMsg.subject}
+                        </h2>
                         <div className="p-6 bg-slate-50 border border-slate-200 rounded min-h-[200px] text-sm text-slate-700 leading-relaxed font-medium whitespace-pre-wrap italic">
-                          {selectedMsg.message}
+                          {selectedMsg.type === 'brochure' ? (
+                            <div className="space-y-4 not-italic">
+                               <p>This user has requested to download the event brochure.</p>
+                               <div className="grid grid-cols-2 gap-4 text-xs font-bold uppercase tracking-wider text-slate-500">
+                                  <div>
+                                     <p className="text-[9px] text-slate-400 mb-1">Institution</p>
+                                     <p className="text-slate-900">{selectedMsg.institution || 'Not Provided'}</p>
+                                  </div>
+                                  <div>
+                                     <p className="text-[9px] text-slate-400 mb-1">Phone Number</p>
+                                     <p className="text-slate-900">{selectedMsg.phone || 'Not Provided'}</p>
+                                  </div>
+                               </div>
+                            </div>
+                          ) : (
+                            selectedMsg.message
+                          )}
                         </div>
                      </div>
                   </div>
