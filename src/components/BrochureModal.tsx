@@ -39,6 +39,9 @@ export default function BrochureModal({ isOpen, onClose, brochure }: BrochureMod
     e.preventDefault();
     if (!brochure) return;
 
+    // Open the tab immediately to preserve user gesture context (prevents popup blocking)
+    const newWindow = window.open('about:blank', '_blank');
+    
     setLoading(true);
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/submissions/brochure`, {
@@ -48,19 +51,26 @@ export default function BrochureModal({ isOpen, onClose, brochure }: BrochureMod
       });
 
       if (!response.ok) {
+        newWindow?.close();
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to submit form');
       }
 
       toast.success('Thank you! Your download is starting...');
       
-      // Trigger download
+      // Update the pre-opened tab with the target URL
       const targetUrl = "https://www.foodagriexpo.com/ASCENDIX%20SUMMIT.pdf";
-      window.open(targetUrl, '_blank');
+      if (newWindow) {
+        newWindow.location.href = targetUrl;
+      } else {
+        // Fallback for extreme cases
+        window.open(targetUrl, '_blank');
+      }
 
       onClose();
       setFormData({ firstName: '', lastName: '', email: '', phone: '', institution: '' });
     } catch (error: any) {
+      newWindow?.close();
       toast.error(error.message);
     } finally {
       setLoading(false);
