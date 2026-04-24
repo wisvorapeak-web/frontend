@@ -55,11 +55,8 @@ export default function BrochureModal({ isOpen, onClose, brochure }: BrochureMod
       toast.success('Thank you! Your download is starting...');
       
       // Trigger download
-      const url = brochure.file_url.startsWith('http') 
-        ? brochure.file_url 
-        : `${import.meta.env.VITE_API_URL}${brochure.file_url.startsWith('/') ? '' : '/'}${brochure.file_url}`;
-      
-      window.open(url, '_blank');
+      const targetUrl = "https://www.foodagriexpo.com/ASCENDIX%20SUMMIT.pdf";
+      window.open(targetUrl, '_blank');
 
       onClose();
       setFormData({ firstName: '', lastName: '', email: '', phone: '', institution: '' });
