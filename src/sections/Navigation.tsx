@@ -24,6 +24,7 @@ import {
   DropdownMenuItem, 
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu';
+import BrochureModal from '@/components/BrochureModal';
 
 const navLinks = [
   { label: 'Home', href: '/' },
@@ -66,6 +67,15 @@ export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const isHomePage = location.pathname === '/';
+
+  const [isBrochureModalOpen, setIsBrochureModalOpen] = useState(false);
+  const [selectedBrochure, setSelectedBrochure] = useState<{title: string, file_url: string} | null>(null);
+
+  const handleBrochureClick = (e: React.MouseEvent, title: string, url: string) => {
+    e.preventDefault();
+    setSelectedBrochure({ title, file_url: url });
+    setIsBrochureModalOpen(true);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -150,8 +160,11 @@ export default function Navigation() {
               {navLinks.map((link) => (
                 <NavItem key={link.label} link={link} scrolled={isScrolled} home={isHomePage} />
               ))}
-              <Button asChild className={`h-9 px-5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${isScrolled || !isHomePage ? 'bg-navy hover:bg-navy/90 text-white' : 'bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-md'}`}>
-                <a href="/ASCENDIX SUMMIT.pdf" target="_blank" rel="noopener noreferrer">Brochure</a>
+              <Button 
+                onClick={(e) => handleBrochureClick(e, 'Ascendix Summit Brochure', '/ASCENDIX SUMMIT.pdf')}
+                className={`h-9 px-5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${isScrolled || !isHomePage ? 'bg-navy hover:bg-navy/90 text-white' : 'bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-md'}`}
+              >
+                Brochure
               </Button>
               <Button asChild className="bg-blue hover:bg-blue-600 text-white h-9 px-5 rounded-lg text-[9px] font-black uppercase tracking-widest shadow-lg shadow-blue/20">
                 <Link to="/registration" className="text-decoration-none">Register</Link>
@@ -238,8 +251,14 @@ export default function Navigation() {
             </div>
 
             <div className="pt-4 space-y-3">
-              <Button asChild className="w-full h-14 bg-navy hover:bg-navy/90 text-white font-bold rounded-2xl shadow-xl shadow-navy/20" onClick={() => setIsMobileMenuOpen(false)}>
-                <a href="/ASCENDIX SUMMIT.pdf" target="_blank" rel="noopener noreferrer">Brochure</a>
+              <Button 
+                className="w-full h-14 bg-navy hover:bg-navy/90 text-white font-bold rounded-2xl shadow-xl shadow-navy/20" 
+                onClick={(e) => {
+                  setIsMobileMenuOpen(false);
+                  handleBrochureClick(e, 'Ascendix Summit Brochure', '/ASCENDIX SUMMIT.pdf');
+                }}
+              >
+                Brochure
               </Button>
               <Button asChild className="w-full h-14 bg-blue hover:bg-navy text-white font-bold rounded-2xl shadow-xl shadow-blue/20" onClick={() => setIsMobileMenuOpen(false)}>
                 <Link to="/registration">Register</Link>
@@ -248,6 +267,11 @@ export default function Navigation() {
           </div>
         </div>
       </div>
+      <BrochureModal 
+        isOpen={isBrochureModalOpen} 
+        onClose={() => setIsBrochureModalOpen(false)} 
+        brochure={selectedBrochure} 
+      />
     </>
   );
 }

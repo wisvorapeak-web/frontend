@@ -14,6 +14,7 @@ import {
   Smartphone,
   ShieldCheck
 } from 'lucide-react';
+import BrochureModal from '@/components/BrochureModal';
 
 const icons: any = {
   FileDown,
@@ -29,6 +30,8 @@ const icons: any = {
 export default function BrochurePage() {
   const [brochures, setBrochures] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedBrochure, setSelectedBrochure] = useState<any>(null);
 
   useEffect(() => {
     const fetchBrochures = async () => {
@@ -48,11 +51,8 @@ export default function BrochurePage() {
   }, []);
 
   const handleDownload = (brochure: any) => {
-    toast.success(`Preparing ${brochure.title} for download...`);
-    const url = brochure.file_url.startsWith('http') 
-      ? brochure.file_url 
-      : `${import.meta.env.VITE_API_URL}${brochure.file_url.startsWith('/') ? '' : '/'}${brochure.file_url}`;
-    window.open(url, '_blank');
+    setSelectedBrochure(brochure);
+    setIsModalOpen(true);
   };
 
   return (
@@ -133,6 +133,11 @@ export default function BrochurePage() {
           </>
         )}
       </div>
+      <BrochureModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        brochure={selectedBrochure} 
+      />
     </PageLayout>
   );
 }
