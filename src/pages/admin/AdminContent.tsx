@@ -162,6 +162,7 @@ export default function AdminContent() {
                     <div className="space-y-1.5"><Label className="text-[10px] text-slate-400 uppercase tracking-widest ml-1">Global Reach</Label><Input value={settings.global_reach || ''} onChange={e => updateSettingsKey('global_reach', e.target.value)} className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none" /></div>
                     <div className="space-y-1.5"><Label className="text-[10px] text-slate-400 uppercase tracking-widest ml-1">Event City</Label><Input value={settings.city || ''} onChange={e => updateSettingsKey('city', e.target.value)} className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none" /></div>
                 </div>
+                <div className="space-y-1.5"><Label className="text-[10px] text-slate-400 uppercase tracking-widest ml-1">Countdown Target Date (ISO Format: YYYY-MM-DD)</Label><Input value={settings.countdown_target || ''} onChange={e => updateSettingsKey('countdown_target', e.target.value)} className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none" placeholder="e.g. 2026-11-18" /></div>
                 </CardContent>
             </Card>
           </TabsContent>

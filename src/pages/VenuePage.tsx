@@ -101,11 +101,11 @@ export default function VenuePage() {
                   <Hotel className="w-6 h-6" />
                </div>
                <h3 className="text-2xl font-black text-navy uppercase tracking-tight">Hotels</h3>
-                <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest leading-relaxed italic">
-                   We have partnered with hotels in Singapore to offer you special rates.
+                <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest leading-relaxed italic whitespace-pre-wrap">
+                   {venue?.accommodation_info || `We have partnered with hotels in ${venue?.host_city || 'the host city'} to offer you special rates.`}
                 </p>
                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {['Partner Hotels', 'Low Rates', 'Top Rooms', 'Near Venue'].map((t, i) => (
+                  {(venue?.accommodation_features || ['Partner Hotels', 'Low Rates', 'Top Rooms', 'Near Venue']).map((t: string, i: number) => (
                     <li key={i} className="flex items-center gap-2 text-[9px] font-black text-navy opacity-60 uppercase tracking-tight">
                        <CheckCircle2 className="w-3.5 h-3.5 text-blue" /> {t}
                     </li>
@@ -137,7 +137,7 @@ export default function VenuePage() {
               </div>
               <h2 className="text-2xl font-black text-navy uppercase tracking-tight">Visit {venue?.host_city?.split(',')[0] || 'Singapore'}</h2>
               <div className="text-slate-400 font-bold text-[9px] uppercase tracking-widest whitespace-pre-wrap italic">
-                 Explore the famous landmarks of the city.
+                 {venue?.tourism_info || `Explore the famous landmarks of ${venue?.host_city || 'the city'}.`}
               </div>
            </div>
            
@@ -168,7 +168,7 @@ export default function VenuePage() {
                 </div>
                 <h2 className="text-3xl lg:text-4xl font-black text-white leading-none uppercase tracking-tight">Travel & <span className="text-blue">Entry</span></h2>
                 <p className="text-white/40 text-[9px] font-black uppercase tracking-widest max-w-xl mx-auto italic">
-                   We will send you an invite letter after you register and book a room. Use this for your visa.
+                   {venue?.visa_info || 'We will send you an invite letter after you register and book a room. Use this for your visa.'}
                 </p>
             </div>
             

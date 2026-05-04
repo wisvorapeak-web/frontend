@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   FileText, 
   Upload, 
@@ -19,6 +19,7 @@ import { toast } from 'sonner';
 export default function AbstractSubmissionForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [file, setFile] = useState<File | null>(null);
+  const [topics, setTopics] = useState<any[]>([]);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -29,6 +30,17 @@ export default function AbstractSubmissionForm() {
     title: '',
     abstract: ''
   });
+
+  const categories = ['Plenary', 'Keynote', 'Invited', 'New Researchers', 'Poster Displays'];
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/api/site/topics`)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) setTopics(data);
+      })
+      .catch(err => console.error('Failed to load topics:', err));
+  }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -172,9 +184,11 @@ export default function AbstractSubmissionForm() {
                   <SelectValue placeholder="Select a domain" />
                 </SelectTrigger>
                 <SelectContent className="bg-white border-slate-100 rounded-2xl shadow-2xl">
-                   {['Research', 'Innovation', 'Policy', 'Sustainability', 'Technology'].map(t => (
-                      <SelectItem key={t} value={t} className="font-bold text-navy focus:bg-indigo-50 focus:text-indigo-600 py-3">{t}</SelectItem>
-                   ))}
+                   {topics.length > 0 ? topics.map(t => (
+                      <SelectItem key={t._id} value={t.title} className="font-bold text-navy focus:bg-indigo-50 focus:text-indigo-600 py-3">{t.title}</SelectItem>
+                   )) : (
+                      <SelectItem value="Research" disabled>Loading topics...</SelectItem>
+                   )}
                 </SelectContent>
               </Select>
            </div>
@@ -186,7 +200,7 @@ export default function AbstractSubmissionForm() {
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent className="bg-white border-slate-100 rounded-2xl shadow-2xl">
-                   {['Plenary', 'Keynote', 'Invited', 'New Researchers', 'Poster Displays'].map(c => (
+                   {categories.map(c => (
                       <SelectItem key={c} value={c} className="font-bold text-navy focus:bg-indigo-50 focus:text-indigo-600 py-3">{c}</SelectItem>
                    ))}
                 </SelectContent>
@@ -259,7 +273,7 @@ export default function AbstractSubmissionForm() {
         <div className="pt-8 border-t border-slate-50 flex flex-col md:flex-row items-center justify-between gap-8">
            <div className="flex items-start gap-3 max-w-sm">
               <div className="mt-1"><AlertCircle className="w-4 h-4 text-emerald-500" /></div>
-              <p className="text-[10px] font-bold text-slate-400 leading-relaxed uppercase tracking-wider">
+              <p className="text-[10px] font-black text-slate-400 leading-relaxed uppercase tracking-wider">
                  All submissions are finalized upon receipt and cannot be edited. Please verify all details before initiating upload.
               </p>
            </div>

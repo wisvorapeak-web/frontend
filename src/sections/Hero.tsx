@@ -12,21 +12,21 @@ export default function Hero() {
     hero_image_url: '/hero.png',
     event_dates: 'November 18-20, 2026',
     global_reach: '50+ Countries',
-    city: 'Singapore'
+    city: 'Singapore',
+    countdown_target: '2026-11-18'
   });
 
   const [timeLeft, setTimeLeft] = useState({ days: '00', hours: '00', mins: '00', secs: '00' });
 
+  // Fetch settings once
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/site/hero`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/site/settings`)
       .then(res => res.json())
       .then(data => {
          if (data && Object.keys(data).length > 0) {
             setSettings((prev: any) => ({
                ...prev,
-               hero_title: data.title,
-               hero_tagline: data.description,
-               hero_image_url: data.bg_image_url,
+               ...data
             }));
          }
       })
@@ -46,13 +46,22 @@ export default function Hero() {
         });
     }, 45000);
 
-    // Countdown logic
-    const targetDate = new Date('2026-11-18T09:00:00').getTime();
+    return () => clearInterval(interval);
+  }, []);
+
+  // Countdown logic depends on settings
+  useEffect(() => {
+    const targetStr = settings.countdown_target || '2026-11-18';
+    const targetDate = new Date(`${targetStr}T09:00:00`).getTime();
+    
+    if (isNaN(targetDate)) return;
+
     const countdownTimer = setInterval(() => {
         const now = new Date().getTime();
         const diff = targetDate - now;
         
         if (diff < 0) {
+            setTimeLeft({ days: '00', hours: '00', mins: '00', secs: '00' });
             clearInterval(countdownTimer);
             return;
         }
@@ -70,11 +79,8 @@ export default function Hero() {
         });
     }, 1000);
 
-    return () => {
-        clearInterval(interval);
-        clearInterval(countdownTimer);
-    };
-  }, []);
+    return () => clearInterval(countdownTimer);
+  }, [settings.countdown_target]);
 
   return (
     <section className="relative min-h-[85vh] flex items-center justify-center bg-navy overflow-hidden font-outfit">

@@ -8,7 +8,8 @@ import {
   FileText,
   ChevronRight,
   Loader2,
-  ExternalLink
+  ExternalLink,
+  Trash2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -67,6 +68,23 @@ export default function AbstractReview() {
       toast.error('Update failed');
     } finally {
       setIsUpdating(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to permanently delete this submission?')) return;
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/abstracts/${id}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+      if (res.ok) {
+        toast.success('Submission deleted');
+        fetchAbstracts();
+        setSelectedAbs(null);
+      }
+    } catch (err) {
+      toast.error('Deletion failed');
     }
   };
 
@@ -130,7 +148,14 @@ export default function AbstractReview() {
         {/* Abstract List */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-20">
           {filteredAbstracts.map((abs) => (
-            <div key={abs.id} className="bg-white border border-slate-200 rounded-lg p-6 shadow-sm flex flex-col justify-between">
+            <div key={abs.id} className="bg-white border border-slate-200 rounded-lg p-6 shadow-sm flex flex-col justify-between group relative">
+              <button 
+                onClick={() => handleDelete(abs.id)}
+                className="absolute top-4 right-4 p-2 text-slate-300 hover:text-rose-600 opacity-0 group-hover:opacity-100 transition-all"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+              
               <div className="space-y-4">
                 <div className="flex justify-between items-start">
                   <div className="p-2 bg-slate-50 text-slate-400 rounded">
@@ -195,9 +220,14 @@ export default function AbstractReview() {
                                  <span className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.2em] px-2 py-1 bg-indigo-50 border border-indigo-100 rounded">Topic: {selectedAbs.topic || 'N/A'}</span>
                               </div>
                             </div>
-                            <a href={selectedAbs.file_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-bold text-blue-600 hover:underline">
-                              <ExternalLink className="w-4 h-4" /> Open Full text
-                            </a>
+                            <div className="flex items-center gap-4">
+                                <a href={selectedAbs.file_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-bold text-blue-600 hover:underline">
+                                  <ExternalLink className="w-4 h-4" /> Open Full text
+                                </a>
+                                <Button onClick={() => handleDelete(selectedAbs.id)} variant="ghost" size="icon" className="text-slate-300 hover:text-rose-600 transition-colors">
+                                   <Trash2 className="w-4 h-4" />
+                                </Button>
+                            </div>
                           </div>
                         </div>
 

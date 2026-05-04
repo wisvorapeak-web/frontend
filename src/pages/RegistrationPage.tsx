@@ -51,7 +51,10 @@ export default function RegistrationPage() {
        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/site/dates`);
        if (res.ok) {
          const dates = await res.json();
-         const ebDate = dates.find((d: any) => d.event.toLowerCase().includes('early bird'));
+         const ebDate = dates.find((d: any) => 
+            d.event.toLowerCase().includes('early bird') || 
+            d.event.toLowerCase().includes('registration deadline')
+         );
          if (ebDate) {
            const deadline = new Date(ebDate.date);
            if (!isNaN(deadline.getTime()) && new Date() > deadline) {

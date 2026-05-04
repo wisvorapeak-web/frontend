@@ -1,5 +1,5 @@
 import PageLayout from './PageLayout';
-import { Clock, MapPin, Zap, Rocket } from 'lucide-react';
+import { Clock, MapPin, Zap, Rocket, Loader2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Link } from 'react-router-dom';
@@ -19,34 +19,47 @@ const getColor = (type: string) => {
 };
 
 export default function ProgramPage() {
-  const [schedule] = useState<any[]>([
-    {
-      day: 'Day 1',
-      sessions: [
-        { title: 'Opening Event', start_time: '09:00', end_time: '10:00', location: 'Main Hall', session_type: 'Opening', description: 'Kickoff for our event.' },
-        { title: 'Food Safety Talk', start_time: '10:30', end_time: '12:30', location: 'Hall A', session_type: 'Session', description: 'New ways to grow food.' },
-        { title: 'Lunch Break', start_time: '12:30', end_time: '14:00', location: 'Dining Area', session_type: 'Break', description: 'Lunch and networking.' }
-      ]
-    },
-    {
-      day: 'Day 2',
-      sessions: [
-        { title: 'Farming Tech Class', start_time: '09:30', end_time: '11:30', location: 'Lab 1', session_type: 'Workshop', description: 'New tech for farming.' },
-        { title: 'Main Talk', start_time: '14:00', end_time: '15:30', location: 'Auditorium', session_type: 'Keynote', description: 'The future of science.' }
-      ]
-    },
-    {
-      day: 'Day 3',
-      sessions: [
-        { title: 'Animal Research Discussion', start_time: '10:00', end_time: '12:00', location: 'Hall B', session_type: 'Panel', description: 'Advances in farm animals.' },
-        { title: 'Closing & Awards', start_time: '16:00', end_time: '17:30', location: 'Main Hall', session_type: 'Closing', description: 'Giving awards for top research.' }
-      ]
-    }
-  ]);
+  const [schedule, setSchedule] = useState<any[]>([]);
+  const [dates, setDates] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Static mode
+    Promise.all([
+      fetch(`${import.meta.env.VITE_API_URL}/api/site/program`).then(res => res.json()),
+      fetch(`${import.meta.env.VITE_API_URL}/api/site/dates`).then(res => res.json())
+    ]).then(([programData, datesData]) => {
+        if (Array.isArray(programData)) {
+            // Group by day
+            const grouped = programData.reduce((acc: any, session: any) => {
+                const day = session.day || 'Day 1';
+                if (!acc[day]) acc[day] = [];
+                acc[day].push(session);
+                return acc;
+            }, {});
+            
+            const sortedDays = Object.keys(grouped).sort().map(day => ({
+                day,
+                sessions: grouped[day].sort((a: any, b: any) => a.start_time.localeCompare(b.start_time))
+            }));
+            
+            setSchedule(sortedDays);
+        }
+        if (Array.isArray(datesData)) {
+            setDates(datesData);
+        }
+      })
+      .catch(err => console.error('Schedule fetch error:', err))
+      .finally(() => setLoading(false));
   }, []);
+
+  if (loading) return (
+    <PageLayout title="Program" subtitle="Loading schedule...">
+       <div className="py-40 flex flex-col items-center justify-center gap-6">
+          <Loader2 className="w-12 h-12 text-blue animate-spin" />
+          <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest animate-pulse">Loading Schedule...</p>
+       </div>
+    </PageLayout>
+  );
 
   return (
     <PageLayout 
@@ -131,7 +144,12 @@ export default function ProgramPage() {
                                                 </div>
                                                 
                                                 <div className="space-y-2">
-                                                    <h3 className="text-xl font-bold text-navy leading-tight uppercase tracking-tight group-hover:text-blue transition-colors">{session.title}</h3>
+                                                    <div className="flex flex-col gap-1">
+                                                        <h3 className="text-xl font-bold text-navy leading-tight uppercase tracking-tight group-hover:text-blue transition-colors">{session.title}</h3>
+                                                        {session.speaker_name && (
+                                                            <p className="text-[10px] font-black text-blue uppercase tracking-widest leading-none">Speaker: {session.speaker_name}</p>
+                                                        )}
+                                                    </div>
                                                     <p className="text-slate-500 font-medium text-xs leading-relaxed max-w-2xl opacity-80">{session.description || 'We will update the details soon.'}</p>
                                                 </div>
                                             </div>
@@ -154,6 +172,36 @@ export default function ProgramPage() {
                   <p className="text-slate-400 text-xs font-bold max-w-sm mx-auto leading-loose uppercase tracking-[0.2em]">Our team is finishing the plan.</p>
                </div>
             </div>
+        )}
+        {/* Deadlines Section */}
+        {dates.length > 0 && (
+          <section className="space-y-10">
+             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div className="space-y-2">
+                   <h2 className="text-2xl lg:text-3xl font-black text-navy uppercase tracking-tighter">Important <span className="text-blue">Deadlines</span></h2>
+                   <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest italic opacity-60">Don't miss these critical event milestones</p>
+                </div>
+             </div>
+
+             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {dates.map((date, i) => (
+                   <div key={i} className="p-6 bg-white rounded-2xl border border-slate-50 shadow-lg shadow-slate-200/50 flex flex-col gap-4 group hover:border-blue/20 transition-all">
+                      <div className="flex items-center justify-between">
+                         <div className="px-3 py-1 bg-blue/5 rounded-lg border border-blue/10 text-blue text-[9px] font-black uppercase tracking-widest italic">
+                            {new Date(date.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                         </div>
+                         <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-300 group-hover:text-blue transition-colors">
+                            <Clock className="w-4 h-4" />
+                         </div>
+                      </div>
+                      <div className="space-y-1">
+                         <h4 className="text-sm font-black text-navy uppercase tracking-tight group-hover:text-blue transition-colors">{date.event}</h4>
+                         <p className="text-[10px] font-bold text-slate-400 leading-relaxed line-clamp-2">{date.description}</p>
+                      </div>
+                   </div>
+                ))}
+             </div>
+          </section>
         )}
 
         {/* Networking CTA */}

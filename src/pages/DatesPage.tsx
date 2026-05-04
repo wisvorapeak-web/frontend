@@ -57,7 +57,7 @@ export default function DatesPage() {
                 <div key={i} className="flex flex-col md:flex-row items-center gap-12 group">
                    <div className="flex flex-col items-center md:items-end min-w-[240px] text-center md:text-right space-y-2">
                       <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest leading-none">Deadline</p>
-                       <h4 className="text-2xl font-black font-outfit text-slate-900 group-hover:text-indigo-600 transition-colors leading-tight">{milestone.date}</h4>
+                       <h4 className="text-2xl font-black font-outfit text-slate-900 group-hover:text-indigo-600 transition-colors leading-tight">{milestone.date ? new Date(milestone.date).toLocaleDateString() : 'TBA'}</h4>
                    </div>
 
                    {/* Connector Dot */}
@@ -73,9 +73,9 @@ export default function DatesPage() {
 
                    <div className="flex-1 space-y-4 text-center md:text-left">
                       <div className="flex flex-col md:flex-row items-center gap-4">
-                          <h3 className="text-xl font-black text-slate-800 font-outfit leading-tight pr-6">{milestone.title}</h3>
-                         <div className={`px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border ${milestone.color} shadow-sm`}>
-                            {milestone.status}
+                          <h3 className="text-xl font-black text-slate-800 font-outfit leading-tight pr-6">{milestone.event}</h3>
+                         <div className={`px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border ${milestone.color || 'bg-blue/5 border-blue/10 text-blue'} shadow-sm`}>
+                            {milestone.status || 'Active'}
                          </div>
                       </div>
                       <p className="text-slate-400 font-medium text-base leading-relaxed max-w-2xl px-4 md:px-0">
