@@ -10,9 +10,7 @@ import {
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const iconMap: any = {
-  Users, Globe, Mic2, FileText, Rocket
-};
+
 
 export default function AboutPage() {
   const [settings, setSettings] = useState<any>(null);
