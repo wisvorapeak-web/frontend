@@ -63,9 +63,16 @@ export default function AdminEvents() {
         toast.success(editingSession._id ? 'Session updated' : 'Session added');
         setEditingSession(null);
         fetchData();
+      } else {
+        const errorData = await res.json();
+        toast.error(errorData.error || 'Operation failed');
+        if (errorData.validationErrors) {
+          errorData.validationErrors.forEach((err: string) => toast.error(err, { duration: 5000 }));
+        }
       }
     } catch (err) {
-      toast.error('Operation failed');
+      console.error('Fetch error:', err);
+      toast.error('Network error or server unreachable');
     } finally {
       setIsUpdating(false);
     }
@@ -92,9 +99,16 @@ export default function AdminEvents() {
         toast.success(editingDate._id ? 'Date updated' : 'Date added');
         setEditingDate(null);
         fetchData();
+      } else {
+        const errorData = await res.json();
+        toast.error(errorData.error || 'Operation failed');
+        if (errorData.validationErrors) {
+          errorData.validationErrors.forEach((err: string) => toast.error(err, { duration: 5000 }));
+        }
       }
     } catch (err) {
-      toast.error('Operation failed');
+      console.error('Fetch error:', err);
+      toast.error('Network error or server unreachable');
     } finally {
       setIsUpdating(false);
     }
@@ -259,11 +273,11 @@ export default function AdminEvents() {
                      <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-1.5">
                            <Label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Start Time</Label>
-                           <Input value={editingSession.start_time} onChange={(e) => setEditingSession({ ...editingSession, start_time: e.target.value })} className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none" placeholder="09:00 AM" />
+                           <Input value={editingSession.start_time} onChange={(e) => setEditingSession({ ...editingSession, start_time: e.target.value })} className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none" placeholder="09:00 AM" required />
                         </div>
                         <div className="space-y-1.5">
                            <Label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">End Time</Label>
-                           <Input value={editingSession.end_time} onChange={(e) => setEditingSession({ ...editingSession, end_time: e.target.value })} className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none" placeholder="10:30 AM" />
+                           <Input value={editingSession.end_time} onChange={(e) => setEditingSession({ ...editingSession, end_time: e.target.value })} className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none" placeholder="10:30 AM" required />
                         </div>
                      </div>
                      <div className="grid grid-cols-2 gap-4">
