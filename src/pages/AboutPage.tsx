@@ -2,8 +2,6 @@ import PageLayout from './PageLayout';
 import { 
   Users, 
   Globe, 
-  Mic2, 
-  FileText, 
   Rocket,
   Loader2
 } from 'lucide-react';
