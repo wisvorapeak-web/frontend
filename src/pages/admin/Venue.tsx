@@ -173,9 +173,20 @@ export default function AdminVenue() {
                             value={settings?.host_city || ''} 
                             onChange={(e) => setSettings({ ...settings, host_city: e.target.value })}
                             className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none font-bold" 
-                            placeholder="e.g. Guwahati, Assam"
+                            placeholder="e.g. Guwahati"
                           />
                         </div>
+                        <div className="space-y-1.5">
+                          <Label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Country</Label>
+                          <Input 
+                            value={settings?.country || ''} 
+                            onChange={(e) => setSettings({ ...settings, country: e.target.value })}
+                            className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none font-bold" 
+                            placeholder="e.g. India"
+                          />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-6">
                         <div className="space-y-1.5">
                           <Label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Venue Name</Label>
                           <Input 
@@ -184,6 +195,10 @@ export default function AdminVenue() {
                             className="h-10 bg-slate-50 border-slate-200 rounded text-sm transition-none font-bold" 
                             placeholder="e.g. World Summit Center"
                           />
+                        </div>
+                        <div className="space-y-1.5 opacity-0 pointer-events-none">
+                            <Label>Spacer</Label>
+                            <Input disabled />
                         </div>
                       </div>
                       <div className="space-y-1.5">

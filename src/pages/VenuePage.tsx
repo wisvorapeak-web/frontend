@@ -9,9 +9,11 @@ import { useState, useEffect } from 'react';
 export default function VenuePage() {
   const [venue, setVenue] = useState<any>({
     host_city: 'Singapore',
-    venue_name: 'Singapore Summit Center',
-    venue_description: 'The summit will be held in Singapore, a global center for research and business.',
-    map_url: '#',
+    country: 'Singapore',
+    venue_name: 'Crowne Plaza Changi Airport',
+    venue_address: '75 Airport Blvd., #01-01, Singapore 819664',
+    venue_description: 'Voted the World\'s Best Airport Hotel, Crowne Plaza Changi Airport offers premium facilities and direct access to Changi Airport.',
+    map_url: 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3801.7266078870543!2d103.9853923!3d1.3585663!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da3c936a9124bf%3A0x74a0170f1cc50445!2sCrowne%20Plaza%20Changi%20Airport%20by%20IHG!5e1!3m2!1sen!2sin!4v1778159244706!5m2!1sen!2sin',
     virtual_tour_url: '#'
   });
   const [settings, setSettings] = useState<any>({
@@ -24,8 +26,22 @@ export default function VenuePage() {
       fetch(`${import.meta.env.VITE_API_URL}/api/site/settings`).then(res => res.json()),
       fetch(`${import.meta.env.VITE_API_URL}/api/site/venue`).then(res => res.json())
     ]).then(([sData, vData]) => {
+      const extractUrl = (input: string) => {
+        if (!input) return '';
+        if (input.includes('<iframe')) {
+          const match = input.match(/src="([^"]+)"/);
+          return match ? match[1] : input;
+        }
+        return input;
+      };
+
       if (sData) setSettings(sData);
-      if (vData) setVenue(vData);
+      if (vData) {
+        setVenue({
+          ...vData,
+          map_url: extractUrl(vData.map_url)
+        });
+      }
     }).catch(err => console.error('Venue Sync Error:', err))
     .finally(() => setLoading(false));
   }, []);
@@ -51,7 +67,7 @@ export default function VenuePage() {
            <div className="space-y-6 animate-in fade-in slide-in-from-left-10 duration-1000">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue/5 border border-blue/10 rounded-full">
                  <MapPin className="w-3.5 h-3.5 text-blue" />
-                 <span className="text-[10px] font-black text-blue uppercase tracking-widest">{venue?.host_city || 'Singapore'}</span>
+                 <span className="text-[10px] font-black text-blue uppercase tracking-widest">{venue?.host_city || 'Singapore'}{venue?.country ? `, ${venue.country}` : ''}</span>
               </div>
               <h2 className="text-3xl lg:text-5xl font-black text-navy leading-tight uppercase tracking-tight">{venue?.venue_name || 'Event Venue'}</h2>
               <p className="text-slate-500 text-[11px] font-bold uppercase tracking-widest leading-relaxed whitespace-pre-wrap italic">

@@ -12,11 +12,11 @@ export default function Venue() {
   const [loading, setLoading] = useState(true);
   const [travelInfo, setTravelInfo] = useState<any[]>([]);
   const [venue, setVenue] = useState<any>({
-    venue_name: 'Singapore',
-    address: 'Singapore',
+    venue_name: 'Crowne Plaza Changi Airport',
+    address: '75 Airport Blvd., #01-01, Singapore 819664',
     city: 'Singapore',
     country: 'Singapore',
-    map_url: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.436735759942!2d103.851959!3d1.286667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da190fd5ad8619%3A0x6b81566373887413!2sMarina%20Bay%20Sands%20Singapore!5e0!3m2!1sen!2ssg!4v1700000000000!5m2!1sen!2ssg'
+    map_url: 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3801.7266078870543!2d103.9853923!3d1.3585663!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da3c936a9124bf%3A0x74a0170f1cc50445!2sCrowne%20Plaza%20Changi%20Airport%20by%20IHG!5e1!3m2!1sen!2sin!4v1778159244706!5m2!1sen!2sin'
   });
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -25,7 +25,26 @@ export default function Venue() {
       fetch(`${import.meta.env.VITE_API_URL}/api/site/venue`).then(res => res.json()),
       fetch(`${import.meta.env.VITE_API_URL}/api/site/travel-info`).then(res => res.json())
     ]).then(([vData, tData]) => {
-      if (vData) setVenue(vData);
+      if (vData) {
+        const extractUrl = (input: string) => {
+          if (!input) return '';
+          if (input.includes('<iframe')) {
+            const match = input.match(/src="([^"]+)"/);
+            return match ? match[1] : input;
+          }
+          return input;
+        };
+
+        setVenue({
+          ...vData,
+          city: vData.host_city || vData.city || 'Singapore',
+          country: vData.country || 'Singapore',
+          address: vData.venue_address || vData.address || 'Singapore',
+          description: vData.venue_description || vData.description || 'A great place for international events.',
+          venue_name: vData.venue_name || 'Singapore',
+          map_url: extractUrl(vData.map_url)
+        });
+      }
       if (tData) setTravelInfo(tData);
     }).catch(err => console.error('Venue data fetch failed:', err))
       .finally(() => setLoading(false));
@@ -117,7 +136,7 @@ export default function Venue() {
           <div className={`transition-all duration-1000 delay-500 flex flex-col h-full bg-white p-2 rounded-2xl shadow-xl shadow-slate-200/20 border border-slate-50 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'}`}>
             <div className="rounded-xl overflow-hidden border border-slate-50 shadow-inner flex-1 min-h-[320px] relative group">
                 <iframe
-                    src={venue.map_url || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.436735759942!2d103.851959!3d1.286667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da190fd5ad8619%3A0x6b81566373887413!2sMarina%20Bay%20Sands%20Singapore!5e0!3m2!1sen!2ssg!4v1700000000000!5m2!1sen!2ssg"}
+                    src={venue.map_url || "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3801.7266078870543!2d103.9853923!3d1.3585663!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da3c936a9124bf%3A0x74a0170f1cc50445!2sCrowne%20Plaza%20Changi%20Airport%20by%20IHG!5e1!3m2!1sen!2sin!4v1778159244706!5m2!1sen!2sin"}
                     className="w-full h-full grayscale-[50%] group-hover:grayscale-0 transition-all duration-2000"
                     loading="lazy"
                     title="Event Venue Map"
